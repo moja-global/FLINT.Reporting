@@ -1,11 +1,11 @@
 {
   "domains": {
-    "default": "reports.miles.co.ke",
-    "api": "reports.miles.co.ke",
-    "postgres": "reports.miles.co.ke",
-    "rabbitMQ": "reports.miles.co.ke",
-    "registry": "reports.miles.co.ke",
-    "traefik": "reports.miles.co.ke"
+    "default": "reporter.miles.co.ke",
+    "api": "reporter.miles.co.ke",
+    "postgres": "reporter.miles.co.ke",
+    "rabbitMQ": "reporter.miles.co.ke",
+    "registry": "reporter.miles.co.ke",
+    "traefik": "reporter.miles.co.ke"
   },
   "ips": {
     "default": "34.122.239.158"
