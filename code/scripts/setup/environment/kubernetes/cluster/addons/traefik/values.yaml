@@ -161,6 +161,7 @@ service:
   externalIPs:
     # UPDATED
     - 34.122.239.158
+    - 10.128.0.2
 
 ## Create HorizontalPodAutoscaler object.
 ##
