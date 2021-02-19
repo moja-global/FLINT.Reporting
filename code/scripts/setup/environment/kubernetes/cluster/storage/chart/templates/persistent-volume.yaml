@@ -1,0 +1,31 @@
+# References:
+# https://kubernetes.io/blog/2018/04/13/local-persistent-volumes-beta/
+# https://kubernetes.io/docs/concepts/storage/volumes/#local
+#
+# Permissions:
+# Please remember to give the user running kubctl appropriate permissions to the volume directories
+# sudo chown -R tonni disks
+# chmod -R u=rwx,go=r disks
+# See: https://askubuntu.com/questions/1013528/how-set-read-and-write-permissions-for-a-directory
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.storage.name }}
+spec:
+  capacity:
+    storage: {{ .Values.storage.capacity }}
+  accessModes:
+  - {{ .Values.storage.accessMode }}
+  persistentVolumeReclaimPolicy: {{ .Values.storage.reclaimPolicy }}
+  storageClassName: {{ .Values.storage.storageClass }}
+  local:
+    path: {{ .Values.storage.path }}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: {{ .Values.storage.nodeAffinity.key }}
+          operator: In
+          values:
+          - {{ .Values.storage.nodeAffinity.value }}
+

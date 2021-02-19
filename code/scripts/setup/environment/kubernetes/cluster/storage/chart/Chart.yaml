@@ -1,0 +1,6 @@
+name: Storage Volume 1 Deployment
+version: 0.0.1
+description: Deploys a storage volume on a Kubernetes Cluster
+maintainers:
+ - name: Kwaje Anthony
+   email: kwajeanthony@gmail.com

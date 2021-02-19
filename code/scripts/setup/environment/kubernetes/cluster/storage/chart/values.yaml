@@ -1,0 +1,15 @@
+storage:
+  name: vol10
+  capacity: 10Gi
+  storageClass: local-storage
+  path: /mnt/disks/local_storage/vol10
+  accessMode: ReadWriteOnce
+  reclaimPolicy: Retain
+  nodeAffinity:
+    key: kubernetes.io/hostname
+    value: taurus
+
+
+
+
+

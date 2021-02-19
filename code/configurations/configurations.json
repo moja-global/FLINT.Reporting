@@ -1,0 +1,30 @@
+{
+  "domains": {
+    "default": "reporting_tool.miles.co.ke",
+    "api": "reporting_tool.miles.co.ke",
+    "postgres": "reporting_tool.miles.co.ke",
+    "rabbitMQ": "reporting_tool_rabbitmq.miles.co.ke",
+    "registry": "reporting_tool_registry.miles.co.ke",
+    "traefik": "reporting_tool_traefik.miles.co.ke"
+  },
+  "ips": {
+    "default": "34.122.239.158"
+  },
+  "postgres": {
+    "username": "postgres",
+    "password": "postgres"	
+  },
+  "security": {
+    "certificates": {
+      "ca": "/ca.crt",
+      "server": "/server.crt"
+    },
+    "keys": {
+      "server": "/server.key"
+    }
+  },
+  "timePeriod": {
+    "min": "2020-06-22",
+    "max": ""	
+  }
+}

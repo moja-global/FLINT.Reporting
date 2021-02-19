@@ -1,0 +1,11 @@
+# Dynamic configuration
+
+tls:
+  certificates:
+    - certFile: /server.crt;
+      keyFile: /server.key;
+
+#tls:
+#  certificates:
+#    - certFile: /etc/letsencrypt/live/cloud.emafss.org/fullchain.pem;
+#      keyFile: /etc/letsencrypt/live/cloud.emafss.org/privkey.pem;
