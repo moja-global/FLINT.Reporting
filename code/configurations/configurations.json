@@ -8,7 +8,8 @@
     "traefik": "reporter.miles.co.ke"
   },
   "ips": {
-    "default": "34.122.239.158"
+    "default": "34.122.239.158",
+    "local": "10.128.0.2"
   },
   "postgres": {
     "username": "postgres",

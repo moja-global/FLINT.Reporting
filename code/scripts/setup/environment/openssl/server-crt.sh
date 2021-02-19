@@ -41,7 +41,7 @@ fi
 
 
 # Server IP
-SERVER_IP=$(jq '.ips.default' $ROOT_DIR/configurations/configurations.json)
+SERVER_IP=$(jq '.ips.local' $ROOT_DIR/configurations/configurations.json)
 if [[ $SERVER_IP == null ]]
 then
      echo
