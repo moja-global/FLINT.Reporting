@@ -65,7 +65,7 @@ fi
 # ----------------------------------------------------------------------------------
 
 # Single databases
-FLUX_TYPE=1
+FLUX_TYPES=1
 
 
 # Database Collections
