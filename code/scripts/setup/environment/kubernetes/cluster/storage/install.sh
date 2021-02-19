@@ -11,8 +11,8 @@ BASEDIR=$(dirname "$0")
 # if not found, use the name of the machine
 # See: https://stackoverflow.com/questions/51946393/kubernetes-pod-warning-1-nodes-had-volume-node-affinity-conflict
 HOST=${HOST_NAME:-$(uname -n)}
-VOLUMES=10
-CAPACITY=10Gi
+VOLUMES=2
+CAPACITY=5Gi
 LOCATION=/mnt/disks
 
 

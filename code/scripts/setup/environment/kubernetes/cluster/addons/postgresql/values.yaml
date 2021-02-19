@@ -624,7 +624,7 @@ persistence:
   ## Persistent Volume Claim size
   ##
   ## Updated
-  size: 10Gi
+  size: 5Gi
   ## Persistent Volume Claim annotations
   ##
   annotations: {}

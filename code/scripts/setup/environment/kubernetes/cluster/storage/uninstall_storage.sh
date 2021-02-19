@@ -6,7 +6,7 @@ echo "Entering - Uninstall Storage Volumes (Local)"
 echo "---------------------------------------------------------------------------------"
 
 BASEDIR=$(dirname "$0")
-VOLUMES=10
+VOLUMES=2
 LOCATION=/mnt/disks
 
 
