@@ -65,6 +65,7 @@ fi
 # ----------------------------------------------------------------------------------
 
 # Single databases
+FLUX_TYPE=1
 
 
 # Database Collections
@@ -77,10 +78,31 @@ echo "--------------------------------------------------------------------------
 echo
 
 # -------------------------------------------------------------------------------------
-# 
+# FLINT
 # -------------------------------------------------------------------------------------
 
+# Flux Types
+# -------------------------------------------------------------------------------------
+if [ $FLUX_TYPES -eq 1 ]; then
 
+  echo
+  echo "Setting up Flux Types Database"
+  echo
+
+  # drop the flux types database if it exists
+  psql -c "DROP DATABASE IF EXISTS flux_types"
+
+  # create a new flux types database
+  psql -c "CREATE DATABASE flux_types"
+
+  # Create the flux type's database objects
+  psql -d "flux_types" -1 -f "$PROJECT_DIR/services/flux-types/src/main/resources/flux_types.sql"
+
+  # Load the flux type's database data
+  psql -d "flux_types" -1 -c "\copy flux_type(name,description,version) from \
+          '$PROJECT_DIR/data/flux_types.csv' DELIMITER ',' CSV HEADER"
+
+fi
 
 echo
 echo "Initializing database collections"

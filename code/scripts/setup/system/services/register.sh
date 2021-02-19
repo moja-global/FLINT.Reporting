@@ -29,17 +29,22 @@ echo
 echo "Building Microservices"
 echo
 
-# Use the flags 1 and 0 below to configure the microservices that you want to register
+# Use the flags 1 and 0 below to configure the services that you want to register
 # 1 = on, 0 = off
 # ----------------------------------------------------------------------------------
-
+FLUX_TYPES=1
 
 
 
 # -------------------------------------------------------------------------------------
-# 
+# FLINT BASED
 # -------------------------------------------------------------------------------------
 
+# Flux Types
+# -------------------------------------------------------------------------------------
+if [ $FLUX_TYPES -eq 1 ]; then
+	bash $PROJECT_DIR/services/flux-types/register.sh
+fi
 
 
 echo

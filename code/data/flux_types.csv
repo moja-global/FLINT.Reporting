@@ -1,0 +1,25 @@
+"name","description","version"
+"Wildfire","Fluxes that are the result of a wildfire disturbance event. This can include emissions to the atmosphere as well as transfers between pools and can include carbon and other non-carbon greenhouse gases",1
+"Controlled Burning","Fluxes that are the result of a controlled burning disturbance. This can include emissions to the atmosphere as well as transfers between pools",1
+"Net primary production","The mass of photosynthate remaining after taking into account loss due to autotrophic respiration",1
+"Harvest","Fluxes that are the result of a harvest event where all trees are harvested which can be fluxes between onsite pools or can be fluxes to offsite pools",1
+"Decomposition","Fluxes due to the decay of organic matter in dead organic matter and soil",1
+"Turnover","Fluxes due to normal processes of leaf, bark, and branch shedding and movement through debris and soil carbon pools due to decay",1
+"Plough","Fluxes from a tillage disturbance on crop and grass",1
+"Thin","Fluxes that are the result of a thin event where not all trees are harvested or felled which can be fluxes between onsite pools or can be fluxes to offsite pools",1
+"Plant Trees","When tree seedlings are planted there is a small carbon flux from offsite to tree pools",1
+"Plant Crops","When crops are sown or planted there is a carbon flux from offsite to crop pools",1
+"Nitrogen Fertiliser","A flux that is the result of nitrogen fertiliser application",1
+"Pest","Fluxes due to pest attack, for example transfer of leaves to the fine litter pools",1
+"Windthrow","Fluxes due to tree death due to being blown over by wind",1
+"Lime Application","Carbon fluxes associated with lime and dolomite application",1
+"Grazing","Fluxes between plant pools due to animal grazing",1
+"Irrigation","H20 fluxes due to irrigation",1
+"Herbicide","Fluxes due to plant death from herbicide application",1
+"Manure","Fluxes from the application of manure from offsite",1
+"Heavy roll","Flux of carbon due to chopper rolling",1
+"Wetland Drainage","Flux of N due to wetland drainage and rewetting",1
+"Rice","Special case where CH4 is transmitted through the stem",1
+"Cattle Grazing","Carbon fluxes due to cattle grazing",1
+"Sheep Grazing","Carbon fluxes due to sheep grazing",1
+"Goat Grazing","Carbon fluxes due to goat grazing",1
