@@ -8,7 +8,7 @@ microservice:
     name: flux-types
     class: traefik 
     rules:
-      host: cloud.miles.co.ke
+      host: reporter.miles.co.ke
       http:
         path: /api/v1/flux_types
         backend:

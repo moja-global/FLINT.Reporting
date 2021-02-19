@@ -1,6 +1,6 @@
 
 #See: https://spring.io/guides/gs/spring-boot-docker/
-FROM openjdk:8-jdk-alpine
+FROM openjdk:17-jdk-alpine
 VOLUME /tmp
 ARG DEPENDENCY
 COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib
