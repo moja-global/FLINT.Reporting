@@ -4,7 +4,7 @@
     "api": "reporting_tool.miles.co.ke",
     "postgres": "reporting_tool.miles.co.ke",
     "rabbitMQ": "reporting_tool_rabbitmq.miles.co.ke",
-    "registry": "reporting_tool_registry.miles.co.ke",
+    "registry": "reporting_tool.miles.co.ke",
     "traefik": "reporting_tool_traefik.miles.co.ke"
   },
   "ips": {
