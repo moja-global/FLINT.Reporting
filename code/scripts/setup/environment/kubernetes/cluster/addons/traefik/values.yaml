@@ -160,7 +160,7 @@ service:
     # - 172.16.0.0/16
   externalIPs:
     # UPDATED
-    - 165.22.189.213
+    - 34.122.239.158
 
 ## Create HorizontalPodAutoscaler object.
 ##
