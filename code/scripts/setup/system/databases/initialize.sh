@@ -66,6 +66,8 @@ fi
 
 # Single databases
 FLUX_TYPES=1
+EMISSION_TYPES=1
+
 
 
 # Database Collections
@@ -103,6 +105,30 @@ if [ $FLUX_TYPES -eq 1 ]; then
           '$PROJECT_DIR/data/flux_types.csv' DELIMITER ',' CSV HEADER"
 
 fi
+
+
+# Emission Types
+# -------------------------------------------------------------------------------------
+if [ $EMISSION_TYPES -eq 1 ]; then
+
+  echo
+  echo "Setting up Emission Types Database"
+  echo
+
+  # drop the emission types database if it exists
+  psql -c "DROP DATABASE IF EXISTS emission_types"
+
+  # create a new emission types database
+  psql -c "CREATE DATABASE emission_types"
+
+  # Create the emission type's database objects
+  psql -d "emission_types" -1 -f "$PROJECT_DIR/services/emission-types/src/main/resources/emission_types.sql"
+
+  # Load the emission type's database data
+  psql -d "emission_types" -1 -c "\copy emission_type(name,description,version) from \
+          '$PROJECT_DIR/data/emission_types.csv' DELIMITER ',' CSV HEADER"
+
+
 
 echo
 echo "Initializing database collections"
