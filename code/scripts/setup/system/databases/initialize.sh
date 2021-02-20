@@ -125,7 +125,7 @@ if [ $EMISSION_TYPES -eq 1 ]; then
   psql -d "emission_types" -1 -f "$PROJECT_DIR/services/emission-types/src/main/resources/emission_types.sql"
 
   # Load the emission type's database data
-  psql -d "emission_types" -1 -c "\copy emission_type(name,description,version) from \
+  psql -d "emission_types" -1 -c "\copy emission_type(name,abbreviation,description,version) from \
           '$PROJECT_DIR/data/emission_types.csv' DELIMITER ',' CSV HEADER"
 
 fi
