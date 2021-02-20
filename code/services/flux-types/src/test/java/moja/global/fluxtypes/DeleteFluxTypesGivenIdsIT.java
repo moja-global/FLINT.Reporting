@@ -70,7 +70,7 @@ public class DeleteFluxTypesGivenIdsIT {
         postgreSQLContainer.stop();
     }
     @Test
-    public void Given_UnitRecordsExist_When_DeleteAllWithIdsFilter_Then_UnitRecordsWithIdsWillBeDeletedAndATotalCountOfAffectedRecordsReturned() {
+    public void Given_FluxTypeRecordsExist_When_DeleteAllWithIdsFilter_Then_FluxTypeRecordsWithIdsWillBeDeletedAndATotalCountOfAffectedRecordsReturned() {
 
         Long id1 = 1L;
         Long id2 = 2L;

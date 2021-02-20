@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -73,7 +74,7 @@ public class RetrieveAllFluxTypesIT {
     }
 
     @Test
-    public void Given_UnitRecordsExist_When_GetAllWithoutIdsFilter_Then_AllUnitRecordsWillBeReturned() {
+    public void Given_FluxTypeRecordsExist_When_GetAllWithoutIdsFilter_Then_AllFluxTypeRecordsWillBeReturned() {
 
         webTestClient
                 .get()

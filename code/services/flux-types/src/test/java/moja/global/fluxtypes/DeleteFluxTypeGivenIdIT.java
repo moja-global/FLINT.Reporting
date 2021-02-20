@@ -71,7 +71,7 @@ public class DeleteFluxTypeGivenIdIT {
     }
 
     @Test
-    public void Given_RecordExists_When_DeleteWithIdParameter_Then_TheUnitRecordWithThatIdWillBeDeletedAndACountOfOneAffectedRecordReturned() {
+    public void Given_RecordExists_When_DeleteWithIdParameter_Then_TheFluxTypeRecordWithThatIdWillBeDeletedAndACountOfOneAffectedRecordReturned() {
 
         webTestClient
                 .delete()

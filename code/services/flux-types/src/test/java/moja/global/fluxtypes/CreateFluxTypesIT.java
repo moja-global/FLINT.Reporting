@@ -76,7 +76,7 @@ public class CreateFluxTypesIT {
     }
 
     @Test
-    public void Given_UnitDetailsList_When_PostAll_Then_UnitRecordsWillBeCreatedAndReturned() {
+    public void Given_FluxTypeDetailsList_When_PostAll_Then_FluxTypeRecordsWillBeCreatedAndReturned() {
 
         FluxType u1 = new FluxTypeBuilder().name("Grazing").description("Grazing Flux Type Description").build();
         FluxType u2 = new FluxTypeBuilder().name("Plough").description("Plough Flux Type Description").build();

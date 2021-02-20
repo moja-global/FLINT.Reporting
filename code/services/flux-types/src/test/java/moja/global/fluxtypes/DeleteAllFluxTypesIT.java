@@ -71,7 +71,7 @@ public class DeleteAllFluxTypesIT {
     }
 
     @Test
-    public void Given_UnitRecordsExist_When_DeleteAllWithoutIdsFilter_Then_AllUnitRecordsWillBeDeletedAndATotalCountOfAffectedRecordsReturned() {
+    public void Given_FluxTypeRecordsExist_When_DeleteAllWithoutIdsFilter_Then_AllFluxTypeRecordsWillBeDeletedAndATotalCountOfAffectedRecordsReturned() {
 
         webTestClient
                 .delete()

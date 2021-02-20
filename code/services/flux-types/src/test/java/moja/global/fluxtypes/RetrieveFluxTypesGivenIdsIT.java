@@ -74,7 +74,7 @@ public class RetrieveFluxTypesGivenIdsIT {
     }
 
     @Test
-    public void Given_UnitRecordsExist_When_GetAllWithIdsFilter_Then_OnlyUnitRecordsWithTheSpecifiedIdsWillBeReturned() {
+    public void Given_FluxTypeRecordsExist_When_GetAllWithIdsFilter_Then_OnlyFluxTypeRecordsWithTheSpecifiedIdsWillBeReturned() {
 
         FluxType u1 = new FluxTypeBuilder().id(1L).name("Wildfire").description("Wildfire Flux Type Description").version(1).build();
         FluxType u2 = new FluxTypeBuilder().id(2L).name("Harvest").description("Harvest Flux Type Description").version(1).build();

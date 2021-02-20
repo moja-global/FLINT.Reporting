@@ -73,7 +73,7 @@ public class RetrieveFluxTypeGivenIdIT {
     }
 
     @Test
-    public void Given_UnitRecordExists_When_GetWithIdParameter_Then_TheUnitRecordWithThatIdWillBeReturned() {
+    public void Given_FluxTypeRecordExists_When_GetWithIdParameter_Then_TheFluxTypeRecordWithThatIdWillBeReturned() {
 
         Long id = 2L;
 

@@ -75,7 +75,7 @@ public class CreateFluxTypeIT {
     }
 
     @Test
-    public void Given_UnitDetails_When_Post_Then_UnitRecordWillBeCreatedAndReturned() {
+    public void Given_FluxTypeDetails_When_Post_Then_FluxTypeRecordWillBeCreatedAndReturned() {
 
         FluxType u = new FluxTypeBuilder().name("Grazing").description("Grazing Flux Type Description").build();
 
