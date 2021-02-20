@@ -5,7 +5,7 @@ CREATE TABLE emission_type (
     id SERIAL UNIQUE PRIMARY KEY NOT NULL,
     name VARCHAR(255) NOT NULL,
     abbreviation VARCHAR(15) NOT NULL,
-    description VARCHAR(255) NULL,
+    description VARCHAR NULL,
     version INTEGER NOT NULL);
 
 
