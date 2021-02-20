@@ -128,6 +128,8 @@ if [ $EMISSION_TYPES -eq 1 ]; then
   psql -d "emission_types" -1 -c "\copy emission_type(name,description,version) from \
           '$PROJECT_DIR/data/emission_types.csv' DELIMITER ',' CSV HEADER"
 
+fi
+
 
 
 echo
