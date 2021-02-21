@@ -216,7 +216,7 @@ if [ $REPORTING_TABLES -eq 1 ]; then
   psql -d "reporting_tables" -1 -f "$PROJECT_DIR/services/reporting-tables/src/main/resources/reporting_tables.sql"
 
   # Load the emission type's database data
-  psql -d "reporting_tables" -1 -c "\copy emission_type(name,abbreviation,description,version) from \
+  psql -d "reporting_tables" -1 -c "\copy reporting_table(number,name,description,version) from \
           '$PROJECT_DIR/data/reporting_tables.csv' DELIMITER ',' CSV HEADER"
 
 fi
