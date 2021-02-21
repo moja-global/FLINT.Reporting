@@ -109,7 +109,7 @@ public class RetrieveUnfcccVariablesGivenIdsIT {
                 .expectBodyList(UnfcccVariable.class)
                 .value(response -> {
 
-                            Assertions.assertThat(response.get(0).getId() == 1L || response.get(0).getId() == 2L);
+                            Assertions.assertThat(response.get(0).getId() == 1L || response.get(0).getId() == 2L).isTrue();
 
                             if (response.get(0).getId() == 1L) {
                                 Assertions.assertThat(response.get(0).getName())
@@ -122,7 +122,7 @@ public class RetrieveUnfcccVariablesGivenIdsIT {
                                         .isEqualTo(u1.getUnitId());
                                 Assertions.assertThat(response.get(0).getVersion())
                                         .isEqualTo(u1.getVersion());
-                            } else if (response.get(0).getId() == 3L) {
+                            } else if (response.get(0).getId() == 2L) {
                                 Assertions.assertThat(response.get(0).getName())
                                         .isEqualTo(u2.getName());
                                 Assertions.assertThat(response.get(0).getMeasure())
@@ -135,7 +135,7 @@ public class RetrieveUnfcccVariablesGivenIdsIT {
                                         .isEqualTo(u2.getVersion());
                             }
 
-                            Assertions.assertThat(response.get(1).getId() == 1L || response.get(1).getId() == 2L);
+                            Assertions.assertThat(response.get(1).getId() == 1L || response.get(1).getId() == 2L).isTrue();
 
                             if (response.get(1).getId() == 1L) {
                                 Assertions.assertThat(response.get(1).getName())
@@ -148,7 +148,7 @@ public class RetrieveUnfcccVariablesGivenIdsIT {
                                         .isEqualTo(u1.getUnitId());
                                 Assertions.assertThat(response.get(1).getVersion())
                                         .isEqualTo(u1.getVersion() + 1);
-                            } else if (response.get(1).getId() == 3L) {
+                            } else if (response.get(1).getId() == 2L) {
                                 Assertions.assertThat(response.get(1).getName())
                                         .isEqualTo(u2.getName());
                                 Assertions.assertThat(response.get(1).getMeasure())
@@ -158,7 +158,7 @@ public class RetrieveUnfcccVariablesGivenIdsIT {
                                 Assertions.assertThat(response.get(1).getUnitId())
                                         .isEqualTo(u2.getUnitId());
                                 Assertions.assertThat(response.get(1).getVersion())
-                                        .isEqualTo(u2.getVersion() + 1);
+                                        .isEqualTo(u2.getVersion());
                             }
                         }
                 );

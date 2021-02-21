@@ -34,6 +34,7 @@ echo
 # ----------------------------------------------------------------------------------
 EMISSION_TYPES=1
 FLUX_TYPES=1
+REPORTING_TABLES=1
 UNFCCC_VARIABLES=1
 UNIT_CATEGORIES=1
 UNITS=1
@@ -80,6 +81,13 @@ fi
 # -------------------------------------------------------------------------------------
 if [ $EMISSION_TYPES -eq 1 ]; then
 	bash $PROJECT_DIR/services/emission-types/build.sh
+fi
+
+
+# Reporting Tables
+# -------------------------------------------------------------------------------------
+if [ $REPORTING_TABLES -eq 1 ]; then
+	bash $PROJECT_DIR/services/reporting-tables/build.sh
 fi
 
 

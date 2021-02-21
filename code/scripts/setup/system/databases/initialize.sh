@@ -67,6 +67,7 @@ fi
 # Single databases
 EMISSION_TYPES=1
 FLUX_TYPES=1
+REPORTING_TABLES=1
 UNFCCC_VARIABLES=1
 UNIT_CATEGORIES=1
 UNITS=1
@@ -193,6 +194,30 @@ if [ $EMISSION_TYPES -eq 1 ]; then
   # Load the emission type's database data
   psql -d "emission_types" -1 -c "\copy emission_type(name,abbreviation,description,version) from \
           '$PROJECT_DIR/data/emission_types.csv' DELIMITER ',' CSV HEADER"
+
+fi
+
+
+# Reporting Tables
+# -------------------------------------------------------------------------------------
+if [ $REPORTING_TABLES -eq 1 ]; then
+
+  echo
+  echo "Setting up Reporting Tables Database"
+  echo
+
+  # drop the reporting tables database if it exists
+  psql -c "DROP DATABASE IF EXISTS reporting_tables"
+
+  # create a new reporting tables database
+  psql -c "CREATE DATABASE reporting_tables"
+
+  # Create the emission type's database objects
+  psql -d "reporting_tables" -1 -f "$PROJECT_DIR/services/reporting-tables/src/main/resources/reporting_tables.sql"
+
+  # Load the emission type's database data
+  psql -d "reporting_tables" -1 -c "\copy emission_type(name,abbreviation,description,version) from \
+          '$PROJECT_DIR/data/reporting_tables.csv' DELIMITER ',' CSV HEADER"
 
 fi
 

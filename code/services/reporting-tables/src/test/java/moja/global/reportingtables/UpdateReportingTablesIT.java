@@ -5,10 +5,10 @@
  * If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package moja.global.unitcategories;
+package moja.global.reportingtables;
 
-import moja.global.unitcategories.models.UnitCategory;
-import moja.global.unitcategories.util.builders.UnitCategoryBuilder;
+import moja.global.reportingtables.models.ReportingTable;
+import moja.global.reportingtables.util.builders.ReportingTableBuilder;
 import org.assertj.core.api.Assertions;
 import org.junit.AfterClass;
 import org.junit.jupiter.api.Test;
@@ -19,25 +19,26 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import reactor.core.publisher.Mono;
 
 /**
- * @since 1.0
  * @author Kwaje Anthony <tony@miles.co.ke>
  * @version 1.0
+ * @since 1.0
  */
 @Testcontainers
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
-@ContextConfiguration(initializers = RetrieveUnitCategoriesGivenIdsIT.Initializer.class)
-public class RetrieveUnitCategoriesGivenIdsIT {
+@ContextConfiguration(initializers = UpdateReportingTablesIT.Initializer.class)
+public class UpdateReportingTablesIT {
 
     @Autowired
     WebTestClient webTestClient;
-
 
     static final PostgreSQLContainer postgreSQLContainer;
 
@@ -74,51 +75,90 @@ public class RetrieveUnitCategoriesGivenIdsIT {
     }
 
     @Test
-    public void Given_UnitCategoryRecordsExist_When_GetAllWithIdsFilter_Then_OnlyUnitCategoryRecordsWithTheSpecifiedIdsWillBeReturned() {
+    public void Given_ModifiedDetailsOfExistingRecords_When_PutAll_Then_TheRecordsWillBeUpdatedAndReturnedWithTheirVersionsIncrementedByOne() {
 
-        UnitCategory u1 = new UnitCategoryBuilder().id(1L).name("Area").version(1).build();
-        UnitCategory u2 = new UnitCategoryBuilder().id(2L).name("Weight").version(1).build();
+        ReportingTable u1 =
+                new ReportingTableBuilder()
+                        .id(1L)
+                        .number("TABLE 4")
+                        .name("TABLE 4 NAME")
+                        .description("TABLE 4 DESCRIPTION")
+                        .version(1)
+                        .build();
 
+        ReportingTable u2 =
+                new ReportingTableBuilder()
+                        .id(2L)
+                        .number("TABLE 4.1")
+                        .name("TABLE 4.1 NAME")
+                        .description("TABLE 4.1 DESCRIPTION")
+                        .version(1)
+                        .build();
+
+
+        ReportingTable[] reportingTables = new ReportingTable[]{u1, u2};
 
         webTestClient
-                .get()
-                .uri(uriBuilder ->
-                        uriBuilder
-                                .path("/api/v1/unit_categories/all")
-                                .queryParam("ids", "{id1}", "{id2}")
-                                .build(u2.getId().toString(), u1.getId().toString()))
+                .put()
+                .uri("/api/v1/reporting_tables/all")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(reportingTables), ReportingTable.class)
                 .exchange()
-                .expectStatus().isOk()
-                .expectBodyList(UnitCategory.class)
+                .expectStatus()
+                .isOk()
+                .expectBodyList(ReportingTable.class)
                 .value(response -> {
 
-                            Assertions.assertThat(response.get(0).getId() == 1L || response.get(0).getId() == 2L).isTrue();
+                            Assertions.assertThat(response.get(0).getId() == 1L ||
+                                    response.get(0).getId() == 2L)
+                                    .isTrue();
 
                             if (response.get(0).getId() == 1L) {
+                                Assertions.assertThat(response.get(0).getNumber())
+                                        .isEqualTo(u1.getNumber());
                                 Assertions.assertThat(response.get(0).getName())
                                         .isEqualTo(u1.getName());
+                                Assertions.assertThat(response.get(0).getDescription())
+                                        .isEqualTo(u1.getDescription());
                                 Assertions.assertThat(response.get(0).getVersion())
-                                        .isEqualTo(u1.getVersion());
+                                        .isEqualTo(u1.getVersion() + 1);
                             } else if (response.get(0).getId() == 2L) {
+                                Assertions.assertThat(response.get(0).getNumber())
+                                        .isEqualTo(u2.getNumber());
                                 Assertions.assertThat(response.get(0).getName())
                                         .isEqualTo(u2.getName());
+                                Assertions.assertThat(response.get(0).getDescription())
+                                        .isEqualTo(u2.getDescription());
                                 Assertions.assertThat(response.get(0).getVersion())
-                                        .isEqualTo(u2.getVersion());
+                                        .isEqualTo(u2.getVersion() + 1);
                             }
 
-                            Assertions.assertThat(response.get(1).getId() == 1L || response.get(1).getId() == 2L).isTrue();
+
+                            Assertions.assertThat(response.get(1).getId() == 1L ||
+                                    response.get(1).getId() == 2L)
+                                    .isTrue();
 
                             if (response.get(1).getId() == 1L) {
+                                Assertions.assertThat(response.get(1).getNumber())
+                                        .isEqualTo(u1.getNumber());
                                 Assertions.assertThat(response.get(1).getName())
                                         .isEqualTo(u1.getName());
+                                Assertions.assertThat(response.get(1).getDescription())
+                                        .isEqualTo(u1.getDescription());
                                 Assertions.assertThat(response.get(1).getVersion())
                                         .isEqualTo(u1.getVersion() + 1);
                             } else if (response.get(1).getId() == 2L) {
+                                Assertions.assertThat(response.get(1).getNumber())
+                                        .isEqualTo(u2.getNumber());
                                 Assertions.assertThat(response.get(1).getName())
                                         .isEqualTo(u2.getName());
+                                Assertions.assertThat(response.get(1).getDescription())
+                                        .isEqualTo(u2.getDescription());
                                 Assertions.assertThat(response.get(1).getVersion())
-                                        .isEqualTo(u2.getVersion());
+                                        .isEqualTo(u2.getVersion() + 1);
                             }
+
+
                         }
                 );
     }

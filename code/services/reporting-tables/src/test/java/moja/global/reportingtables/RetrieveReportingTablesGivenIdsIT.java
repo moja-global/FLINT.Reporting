@@ -5,10 +5,10 @@
  * If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package moja.global.unitcategories;
+package moja.global.reportingtables;
 
-import moja.global.unitcategories.models.UnitCategory;
-import moja.global.unitcategories.util.builders.UnitCategoryBuilder;
+import moja.global.reportingtables.models.ReportingTable;
+import moja.global.reportingtables.util.builders.ReportingTableBuilder;
 import org.assertj.core.api.Assertions;
 import org.junit.AfterClass;
 import org.junit.jupiter.api.Test;
@@ -25,15 +25,15 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 /**
- * @since 1.0
  * @author Kwaje Anthony <tony@miles.co.ke>
  * @version 1.0
+ * @since 1.0
  */
 @Testcontainers
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
-@ContextConfiguration(initializers = RetrieveUnitCategoriesGivenIdsIT.Initializer.class)
-public class RetrieveUnitCategoriesGivenIdsIT {
+@ContextConfiguration(initializers = RetrieveReportingTablesGivenIdsIT.Initializer.class)
+public class RetrieveReportingTablesGivenIdsIT {
 
     @Autowired
     WebTestClient webTestClient;
@@ -74,48 +74,83 @@ public class RetrieveUnitCategoriesGivenIdsIT {
     }
 
     @Test
-    public void Given_UnitCategoryRecordsExist_When_GetAllWithIdsFilter_Then_OnlyUnitCategoryRecordsWithTheSpecifiedIdsWillBeReturned() {
+    public void Given_ReportingTableRecordsExist_When_GetAllWithIdsFilter_Then_OnlyReportingTableRecordsWithTheSpecifiedIdsWillBeReturned() {
 
-        UnitCategory u1 = new UnitCategoryBuilder().id(1L).name("Area").version(1).build();
-        UnitCategory u2 = new UnitCategoryBuilder().id(2L).name("Weight").version(1).build();
+        ReportingTable u1 =
+                new ReportingTableBuilder()
+                        .id(1L)
+                        .number("Table 4")
+                        .name("Table 4 Name")
+                        .description("Table 4 Description")
+                        .version(1)
+                        .build();
+
+        ReportingTable u2 =
+                new ReportingTableBuilder()
+                        .id(2L)
+                        .number("Table 4.1")
+                        .name("Table 4.1 Name")
+                        .description("Table 4.1 Description")
+                        .version(1)
+                        .build();
 
 
         webTestClient
                 .get()
                 .uri(uriBuilder ->
                         uriBuilder
-                                .path("/api/v1/unit_categories/all")
+                                .path("/api/v1/reporting_tables/all")
                                 .queryParam("ids", "{id1}", "{id2}")
                                 .build(u2.getId().toString(), u1.getId().toString()))
                 .exchange()
                 .expectStatus().isOk()
-                .expectBodyList(UnitCategory.class)
+                .expectBodyList(ReportingTable.class)
                 .value(response -> {
 
-                            Assertions.assertThat(response.get(0).getId() == 1L || response.get(0).getId() == 2L).isTrue();
+                            Assertions.assertThat(response.get(0).getId() == 1L
+                                    || response.get(0).getId() == 2L)
+                                    .isTrue();
 
                             if (response.get(0).getId() == 1L) {
+                                Assertions.assertThat(response.get(0).getNumber())
+                                        .isEqualTo(u1.getNumber());
                                 Assertions.assertThat(response.get(0).getName())
                                         .isEqualTo(u1.getName());
+                                Assertions.assertThat(response.get(0).getDescription())
+                                        .isEqualTo(u1.getDescription());
                                 Assertions.assertThat(response.get(0).getVersion())
                                         .isEqualTo(u1.getVersion());
                             } else if (response.get(0).getId() == 2L) {
+                                Assertions.assertThat(response.get(0).getNumber())
+                                        .isEqualTo(u2.getNumber());
                                 Assertions.assertThat(response.get(0).getName())
                                         .isEqualTo(u2.getName());
+                                Assertions.assertThat(response.get(0).getDescription())
+                                        .isEqualTo(u2.getDescription());
                                 Assertions.assertThat(response.get(0).getVersion())
                                         .isEqualTo(u2.getVersion());
                             }
 
-                            Assertions.assertThat(response.get(1).getId() == 1L || response.get(1).getId() == 2L).isTrue();
+                            Assertions.assertThat(response.get(1).getId() == 1L ||
+                                    response.get(1).getId() == 2L)
+                                    .isTrue();
 
                             if (response.get(1).getId() == 1L) {
+                                Assertions.assertThat(response.get(1).getNumber())
+                                        .isEqualTo(u1.getNumber());
                                 Assertions.assertThat(response.get(1).getName())
                                         .isEqualTo(u1.getName());
+                                Assertions.assertThat(response.get(1).getDescription())
+                                        .isEqualTo(u1.getDescription());
                                 Assertions.assertThat(response.get(1).getVersion())
-                                        .isEqualTo(u1.getVersion() + 1);
+                                        .isEqualTo(u1.getVersion());
                             } else if (response.get(1).getId() == 2L) {
+                                Assertions.assertThat(response.get(1).getNumber())
+                                        .isEqualTo(u2.getNumber());
                                 Assertions.assertThat(response.get(1).getName())
                                         .isEqualTo(u2.getName());
+                                Assertions.assertThat(response.get(1).getDescription())
+                                        .isEqualTo(u2.getDescription());
                                 Assertions.assertThat(response.get(1).getVersion())
                                         .isEqualTo(u2.getVersion());
                             }

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.microservice.deployment.name }}
+  labels:
+    app: {{ .Values.microservice.application.name }}
+spec:
+  replicas: {{ .Values.microservice.application.replicas}}
+  selector:
+    matchLabels:
+      app: {{ .Values.microservice.application.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.microservice.application.name }}
+        version: {{ .Values.microservice.application.version }}
+    spec:
+      containers:
+        -
+          name: {{ .Values.microservice.application.name }}
+          image: "{{ .Values.microservice.application.image.id }}:{{ .Values.microservice.application.image.tag }}"
+          imagePullPolicy: {{ default "" .Values.microservice.application.image.pull.policy | quote }}
+          env:
+            -
+              name: POSTGRES_HOST
+              value: {{ .Values.microservice.application.environment.postgres.host}}
+      imagePullSecrets:
+        -
+          name: {{.Values.microservice.application.image.pull.secret}}
+
