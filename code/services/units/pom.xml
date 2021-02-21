@@ -16,39 +16,39 @@
             <name>Mozilla Public License, Version 2.0</name>
             <url>http://www.mozilla.org/MPL/2.0/index.txt</url>
         </license>
-    </licenses>  
-    
+    </licenses>
+
     <organization>
-        <name>The Second Mile</name>
-        <url>http://www.miles.co.ke/</url>
+        <name>Moja Global</name>
+        <url>https://moja.global//</url>
     </organization>
-     
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.4.2</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
-    
+
     <properties>
         <spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
-        <docker.image.prefix>cloud.miles.co.ke:5043</docker.image.prefix>
-        <dockerfile-maven-plugin.version>1.4.6</dockerfile-maven-plugin.version>        
+        <docker.image.prefix>reporter.miles.co.ke:5043</docker.image.prefix>
+        <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
         <davidmoten-rxjava2-jdbc.version>0.2.4</davidmoten-rxjava2-jdbc.version>
         <davidmoten-guava-mini-version>0.1.2</davidmoten-guava-mini-version>
         <java.version>11</java.version>
         <testcontainers.version>1.15.1</testcontainers.version>
-    </properties>    
-    
+    </properties>
+
     <dependencies>
-        
+
         <!-- spring framework-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
 
-        
+
         <!-- data -->
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -57,13 +57,13 @@
         <dependency>
             <groupId>io.reactivex.rxjava2</groupId>
             <artifactId>rxjava</artifactId>
-        </dependency>         
+        </dependency>
         <dependency>
             <groupId>com.github.davidmoten</groupId>
             <artifactId>rxjava2-jdbc</artifactId>
-            <version>${davidmoten-rxjava2-jdbc.version}</version> 
+            <version>${davidmoten-rxjava2-jdbc.version}</version>
         </dependency>
-        
+
         <!-- api -->
         <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-webflux-ui -->
         <dependency>
@@ -78,31 +78,31 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>        
+        </dependency>
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-test</artifactId>
             <scope>test</scope>
-        </dependency>   
+        </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <scope>test</scope>
             <type>jar</type>
-        </dependency>  
-        <dependency>
-          <groupId>org.testcontainers</groupId>
-          <artifactId>junit-jupiter</artifactId>
-          <version>${testcontainers.version}</version>
-          <scope>test</scope>
         </dependency>
         <dependency>
-          <groupId>org.testcontainers</groupId>
-          <artifactId>postgresql</artifactId>
-          <version>${testcontainers.version}</version>
-          <scope>test</scope>
-        </dependency>                   
-        
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- utilities-->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -124,8 +124,8 @@
             <scope>runtime</scope>
         </dependency>
 
-    </dependencies> 
-    
+    </dependencies>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -136,8 +136,8 @@
                 <scope>import</scope>
             </dependency>
         </dependencies>
-    </dependencyManagement>     
-    
+    </dependencyManagement>
+
     <build>
         <plugins>
             <plugin>
@@ -152,7 +152,7 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>unit-tests</id>
+                        <id>fluxType-tests</id>
                         <phase>test</phase>
                         <goals>
                             <goal>test</goal>
@@ -215,12 +215,12 @@
                             <tag>${project.version}</tag>
                         </configuration>
                     </execution>
-                </executions>                 
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <executions>                   
+                <executions>
                     <execution>
                         <id>unpack</id>
                         <phase>package</phase>
@@ -241,5 +241,5 @@
             </plugin>
         </plugins>
     </build>
-            
+
 </project>
