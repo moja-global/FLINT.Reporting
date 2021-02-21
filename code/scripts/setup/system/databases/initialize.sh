@@ -106,7 +106,7 @@ if [ $UNIT_CATEGORIES -eq 1 ]; then
   psql -d "unit_categories" -1 -f "$PROJECT_DIR/services/unit-categories/src/main/resources/unit_categories.sql"
 
   # Load the unit categories' database data
-  psql -d "units" -1 -c "\copy unit_category(name,version) from \
+  psql -d "unit_categories" -1 -c "\copy unit_category(name,version) from \
           '$PROJECT_DIR/data/unit_categories.csv' DELIMITER ',' CSV HEADER"
 
 fi
