@@ -156,7 +156,7 @@ if [ $UNFCCC_VARIABLES -eq 1 ]; then
   psql -d "unfccc_variables" -1 -f "$PROJECT_DIR/services/unfccc-variables/src/main/resources/unfccc_variables.sql"
 
   # Load the unfccc variable's database data
-  psql -d "unfccc_variables" -1 -c "\copy unfccc_variable(name,abbreviation,description,version) from \
+  psql -d "unfccc_variables" -1 -c "\copy unfccc_variable(name, measure, abbreviation, unit_id, version) from \
           '$PROJECT_DIR/data/unfccc_variables.csv' DELIMITER ',' CSV HEADER"
 
 fi
