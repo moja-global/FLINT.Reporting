@@ -79,7 +79,7 @@ public class CreateFluxTypesIT {
     public void Given_FluxTypeDetailsList_When_PostAll_Then_FluxTypeRecordsWillBeCreatedAndReturned() {
 
         FluxType u1 = new FluxTypeBuilder().name("Grazing").description("Grazing Flux Type Description").build();
-        FluxType u2 = new FluxTypeBuilder().name("Plough").description("Plough Flux Type Description").build();
+        FluxType u2 = new FluxTypeBuilder().name("Pest").description("Pest Flux Type Description").build();
         FluxType[] fluxTypes = new FluxType[]{u1, u2};
 
         webTestClient
@@ -92,27 +92,27 @@ public class CreateFluxTypesIT {
                 .expectBodyList(FluxType.class)
                 .value(response -> {
 
-                    Assertions.assertThat(response.get(0).getId() == 4L || response.get(0).getId() == 5L);
-                    Assertions.assertThat(response.get(0).getName().equals("Grazing") || response.get(0).getName().equals("Plough"));
+                    Assertions.assertThat(response.get(0).getId() == 4L || response.get(0).getId() == 5L).isTrue();
+                    Assertions.assertThat(response.get(0).getName().equals("Grazing") || response.get(0).getName().equals("Pest"));
                     Assertions.assertThat(response.get(0).getVersion() == 1);
 
                     if (response.get(0).getName().equals("Grazing")) {
                         Assertions.assertThat(response.get(0).getDescription())
                                 .isEqualTo(u1.getDescription());
-                    } else if (response.get(0).getName().equals("Plough")) {
+                    } else if (response.get(0).getName().equals("Pest")) {
                         Assertions.assertThat(response.get(0).getDescription())
                                 .isEqualTo(u2.getDescription());
                     }
 
-                    Assertions.assertThat(response.get(1).getId() == 4L || response.get(1).getId() == 5L);
-                    Assertions.assertThat(response.get(1).getName().equals("Grazing") || response.get(1).getName().equals("Plough"));
+                    Assertions.assertThat(response.get(1).getId() == 4L || response.get(1).getId() == 5L).isTrue();
+                    Assertions.assertThat(response.get(1).getName().equals("Grazing") || response.get(1).getName().equals("Pest"));
                     Assertions.assertThat(response.get(1).getVersion() == 1);
 
 
                     if (response.get(1).getName().equals("Grazing")) {
                         Assertions.assertThat(response.get(1).getDescription())
                                 .isEqualTo(u1.getDescription());
-                    }  else if (response.get(1).getName().equals("Plough")) {
+                    }  else if (response.get(1).getName().equals("Pest")) {
                         Assertions.assertThat(response.get(1).getDescription())
                                 .isEqualTo(u2.getDescription());
                     }

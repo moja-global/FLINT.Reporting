@@ -35,12 +35,20 @@ echo
 EMISSION_TYPES=1
 FLUX_TYPES=1
 UNFCCC_VARIABLES=1
+UNIT_CATEGORIES=1
 UNITS=1
 
 
 # -------------------------------------------------------------------------------------
 # UTIL
 # -------------------------------------------------------------------------------------
+
+
+# Unit Categories
+# -------------------------------------------------------------------------------------
+if [ $UNIT_CATEGORIES -eq 1 ]; then
+	bash $PROJECT_DIR/services/unit-categories/build.sh
+fi
 
 
 # Units

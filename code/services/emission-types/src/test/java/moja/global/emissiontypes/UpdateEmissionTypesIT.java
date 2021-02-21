@@ -108,7 +108,7 @@ public class UpdateEmissionTypesIT {
                 .expectBodyList(EmissionType.class)
                 .value(response -> {
 
-                            Assertions.assertThat(response.get(0).getId() == 1L || response.get(0).getId() == 2L);
+                            Assertions.assertThat(response.get(0).getId() == 1L || response.get(0).getId() == 2L).isTrue();
 
                             if (response.get(0).getId() == 1L) {
                                 Assertions.assertThat(response.get(0).getName())
@@ -127,7 +127,7 @@ public class UpdateEmissionTypesIT {
                             }
 
 
-                            Assertions.assertThat(response.get(1).getId() == 1L || response.get(1).getId() == 2L);
+                            Assertions.assertThat(response.get(1).getId() == 1L || response.get(1).getId() == 2L).isTrue();
 
                             if (response.get(1).getId() == 1L) {
                                 Assertions.assertThat(response.get(1).getName())

@@ -68,6 +68,7 @@ fi
 EMISSION_TYPES=1
 FLUX_TYPES=1
 UNFCCC_VARIABLES=1
+UNIT_CATEGORIES=1
 UNITS=1
 
 
@@ -85,6 +86,30 @@ echo
 # -------------------------------------------------------------------------------------
 # UTIL
 # -------------------------------------------------------------------------------------
+
+
+# Unit Categories
+# -------------------------------------------------------------------------------------
+if [ $UNIT_CATEGORIES -eq 1 ]; then
+
+  echo
+  echo "Setting up Unit Categories Database"
+  echo
+
+  # drop the unit categories database if it exists
+  psql -c "DROP DATABASE IF EXISTS unit_categories"
+
+  # create a new unit categories database
+  psql -c "CREATE DATABASE unit_categories"
+
+  # Create the unit categories' database objects
+  psql -d "unit_categories" -1 -f "$PROJECT_DIR/services/unit-categories/src/main/resources/unit_categories.sql"
+
+  # Load the unit categories' database data
+  psql -d "units" -1 -c "\copy unit_category(name,version) from \
+          '$PROJECT_DIR/data/unit_categories.csv' DELIMITER ',' CSV HEADER"
+
+fi
 
 
 # Units

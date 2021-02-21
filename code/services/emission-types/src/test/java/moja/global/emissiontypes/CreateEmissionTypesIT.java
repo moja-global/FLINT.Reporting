@@ -104,7 +104,7 @@ public class CreateEmissionTypesIT {
                 .expectBodyList(EmissionType.class)
                 .value(response -> {
 
-                    Assertions.assertThat(response.get(0).getId() == 4L || response.get(0).getId() == 5L);
+                    Assertions.assertThat(response.get(0).getId() == 4L || response.get(0).getId() == 5L).isTrue();
                     Assertions.assertThat(response.get(0).getName().equals("Hydrofluorocarbons") ||
                             response.get(0).getName().equals("Perfluorocarbons"));
                     Assertions.assertThat(response.get(0).getVersion() == 1);
@@ -121,9 +121,7 @@ public class CreateEmissionTypesIT {
                                 .isEqualTo(u2.getDescription());
                     }
 
-                    Assertions.assertThat(
-                            response.get(1).getId() == 4L ||
-                                    response.get(1).getId() == 5L);
+                    Assertions.assertThat(response.get(1).getId() == 4L || response.get(1).getId() == 5L).isTrue();
 
                     Assertions.assertThat(
                             response.get(1).getName().equals("Hydrofluorocarbons") ||

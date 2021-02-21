@@ -106,7 +106,7 @@ public class CreateUnfcccVariablesIT {
                 .expectBodyList(UnfcccVariable.class)
                 .value(response -> {
 
-                    Assertions.assertThat(response.get(0).getId() == 4L || response.get(0).getId() == 5L);
+                    Assertions.assertThat(response.get(0).getId() == 4L || response.get(0).getId() == 5L).isTrue();
                     Assertions.assertThat(response.get(0).getName().equals("Net carbon stock change in organic soils") || response.get(0).getName().equals("Net carbon stock change in mineral soils"));
                     Assertions.assertThat(response.get(0).getVersion() == 1);
 
@@ -126,7 +126,7 @@ public class CreateUnfcccVariablesIT {
                                 .isEqualTo(u2.getAbbreviation());
                     }
 
-                    Assertions.assertThat(response.get(1).getId() == 4L || response.get(1).getId() == 5L);
+                    Assertions.assertThat(response.get(1).getId() == 4L || response.get(1).getId() == 5L).isTrue();
                     Assertions.assertThat(response.get(1).getName().equals("Net carbon stock change in organic soils") || response.get(1).getName().equals("Net carbon stock change in mineral soils"));
                     Assertions.assertThat(response.get(1).getVersion() == 1);
 
