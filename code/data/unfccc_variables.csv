@@ -1,0 +1,12 @@
+"name","measure","abbreviation","unit_id","version"
+"Area","Area",,3,1
+"Net carbon stock change in living biomass","Carbon","C",6,1
+"Net carbon stock change in dead organic matter","Carbon","C",6,1
+"Net carbon stock change in mineral soils","Carbon","C",6,1
+"Net carbon stock change in organic soils","Carbon","C",6,1
+"Net emissions/removals","Carbon Dioxide","CO2",6,1
+"Area Burned","Area",,2,1
+"Mass Burned","Dead Matter","DM",4,1
+"Carbon Dioxide","Carbon Dioxide","CO2",6,1
+"Methane","Methane","CH4",6,1
+"Nitrous Oxide","Nitrous Oxide","N2O",6,1

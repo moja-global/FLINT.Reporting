@@ -65,8 +65,9 @@ fi
 # ----------------------------------------------------------------------------------
 
 # Single databases
-FLUX_TYPES=1
 EMISSION_TYPES=1
+FLUX_TYPES=1
+UNFCCC_VARIABLES=1
 
 
 
@@ -80,7 +81,7 @@ echo "--------------------------------------------------------------------------
 echo
 
 # -------------------------------------------------------------------------------------
-# FLINT
+# FLINT OUTPUT RELATED
 # -------------------------------------------------------------------------------------
 
 # Flux Types
@@ -107,6 +108,12 @@ if [ $FLUX_TYPES -eq 1 ]; then
 fi
 
 
+
+# -------------------------------------------------------------------------------------
+# REPORTING RELATED
+# -------------------------------------------------------------------------------------
+
+
 # Emission Types
 # -------------------------------------------------------------------------------------
 if [ $EMISSION_TYPES -eq 1 ]; then
@@ -127,6 +134,30 @@ if [ $EMISSION_TYPES -eq 1 ]; then
   # Load the emission type's database data
   psql -d "emission_types" -1 -c "\copy emission_type(name,abbreviation,description,version) from \
           '$PROJECT_DIR/data/emission_types.csv' DELIMITER ',' CSV HEADER"
+
+fi
+
+
+# UNFCCC Variables
+# -------------------------------------------------------------------------------------
+if [ $UNFCCC_VARIABLES -eq 1 ]; then
+
+  echo
+  echo "Setting up UNFCCC Variables Database"
+  echo
+
+  # drop the unfccc variables database if it exists
+  psql -c "DROP DATABASE IF EXISTS unfccc_variables"
+
+  # create a new unfccc variables database
+  psql -c "CREATE DATABASE unfccc_variables"
+
+  # Create the unfccc variable's database objects
+  psql -d "unfccc_variables" -1 -f "$PROJECT_DIR/services/unfccc-variables/src/main/resources/unfccc_variables.sql"
+
+  # Load the unfccc variable's database data
+  psql -d "unfccc_variables" -1 -c "\copy unfccc_variable(name,abbreviation,description,version) from \
+          '$PROJECT_DIR/data/unfccc_variables.csv' DELIMITER ',' CSV HEADER"
 
 fi
 

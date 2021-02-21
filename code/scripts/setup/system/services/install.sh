@@ -32,12 +32,13 @@ echo
 # Use the flags 1 and 0 below to configure the services that you want to install
 # 1 = on, 0 = off
 # ----------------------------------------------------------------------------------
-FLUX_TYPES=1
 EMISSION_TYPES=1
+FLUX_TYPES=1
+UNFCCC_VARIABLES=1
 
 
 # -------------------------------------------------------------------------------------
-# FLINT BASED
+# FLINT OUTPUT RELATED
 # -------------------------------------------------------------------------------------
 
 # Flux Types
@@ -47,10 +48,21 @@ if [ $FLUX_TYPES -eq 1 ]; then
 fi
 
 
+# -------------------------------------------------------------------------------------
+# REPORTING RELATED
+# -------------------------------------------------------------------------------------
+
 # Emission Types
 # -------------------------------------------------------------------------------------
 if [ $EMISSION_TYPES -eq 1 ]; then
 	bash $PROJECT_DIR/services/emission-types/install.sh
+fi
+
+
+# UNFCCC Variables
+# -------------------------------------------------------------------------------------
+if [ $UNFCCC_VARIABLES -eq 1 ]; then
+	bash $PROJECT_DIR/services/unfccc-variables/install.sh
 fi
 
 
