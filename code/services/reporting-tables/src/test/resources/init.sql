@@ -4,7 +4,7 @@
 CREATE TABLE reporting_table (
     id SERIAL UNIQUE PRIMARY KEY NOT NULL,
     number VARCHAR(50) NOT NULL,
-    name VARCHAR(255) NOT NULL,
+    name VARCHAR NOT NULL,
     description VARCHAR NULL,
     version INTEGER NOT NULL);
 
