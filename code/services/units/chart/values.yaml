@@ -1,0 +1,48 @@
+# Default values for the Helm Chart.
+# This is a YAML-formatted file.
+
+microservice:
+
+  # Ingress
+  ingress:
+    name: units
+    class: traefik 
+    rules:
+      host: reporter.miles.co.ke
+      http:
+        path: /api/v1/units
+        backend:
+          service:
+            name: units
+            port: 80
+
+  # Service
+  service:
+    name: units
+    port:
+      default: 80
+      target: 8080
+
+  # Deployment
+  deployment:
+    name: units 
+
+  # Application / Application Replicas
+  application:
+    name: units
+    version: 0.0.1
+    image: 
+      id: reporter.miles.co.ke:5043/units
+      tag: 0.0.1
+      pull:
+        policy: Always
+        secret: regcred
+    environment: 
+      postgres:
+        host: bitnami-postgres-postgresql
+    replicas: 1
+
+ 
+
+
+

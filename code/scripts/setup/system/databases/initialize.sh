@@ -80,9 +80,42 @@ echo "Initializing specific databases"
 echo "---------------------------------------------------------------------------------"
 echo
 
+
 # -------------------------------------------------------------------------------------
-# FLINT OUTPUT RELATED
+# UTIL
 # -------------------------------------------------------------------------------------
+
+
+# Units
+# -------------------------------------------------------------------------------------
+if [ $UNITS -eq 1 ]; then
+
+  echo
+  echo "Setting up Units Database"
+  echo
+
+  # drop the units database if it exists
+  psql -c "DROP DATABASE IF EXISTS units"
+
+  # create a new units database
+  psql -c "CREATE DATABASE units"
+
+  # Create the unit's database objects
+  psql -d "units" -1 -f "$PROJECT_DIR/services/units/src/main/resources/units.sql"
+
+  # Load the unit's database data
+  psql -d "units" -1 -c "\copy unit(unit_category_id, name, plural, symbol, scale_factor,version) from \
+          '$PROJECT_DIR/data/units.csv' DELIMITER ',' CSV HEADER"
+
+fi
+
+
+
+
+# -------------------------------------------------------------------------------------
+# FLINT OUTPUT
+# -------------------------------------------------------------------------------------
+
 
 # Flux Types
 # -------------------------------------------------------------------------------------
@@ -110,7 +143,7 @@ fi
 
 
 # -------------------------------------------------------------------------------------
-# REPORTING RELATED
+# REPORTING
 # -------------------------------------------------------------------------------------
 
 
