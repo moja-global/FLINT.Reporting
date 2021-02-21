@@ -1,0 +1,7 @@
+"unit_category_id","name","plural","symbol","scale_factor","version"
+1,"Square Metre","Square Metres","m2",1,1
+1,"Hectare","Hectares","ha",10000,1
+1,"Kilohectare","Kilohectares","kha",10000000,1
+2,"Kilogram","Kilograms","kg",1,1
+2,"Ton","Tons","t",1000,1
+2,"Kilotonne","Kilotonnes","kt",1000000,1
