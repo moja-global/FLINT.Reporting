@@ -1,4 +1,3 @@
-"Start Pool Id","Start Pool Name","End Pool Id","End Pool Name","Net carbon stock change in living biomass (kt C)","Net carbon stock change in dead organic matter (kt C)","Net carbon stock change in mineral soils (kt C)","Net carbon stock change in organic soils (kt C)","CH4 (controlled burning and wildfire) (kt CH4)","N2O (controlled burning and wildfire) (kg N2O)","Version"
 1,"AgDeadFineRoots",18,"SoilBioF","ignore","subtract","add","add","ignore","ignore",1
 1,"AgDeadFineRoots",19,"SoilBioS","ignore","subtract","add","add","ignore","ignore",1
 1,"AgDeadFineRoots",20,"SoilDPM","ignore","subtract","add","add","ignore","ignore",1

@@ -237,22 +237,22 @@ if [ $FLUXES_TO_UNFCCC_VARIABLES -eq 1 ]; then
 
     # Create Fluxes To UNFCC Variables Records
 
-    printf '%s to %s: %s for net carbon stock change in living biomass\n' "$f2" "$f4" "$netCarbonStockChangeInLivingBiomas"
+    printf '%s to %s: %s for net carbon stock change in living biomass\n' "$startPoolName" "$endPoolName" "$netCarbonStockChangeInLivingBiomas"
     psql -d "fluxes_to_unfccc_variables" -c "INSERT INTO flux_to_unfccc_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 2, $netCarbonStockChangeInLivingBiomas, $version)"
 
-    printf '%s to %s: %s for net carbon stock change in dead organic matter\n' "$f2" "$f4" "$netCarbonStockChangeInDOM"
+    printf '%s to %s: %s for net carbon stock change in dead organic matter\n' "$startPoolName" "$endPoolName" "$netCarbonStockChangeInDOM"
     psql -d "fluxes_to_unfccc_variables" -c "INSERT INTO flux_to_unfccc_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 3, $netCarbonStockChangeInDOM, $version)"
 
-    printf '%s to %s: %s for net carbon stock change in mineral soils\n' "$f2" "$f4" "$netCarbonStockChangeInMineralSoils"
+    printf '%s to %s: %s for net carbon stock change in mineral soils\n' "$startPoolName" "$endPoolName" "$netCarbonStockChangeInMineralSoils"
     psql -d "fluxes_to_unfccc_variables" -c "INSERT INTO flux_to_unfccc_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 4, $netCarbonStockChangeInMineralSoils, $version)"
 
-    printf '%s to %s: %s for net carbon stock change in organic soils\n' "$f2" "$f4" "$netCarbonStockChangeInOrganicSoils"
+    printf '%s to %s: %s for net carbon stock change in organic soils\n' "$startPoolName" "$endPoolName" "$netCarbonStockChangeInOrganicSoils"
     psql -d "fluxes_to_unfccc_variables" -c "INSERT INTO flux_to_unfccc_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 5, $netCarbonStockChangeInOrganicSoils, $version)"
 
-    printf '%s to %s: %s for nethane\n' "$f2" "$f4" "$ch4"
+    printf '%s to %s: %s for nethane\n' "$startPoolName" "$endPoolName" "$ch4"
     psql -d "fluxes_to_unfccc_variables" -c "INSERT INTO flux_to_unfccc_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 10, $ch4, $version)"
 
-    printf '%s to %s: %s for nitrous Oxide\n' "$f2" "$f4" "$n2o"
+    printf '%s to %s: %s for nitrous Oxide\n' "$startPoolName" "$endPoolName" "$n2o"
     psql -d "fluxes_to_unfccc_variables" -c "INSERT INTO flux_to_unfccc_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 11, $n2o, $version)"
 
   done <$PROJECT_DIR/data/fluxes_to_unfccc_variables.csv
