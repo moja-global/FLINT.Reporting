@@ -26,7 +26,7 @@ SCRIPTS_DIR="$(dirname "$SETUP_DIR")"
 PROJECT_DIR="$(dirname "$SCRIPTS_DIR")"
 
 echo
-echo "Building Microservices"
+echo "registering Microservices"
 echo
 
 # Use the flags 1 and 0 below to configure the services that you want to register
@@ -34,15 +34,32 @@ echo
 # ----------------------------------------------------------------------------------
 EMISSION_TYPES=1
 FLUX_TYPES=1
+FLUXES_TO_UNFCCC_VARIABLES=1
 REPORTING_TABLES=1
 UNFCCC_VARIABLES=1
 UNIT_CATEGORIES=1
 UNITS=1
 
 
+# Emission Types
 # -------------------------------------------------------------------------------------
-# UTIL
+if [ $EMISSION_TYPES -eq 1 ]; then
+	bash $PROJECT_DIR/services/emission-types/register.sh
+fi
+
+
+# Flux Types
 # -------------------------------------------------------------------------------------
+if [ $FLUX_TYPES -eq 1 ]; then
+	bash $PROJECT_DIR/services/flux-types/register.sh
+fi
+
+
+# Reporting Tables
+# -------------------------------------------------------------------------------------
+if [ $REPORTING_TABLES -eq 1 ]; then
+	bash $PROJECT_DIR/services/reporting-tables/register.sh
+fi
 
 
 # Unit Categories
@@ -60,41 +77,17 @@ fi
 
 
 
-# -------------------------------------------------------------------------------------
-# FLINT OUTPUT
-# -------------------------------------------------------------------------------------
-
-
-# Flux Types
-# -------------------------------------------------------------------------------------
-if [ $FLUX_TYPES -eq 1 ]; then
-	bash $PROJECT_DIR/services/flux-types/register.sh
-fi
-
-
-# -------------------------------------------------------------------------------------
-# REPORTING
-# -------------------------------------------------------------------------------------
-
-
-# Emission Types
-# -------------------------------------------------------------------------------------
-if [ $EMISSION_TYPES -eq 1 ]; then
-	bash $PROJECT_DIR/services/emission-types/register.sh
-fi
-
-
-# Reporting Tables
-# -------------------------------------------------------------------------------------
-if [ $REPORTING_TABLES -eq 1 ]; then
-	bash $PROJECT_DIR/services/reporting-tables/register.sh
-fi
-
-
 # UNFCCC Variables
 # -------------------------------------------------------------------------------------
 if [ $UNFCCC_VARIABLES -eq 1 ]; then
 	bash $PROJECT_DIR/services/unfccc-variables/register.sh
+fi
+
+
+# Fluxes To UNFCCC Variables
+# -------------------------------------------------------------------------------------
+if [ $FLUXES_TO_UNFCCC_VARIABLES -eq 1 ]; then
+	bash $PROJECT_DIR/services/fluxes-to-unfccc-variables/register.sh
 fi
 
 
