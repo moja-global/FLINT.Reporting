@@ -98,7 +98,7 @@ public class QueryWhereClauseBuilder {
                 query = new StringBuilder();
             }
 
-            query.append("rule LIKE %").append(queryParameters.getRule()).append("%");
+            query.append("rule LIKE '%").append(queryParameters.getRule()).append("%'");
 
         }
 
