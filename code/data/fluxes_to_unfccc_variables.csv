@@ -1,179 +1,179 @@
-1,"AgDeadFineRoots",18,"SoilBioF","ignore","subtract","add","add","ignore","ignore",1
-1,"AgDeadFineRoots",19,"SoilBioS","ignore","subtract","add","add","ignore","ignore",1
-1,"AgDeadFineRoots",20,"SoilDPM","ignore","subtract","add","add","ignore","ignore",1
-1,"AgDeadFineRoots",21,"SoilHUM","ignore","subtract","add","add","ignore","ignore",1
-1,"AgDeadFineRoots",22,"SoilIOM","ignore","subtract","add","add","ignore","ignore",1
-1,"AgDeadFineRoots",23,"SoilRPM","ignore","subtract","add","add","ignore","ignore",1
-2,"AgFineLitter",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
-2,"AgFineLitter",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","add",1
-2,"AgFineLitter",7,"AtmosphereCO2","ignore","subtract","ignore","ignore","ignore","ignore",1
-2,"AgFineLitter",18,"SoilBioF","ignore","subtract","add","add","ignore","ignore",1
-2,"AgFineLitter",19,"SoilBioS","ignore","subtract","add","add","ignore","ignore",1
-2,"AgFineLitter",20,"SoilDPM","ignore","subtract","add","add","ignore","ignore",1
-2,"AgFineLitter",21,"SoilHUM","ignore","subtract","add","add","ignore","ignore",1
-2,"AgFineLitter",22,"SoilIOM","ignore","subtract","add","add","ignore","ignore",1
-2,"AgFineLitter",23,"SoilRPM","ignore","subtract","add","add","ignore","ignore",1
-3,"AgOffSiteProduct",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","ignore","ignore",1
-3,"AgOffSiteProduct",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","ignore",1
-3,"AgOffSiteProduct",7,"AtmosphereCO2","ignore","ignore","ignore","ignore","ignore","ignore",1
-4,"AgStalkLitter",2,"AgFineLitter","ignore","ignore","ignore","ignore","ignore","ignore",1
-4,"AgStalkLitter",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
-4,"AgStalkLitter",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","add",1
-4,"AgStalkLitter",7,"AtmosphereCO2","ignore","subtract","ignore","ignore","ignore","ignore",1
-7,"AtmosphereCO2",9,"CropFineRoot","add","ignore","ignore","ignore","ignore","ignore",1
-7,"AtmosphereCO2",10,"CropGrain","add","ignore","ignore","ignore","ignore","ignore",1
-7,"AtmosphereCO2",11,"CropLeaf","add","ignore","ignore","ignore","ignore","ignore",1
-7,"AtmosphereCO2",12,"CropStalk","add","ignore","ignore","ignore","ignore","ignore",1
-7,"AtmosphereCO2",15,"GrassFineRoot","add","ignore","ignore","ignore","ignore","ignore",1
-7,"AtmosphereCO2",16,"GrassLeaf","add","ignore","ignore","ignore","ignore","ignore",1
-7,"AtmosphereCO2",24,"TreeBark","add","ignore","ignore","ignore","ignore","ignore",1
-7,"AtmosphereCO2",25,"TreeBranch","add","ignore","ignore","ignore","ignore","ignore",1
-7,"AtmosphereCO2",27,"TreeCoarseRoot","add","ignore","ignore","ignore","ignore","ignore",1
-7,"AtmosphereCO2",31,"TreeFineRoot","add","ignore","ignore","ignore","ignore","ignore",1
-7,"AtmosphereCO2",32,"TreeFoliage","add","ignore","ignore","ignore","ignore","ignore",1
-7,"AtmosphereCO2",34,"TreeStem","add","ignore","ignore","ignore","ignore","ignore",1
-8,"BioChar",20,"SoilDPM","ignore","ignore","add","add","ignore","ignore",1
-8,"BioChar",22,"SoilIOM","ignore","ignore","add","add","ignore","ignore",1
-8,"BioChar",23,"SoilRPM","ignore","ignore","add","add","ignore","ignore",1
-9,"CropFineRoot",1,"AgDeadFineRoots","subtract","add","ignore","ignore","ignore","ignore",1
-10,"CropGrain",2,"AgFineLitter","subtract","add","ignore","ignore","ignore","ignore",1
-10,"CropGrain",3,"AgOffSiteProduct","subtract","ignore","ignore","ignore","ignore","ignore",1
-10,"CropGrain",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
-10,"CropGrain",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","add",1
-10,"CropGrain",7,"AtmosphereCO2","subtract","ignore","ignore","ignore","ignore","ignore",1
-11,"CropLeaf",2,"AgFineLitter","subtract","add","ignore","ignore","ignore","ignore",1
-11,"CropLeaf",3,"AgOffSiteProduct","subtract","ignore","ignore","ignore","ignore","ignore",1
-11,"CropLeaf",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
-11,"CropLeaf",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","add",1
-11,"CropLeaf",7,"AtmosphereCO2","subtract","ignore","ignore","ignore","ignore","ignore",1
-12,"CropStalk",3,"AgOffSiteProduct","subtract","ignore","ignore","ignore","ignore","ignore",1
-12,"CropStalk",4,"AgStalkLitter","subtract","add","ignore","ignore","ignore","ignore",1
-12,"CropStalk",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
-12,"CropStalk",6,"Atmosphere N2O","subtract","ignore","ignore","ignore","ignore","add",1
-12,"CropStalk",7,"AtmosphereCO2","subtract","ignore","ignore","ignore","ignore","ignore",1
-13,"Deadwood",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
-13,"Deadwood",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","add",1
-13,"Deadwood",7,"AtmosphereCO2","ignore","subtract","ignore","ignore","ignore","ignore",1
-13,"Deadwood",14,"ForestOffSiteProduct","ignore","subtract","ignore","ignore","ignore","ignore",1
-13,"Deadwood",18,"SoilBioF","ignore","subtract","add","add","ignore","ignore",1
-13,"Deadwood",19,"SoilBioS","ignore","subtract","add","add","ignore","ignore",1
-13,"Deadwood",20,"SoilDPM","ignore","subtract","add","add","ignore","ignore",1
-13,"Deadwood",21,"SoilHUM","ignore","subtract","add","add","ignore","ignore",1
-13,"Deadwood",22,"SoilIOM","ignore","subtract","add","add","ignore","ignore",1
-13,"Deadwood",23,"SoilRPM","ignore","subtract","add","add","ignore","ignore",1
-13,"Deadwood",26,"TreeCoarseLitter","ignore","ignore","ignore","ignore","ignore","ignore",1
-13,"Deadwood",30,"TreeFineLitter","ignore","ignore","ignore","ignore","ignore","ignore",1
-14,"ForestOffSiteProduct",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","ignore","ignore",1
-14,"ForestOffSiteProduct",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","ignore",1
-14,"ForestOffSiteProduct",7,"AtmosphereCO2","ignore","ignore","ignore","ignore","ignore","ignore",1
-15,"GrassFineRoot",1,"AgDeadFineRoots","subtract","add","ignore","ignore","ignore","ignore",1
-15,"GrassFineRoot",3,"AgOffSiteProduct","subtract","ignore","ignore","ignore","ignore","ignore",1
-16,"GrassLeaf",2,"AgFineLitter","subtract","add","ignore","ignore","ignore","ignore",1
-16,"GrassLeaf",3,"AgOffSiteProduct","subtract","ignore","ignore","ignore","ignore","ignore",1
-16,"GrassLeaf",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
-16,"GrassLeaf",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","add",1
-16,"GrassLeaf",7,"AtmosphereCO2","subtract","ignore","ignore","ignore","ignore","ignore",1
-17,"Manure",18,"SoilBioF","ignore","ignore","add","add","ignore","ignore",1
-17,"Manure",19,"SoilBioS","ignore","ignore","add","add","ignore","ignore",1
-17,"Manure",20,"SoilDPM","ignore","ignore","add","add","ignore","ignore",1
-17,"Manure",21,"SoilHUM","ignore","ignore","add","add","ignore","ignore",1
-17,"Manure",22,"SoilIOM","ignore","ignore","add","add","ignore","ignore",1
-17,"Manure",23,"SoilRPM","ignore","ignore","add","add","ignore","ignore",1
-18,"SoilBioF",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","add",1
-18,"SoilBioF",7,"AtmosphereCO2","ignore","ignore","subtract","subtract","ignore","ignore",1
-19,"SoilBioS",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","add",1
-19,"SoilBioS",7,"AtmosphereCO2","ignore","ignore","subtract","subtract","ignore","ignore",1
-20,"SoilDPM",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","add",1
-20,"SoilDPM",7,"AtmosphereCO2","ignore","ignore","subtract","subtract","ignore","ignore",1
-21,"SoilHUM",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","add",1
-21,"SoilHUM",7,"AtmosphereCO2","ignore","ignore","subtract","subtract","ignore","ignore",1
-21,"SoilHUM",18,"SoilBioF","ignore","ignore","ignore","ignore","ignore","ignore",1
-21,"SoilHUM",19,"SoilBioS","ignore","ignore","ignore","ignore","ignore","ignore",1
-22,"SoilIOM",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","add",1
-22,"SoilIOM",7,"AtmosphereCO2","ignore","ignore","subtract","subtract","ignore","ignore",1
-23,"SoilRPM",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","add",1
-23,"SoilRPM",7,"AtmosphereCO2","ignore","ignore","subtract","subtract","ignore","ignore",1
-23,"SoilRPM",18,"SoilBioF","ignore","ignore","ignore","ignore","ignore","ignore",1
-23,"SoilRPM",19,"SoilBioS","ignore","ignore","ignore","ignore","ignore","ignore",1
-23,"SoilRPM",21,"SoilHUM","ignore","ignore","ignore","ignore","ignore","ignore",1
-24,"TreeBark",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
-24,"TreeBark",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","add",1
-24,"TreeBark",7,"AtmosphereCO2","subtract","ignore","ignore","ignore","ignore","ignore",1
-24,"TreeBark",14,"ForestOffSiteProduct","subtract","ignore","ignore","ignore","ignore","ignore",1
-24,"TreeBark",30,"TreeFineLitter","subtract","add","ignore","ignore","ignore","ignore",1
-25,"TreeBranch",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
-25,"TreeBranch",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","add",1
-25,"TreeBranch",7,"AtmosphereCO2","subtract","ignore","ignore","ignore","ignore","ignore",1
-25,"TreeBranch",13,"Deadwood","subtract","add","ignore","ignore","ignore","ignore",1
-25,"TreeBranch",14,"ForestOffSiteProduct","subtract","ignore","ignore","ignore","ignore","ignore",1
-25,"TreeBranch",26,"TreeCoarseLitter","subtract","add","ignore","ignore","ignore","ignore",1
-26,"TreeCoarseLitter",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
-26,"TreeCoarseLitter",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","add",1
-26,"TreeCoarseLitter",7,"AtmosphereCO2","ignore","subtract","ignore","ignore","ignore","ignore",1
-26,"TreeCoarseLitter",18,"SoilBioF","ignore","subtract","add","add","ignore","ignore",1
-26,"TreeCoarseLitter",19,"SoilBioS","ignore","subtract","add","add","ignore","ignore",1
-26,"TreeCoarseLitter",20,"SoilDPM","ignore","subtract","add","add","ignore","ignore",1
-26,"TreeCoarseLitter",21,"SoilHUM","ignore","subtract","add","add","ignore","ignore",1
-26,"TreeCoarseLitter",22,"SoilIOM","ignore","subtract","add","add","ignore","ignore",1
-26,"TreeCoarseLitter",23,"SoilRPM","ignore","subtract","add","add","ignore","ignore",1
-26,"TreeCoarseLitter",30,"TreeFineLitter","ignore","ignore","ignore","ignore","ignore","ignore",1
-27,"TreeCoarseRoot",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
-27,"TreeCoarseRoot",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","add",1
-27,"TreeCoarseRoot",7,"AtmosphereCO2","subtract","ignore","ignore","ignore","ignore","ignore",1
-27,"TreeCoarseRoot",28,"TreeDeadCoarseRoot","subtract","add","ignore","ignore","ignore","ignore",1
-28,"TreeDeadCoarseRoot",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
-28,"TreeDeadCoarseRoot",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","add",1
-28,"TreeDeadCoarseRoot",7,"AtmosphereCO2","ignore","subtract","ignore","ignore","ignore","ignore",1
-28,"TreeDeadCoarseRoot",18,"SoilBioF","ignore","subtract","add","add","ignore","ignore",1
-28,"TreeDeadCoarseRoot",19,"SoilBioS","ignore","subtract","add","add","ignore","ignore",1
-28,"TreeDeadCoarseRoot",20,"SoilDPM","ignore","subtract","add","add","ignore","ignore",1
-28,"TreeDeadCoarseRoot",21,"SoilHUM","ignore","subtract","add","add","ignore","ignore",1
-28,"TreeDeadCoarseRoot",22,"SoilIOM","ignore","subtract","add","add","ignore","ignore",1
-28,"TreeDeadCoarseRoot",23,"SoilRPM","ignore","subtract","add","add","ignore","ignore",1
-29,"TreeDeadFineRoot",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
-29,"TreeDeadFineRoot",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","add",1
-29,"TreeDeadFineRoot",7,"AtmosphereCO2","ignore","subtract","ignore","ignore","ignore","ignore",1
-29,"TreeDeadFineRoot",18,"SoilBioF","ignore","subtract","add","add","ignore","ignore",1
-29,"TreeDeadFineRoot",19,"SoilBioS","ignore","subtract","add","add","ignore","ignore",1
-29,"TreeDeadFineRoot",20,"SoilDPM","ignore","subtract","add","add","ignore","ignore",1
-29,"TreeDeadFineRoot",21,"SoilHUM","ignore","subtract","add","add","ignore","ignore",1
-29,"TreeDeadFineRoot",22,"SoilIOM","ignore","subtract","add","add","ignore","ignore",1
-29,"TreeDeadFineRoot",23,"SoilRPM","ignore","subtract","add","add","ignore","ignore",1
-30,"TreeFineLitter",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
-30,"TreeFineLitter",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","add",1
-30,"TreeFineLitter",7,"AtmosphereCO2","ignore","subtract","ignore","ignore","ignore","ignore",1
-30,"TreeFineLitter",18,"SoilBioF","ignore","subtract","add","add","ignore","ignore",1
-30,"TreeFineLitter",19,"SoilBioS","ignore","subtract","add","add","ignore","ignore",1
-30,"TreeFineLitter",20,"SoilDPM","ignore","subtract","add","add","ignore","ignore",1
-30,"TreeFineLitter",21,"SoilHUM","ignore","subtract","add","add","ignore","ignore",1
-30,"TreeFineLitter",22,"SoilIOM","ignore","subtract","add","add","ignore","ignore",1
-30,"TreeFineLitter",23,"SoilRPM","ignore","subtract","add","add","ignore","ignore",1
-31,"TreeFineRoot",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
-31,"TreeFineRoot",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","add",1
-31,"TreeFineRoot",7,"AtmosphereCO2","subtract","ignore","ignore","ignore","ignore","ignore",1
-31,"TreeFineRoot",29,"TreeDeadFineRoot","subtract","ignore","ignore","ignore","ignore","ignore",1
-32,"TreeFoliage",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
-32,"TreeFoliage",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","add",1
-32,"TreeFoliage",7,"AtmosphereCO2","subtract","ignore","ignore","ignore","ignore","ignore",1
-32,"TreeFoliage",14,"ForestOffSiteProduct","subtract","ignore","ignore","ignore","ignore","ignore",1
-32,"TreeFoliage",30,"TreeFineLitter","subtract","add","ignore","ignore","ignore","ignore",1
-33,"TreePlanting",24,"TreeBark","add","ignore","ignore","ignore","ignore","ignore",1
-33,"TreePlanting",25,"TreeBranch","add","ignore","ignore","ignore","ignore","ignore",1
-33,"TreePlanting",27,"TreeCoarseRoot","add","ignore","ignore","ignore","ignore","ignore",1
-33,"TreePlanting",31,"TreeFineRoot","add","ignore","ignore","ignore","ignore","ignore",1
-33,"TreePlanting",32,"TreeFoliage","add","ignore","ignore","ignore","ignore","ignore",1
-33,"TreePlanting",34,"TreeStem","add","ignore","ignore","ignore","ignore","ignore",1
-34,"TreeStem",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
-34,"TreeStem",6,"Atmosphere N2O","ignore","ignore","ignore","ignore","ignore","add",1
-34,"TreeStem",7,"AtmosphereCO2","subtract","ignore","ignore","ignore","ignore","ignore",1
-34,"TreeStem",13,"Deadwood","subtract","add","ignore","ignore","ignore","ignore",1
-34,"TreeStem",14,"ForestOffSiteProduct","subtract","ignore","ignore","ignore","ignore","ignore",1
-34,"TreeStem",26,"TreeCoarseLitter","subtract","add","ignore","ignore","ignore","ignore",1
-14,"ForestOffSiteProduct",14,"ForestOffSiteProduct","ignore","ignore","ignore","ignore","ignore","ignore",1
-3,"AgOffSiteProduct",3,"AgOffSiteProduct","ignore","ignore","ignore","ignore","ignore","ignore",1
-20,"SoilDPM",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
-23,"SoilRPM",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
-18,"SoilBioF",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
-19,"SoilBioS",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
-21,"SoilHUM",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
-22,"SoilIOM",5,"Atmosphere CH4","ignore","ignore","ignore","ignore","add","ignore",1
+1,'AgDeadFineRoots',18,'SoilBioF','ignore','subtract','add','add','ignore','ignore',1
+1,'AgDeadFineRoots',19,'SoilBioS','ignore','subtract','add','add','ignore','ignore',1
+1,'AgDeadFineRoots',20,'SoilDPM','ignore','subtract','add','add','ignore','ignore',1
+1,'AgDeadFineRoots',21,'SoilHUM','ignore','subtract','add','add','ignore','ignore',1
+1,'AgDeadFineRoots',22,'SoilIOM','ignore','subtract','add','add','ignore','ignore',1
+1,'AgDeadFineRoots',23,'SoilRPM','ignore','subtract','add','add','ignore','ignore',1
+2,'AgFineLitter',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
+2,'AgFineLitter',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','add',1
+2,'AgFineLitter',7,'AtmosphereCO2','ignore','subtract','ignore','ignore','ignore','ignore',1
+2,'AgFineLitter',18,'SoilBioF','ignore','subtract','add','add','ignore','ignore',1
+2,'AgFineLitter',19,'SoilBioS','ignore','subtract','add','add','ignore','ignore',1
+2,'AgFineLitter',20,'SoilDPM','ignore','subtract','add','add','ignore','ignore',1
+2,'AgFineLitter',21,'SoilHUM','ignore','subtract','add','add','ignore','ignore',1
+2,'AgFineLitter',22,'SoilIOM','ignore','subtract','add','add','ignore','ignore',1
+2,'AgFineLitter',23,'SoilRPM','ignore','subtract','add','add','ignore','ignore',1
+3,'AgOffSiteProduct',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','ignore','ignore',1
+3,'AgOffSiteProduct',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','ignore',1
+3,'AgOffSiteProduct',7,'AtmosphereCO2','ignore','ignore','ignore','ignore','ignore','ignore',1
+4,'AgStalkLitter',2,'AgFineLitter','ignore','ignore','ignore','ignore','ignore','ignore',1
+4,'AgStalkLitter',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
+4,'AgStalkLitter',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','add',1
+4,'AgStalkLitter',7,'AtmosphereCO2','ignore','subtract','ignore','ignore','ignore','ignore',1
+7,'AtmosphereCO2',9,'CropFineRoot','add','ignore','ignore','ignore','ignore','ignore',1
+7,'AtmosphereCO2',10,'CropGrain','add','ignore','ignore','ignore','ignore','ignore',1
+7,'AtmosphereCO2',11,'CropLeaf','add','ignore','ignore','ignore','ignore','ignore',1
+7,'AtmosphereCO2',12,'CropStalk','add','ignore','ignore','ignore','ignore','ignore',1
+7,'AtmosphereCO2',15,'GrassFineRoot','add','ignore','ignore','ignore','ignore','ignore',1
+7,'AtmosphereCO2',16,'GrassLeaf','add','ignore','ignore','ignore','ignore','ignore',1
+7,'AtmosphereCO2',24,'TreeBark','add','ignore','ignore','ignore','ignore','ignore',1
+7,'AtmosphereCO2',25,'TreeBranch','add','ignore','ignore','ignore','ignore','ignore',1
+7,'AtmosphereCO2',27,'TreeCoarseRoot','add','ignore','ignore','ignore','ignore','ignore',1
+7,'AtmosphereCO2',31,'TreeFineRoot','add','ignore','ignore','ignore','ignore','ignore',1
+7,'AtmosphereCO2',32,'TreeFoliage','add','ignore','ignore','ignore','ignore','ignore',1
+7,'AtmosphereCO2',34,'TreeStem','add','ignore','ignore','ignore','ignore','ignore',1
+8,'BioChar',20,'SoilDPM','ignore','ignore','add','add','ignore','ignore',1
+8,'BioChar',22,'SoilIOM','ignore','ignore','add','add','ignore','ignore',1
+8,'BioChar',23,'SoilRPM','ignore','ignore','add','add','ignore','ignore',1
+9,'CropFineRoot',1,'AgDeadFineRoots','subtract','add','ignore','ignore','ignore','ignore',1
+10,'CropGrain',2,'AgFineLitter','subtract','add','ignore','ignore','ignore','ignore',1
+10,'CropGrain',3,'AgOffSiteProduct','subtract','ignore','ignore','ignore','ignore','ignore',1
+10,'CropGrain',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
+10,'CropGrain',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','add',1
+10,'CropGrain',7,'AtmosphereCO2','subtract','ignore','ignore','ignore','ignore','ignore',1
+11,'CropLeaf',2,'AgFineLitter','subtract','add','ignore','ignore','ignore','ignore',1
+11,'CropLeaf',3,'AgOffSiteProduct','subtract','ignore','ignore','ignore','ignore','ignore',1
+11,'CropLeaf',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
+11,'CropLeaf',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','add',1
+11,'CropLeaf',7,'AtmosphereCO2','subtract','ignore','ignore','ignore','ignore','ignore',1
+12,'CropStalk',3,'AgOffSiteProduct','subtract','ignore','ignore','ignore','ignore','ignore',1
+12,'CropStalk',4,'AgStalkLitter','subtract','add','ignore','ignore','ignore','ignore',1
+12,'CropStalk',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
+12,'CropStalk',6,'Atmosphere N2O','subtract','ignore','ignore','ignore','ignore','add',1
+12,'CropStalk',7,'AtmosphereCO2','subtract','ignore','ignore','ignore','ignore','ignore',1
+13,'Deadwood',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
+13,'Deadwood',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','add',1
+13,'Deadwood',7,'AtmosphereCO2','ignore','subtract','ignore','ignore','ignore','ignore',1
+13,'Deadwood',14,'ForestOffSiteProduct','ignore','subtract','ignore','ignore','ignore','ignore',1
+13,'Deadwood',18,'SoilBioF','ignore','subtract','add','add','ignore','ignore',1
+13,'Deadwood',19,'SoilBioS','ignore','subtract','add','add','ignore','ignore',1
+13,'Deadwood',20,'SoilDPM','ignore','subtract','add','add','ignore','ignore',1
+13,'Deadwood',21,'SoilHUM','ignore','subtract','add','add','ignore','ignore',1
+13,'Deadwood',22,'SoilIOM','ignore','subtract','add','add','ignore','ignore',1
+13,'Deadwood',23,'SoilRPM','ignore','subtract','add','add','ignore','ignore',1
+13,'Deadwood',26,'TreeCoarseLitter','ignore','ignore','ignore','ignore','ignore','ignore',1
+13,'Deadwood',30,'TreeFineLitter','ignore','ignore','ignore','ignore','ignore','ignore',1
+14,'ForestOffSiteProduct',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','ignore','ignore',1
+14,'ForestOffSiteProduct',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','ignore',1
+14,'ForestOffSiteProduct',7,'AtmosphereCO2','ignore','ignore','ignore','ignore','ignore','ignore',1
+15,'GrassFineRoot',1,'AgDeadFineRoots','subtract','add','ignore','ignore','ignore','ignore',1
+15,'GrassFineRoot',3,'AgOffSiteProduct','subtract','ignore','ignore','ignore','ignore','ignore',1
+16,'GrassLeaf',2,'AgFineLitter','subtract','add','ignore','ignore','ignore','ignore',1
+16,'GrassLeaf',3,'AgOffSiteProduct','subtract','ignore','ignore','ignore','ignore','ignore',1
+16,'GrassLeaf',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
+16,'GrassLeaf',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','add',1
+16,'GrassLeaf',7,'AtmosphereCO2','subtract','ignore','ignore','ignore','ignore','ignore',1
+17,'Manure',18,'SoilBioF','ignore','ignore','add','add','ignore','ignore',1
+17,'Manure',19,'SoilBioS','ignore','ignore','add','add','ignore','ignore',1
+17,'Manure',20,'SoilDPM','ignore','ignore','add','add','ignore','ignore',1
+17,'Manure',21,'SoilHUM','ignore','ignore','add','add','ignore','ignore',1
+17,'Manure',22,'SoilIOM','ignore','ignore','add','add','ignore','ignore',1
+17,'Manure',23,'SoilRPM','ignore','ignore','add','add','ignore','ignore',1
+18,'SoilBioF',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','add',1
+18,'SoilBioF',7,'AtmosphereCO2','ignore','ignore','subtract','subtract','ignore','ignore',1
+19,'SoilBioS',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','add',1
+19,'SoilBioS',7,'AtmosphereCO2','ignore','ignore','subtract','subtract','ignore','ignore',1
+20,'SoilDPM',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','add',1
+20,'SoilDPM',7,'AtmosphereCO2','ignore','ignore','subtract','subtract','ignore','ignore',1
+21,'SoilHUM',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','add',1
+21,'SoilHUM',7,'AtmosphereCO2','ignore','ignore','subtract','subtract','ignore','ignore',1
+21,'SoilHUM',18,'SoilBioF','ignore','ignore','ignore','ignore','ignore','ignore',1
+21,'SoilHUM',19,'SoilBioS','ignore','ignore','ignore','ignore','ignore','ignore',1
+22,'SoilIOM',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','add',1
+22,'SoilIOM',7,'AtmosphereCO2','ignore','ignore','subtract','subtract','ignore','ignore',1
+23,'SoilRPM',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','add',1
+23,'SoilRPM',7,'AtmosphereCO2','ignore','ignore','subtract','subtract','ignore','ignore',1
+23,'SoilRPM',18,'SoilBioF','ignore','ignore','ignore','ignore','ignore','ignore',1
+23,'SoilRPM',19,'SoilBioS','ignore','ignore','ignore','ignore','ignore','ignore',1
+23,'SoilRPM',21,'SoilHUM','ignore','ignore','ignore','ignore','ignore','ignore',1
+24,'TreeBark',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
+24,'TreeBark',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','add',1
+24,'TreeBark',7,'AtmosphereCO2','subtract','ignore','ignore','ignore','ignore','ignore',1
+24,'TreeBark',14,'ForestOffSiteProduct','subtract','ignore','ignore','ignore','ignore','ignore',1
+24,'TreeBark',30,'TreeFineLitter','subtract','add','ignore','ignore','ignore','ignore',1
+25,'TreeBranch',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
+25,'TreeBranch',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','add',1
+25,'TreeBranch',7,'AtmosphereCO2','subtract','ignore','ignore','ignore','ignore','ignore',1
+25,'TreeBranch',13,'Deadwood','subtract','add','ignore','ignore','ignore','ignore',1
+25,'TreeBranch',14,'ForestOffSiteProduct','subtract','ignore','ignore','ignore','ignore','ignore',1
+25,'TreeBranch',26,'TreeCoarseLitter','subtract','add','ignore','ignore','ignore','ignore',1
+26,'TreeCoarseLitter',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
+26,'TreeCoarseLitter',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','add',1
+26,'TreeCoarseLitter',7,'AtmosphereCO2','ignore','subtract','ignore','ignore','ignore','ignore',1
+26,'TreeCoarseLitter',18,'SoilBioF','ignore','subtract','add','add','ignore','ignore',1
+26,'TreeCoarseLitter',19,'SoilBioS','ignore','subtract','add','add','ignore','ignore',1
+26,'TreeCoarseLitter',20,'SoilDPM','ignore','subtract','add','add','ignore','ignore',1
+26,'TreeCoarseLitter',21,'SoilHUM','ignore','subtract','add','add','ignore','ignore',1
+26,'TreeCoarseLitter',22,'SoilIOM','ignore','subtract','add','add','ignore','ignore',1
+26,'TreeCoarseLitter',23,'SoilRPM','ignore','subtract','add','add','ignore','ignore',1
+26,'TreeCoarseLitter',30,'TreeFineLitter','ignore','ignore','ignore','ignore','ignore','ignore',1
+27,'TreeCoarseRoot',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
+27,'TreeCoarseRoot',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','add',1
+27,'TreeCoarseRoot',7,'AtmosphereCO2','subtract','ignore','ignore','ignore','ignore','ignore',1
+27,'TreeCoarseRoot',28,'TreeDeadCoarseRoot','subtract','add','ignore','ignore','ignore','ignore',1
+28,'TreeDeadCoarseRoot',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
+28,'TreeDeadCoarseRoot',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','add',1
+28,'TreeDeadCoarseRoot',7,'AtmosphereCO2','ignore','subtract','ignore','ignore','ignore','ignore',1
+28,'TreeDeadCoarseRoot',18,'SoilBioF','ignore','subtract','add','add','ignore','ignore',1
+28,'TreeDeadCoarseRoot',19,'SoilBioS','ignore','subtract','add','add','ignore','ignore',1
+28,'TreeDeadCoarseRoot',20,'SoilDPM','ignore','subtract','add','add','ignore','ignore',1
+28,'TreeDeadCoarseRoot',21,'SoilHUM','ignore','subtract','add','add','ignore','ignore',1
+28,'TreeDeadCoarseRoot',22,'SoilIOM','ignore','subtract','add','add','ignore','ignore',1
+28,'TreeDeadCoarseRoot',23,'SoilRPM','ignore','subtract','add','add','ignore','ignore',1
+29,'TreeDeadFineRoot',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
+29,'TreeDeadFineRoot',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','add',1
+29,'TreeDeadFineRoot',7,'AtmosphereCO2','ignore','subtract','ignore','ignore','ignore','ignore',1
+29,'TreeDeadFineRoot',18,'SoilBioF','ignore','subtract','add','add','ignore','ignore',1
+29,'TreeDeadFineRoot',19,'SoilBioS','ignore','subtract','add','add','ignore','ignore',1
+29,'TreeDeadFineRoot',20,'SoilDPM','ignore','subtract','add','add','ignore','ignore',1
+29,'TreeDeadFineRoot',21,'SoilHUM','ignore','subtract','add','add','ignore','ignore',1
+29,'TreeDeadFineRoot',22,'SoilIOM','ignore','subtract','add','add','ignore','ignore',1
+29,'TreeDeadFineRoot',23,'SoilRPM','ignore','subtract','add','add','ignore','ignore',1
+30,'TreeFineLitter',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
+30,'TreeFineLitter',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','add',1
+30,'TreeFineLitter',7,'AtmosphereCO2','ignore','subtract','ignore','ignore','ignore','ignore',1
+30,'TreeFineLitter',18,'SoilBioF','ignore','subtract','add','add','ignore','ignore',1
+30,'TreeFineLitter',19,'SoilBioS','ignore','subtract','add','add','ignore','ignore',1
+30,'TreeFineLitter',20,'SoilDPM','ignore','subtract','add','add','ignore','ignore',1
+30,'TreeFineLitter',21,'SoilHUM','ignore','subtract','add','add','ignore','ignore',1
+30,'TreeFineLitter',22,'SoilIOM','ignore','subtract','add','add','ignore','ignore',1
+30,'TreeFineLitter',23,'SoilRPM','ignore','subtract','add','add','ignore','ignore',1
+31,'TreeFineRoot',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
+31,'TreeFineRoot',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','add',1
+31,'TreeFineRoot',7,'AtmosphereCO2','subtract','ignore','ignore','ignore','ignore','ignore',1
+31,'TreeFineRoot',29,'TreeDeadFineRoot','subtract','ignore','ignore','ignore','ignore','ignore',1
+32,'TreeFoliage',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
+32,'TreeFoliage',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','add',1
+32,'TreeFoliage',7,'AtmosphereCO2','subtract','ignore','ignore','ignore','ignore','ignore',1
+32,'TreeFoliage',14,'ForestOffSiteProduct','subtract','ignore','ignore','ignore','ignore','ignore',1
+32,'TreeFoliage',30,'TreeFineLitter','subtract','add','ignore','ignore','ignore','ignore',1
+33,'TreePlanting',24,'TreeBark','add','ignore','ignore','ignore','ignore','ignore',1
+33,'TreePlanting',25,'TreeBranch','add','ignore','ignore','ignore','ignore','ignore',1
+33,'TreePlanting',27,'TreeCoarseRoot','add','ignore','ignore','ignore','ignore','ignore',1
+33,'TreePlanting',31,'TreeFineRoot','add','ignore','ignore','ignore','ignore','ignore',1
+33,'TreePlanting',32,'TreeFoliage','add','ignore','ignore','ignore','ignore','ignore',1
+33,'TreePlanting',34,'TreeStem','add','ignore','ignore','ignore','ignore','ignore',1
+34,'TreeStem',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
+34,'TreeStem',6,'Atmosphere N2O','ignore','ignore','ignore','ignore','ignore','add',1
+34,'TreeStem',7,'AtmosphereCO2','subtract','ignore','ignore','ignore','ignore','ignore',1
+34,'TreeStem',13,'Deadwood','subtract','add','ignore','ignore','ignore','ignore',1
+34,'TreeStem',14,'ForestOffSiteProduct','subtract','ignore','ignore','ignore','ignore','ignore',1
+34,'TreeStem',26,'TreeCoarseLitter','subtract','add','ignore','ignore','ignore','ignore',1
+14,'ForestOffSiteProduct',14,'ForestOffSiteProduct','ignore','ignore','ignore','ignore','ignore','ignore',1
+3,'AgOffSiteProduct',3,'AgOffSiteProduct','ignore','ignore','ignore','ignore','ignore','ignore',1
+20,'SoilDPM',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
+23,'SoilRPM',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
+18,'SoilBioF',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
+19,'SoilBioS',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
+21,'SoilHUM',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
+22,'SoilIOM',5,'Atmosphere CH4','ignore','ignore','ignore','ignore','add','ignore',1
