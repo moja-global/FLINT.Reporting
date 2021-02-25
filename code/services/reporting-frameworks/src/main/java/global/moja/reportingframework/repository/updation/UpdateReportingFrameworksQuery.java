@@ -1,0 +1,71 @@
+/*
+ * Copyright (C) 2021 Second Mile
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+package global.moja.reportingframework.repository.updation;
+
+import io.reactivex.Flowable;
+import global.moja.reportingframework.configurations.DatabaseConfig;
+import global.moja.reportingframework.models.ReportingFramework;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * @author Kwaje Anthony <tony@miles.co.ke>
+ * @version 1.0
+ * @since 1.0
+ */
+@Component
+@Slf4j
+public class UpdateReportingFrameworksQuery {
+
+    @Autowired
+    DatabaseConfig databaseConfig;
+
+    /**
+     * Recursively Updates Reporting Frameworks records
+     *
+     * @param reportingFrameworks an array of beans containing the Reporting Frameworks records details
+     * @return the number of Reporting Frameworks records affected by each recursive query i.e updated
+     */
+    public Flux<Integer> updateReportingFrameworks(ReportingFramework[] reportingFrameworks) {
+
+        log.trace("Entering updateReportingFrameworks()");
+
+        String query = "UPDATE reporting_framework SET name = ?, description = ? WHERE id = ?";
+
+        return
+                Flux.from(
+                        databaseConfig
+                                .getDatabase()
+                                .update(query)
+                                .parameterListStream(getParametersListStream(reportingFrameworks))
+                                .counts());
+    }
+
+    private Flowable getParametersListStream(ReportingFramework[] reportingFrameworks) {
+
+        List<List> parameters = new ArrayList<>();
+
+        for (ReportingFramework reportingFramework : reportingFrameworks) {
+            parameters.add(Arrays.asList(
+                    reportingFramework.getName(),
+                    reportingFramework.getDescription(),
+                    reportingFramework.getId()
+            ));
+        }
+
+        return Flowable.fromIterable(parameters);
+    }
+
+
+}

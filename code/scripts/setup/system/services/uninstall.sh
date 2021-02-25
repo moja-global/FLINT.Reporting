@@ -35,41 +35,53 @@ echo
 EMISSION_TYPES=1
 FLUX_TYPES=1
 FLUXES_TO_UNFCCC_VARIABLES=1
+REPORTING_FRAMEWORKS=1
 REPORTING_TABLES=1
 UNFCCC_VARIABLES=1
 UNIT_CATEGORIES=1
 UNITS=1
 
 
-# Emission Types
+
+# -------------------------------------------------------------------------------------
+# REPORTING
+# -------------------------------------------------------------------------------------
+
+# reporting-frameworks
+# -------------------------------------------------------------------------------------
+if [ $REPORTING_FRAMEWORKS -eq 1 ]; then
+	bash $PROJECT_DIR/services/reporting-frameworks/uninstall.sh
+fi
+
+# emission-types
 # -------------------------------------------------------------------------------------
 if [ $EMISSION_TYPES -eq 1 ]; then
 	bash $PROJECT_DIR/services/emission-types/uninstall.sh
 fi
 
 
-# Flux Types
+# flux-types
 # -------------------------------------------------------------------------------------
 if [ $FLUX_TYPES -eq 1 ]; then
 	bash $PROJECT_DIR/services/flux-types/uninstall.sh
 fi
 
 
-# Reporting Tables
+# reporting-tables
 # -------------------------------------------------------------------------------------
 if [ $REPORTING_TABLES -eq 1 ]; then
 	bash $PROJECT_DIR/services/reporting-tables/uninstall.sh
 fi
 
 
-# Unit Categories
+# unit-categories
 # -------------------------------------------------------------------------------------
 if [ $UNIT_CATEGORIES -eq 1 ]; then
 	bash $PROJECT_DIR/services/unit-categories/uninstall.sh
 fi
 
 
-# Units
+# units
 # -------------------------------------------------------------------------------------
 if [ $UNITS -eq 1 ]; then
 	bash $PROJECT_DIR/services/units/uninstall.sh
@@ -77,14 +89,14 @@ fi
 
 
 
-# UNFCCC Variables
+# unfccc-variables
 # -------------------------------------------------------------------------------------
 if [ $UNFCCC_VARIABLES -eq 1 ]; then
 	bash $PROJECT_DIR/services/unfccc-variables/uninstall.sh
 fi
 
 
-# Fluxes To UNFCCC Variables
+# fluxes-to-unfccc-variables
 # -------------------------------------------------------------------------------------
 if [ $FLUXES_TO_UNFCCC_VARIABLES -eq 1 ]; then
 	bash $PROJECT_DIR/services/fluxes-to-unfccc-variables/uninstall.sh

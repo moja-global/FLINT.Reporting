@@ -68,6 +68,7 @@ fi
 EMISSION_TYPES=1
 FLUX_TYPES=1
 FLUXES_TO_UNFCCC_VARIABLES=1
+REPORTING_FRAMEWORKS=1
 REPORTING_TABLES=1
 UNFCCC_VARIABLES=1
 UNIT_CATEGORIES=1
@@ -89,13 +90,12 @@ echo
 # UTIL
 # -------------------------------------------------------------------------------------
 
-
-# Unit Categories
+# unit categories
 # -------------------------------------------------------------------------------------
 if [ $UNIT_CATEGORIES -eq 1 ]; then
 
   echo
-  echo "Setting up Unit Categories Database"
+  echo "Setting up unit categories database"
   echo
 
   # drop the unit categories database if it exists
@@ -104,7 +104,7 @@ if [ $UNIT_CATEGORIES -eq 1 ]; then
   # create a new unit categories database
   psql -c "CREATE DATABASE unit_categories"
 
-  # Create the unit categories' database objects
+  # Create the unit categories database objects
   psql -d "unit_categories" -1 -f "$PROJECT_DIR/services/unit-categories/src/main/resources/unit_categories.sql"
 
   # Load the unit categories' database data
@@ -114,7 +114,7 @@ if [ $UNIT_CATEGORIES -eq 1 ]; then
 fi
 
 
-# Units
+# units
 # -------------------------------------------------------------------------------------
 if [ $UNITS -eq 1 ]; then
 
@@ -145,7 +145,7 @@ fi
 # -------------------------------------------------------------------------------------
 
 
-# Flux Types
+# flux types
 # -------------------------------------------------------------------------------------
 if [ $FLUX_TYPES -eq 1 ]; then
 
@@ -159,10 +159,10 @@ if [ $FLUX_TYPES -eq 1 ]; then
   # create a new flux types database
   psql -c "CREATE DATABASE flux_types"
 
-  # Create the flux type's database objects
+  # Create the flux types database objects
   psql -d "flux_types" -1 -f "$PROJECT_DIR/services/flux-types/src/main/resources/flux_types.sql"
 
-  # Load the flux type's database data
+  # Load the flux types database data
   psql -d "flux_types" -1 -c "\copy flux_type(name,description,version) from \
           '$PROJECT_DIR/data/flux_types.csv' DELIMITER ',' CSV HEADER"
 
@@ -175,7 +175,32 @@ fi
 # -------------------------------------------------------------------------------------
 
 
-# Emission Types
+# reporting frameworks
+# -------------------------------------------------------------------------------------
+if [ $REPORTING_FRAMEWORKS -eq 1 ]; then
+
+  echo
+  echo "Setting up Reporting Tables Database"
+  echo
+
+  # drop the reporting frameworks database if it exists
+  psql -c "DROP DATABASE IF EXISTS reporting_frameworks"
+
+  # create a new reporting frameworks database
+  psql -c "CREATE DATABASE reporting_frameworks"
+
+  # Create the reporting frameworks database objects
+  psql -d "reporting_frameworks" -1 -f "$PROJECT_DIR/services/reporting-frameworks/src/main/resources/reporting_frameworks.sql"
+
+  # Load the reporting frameworks database data
+  psql -d "reporting_frameworks" -1 -c "\copy reporting_framework(name,description,version) from \
+          '$PROJECT_DIR/data/reporting_frameworks.csv' DELIMITER ',' CSV HEADER"
+
+fi
+
+
+
+# emission types
 # -------------------------------------------------------------------------------------
 if [ $EMISSION_TYPES -eq 1 ]; then
 
@@ -189,10 +214,10 @@ if [ $EMISSION_TYPES -eq 1 ]; then
   # create a new emission types database
   psql -c "CREATE DATABASE emission_types"
 
-  # Create the emission type's database objects
+  # Create the emission types database objects
   psql -d "emission_types" -1 -f "$PROJECT_DIR/services/emission-types/src/main/resources/emission_types.sql"
 
-  # Load the emission type's database data
+  # Load the emission types database data
   psql -d "emission_types" -1 -c "\copy emission_type(name,abbreviation,description,version) from \
           '$PROJECT_DIR/data/emission_types.csv' DELIMITER ',' CSV HEADER"
 
@@ -200,7 +225,7 @@ fi
 
 
 
-# Fluxes To UNFCCC Variables
+# fluxes to unfccc variables
 # ----------------------------------------------------------------------------------
 if [ $FLUXES_TO_UNFCCC_VARIABLES -eq 1 ]; then
 
@@ -214,7 +239,7 @@ if [ $FLUXES_TO_UNFCCC_VARIABLES -eq 1 ]; then
   # create a new fluxes to unfccc variables database
   psql -c "CREATE DATABASE fluxes_to_unfccc_variables"
 
-  # Create the flux to unfccc variable's database objects
+  # Create the flux to unfccc variables database objects
   psql -d "fluxes_to_unfccc_variables" -1 -f "$PROJECT_DIR/services/fluxes-to-unfccc-variables/src/main/resources/fluxes_to_unfccc_variables.sql"
 
   # Load the fluxes to unfccc variables database data
@@ -261,7 +286,7 @@ fi
 
 
 
-# Reporting Tables
+# reporting tables
 # -------------------------------------------------------------------------------------
 if [ $REPORTING_TABLES -eq 1 ]; then
 
@@ -275,17 +300,17 @@ if [ $REPORTING_TABLES -eq 1 ]; then
   # create a new reporting tables database
   psql -c "CREATE DATABASE reporting_tables"
 
-  # Create the emission type's database objects
+  # Create the reporting tables database objects
   psql -d "reporting_tables" -1 -f "$PROJECT_DIR/services/reporting-tables/src/main/resources/reporting_tables.sql"
 
-  # Load the emission type's database data
+  # Load the reporting tables database data
   psql -d "reporting_tables" -1 -c "\copy reporting_table(number,name,description,version) from \
           '$PROJECT_DIR/data/reporting_tables.csv' DELIMITER ',' CSV HEADER"
 
 fi
 
 
-# UNFCCC Variables
+# unfccc variables
 # -------------------------------------------------------------------------------------
 if [ $UNFCCC_VARIABLES -eq 1 ]; then
 
@@ -299,10 +324,10 @@ if [ $UNFCCC_VARIABLES -eq 1 ]; then
   # create a new unfccc variables database
   psql -c "CREATE DATABASE unfccc_variables"
 
-  # Create the unfccc variable's database objects
+  # Create the unfccc variables database objects
   psql -d "unfccc_variables" -1 -f "$PROJECT_DIR/services/unfccc-variables/src/main/resources/unfccc_variables.sql"
 
-  # Load the unfccc variable's database data
+  # Load the unfccc variables database data
   psql -d "unfccc_variables" -1 -c "\copy unfccc_variable(name, measure, abbreviation, unit_id, version) from \
           '$PROJECT_DIR/data/unfccc_variables.csv' DELIMITER ',' CSV HEADER"
 
