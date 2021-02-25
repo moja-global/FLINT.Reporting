@@ -23,7 +23,7 @@ LANGUAGE 'plpgsql' VOLATILE;
 
 CREATE TRIGGER ReportingFrameworkVersionInitializationTrigger7
 BEFORE INSERT
-ON indicator
+ON reporting_framework
 FOR EACH ROW
 EXECUTE PROCEDURE ReportingFrameworkVersionInitializationFunction();
 
@@ -44,6 +44,6 @@ LANGUAGE 'plpgsql' VOLATILE;
 
 CREATE TRIGGER ReportingFrameworkVersionIncrementTrigger
 BEFORE UPDATE
-ON indicator
+ON reporting_framework
 FOR EACH ROW
 EXECUTE PROCEDURE ReportingFrameworkVersionIncrementFunction();
