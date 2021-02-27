@@ -1,49 +1,49 @@
-"reporting_framework","parent_land_use_category_id","cover_type_id","name"
-1,,1,"Forest land"
-1,1,1,"Forest land Remaining Forest land"
-1,1,1,"Land Converted To Forest land"
-1,3,1,"Cropland Converted To Forest land"
-1,3,1,"Grassland Converted To Forest land"
-1,3,1,"Wetlands Converted To Forest land"
-1,3,1,"Settlements Converted To Forest land"
-1,3,1,"Other lands Converted To Forest land"
-1,,2,"Cropland"
-1,9,2,"Cropland Remaining Cropland"
-1,9,2,"Land Converted To Cropland"
-1,11,2,"Forest land Converted To Cropland"
-1,11,2,"Grassland Converted To Cropland"
-1,11,2,"Wetlands Converted To Cropland"
-1,11,2,"Settlements Converted To Cropland"
-1,11,2,"Other lands Converted To Cropland"
-1,,3,"Grassland "
-1,17,3,"Grassland Remaining Grassland"
-1,17,3,"Land Converted To Grassland"
-1,19,3,"Cropland Converted To Grassland"
-1,19,3,"Forest land Converted To Grassland"
-1,19,3,"Wetlands Converted To Grassland"
-1,19,3,"Settlements Converted To Grassland"
-1,19,3,"Other lands Converted To Grassland"
-1,,4,"Wetlands"
-1,25,4,"Wetlands Remaining Wetlands"
-1,25,4,"Land Converted To Wetlands"
-1,27,4,"Cropland Converted To Wetlands"
-1,27,4,"Grassland Converted To Wetlands"
-1,27,4,"Forest land Converted To Wetlands"
-1,27,4,"Settlements Converted To Wetlands"
-1,27,4,"Other lands Converted To Wetlands"
-1,,5,"Settlements"
-1,33,5,"Settlements Remaining Settlements"
-1,33,5,"Land Converted To Settlements"
-1,35,5,"Cropland Converted To Settlements"
-1,35,5,"Grassland Converted To Settlements"
-1,35,5,"Wetlands Converted To Settlements"
-1,35,5,"Forest land Converted To Settlements"
-1,35,5,"Other lands Converted To Settlements"
-1,,6,"Other lands"
-1,41,6,"Other lands Remaining Other lands"
-1,41,6,"Land Converted To Other lands"
-1,43,6,"Cropland Converted To Other lands"
-1,43,6,"Grassland Converted To Other lands"
-1,43,6,"Wetlands Converted To Other lands"
-1,43,6,"Settlements Converted To Other lands"
-1,43,6,"Forest land Converted To Other lands"
+"reporting_framework","parent_land_use_category_id","cover_type_id","name","version"
+1,,1,"Forest land",1
+1,1,1,"Forest land Remaining Forest land",1
+1,1,1,"Land Converted To Forest land",1
+1,3,1,"Cropland Converted To Forest land",1
+1,3,1,"Grassland Converted To Forest land",1
+1,3,1,"Wetlands Converted To Forest land",1
+1,3,1,"Settlements Converted To Forest land",1
+1,3,1,"Other lands Converted To Forest land",1
+1,,2,"Cropland",1
+1,9,2,"Cropland Remaining Cropland",1
+1,9,2,"Land Converted To Cropland",1
+1,11,2,"Forest land Converted To Cropland",1
+1,11,2,"Grassland Converted To Cropland",1
+1,11,2,"Wetlands Converted To Cropland",1
+1,11,2,"Settlements Converted To Cropland",1
+1,11,2,"Other lands Converted To Cropland",1
+1,,3,"Grassland ",1
+1,17,3,"Grassland Remaining Grassland",1
+1,17,3,"Land Converted To Grassland",1
+1,19,3,"Cropland Converted To Grassland",1
+1,19,3,"Forest land Converted To Grassland",1
+1,19,3,"Wetlands Converted To Grassland",1
+1,19,3,"Settlements Converted To Grassland",1
+1,19,3,"Other lands Converted To Grassland",1
+1,,4,"Wetlands",1
+1,25,4,"Wetlands Remaining Wetlands",1
+1,25,4,"Land Converted To Wetlands",1
+1,27,4,"Cropland Converted To Wetlands",1
+1,27,4,"Grassland Converted To Wetlands",1
+1,27,4,"Forest land Converted To Wetlands",1
+1,27,4,"Settlements Converted To Wetlands",1
+1,27,4,"Other lands Converted To Wetlands",1
+1,,5,"Settlements",1
+1,33,5,"Settlements Remaining Settlements",1
+1,33,5,"Land Converted To Settlements",1
+1,35,5,"Cropland Converted To Settlements",1
+1,35,5,"Grassland Converted To Settlements",1
+1,35,5,"Wetlands Converted To Settlements",1
+1,35,5,"Forest land Converted To Settlements",1
+1,35,5,"Other lands Converted To Settlements",1
+1,,6,"Other lands",1
+1,41,6,"Other lands Remaining Other lands",1
+1,41,6,"Land Converted To Other lands",1
+1,43,6,"Cropland Converted To Other lands",1
+1,43,6,"Grassland Converted To Other lands",1
+1,43,6,"Wetlands Converted To Other lands",1
+1,43,6,"Settlements Converted To Other lands",1
+1,43,6,"Forest land Converted To Other lands",1
