@@ -229,7 +229,7 @@ fi
 if [ $REPORTING_VARIABLES -eq 1 ]; then
 
   echo
-  echo "Setting up UNFCCC Variables Database"
+  echo "Setting up reporting variables database"
   echo
 
   # drop the reporting variables database if it exists
@@ -336,22 +336,22 @@ if [ $FLUXES_TO_REPORTING_VARIABLES -eq 1 ]; then
     # Create fluxes to reporting variables records
   
     printf '\n%s to %s: %s for net carbon stock change in living biomass\n' "$startPoolName" "$endPoolName" "$netCarbonStockChangeInLivingBiomas"
-    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_reporting_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 2, $netCarbonStockChangeInLivingBiomas, $version)"
+    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_reporting_variable(start_pool_id, end_pool_id, reporting_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 2, $netCarbonStockChangeInLivingBiomas, $version)"
 
     printf '\n%s to %s: %s for net carbon stock change in dead organic matter\n' "$startPoolName" "$endPoolName" "$netCarbonStockChangeInDOM"
-    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_reporting_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 3, $netCarbonStockChangeInDOM, $version)"
+    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_reporting_variable(start_pool_id, end_pool_id, reporting_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 3, $netCarbonStockChangeInDOM, $version)"
 
     printf '\n%s to %s: %s for net carbon stock change in mineral soils\n' "$startPoolName" "$endPoolName" "$netCarbonStockChangeInMineralSoils"
-    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_reporting_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 4, $netCarbonStockChangeInMineralSoils, $version)"
+    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_reporting_variable(start_pool_id, end_pool_id, reporting_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 4, $netCarbonStockChangeInMineralSoils, $version)"
 
     printf '\n%s to %s: %s for net carbon stock change in organic soils\n' "$startPoolName" "$endPoolName" "$netCarbonStockChangeInOrganicSoils"
-    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_reporting_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 5, $netCarbonStockChangeInOrganicSoils, $version)"
+    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_reporting_variable(start_pool_id, end_pool_id, reporting_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 5, $netCarbonStockChangeInOrganicSoils, $version)"
 
     printf '\n%s to %s: %s for methane\n' "$startPoolName" "$endPoolName" "$ch4"
-    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_reporting_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 10, $ch4, $version)"
+    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_reporting_variable(start_pool_id, end_pool_id, reporting_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 10, $ch4, $version)"
 
     printf '\n%s to %s: %s for nitrous Oxide\n' "$startPoolName" "$endPoolName" "$n2o"
-    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_reporting_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 11, $n2o, $version)"
+    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_reporting_variable(start_pool_id, end_pool_id, reporting_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 11, $n2o, $version)"
 
   done <$PROJECT_DIR/data/fluxes_to_reporting_variables.csv
 
