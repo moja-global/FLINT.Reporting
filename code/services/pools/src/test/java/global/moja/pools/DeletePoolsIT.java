@@ -8,7 +8,10 @@
 package global.moja.pools;
 
 import org.junit.AfterClass;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,6 +33,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
 @ContextConfiguration(initializers = DeletePoolsIT.Initializer.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class DeletePoolsIT {
 
     @Autowired
@@ -72,6 +76,7 @@ public class DeletePoolsIT {
 
 
     @Test
+    @Order(1)
     public void Given_PoolRecordsExist_When_DeleteAllWithIdsFilter_Then_PoolRecordsWithIdsWillBeDeletedAndATotalCountOfAffectedRecordsReturned() {
 
         long id1 = 1L;
@@ -92,6 +97,7 @@ public class DeletePoolsIT {
     }
 
     @Test
+    @Order(2)
     public void Given_PoolRecordsExist_When_DeleteAllWithoutFilters_Then_AllPoolRecordsWillBeDeletedAndATotalCountOfAffectedRecordsReturned() {
 
         webTestClient

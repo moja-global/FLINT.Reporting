@@ -8,7 +8,10 @@
 package global.moja.reportingtable;
 
 import org.junit.AfterClass;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,6 +33,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
 @ContextConfiguration(initializers = DeleteReportingTablesIT.Initializer.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class DeleteReportingTablesIT {
 
     @Autowired
@@ -70,6 +74,7 @@ public class DeleteReportingTablesIT {
         postgreSQLContainer.stop();
     }
     @Test
+    @Order(1)
     public void Given_ReportingTableRecordsExist_When_DeleteAllWithIdsFilter_Then_ReportingTableRecordsWithIdsWillBeDeletedAndATotalCountOfAffectedRecordsReturned() {
 
         long id1 = 1L;
@@ -90,6 +95,7 @@ public class DeleteReportingTablesIT {
     }
 
     @Test
+    @Order(2)
     public void Given_ReportingTableRecordsExist_When_DeleteAllWithoutFilters_Then_AllReportingTableRecordsWillBeDeletedAndATotalCountOfAffectedRecordsReturned() {
 
         webTestClient
