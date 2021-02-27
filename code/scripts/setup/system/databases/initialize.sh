@@ -67,10 +67,11 @@ fi
 # Single databases
 EMISSION_TYPES=1
 FLUX_TYPES=1
-FLUXES_TO_UNFCCC_VARIABLES=1
+FLUXES_TO_REPORTING_VARIABLES=1
 REPORTING_FRAMEWORKS=1
 REPORTING_TABLES=1
-UNFCCC_VARIABLES=1
+REPORTING_VARIABLES=1
+POOLS=1
 UNIT_CATEGORIES=1
 UNITS=1
 
@@ -119,7 +120,7 @@ fi
 if [ $UNITS -eq 1 ]; then
 
   echo
-  echo "Setting up Units Database"
+  echo "Setting up units database"
   echo
 
   # drop the units database if it exists
@@ -150,7 +151,7 @@ fi
 if [ $FLUX_TYPES -eq 1 ]; then
 
   echo
-  echo "Setting up Flux Types Database"
+  echo "Setting up flux types database"
   echo
 
   # drop the flux types database if it exists
@@ -180,7 +181,7 @@ fi
 if [ $REPORTING_FRAMEWORKS -eq 1 ]; then
 
   echo
-  echo "Setting up Reporting Tables Database"
+  echo "Setting up reporting frameworks database"
   echo
 
   # drop the reporting frameworks database if it exists
@@ -199,13 +200,61 @@ if [ $REPORTING_FRAMEWORKS -eq 1 ]; then
 fi
 
 
+# reporting tables
+# -------------------------------------------------------------------------------------
+if [ $REPORTING_TABLES -eq 1 ]; then
+
+  echo
+  echo "Setting up reporting tables database"
+  echo
+
+  # drop the reporting tables database if it exists
+  psql -c "DROP DATABASE IF EXISTS reporting_tables"
+
+  # create a new reporting tables database
+  psql -c "CREATE DATABASE reporting_tables"
+
+  # Create the reporting tables database objects
+  psql -d "reporting_tables" -1 -f "$PROJECT_DIR/services/reporting-tables/src/main/resources/reporting_tables.sql"
+
+  # Load the reporting tables database data
+  psql -d "reporting_tables" -1 -c "\copy reporting_table(reporting_framework_id, number, name, description, version) from \
+          '$PROJECT_DIR/data/reporting_tables.csv' DELIMITER ',' CSV HEADER"
+
+fi
+
+
+# reporting variables
+# -------------------------------------------------------------------------------------
+if [ $REPORTING_VARIABLES -eq 1 ]; then
+
+  echo
+  echo "Setting up UNFCCC Variables Database"
+  echo
+
+  # drop the reporting variables database if it exists
+  psql -c "DROP DATABASE IF EXISTS reporting_variables"
+
+  # create a new reporting variables database
+  psql -c "CREATE DATABASE reporting_variables"
+
+  # Create the reporting variables database objects
+  psql -d "reporting_variables" -1 -f "$PROJECT_DIR/services/reporting-variables/src/main/resources/reporting_variables.sql"
+
+  # Load the reporting variables database data
+  psql -d "reporting_variables" -1 -c "\copy reporting_variable(reporting_framework_id, name, description, version) from \
+          '$PROJECT_DIR/data/reporting_variables.csv' DELIMITER ',' CSV HEADER"
+
+fi
+
+
 
 # emission types
 # -------------------------------------------------------------------------------------
 if [ $EMISSION_TYPES -eq 1 ]; then
 
   echo
-  echo "Setting up Emission Types Database"
+  echo "Setting up emission types Database"
   echo
 
   # drop the emission types database if it exists
@@ -218,31 +267,55 @@ if [ $EMISSION_TYPES -eq 1 ]; then
   psql -d "emission_types" -1 -f "$PROJECT_DIR/services/emission-types/src/main/resources/emission_types.sql"
 
   # Load the emission types database data
-  psql -d "emission_types" -1 -c "\copy emission_type(name,abbreviation,description,version) from \
+  psql -d "emission_types" -1 -c "\copy emission_type(name, abbreviation, description, version) from \
           '$PROJECT_DIR/data/emission_types.csv' DELIMITER ',' CSV HEADER"
 
 fi
 
 
+# pools
+# -------------------------------------------------------------------------------------
+if [ $POOLS -eq 1 ]; then
 
-# fluxes to unfccc variables
+  echo
+  echo "Setting up pools database"
+  echo
+
+  # drop the pools database if it exists
+  psql -c "DROP DATABASE IF EXISTS pools"
+
+  # create a new pools database
+  psql -c "CREATE DATABASE pools"
+
+  # Create the pool's database objects
+  psql -d "pools" -1 -f "$PROJECT_DIR/services/pools/src/main/resources/pools.sql"
+
+  # Load the pool's database data
+  psql -d "pools" -1 -c "\copy pool(name,description,version) from \
+          '$PROJECT_DIR/data/pools.csv' DELIMITER ',' CSV HEADER"
+
+fi
+
+
+
+# fluxes to reporting variables
 # ----------------------------------------------------------------------------------
-if [ $FLUXES_TO_UNFCCC_VARIABLES -eq 1 ]; then
+if [ $FLUXES_TO_REPORTING_VARIABLES -eq 1 ]; then
 
   echo
-  echo "Setting up Fluxes To UNFCCC Variables Database"
+  echo "Setting up fluxes to reporting variables database"
   echo
 
-  # drop the fluxes to unfccc variables database if it exists
-  psql -c "DROP DATABASE IF EXISTS fluxes_to_unfccc_variables"
+  # drop the fluxes to reporting variables database if it exists
+  psql -c "DROP DATABASE IF EXISTS fluxes_to_reporting_variables"
 
-  # create a new fluxes to unfccc variables database
-  psql -c "CREATE DATABASE fluxes_to_unfccc_variables"
+  # create a new fluxes to reporting variables database
+  psql -c "CREATE DATABASE fluxes_to_reporting_variables"
 
-  # Create the flux to unfccc variables database objects
-  psql -d "fluxes_to_unfccc_variables" -1 -f "$PROJECT_DIR/services/fluxes-to-unfccc-variables/src/main/resources/fluxes_to_unfccc_variables.sql"
+  # Create the flux to reporting variables database objects
+  psql -d "fluxes_to_reporting_variables" -1 -f "$PROJECT_DIR/services/fluxes-to-reporting-variables/src/main/resources/fluxes_to_reporting_variables.sql"
 
-  # Load the fluxes to unfccc variables database data
+  # Load the fluxes to reporting variables database data
 
   IFS=","
   while read f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11; do
@@ -260,78 +333,33 @@ if [ $FLUXES_TO_UNFCCC_VARIABLES -eq 1 ]; then
     n2o=${f10:=null}
     version=${f11:=null}
 
-    # Create Fluxes To UNFCC Variables Records
+    # Create fluxes to reporting variables records
   
     printf '\n%s to %s: %s for net carbon stock change in living biomass\n' "$startPoolName" "$endPoolName" "$netCarbonStockChangeInLivingBiomas"
-    psql -d "fluxes_to_unfccc_variables" -c "INSERT INTO flux_to_unfccc_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 2, $netCarbonStockChangeInLivingBiomas, $version)"
+    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_unfccc_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 2, $netCarbonStockChangeInLivingBiomas, $version)"
 
     printf '\n%s to %s: %s for net carbon stock change in dead organic matter\n' "$startPoolName" "$endPoolName" "$netCarbonStockChangeInDOM"
-    psql -d "fluxes_to_unfccc_variables" -c "INSERT INTO flux_to_unfccc_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 3, $netCarbonStockChangeInDOM, $version)"
+    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_unfccc_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 3, $netCarbonStockChangeInDOM, $version)"
 
     printf '\n%s to %s: %s for net carbon stock change in mineral soils\n' "$startPoolName" "$endPoolName" "$netCarbonStockChangeInMineralSoils"
-    psql -d "fluxes_to_unfccc_variables" -c "INSERT INTO flux_to_unfccc_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 4, $netCarbonStockChangeInMineralSoils, $version)"
+    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_unfccc_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 4, $netCarbonStockChangeInMineralSoils, $version)"
 
     printf '\n%s to %s: %s for net carbon stock change in organic soils\n' "$startPoolName" "$endPoolName" "$netCarbonStockChangeInOrganicSoils"
-    psql -d "fluxes_to_unfccc_variables" -c "INSERT INTO flux_to_unfccc_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 5, $netCarbonStockChangeInOrganicSoils, $version)"
+    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_unfccc_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 5, $netCarbonStockChangeInOrganicSoils, $version)"
 
     printf '\n%s to %s: %s for methane\n' "$startPoolName" "$endPoolName" "$ch4"
-    psql -d "fluxes_to_unfccc_variables" -c "INSERT INTO flux_to_unfccc_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 10, $ch4, $version)"
+    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_unfccc_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 10, $ch4, $version)"
 
     printf '\n%s to %s: %s for nitrous Oxide\n' "$startPoolName" "$endPoolName" "$n2o"
-    psql -d "fluxes_to_unfccc_variables" -c "INSERT INTO flux_to_unfccc_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 11, $n2o, $version)"
+    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_unfccc_variable(start_pool_id, end_pool_id, unfccc_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 11, $n2o, $version)"
 
-  done <$PROJECT_DIR/data/fluxes_to_unfccc_variables.csv
-
-fi
-
-
-
-# reporting tables
-# -------------------------------------------------------------------------------------
-if [ $REPORTING_TABLES -eq 1 ]; then
-
-  echo
-  echo "Setting up Reporting Tables Database"
-  echo
-
-  # drop the reporting tables database if it exists
-  psql -c "DROP DATABASE IF EXISTS reporting_tables"
-
-  # create a new reporting tables database
-  psql -c "CREATE DATABASE reporting_tables"
-
-  # Create the reporting tables database objects
-  psql -d "reporting_tables" -1 -f "$PROJECT_DIR/services/reporting-tables/src/main/resources/reporting_tables.sql"
-
-  # Load the reporting tables database data
-  psql -d "reporting_tables" -1 -c "\copy reporting_table(number,name,description,version) from \
-          '$PROJECT_DIR/data/reporting_tables.csv' DELIMITER ',' CSV HEADER"
+  done <$PROJECT_DIR/data/fluxes_to_reporting_variables.csv
 
 fi
 
 
-# unfccc variables
-# -------------------------------------------------------------------------------------
-if [ $UNFCCC_VARIABLES -eq 1 ]; then
 
-  echo
-  echo "Setting up UNFCCC Variables Database"
-  echo
 
-  # drop the unfccc variables database if it exists
-  psql -c "DROP DATABASE IF EXISTS unfccc_variables"
-
-  # create a new unfccc variables database
-  psql -c "CREATE DATABASE unfccc_variables"
-
-  # Create the unfccc variables database objects
-  psql -d "unfccc_variables" -1 -f "$PROJECT_DIR/services/unfccc-variables/src/main/resources/unfccc_variables.sql"
-
-  # Load the unfccc variables database data
-  psql -d "unfccc_variables" -1 -c "\copy unfccc_variable(name, measure, abbreviation, unit_id, version) from \
-          '$PROJECT_DIR/data/unfccc_variables.csv' DELIMITER ',' CSV HEADER"
-
-fi
 
 
 

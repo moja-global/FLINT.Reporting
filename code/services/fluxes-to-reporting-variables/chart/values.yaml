@@ -1,0 +1,48 @@
+# Default values for the Helm Chart.
+# This is a YAML-formatted file.
+
+microservice:
+
+  # Ingress
+  ingress:
+    name: fluxes-to-reporting-variables
+    class: traefik 
+    rules:
+      host: reporter.miles.co.ke
+      http:
+        path: /api/v1/fluxes_to_reporting_variables
+        backend:
+          service:
+            name: fluxes-to-reporting-variables
+            port: 80
+
+  # Service
+  service:
+    name: fluxes-to-reporting-variables
+    port:
+      default: 80
+      target: 8080
+
+  # Deployment
+  deployment:
+    name: fluxes-to-reporting-variables
+
+  # Application / Application Replicas
+  application:
+    name: fluxes-to-reporting-variables
+    version: 0.0.1
+    image: 
+      id: reporter.miles.co.ke:5043/fluxes-to-reporting-variables
+      tag: 0.0.1
+      pull:
+        policy: Always
+        secret: regcred
+    environment: 
+      postgres:
+        host: bitnami-postgres-postgresql
+    replicas: 1
+
+ 
+
+
+

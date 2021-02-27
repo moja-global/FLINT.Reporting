@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ke.co.miles</groupId>
+    <groupId>global.moja</groupId>
     <artifactId>reporting-frameworks</artifactId>
     <version>0.0.1</version>
     <packaging>jar</packaging>
@@ -19,8 +19,8 @@
     </licenses>  
     
     <organization>
-        <name>Second Mile</name>
-        <url>https://miles.co.ke//</url>
+        <name>Moja Global</name>
+        <url>https://global.moja</url>
     </organization>
      
     <parent>
@@ -32,7 +32,7 @@
     
     <properties>
         <spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
-        <docker.image.prefix>cloud.miles.co.ke:5043</docker.image.prefix>
+        <docker.image.prefix>reporter.miles.co.ke:5043</docker.image.prefix>
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
         <davidmoten-rxjava2-jdbc.version>0.2.4</davidmoten-rxjava2-jdbc.version>
         <davidmoten-guava-mini-version>0.1.2</davidmoten-guava-mini-version>

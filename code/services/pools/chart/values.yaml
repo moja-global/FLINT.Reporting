@@ -1,0 +1,48 @@
+# Default values for the Helm Chart.
+# This is a YAML-formatted file.
+
+microservice:
+
+  # Ingress
+  ingress:
+    name: pools
+    class: traefik 
+    rules:
+      host: cloud.miles.co.ke
+      http:
+        path: /api/v1/pools
+        backend:
+          service:
+            name: pools
+            port: 80
+
+  # Service
+  service:
+    name: pools
+    port:
+      default: 80
+      target: 8080
+
+  # Deployment
+  deployment:
+    name: pools
+
+  # Application / Application Replicas
+  application:
+    name: pools
+    version: 0.0.1
+    image: 
+      id: cloud.miles.co.ke:5043/pools
+      tag: 0.0.1
+      pull:
+        policy: Always
+        secret: regcred
+    environment: 
+      postgres:
+        host: bitnami-postgres-postgresql
+    replicas: 1
+
+ 
+
+
+

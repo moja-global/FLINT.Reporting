@@ -8,7 +8,7 @@ microservice:
     name: flux-types
     class: traefik 
     rules:
-      host: reporter.miles.co.ke
+      host: cloud.miles.co.ke
       http:
         path: /api/v1/flux_types
         backend:
@@ -25,14 +25,14 @@ microservice:
 
   # Deployment
   deployment:
-    name: flux-types 
+    name: flux-types
 
   # Application / Application Replicas
   application:
     name: flux-types
     version: 0.0.1
     image: 
-      id: reporter.miles.co.ke:5043/flux-types
+      id: cloud.miles.co.ke:5043/flux-types
       tag: 0.0.1
       pull:
         policy: Always

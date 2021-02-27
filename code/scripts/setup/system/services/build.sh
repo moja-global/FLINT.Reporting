@@ -34,23 +34,33 @@ echo
 # ----------------------------------------------------------------------------------
 EMISSION_TYPES=1
 FLUX_TYPES=1
-FLUXES_TO_UNFCCC_VARIABLES=1
+FLUXES_TO_REPORTING_VARIABLES=1
+POOLS=1
 REPORTING_FRAMEWORKS=1
 REPORTING_TABLES=1
-UNFCCC_VARIABLES=1
+REPORTING_VARIABLES=1
 UNIT_CATEGORIES=1
 UNITS=1
 
 
 
-# -------------------------------------------------------------------------------------
-# REPORTING
-# -------------------------------------------------------------------------------------
 
 # reporting-frameworks
 # -------------------------------------------------------------------------------------
 if [ $REPORTING_FRAMEWORKS -eq 1 ]; then
 	bash $PROJECT_DIR/services/reporting-frameworks/build.sh
+fi
+
+# reporting-tables
+# -------------------------------------------------------------------------------------
+if [ $REPORTING_TABLES -eq 1 ]; then
+	bash $PROJECT_DIR/services/reporting-tables/build.sh
+fi
+
+# reporting-variables
+# -------------------------------------------------------------------------------------
+if [ $REPORTING_VARIABLES -eq 1 ]; then
+	bash $PROJECT_DIR/services/reporting-variables/build.sh
 fi
 
 # emission-types
@@ -59,6 +69,11 @@ if [ $EMISSION_TYPES -eq 1 ]; then
 	bash $PROJECT_DIR/services/emission-types/build.sh
 fi
 
+# pools
+# -------------------------------------------------------------------------------------
+if [ $POOLS -eq 1 ]; then
+	bash $PROJECT_DIR/services/pools/build.sh
+fi
 
 # flux-types
 # -------------------------------------------------------------------------------------
@@ -66,13 +81,11 @@ if [ $FLUX_TYPES -eq 1 ]; then
 	bash $PROJECT_DIR/services/flux-types/build.sh
 fi
 
-
-# reporting-tables
+# fluxes-to-reporting-variables
 # -------------------------------------------------------------------------------------
-if [ $REPORTING_TABLES -eq 1 ]; then
-	bash $PROJECT_DIR/services/reporting-tables/build.sh
+if [ $FLUXES_TO_REPORTING_VARIABLES -eq 1 ]; then
+	bash $PROJECT_DIR/services/fluxes-to-reporting-variables/build.sh
 fi
-
 
 # unit-categories
 # -------------------------------------------------------------------------------------
@@ -85,21 +98,6 @@ fi
 # -------------------------------------------------------------------------------------
 if [ $UNITS -eq 1 ]; then
 	bash $PROJECT_DIR/services/units/build.sh
-fi
-
-
-
-# unfccc-variables
-# -------------------------------------------------------------------------------------
-if [ $UNFCCC_VARIABLES -eq 1 ]; then
-	bash $PROJECT_DIR/services/unfccc-variables/build.sh
-fi
-
-
-# fluxes-to-unfccc-variables
-# -------------------------------------------------------------------------------------
-if [ $FLUXES_TO_UNFCCC_VARIABLES -eq 1 ]; then
-	bash $PROJECT_DIR/services/fluxes-to-unfccc-variables/build.sh
 fi
 
 

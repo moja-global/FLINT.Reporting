@@ -3,8 +3,9 @@
 -- ------------------------------------------------------------
 CREATE TABLE reporting_table (
     id SERIAL UNIQUE PRIMARY KEY NOT NULL,
+    reporting_framework_id INTEGER NOT NULL,
     number VARCHAR(50) NOT NULL,
-    name VARCHAR NOT NULL,
+    name VARCHAR(250) NOT NULL,
     description VARCHAR NULL,
     version INTEGER NOT NULL);
 
@@ -22,7 +23,7 @@ END
 $$
 LANGUAGE 'plpgsql' VOLATILE;
 
-CREATE TRIGGER ReportingTableVersionInitializationTrigger
+CREATE TRIGGER ReportingTableVersionInitializationTrigger7
 BEFORE INSERT
 ON reporting_table
 FOR EACH ROW

@@ -3,8 +3,9 @@
 -- ------------------------------------------------------------
 CREATE TABLE reporting_table (
     id SERIAL UNIQUE PRIMARY KEY NOT NULL,
-    number VARCHAR(50) NOT NULL,
-    name VARCHAR NOT NULL,
+    reporting_framework_id INTEGER NOT NULL,
+    number VARCHAR(50) NOT NULL,    
+    name VARCHAR(250) NOT NULL,
     description VARCHAR NULL,
     version INTEGER NOT NULL);
 
@@ -54,6 +55,6 @@ EXECUTE PROCEDURE ReportingTableVersionIncrementFunction();
 -- Add Some dummy data
 -- ------------------------------------------------------------
 
-INSERT INTO reporting_table(number,name,description) VALUES('Table 4','Table 4 Name','Table 4 Description');
-INSERT INTO reporting_table(number,name,description) VALUES('Table 4.1','Table 4.1 Name','Table 4.1 Description');
-INSERT INTO reporting_table(number,name,description) VALUES('Table 4.A','Table 4.A Name','Table 4.A Description');
+INSERT INTO reporting_table(reporting_framework_id,number,name,description) VALUES(1,'First','First ReportingTable', null);
+INSERT INTO reporting_table(reporting_framework_id,number,name,description) VALUES(2,'Second','Second ReportingTable',null);
+INSERT INTO reporting_table(reporting_framework_id,number,name,description) VALUES(3,'Third','Third ReportingTable', 'Third Description');
