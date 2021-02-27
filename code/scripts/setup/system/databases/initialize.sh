@@ -109,6 +109,7 @@ if [ $COVER_TYPES -eq 1 ]; then
   psql -d "cover_types" -1 -c "\copy cover_type(code, description, version) from \
           '$PROJECT_DIR/data/cover_types.csv' DELIMITER ',' CSV HEADER"
 
+fi
 
 
 # emission types
