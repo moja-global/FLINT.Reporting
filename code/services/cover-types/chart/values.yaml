@@ -1,0 +1,48 @@
+# Default values for the Helm Chart.
+# This is a YAML-formatted file.
+
+microservice:
+
+  # Ingress
+  ingress:
+    name: cover-types
+    class: traefik 
+    rules:
+      host: cloud.miles.co.ke
+      http:
+        path: /api/v1/cover_types
+        backend:
+          service:
+            name: cover-types
+            port: 80
+
+  # Service
+  service:
+    name: cover-types
+    port:
+      default: 80
+      target: 8080
+
+  # Deployment
+  deployment:
+    name: cover-types
+
+  # Application / Application Replicas
+  application:
+    name: cover-types
+    version: 0.0.1
+    image: 
+      id: cloud.miles.co.ke:5043/cover-types
+      tag: 0.0.1
+      pull:
+        policy: Always
+        secret: regcred
+    environment: 
+      postgres:
+        host: bitnami-postgres-postgresql
+    replicas: 1
+
+ 
+
+
+
