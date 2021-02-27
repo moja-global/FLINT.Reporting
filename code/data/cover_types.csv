@@ -1,7 +1,7 @@
-"Code","Description"
-"F","Forest land"
-"C","Cropland"
-"G","Grassland"
-"W","Wetland"
-"S","Settlements"
-"O","Other land"
+"Code","Description","Version"
+"F","Forest land",1
+"C","Cropland",1
+"G","Grassland",1
+"W","Wetland",1
+"S","Settlements",1
+"O","Other land",1
