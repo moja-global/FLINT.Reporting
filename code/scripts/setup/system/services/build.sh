@@ -44,11 +44,6 @@ UNIT_CATEGORIES=1
 UNITS=1
 
 
-
-
-
-
-
 # cover-types
 # -------------------------------------------------------------------------------------
 if [ $COVER_TYPES -eq 1 ]; then
@@ -74,6 +69,13 @@ fi
 # -------------------------------------------------------------------------------------
 if [ $FLUX_TYPES -eq 1 ]; then
 	bash $PROJECT_DIR/services/flux-types/build.sh
+fi
+
+
+# land-use-categories
+# -------------------------------------------------------------------------------------
+if [ $LAND_USE_CATEGORIES -eq 1 ]; then
+	bash $PROJECT_DIR/services/land-use-categories/build.sh
 fi
 
 

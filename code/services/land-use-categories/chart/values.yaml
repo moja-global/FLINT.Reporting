@@ -1,0 +1,48 @@
+# Default values for the Helm Chart.
+# This is a YAML-formatted file.
+
+microservice:
+
+  # Ingress
+  ingress:
+    name: land-use-categories
+    class: traefik 
+    rules:
+      host: cloud.miles.co.ke
+      http:
+        path: /api/v1/land_use_categories
+        backend:
+          service:
+            name: land-use-categories
+            port: 80
+
+  # Service
+  service:
+    name: land-use-categories
+    port:
+      default: 80
+      target: 8080
+
+  # Deployment
+  deployment:
+    name: land-use-categories
+
+  # Application / Application Replicas
+  application:
+    name: land-use-categories
+    version: 0.0.1
+    image: 
+      id: cloud.miles.co.ke:5043/land-use-categories
+      tag: 0.0.1
+      pull:
+        policy: Always
+        secret: regcred
+    environment: 
+      postgres:
+        host: bitnami-postgres-postgresql
+    replicas: 1
+
+ 
+
+
+

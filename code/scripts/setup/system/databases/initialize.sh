@@ -69,6 +69,7 @@ COVER_TYPES=1
 EMISSION_TYPES=1
 FLUXES_TO_REPORTING_VARIABLES=1
 FLUX_TYPES=1
+LAND_USE_CATEGORIES=1
 POOLS=1
 REPORTING_FRAMEWORKS=1
 REPORTING_TABLES=1
@@ -216,6 +217,30 @@ if [ $FLUXES_TO_REPORTING_VARIABLES -eq 1 ]; then
     psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_reporting_variable(start_pool_id, end_pool_id, reporting_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 11, $n2o, $version)"
 
   done <$PROJECT_DIR/data/fluxes_to_reporting_variables.csv
+
+fi
+
+
+# land use categories
+# -------------------------------------------------------------------------------------
+if [ $LAND_USE_CATEGORIES -eq 1 ]; then
+
+  echo
+  echo "Setting up land use categories database"
+  echo
+
+  # drop the land use categories database if it exists
+  psql -c "DROP DATABASE IF EXISTS land_use_categories"
+
+  # create a new land use categories database
+  psql -c "CREATE DATABASE land_use_categories"
+
+  # Create the land use categories database objects
+  psql -d "land_use_categories" -1 -f "$PROJECT_DIR/services/land-use-categories/src/main/resources/land_use_categories.sql"
+
+  # Load the land use categories database data
+  psql -d "land_use_categories" -1 -c "\copy land_use_category(reporting_framework_id, parent_land_use_category_id, cover_type_id, name, version) from \
+          '$PROJECT_DIR/data/land_use_categories.csv' DELIMITER ',' CSV HEADER"
 
 fi
 
