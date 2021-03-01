@@ -70,6 +70,8 @@ EMISSION_TYPES=1
 FLUXES_TO_REPORTING_VARIABLES=0
 FLUX_TYPES=1
 LAND_USE_CATEGORIES=1
+LAND_USES_FLUX_TYPES=1
+LAND_USES_FLUX_TYPES_TO_REPORTING_TABLES=1
 POOLS=1
 REPORTING_FRAMEWORKS=1
 REPORTING_TABLES=1
@@ -241,6 +243,53 @@ if [ $LAND_USE_CATEGORIES -eq 1 ]; then
   # Load the land use categories database data
   psql -d "land_use_categories" -1 -c "\copy land_use_category(reporting_framework_id, parent_land_use_category_id, cover_type_id, name, version) from \
           '$PROJECT_DIR/data/land_use_categories.csv' DELIMITER ',' CSV HEADER"
+
+fi
+
+
+# land uses flux types
+# -------------------------------------------------------------------------------------
+if [ $LAND_USES_FLUX_TYPES -eq 1 ]; then
+
+  echo
+  echo "Setting up land uses flux types database"
+  echo
+
+  # drop the land uses flux types database if it exists
+  psql -c "DROP DATABASE IF EXISTS land_uses_flux_types"
+
+  # create a new land uses flux types database
+  psql -c "CREATE DATABASE land_uses_flux_types"
+
+  # Create the land uses flux types database objects
+  psql -d "land_uses_flux_types" -1 -f "$PROJECT_DIR/services/land-uses-flux-types/src/main/resources/land_uses_flux_types.sql"
+
+  # Load the land uses flux types database data
+  psql -d "land_uses_flux_types" -1 -c "\copy land_use_flux_type(land_use_category_id, flux_type_id, version) from \
+          '$PROJECT_DIR/data/land_uses_flux_types.csv' DELIMITER ',' CSV HEADER"
+
+fi
+
+# land uses flux types to reporting tables
+# -------------------------------------------------------------------------------------
+if [ $LAND_USES_FLUX_TYPES_TO_REPORTING_TABLES -eq 1 ]; then
+
+  echo
+  echo "Setting up land uses flux types to reporting tables database"
+  echo
+
+  # drop the land uses flux types to reporting tables database if it exists
+  psql -c "DROP DATABASE IF EXISTS land_uses_flux_types_to_reporting_tables"
+
+  # create a new land uses flux types to reporting tables database
+  psql -c "CREATE DATABASE land_uses_flux_types_to_reporting_tables"
+
+  # Create the land uses flux types to reporting tables database objects
+  psql -d "land_uses_flux_types_to_reporting_tables" -1 -f "$PROJECT_DIR/services/land-uses-flux-types-to-reporting-tables/src/main/resources/land_uses_flux_types_to_reporting_tables.sql"
+
+  # Load the land uses flux types to reporting tables database data
+  psql -d "land_uses_flux_types_to_reporting_tables" -1 -c "\copy land_use_flux_type_to_reporting_table(land_use_flux_type_id, emission_type_id, reporting_table_id, version) from \
+          '$PROJECT_DIR/data/land_uses_flux_types_to_reporting_tables.csv' DELIMITER ',' CSV HEADER"
 
 fi
 

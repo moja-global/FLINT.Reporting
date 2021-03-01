@@ -37,6 +37,8 @@ EMISSION_TYPES=1
 FLUXES_TO_REPORTING_VARIABLES=1
 FLUX_TYPES=1
 LAND_USE_CATEGORIES=1
+LAND_USES_FLUX_TYPES=1
+LAND_USES_FLUX_TYPES_TO_REPORTING_TABLES=1
 POOLS=1
 REPORTING_FRAMEWORKS=1
 REPORTING_TABLES=1
@@ -77,6 +79,20 @@ fi
 # -------------------------------------------------------------------------------------
 if [ $LAND_USE_CATEGORIES -eq 1 ]; then
 	bash $PROJECT_DIR/services/land-use-categories/register.sh
+fi
+
+
+# land-uses-flux-types
+# -------------------------------------------------------------------------------------
+if [ $LAND_USES_FLUX_TYPES -eq 1 ]; then
+	bash $PROJECT_DIR/services/land-uses-flux-types/register.sh
+fi
+
+
+# land-uses-flux-types-to-reporting-tables
+# -------------------------------------------------------------------------------------
+if [ $LAND_USES_FLUX_TYPES_TO_REPORTING_TABLES -eq 1 ]; then
+	bash $PROJECT_DIR/services/land-uses-flux-types-to-reporting-tables/register.sh
 fi
 
 

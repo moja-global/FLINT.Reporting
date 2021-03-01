@@ -1,0 +1,48 @@
+# Default values for the Helm Chart.
+# This is a YAML-formatted file.
+
+microservice:
+
+  # Ingress
+  ingress:
+    name: land-uses-flux-types-to-reporting-tables
+    class: traefik 
+    rules:
+      host: reporter.miles.co.ke
+      http:
+        path: /api/v1/land_uses_flux_types_to_reporting_tables
+        backend:
+          service:
+            name: land-uses-flux-types-to-reporting-tables
+            port: 80
+
+  # Service
+  service:
+    name: land-uses-flux-types-to-reporting-tables
+    port:
+      default: 80
+      target: 8080
+
+  # Deployment
+  deployment:
+    name: land-uses-flux-types-to-reporting-tables
+
+  # Application / Application Replicas
+  application:
+    name: land-uses-flux-types-to-reporting-tables
+    version: 0.0.1
+    image: 
+      id: reporter.miles.co.ke:5043/land-uses-flux-types-to-reporting-tables
+      tag: 0.0.1
+      pull:
+        policy: Always
+        secret: regcred
+    environment: 
+      postgres:
+        host: bitnami-postgres-postgresql
+    replicas: 1
+
+ 
+
+
+
