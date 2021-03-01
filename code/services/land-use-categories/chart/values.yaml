@@ -8,7 +8,7 @@ microservice:
     name: land-use-categories
     class: traefik 
     rules:
-      host: cloud.miles.co.ke
+      host: reporter.miles.co.ke
       http:
         path: /api/v1/land_use_categories
         backend:
@@ -32,7 +32,7 @@ microservice:
     name: land-use-categories
     version: 0.0.1
     image: 
-      id: cloud.miles.co.ke:5043/land-use-categories
+      id: reporter.miles.co.ke:5043/land-use-categories
       tag: 0.0.1
       pull:
         policy: Always

@@ -8,7 +8,7 @@ microservice:
     name: cover-types
     class: traefik 
     rules:
-      host: cloud.miles.co.ke
+      host: reporter.miles.co.ke
       http:
         path: /api/v1/cover_types
         backend:
@@ -32,7 +32,7 @@ microservice:
     name: cover-types
     version: 0.0.1
     image: 
-      id: cloud.miles.co.ke:5043/cover-types
+      id: reporter.miles.co.ke:5043/cover-types
       tag: 0.0.1
       pull:
         policy: Always
