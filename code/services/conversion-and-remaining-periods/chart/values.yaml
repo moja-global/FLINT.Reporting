@@ -1,0 +1,48 @@
+# Default values for the Helm Chart.
+# This is a YAML-formatted file.
+
+microservice:
+
+  # Ingress
+  ingress:
+    name: conversion-and-remaining-periods
+    class: traefik 
+    rules:
+      host: reporter.miles.co.ke
+      http:
+        path: /api/v1/conversion_and_remaining_periods
+        backend:
+          service:
+            name: conversion-and-remaining-periods
+            port: 80
+
+  # Service
+  service:
+    name: conversion-and-remaining-periods
+    port:
+      default: 80
+      target: 8080
+
+  # Deployment
+  deployment:
+    name: conversion-and-remaining-periods
+
+  # Application / Application Replicas
+  application:
+    name: conversion-and-remaining-periods
+    version: 0.0.1
+    image: 
+      id: reporter.miles.co.ke:5043/conversion-and-remaining-periods
+      tag: 0.0.1
+      pull:
+        policy: Always
+        secret: regcred
+    environment: 
+      postgres:
+        host: bitnami-postgres-postgresql
+    replicas: 1
+
+ 
+
+
+

@@ -65,9 +65,10 @@ fi
 # ----------------------------------------------------------------------------------
 
 # Single databases
+CONVERSION_AND_REMAINING_PERIODS=1
 COVER_TYPES=1
 EMISSION_TYPES=1
-FLUXES_TO_REPORTING_VARIABLES=0
+FLUXES_TO_REPORTING_VARIABLES=1
 FLUX_TYPES=1
 LAND_USE_CATEGORIES=1
 LAND_USES_FLUX_TYPES=1
@@ -89,6 +90,30 @@ echo
 echo "Initializing specific databases"
 echo "---------------------------------------------------------------------------------"
 echo
+
+
+# conversion and remaining periods
+# -------------------------------------------------------------------------------------
+if [ $CONVERSION_AND_REMAINING_PERIODS -eq 1 ]; then
+
+  echo
+  echo "Setting up conversion and remaining periods Database"
+  echo
+
+  # drop the conversion and remaining periods database if it exists
+  psql -c "DROP DATABASE IF EXISTS conversion_and_remaining_periods"
+
+  # create a new conversion and remaining periods database
+  psql -c "CREATE DATABASE conversion_and_remaining_periods"
+
+  # Create the conversion and remaining periods database objects
+  psql -d "conversion_and_remaining_periods" -1 -f "$PROJECT_DIR/services/conversion-and-remaining-periods/src/main/resources/conversion_and_remaining_periods.sql"
+
+  # Load the conversion and remaining periods database data
+  psql -d "conversion_and_remaining_periods" -1 -c "\copy conversion_and_remaining_period(previous_land_cover_id,current_land_cover_id,conversion_period,remaining_period, version) from \
+          '$PROJECT_DIR/data/conversion_and_remaining_periods.csv' DELIMITER ',' CSV HEADER"
+
+fi
 
 
 # cover types
@@ -200,23 +225,8 @@ if [ $FLUXES_TO_REPORTING_VARIABLES -eq 1 ]; then
 
     # Create fluxes to reporting variables records
   
-    printf '\n%s to %s: %s for net carbon stock change in living biomass\n' "$startPoolName" "$endPoolName" "$netCarbonStockChangeInLivingBiomas"
-    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_reporting_variable(start_pool_id, end_pool_id, reporting_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 2, $netCarbonStockChangeInLivingBiomas, $version)"
-
-    printf '\n%s to %s: %s for net carbon stock change in dead organic matter\n' "$startPoolName" "$endPoolName" "$netCarbonStockChangeInDOM"
-    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_reporting_variable(start_pool_id, end_pool_id, reporting_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 3, $netCarbonStockChangeInDOM, $version)"
-
-    printf '\n%s to %s: %s for net carbon stock change in mineral soils\n' "$startPoolName" "$endPoolName" "$netCarbonStockChangeInMineralSoils"
-    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_reporting_variable(start_pool_id, end_pool_id, reporting_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 4, $netCarbonStockChangeInMineralSoils, $version)"
-
-    printf '\n%s to %s: %s for net carbon stock change in organic soils\n' "$startPoolName" "$endPoolName" "$netCarbonStockChangeInOrganicSoils"
-    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_reporting_variable(start_pool_id, end_pool_id, reporting_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 5, $netCarbonStockChangeInOrganicSoils, $version)"
-
-    printf '\n%s to %s: %s for methane\n' "$startPoolName" "$endPoolName" "$ch4"
-    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_reporting_variable(start_pool_id, end_pool_id, reporting_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 10, $ch4, $version)"
-
-    printf '\n%s to %s: %s for nitrous Oxide\n' "$startPoolName" "$endPoolName" "$n2o"
-    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_reporting_variable(start_pool_id, end_pool_id, reporting_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 11, $n2o, $version)"
+    printf '\n%s to %s:\n' "$startPoolName" "$endPoolName"
+    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_reporting_variable(start_pool_id, end_pool_id, reporting_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 2, $netCarbonStockChangeInLivingBiomas, $version),($startPoolId, $endPoolId, 3, $netCarbonStockChangeInDOM, $version),($startPoolId, $endPoolId, 4, $netCarbonStockChangeInMineralSoils, $version),($startPoolId, $endPoolId, 5, $netCarbonStockChangeInOrganicSoils, $version),($startPoolId, $endPoolId, 10, $ch4, $version),($startPoolId, $endPoolId, 11, $n2o, $version)"
 
   done <$PROJECT_DIR/data/fluxes_to_reporting_variables.csv
 

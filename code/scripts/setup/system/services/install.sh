@@ -32,6 +32,7 @@ echo
 # Use the flags 1 and 0 below to configure the services that you want to install
 # 1 = on, 0 = off
 # ----------------------------------------------------------------------------------
+CONVERSION_AND_REMAINING_PERIODS=1
 COVER_TYPES=1
 EMISSION_TYPES=1
 FLUXES_TO_REPORTING_VARIABLES=1
@@ -45,6 +46,13 @@ REPORTING_TABLES=1
 REPORTING_VARIABLES=1
 UNIT_CATEGORIES=1
 UNITS=1
+
+
+# conversion-and-remaining-periods
+# -------------------------------------------------------------------------------------
+if [ $CONVERSION_AND_REMAINING_PERIODS -eq 1 ]; then
+	bash $PROJECT_DIR/services/conversion-and-remaining-periods/install.sh
+fi
 
 
 # cover-types
