@@ -80,6 +80,7 @@ REPORTING_TABLES=1
 REPORTING_VARIABLES=1
 UNIT_CATEGORIES=1
 UNITS=1
+VEGETATION_TYPES=1
 
 
 
@@ -469,6 +470,26 @@ if [ $UNITS -eq 1 ]; then
   # Load the unit's database data
   psql -d "units" -1 -c "\copy unit(unit_category_id, name, plural, symbol, scale_factor,version) from \
           '$PROJECT_DIR/data/units.csv' DELIMITER ',' CSV HEADER"
+
+fi
+
+
+# vegetation types
+# -------------------------------------------------------------------------------------
+if [ $VEGETATION_TYPES -eq 1 ]; then
+
+  echo
+  echo "Setting up vegetation types Database"
+  echo
+
+  # drop the vegetation types database if it exists
+  psql -c "DROP DATABASE IF EXISTS vegetation_types"
+
+  # create a new vegetation types database
+  psql -c "CREATE DATABASE vegetation_types"
+
+  # Create the vegetation types database objects
+  psql -d "vegetation_types" -1 -f "$PROJECT_DIR/services/vegetation-types/src/main/resources/vegetation_types.sql"
 
 fi
 

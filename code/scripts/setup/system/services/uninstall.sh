@@ -47,6 +47,7 @@ REPORTING_TABLES=1
 REPORTING_VARIABLES=1
 UNIT_CATEGORIES=1
 UNITS=1
+VEGETATION_TYPES=1
 
 
 # conversion-and-remaining-periods
@@ -149,6 +150,12 @@ fi
 # -------------------------------------------------------------------------------------
 if [ $UNITS -eq 1 ]; then
 	bash $PROJECT_DIR/services/units/uninstall.sh
+fi
+
+# vegetation-types
+# -------------------------------------------------------------------------------------
+if [ $VEGETATION_TYPES -eq 1 ]; then
+	bash $PROJECT_DIR/services/vegetation-types/uninstall.sh
 fi
 
 
