@@ -1,19 +1,23 @@
 -- ------------------------------------------------------------
 -- Create Table
 -- ------------------------------------------------------------
-CREATE TABLE conversion_and_remaining_period (
+CREATE TABLE database (
     id SERIAL UNIQUE PRIMARY KEY NOT NULL,
-    previous_land_cover_id INTEGER NOT NULL,
-    current_land_cover_id INTEGER NOT NULL,
-    conversion_period INTEGER NOT NULL,
-    remaining_period INTEGER NOT NULL,
+    label VARCHAR(250) NOT NULL,
+    description VARCHAR NOT NULL,
+    url VARCHAR NOT NULL,
+    start_year INTEGER NOT NULL,
+    end_year INTEGER NOT NULL,
+    processed BOOLEAN NOT NULL,
+    published BOOLEAN NOT NULL,
+    archived BOOLEAN NOT NULL,
     version INTEGER NOT NULL);
 
 
 -- ------------------------------------------------------------
 -- Add Version Initialization Trigger for all insert operations
 -- ------------------------------------------------------------
-CREATE OR REPLACE FUNCTION ConversionAndRemainingPeriodVersionInitializationFunction()
+CREATE OR REPLACE FUNCTION DatabaseVersionInitializationFunction()
 RETURNS "trigger" AS
 $$
 BEGIN
@@ -23,18 +27,18 @@ END
 $$
 LANGUAGE 'plpgsql' VOLATILE;
 
-CREATE TRIGGER ConversionAndRemainingPeriodVersionInitializationTrigger7
+CREATE TRIGGER DatabaseVersionInitializationTrigger7
 BEFORE INSERT
-ON conversion_and_remaining_period
+ON database
 FOR EACH ROW
-EXECUTE PROCEDURE ConversionAndRemainingPeriodVersionInitializationFunction();
+EXECUTE PROCEDURE DatabaseVersionInitializationFunction();
 
 
 -- ------------------------------------------------------------
 -- Add Version Update Trigger for all update operations
 -- ------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION ConversionAndRemainingPeriodVersionIncrementFunction()
+CREATE OR REPLACE FUNCTION DatabaseVersionIncrementFunction()
 RETURNS "trigger" AS
 $$
 BEGIN
@@ -44,8 +48,8 @@ END
 $$
 LANGUAGE 'plpgsql' VOLATILE;
 
-CREATE TRIGGER ConversionAndRemainingPeriodVersionIncrementTrigger
+CREATE TRIGGER DatabaseVersionIncrementTrigger
 BEFORE UPDATE
-ON conversion_and_remaining_period
+ON database
 FOR EACH ROW
-EXECUTE PROCEDURE ConversionAndRemainingPeriodVersionIncrementFunction();
+EXECUTE PROCEDURE DatabaseVersionIncrementFunction();

@@ -67,6 +67,7 @@ fi
 # Single databases
 CONVERSION_AND_REMAINING_PERIODS=1
 COVER_TYPES=1
+DATABASES=1
 EMISSION_TYPES=1
 FLUXES_TO_REPORTING_VARIABLES=1
 FLUX_TYPES=1
@@ -136,6 +137,30 @@ if [ $COVER_TYPES -eq 1 ]; then
   # Load the cover types database data
   psql -d "cover_types" -1 -c "\copy cover_type(code, description, version) from \
           '$PROJECT_DIR/data/cover_types.csv' DELIMITER ',' CSV HEADER"
+
+fi
+
+
+# databases
+# -------------------------------------------------------------------------------------
+if [ $DATABASES -eq 1 ]; then
+
+  echo
+  echo "Setting up databases database"
+  echo
+
+  # drop the databases database if it exists
+  psql -c "DROP DATABASE IF EXISTS databases"
+
+  # create a new databases database
+  psql -c "CREATE DATABASE databases"
+
+  # Create the database's database objects
+  psql -d "databases" -1 -f "$PROJECT_DIR/services/databases/src/main/resources/databases.sql"
+
+  # Load the database's database data
+  psql -d "databases" -1 -c "\copy database(label,description,url,start_year,end_year,processed,published,archived,version) from \
+          '$PROJECT_DIR/data/databases.csv' DELIMITER ',' CSV HEADER"
 
 fi
 
