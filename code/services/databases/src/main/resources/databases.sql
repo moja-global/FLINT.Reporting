@@ -4,7 +4,7 @@
 CREATE TABLE database (
     id SERIAL UNIQUE PRIMARY KEY NOT NULL,
     label VARCHAR(250) NOT NULL,
-    description VARCHAR NOT NULL,
+    description VARCHAR NULL,
     url VARCHAR NOT NULL,
     start_year INTEGER NOT NULL,
     end_year INTEGER NOT NULL,
