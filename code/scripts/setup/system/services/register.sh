@@ -2,7 +2,7 @@
 
 echo
 echo "---------------------------------------------------------------------------------"
-echo "Entering install-script"
+echo "Entering register-script"
 echo "---------------------------------------------------------------------------------"
 echo
 
@@ -26,10 +26,10 @@ SCRIPTS_DIR="$(dirname "$SETUP_DIR")"
 PROJECT_DIR="$(dirname "$SCRIPTS_DIR")"
 
 echo
-echo "installing Microservices"
+echo "registering Microservices"
 echo
 
-# Use the flags 1 and 0 below to configure the services that you want to install
+# Use the flags 1 and 0 below to configure the services that you want to register
 # 1 = on, 0 = off
 # ----------------------------------------------------------------------------------
 CONVERSION_AND_REMAINING_PERIODS=1
@@ -52,108 +52,108 @@ UNITS=1
 # conversion-and-remaining-periods
 # -------------------------------------------------------------------------------------
 if [ $CONVERSION_AND_REMAINING_PERIODS -eq 1 ]; then
-	bash $PROJECT_DIR/services/conversion-and-remaining-periods/install.sh
+	bash $PROJECT_DIR/services/conversion-and-remaining-periods/register.sh
 fi
 
 
 # cover-types
 # -------------------------------------------------------------------------------------
 if [ $COVER_TYPES -eq 1 ]; then
-	bash $PROJECT_DIR/services/cover-types/install.sh
+	bash $PROJECT_DIR/services/cover-types/register.sh
 fi
 
 
 # databases
 # -------------------------------------------------------------------------------------
 if [ $DATABASES -eq 1 ]; then
-	bash $PROJECT_DIR/services/databases/install.sh
+	bash $PROJECT_DIR/services/databases/register.sh
 fi
 
 # emission-types
 # -------------------------------------------------------------------------------------
 if [ $EMISSION_TYPES -eq 1 ]; then
-	bash $PROJECT_DIR/services/emission-types/install.sh
+	bash $PROJECT_DIR/services/emission-types/register.sh
 fi
 
 
 # fluxes-to-reporting-variables
 # -------------------------------------------------------------------------------------
 if [ $FLUXES_TO_REPORTING_VARIABLES -eq 1 ]; then
-	bash $PROJECT_DIR/services/fluxes-to-reporting-variables/install.sh
+	bash $PROJECT_DIR/services/fluxes-to-reporting-variables/register.sh
 fi
 
 
 # flux-types
 # -------------------------------------------------------------------------------------
 if [ $FLUX_TYPES -eq 1 ]; then
-	bash $PROJECT_DIR/services/flux-types/install.sh
+	bash $PROJECT_DIR/services/flux-types/register.sh
 fi
 
 
 # land-use-categories
 # -------------------------------------------------------------------------------------
 if [ $LAND_USE_CATEGORIES -eq 1 ]; then
-	bash $PROJECT_DIR/services/land-use-categories/install.sh
+	bash $PROJECT_DIR/services/land-use-categories/register.sh
 fi
 
 
 # land-uses-flux-types
 # -------------------------------------------------------------------------------------
 if [ $LAND_USES_FLUX_TYPES -eq 1 ]; then
-	bash $PROJECT_DIR/services/land-uses-flux-types/install.sh
+	bash $PROJECT_DIR/services/land-uses-flux-types/register.sh
 fi
 
 
 # land-uses-flux-types-to-reporting-tables
 # -------------------------------------------------------------------------------------
 if [ $LAND_USES_FLUX_TYPES_TO_REPORTING_TABLES -eq 1 ]; then
-	bash $PROJECT_DIR/services/land-uses-flux-types-to-reporting-tables/install.sh
+	bash $PROJECT_DIR/services/land-uses-flux-types-to-reporting-tables/register.sh
 fi
 
 
 # pools
 # -------------------------------------------------------------------------------------
 if [ $POOLS -eq 1 ]; then
-	bash $PROJECT_DIR/services/pools/install.sh
+	bash $PROJECT_DIR/services/pools/register.sh
 fi
 
 
 # reporting-frameworks
 # -------------------------------------------------------------------------------------
 if [ $REPORTING_FRAMEWORKS -eq 1 ]; then
-	bash $PROJECT_DIR/services/reporting-frameworks/install.sh
+	bash $PROJECT_DIR/services/reporting-frameworks/register.sh
 fi
 
 # reporting-tables
 # -------------------------------------------------------------------------------------
 if [ $REPORTING_TABLES -eq 1 ]; then
-	bash $PROJECT_DIR/services/reporting-tables/install.sh
+	bash $PROJECT_DIR/services/reporting-tables/register.sh
 fi
 
 
 # reporting-variables
 # -------------------------------------------------------------------------------------
 if [ $REPORTING_VARIABLES -eq 1 ]; then
-	bash $PROJECT_DIR/services/reporting-variables/install.sh
+	bash $PROJECT_DIR/services/reporting-variables/register.sh
 fi
 
 
 # unit-categories
 # -------------------------------------------------------------------------------------
 if [ $UNIT_CATEGORIES -eq 1 ]; then
-	bash $PROJECT_DIR/services/unit-categories/install.sh
+	bash $PROJECT_DIR/services/unit-categories/register.sh
 fi
 
 
 # units
 # -------------------------------------------------------------------------------------
 if [ $UNITS -eq 1 ]; then
-	bash $PROJECT_DIR/services/units/install.sh
+	bash $PROJECT_DIR/services/units/register.sh
 fi
 
 
 echo
 echo "---------------------------------------------------------------------------------"
-echo "Leaving install-script"
+echo "Leaving register-script"
 echo "---------------------------------------------------------------------------------"
 echo
