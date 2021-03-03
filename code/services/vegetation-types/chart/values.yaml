@@ -1,0 +1,48 @@
+# Default values for the Helm Chart.
+# This is a YAML-formatted file.
+
+microservice:
+
+  # Ingress
+  ingress:
+    name: vegetation-types
+    class: traefik 
+    rules:
+      host: reporter.miles.co.ke
+      http:
+        path: /api/v1/vegetation_types
+        backend:
+          service:
+            name: vegetation-types
+            port: 80
+
+  # Service
+  service:
+    name: vegetation-types
+    port:
+      default: 80
+      target: 8080
+
+  # Deployment
+  deployment:
+    name: vegetation-types
+
+  # Application / Application Replicas
+  application:
+    name: vegetation-types
+    version: 0.0.1
+    image: 
+      id: reporter.miles.co.ke:5043/vegetation-types
+      tag: 0.0.1
+      pull:
+        policy: Always
+        secret: regcred
+    environment: 
+      postgres:
+        host: bitnami-postgres-postgresql
+    replicas: 1
+
+ 
+
+
+

@@ -151,17 +151,17 @@ public class RoutesConfig {
                                                 parameterBuilder()
                                                         .name("processed").in(ParameterIn.QUERY)
                                                         .description("The Processed Status (True or False)  to filter the returned values by ")
-                                                        .implementation(String.class))
+                                                        .implementation(Boolean.class))
                                         .parameter(
                                                 parameterBuilder()
                                                         .name("published").in(ParameterIn.QUERY)
                                                         .description("The Published Status (True or False)  to filter the returned values by ")
-                                                        .implementation(String.class))
+                                                        .implementation(Boolean.class))
                                         .parameter(
                                                 parameterBuilder()
                                                         .name("archived").in(ParameterIn.QUERY)
                                                         .description("The Archived Status (True or False)  to filter the returned values by ")
-                                                        .implementation(String.class))
+                                                        .implementation(Boolean.class))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Databases Records were successfully retrieved")
@@ -278,17 +278,17 @@ public class RoutesConfig {
                                                 parameterBuilder()
                                                         .name("processed").in(ParameterIn.QUERY)
                                                         .description("The Processed Status (True or False)  to filter the deleted values by ")
-                                                        .implementation(String.class))
+                                                        .implementation(Boolean.class))
                                         .parameter(
                                                 parameterBuilder()
                                                         .name("published").in(ParameterIn.QUERY)
                                                         .description("The Published Status (True or False)  to filter the deleted values by ")
-                                                        .implementation(String.class))
+                                                        .implementation(Boolean.class))
                                         .parameter(
                                                 parameterBuilder()
                                                         .name("archived").in(ParameterIn.QUERY)
                                                         .description("The Archived Status (True or False)  to filter the deleted values by ")
-                                                        .implementation(String.class))
+                                                        .implementation(Boolean.class))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Databases Records were successfully deleted")
