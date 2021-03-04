@@ -47,6 +47,7 @@ REPORTING_TABLES=1
 REPORTING_VARIABLES=1
 UNIT_CATEGORIES=1
 UNITS=1
+VEGETATION_HISTORY_VEGETATION_TYPES=1
 VEGETATION_TYPES=1
 
 
@@ -151,6 +152,15 @@ fi
 if [ $UNITS -eq 1 ]; then
 	bash $PROJECT_DIR/services/units/build.sh
 fi
+
+
+# 
+# vegetation-history-vegetation-types
+# -------------------------------------------------------------------------------------
+if [ $VEGETATION_HISTORY_VEGETATION_TYPES -eq 1 ]; then
+	bash $PROJECT_DIR/services/vegetation-history-vegetation-types/build.sh
+fi
+
 
 # vegetation-types
 # -------------------------------------------------------------------------------------
