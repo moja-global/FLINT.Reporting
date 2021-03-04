@@ -41,6 +41,7 @@ FLUX_TYPES=1
 LAND_USE_CATEGORIES=1
 LAND_USES_FLUX_TYPES=1
 LAND_USES_FLUX_TYPES_TO_REPORTING_TABLES=1
+LOCATIONS=1
 POOLS=1
 REPORTING_FRAMEWORKS=1
 REPORTING_TABLES=1
@@ -82,6 +83,13 @@ fi
 # -------------------------------------------------------------------------------------
 if [ $FLUXES_TO_REPORTING_VARIABLES -eq 1 ]; then
 	bash $PROJECT_DIR/services/fluxes-to-reporting-variables/install.sh
+fi
+
+
+# locations
+# -------------------------------------------------------------------------------------
+if [ $LOCATIONS -eq 1 ]; then
+	bash $PROJECT_DIR/services/locations/install.sh
 fi
 
 

@@ -1,8 +1,9 @@
 #!/bin/bash
 
+
 echo
 echo "---------------------------------------------------------------------------------"
-echo "Entering - Install Traefik"
+echo "Installing component"
 echo "---------------------------------------------------------------------------------"
 
 
@@ -18,37 +19,37 @@ BASEDIR="$( cd "$( dirname "$0" )" && pwd )"
 
 
 # -------------------------------------------------------------------------------------
-# ADD TRAEFIK TO THE HELM CHARTS REPO & UPDATE IT
+# SET WORKING DIRECTORY
 # -------------------------------------------------------------------------------------
 
 echo
-echo "Adding Traefik to the Helm Charts Repo"
-helm repo add traefik https://helm.traefik.io/traefik
-
-echo
-echo "Update the Helm Charts Repo"
-helm repo update
+echo "Changing working directory"
+cd $BASEDIR
 
 
 
 # -------------------------------------------------------------------------------------
-# INSTALL APPLICATION
+# GET THE NAME OF THE APPLICATION
 # -------------------------------------------------------------------------------------
 
 echo
-echo "Installing Traefik"
-helm install traefik -f $BASEDIR/values.yaml traefik/traefik
+echo "Taking ${PWD##*/} as the name of the application"
+APPLICATION=${PWD##*/}
+
 
 
 # -------------------------------------------------------------------------------------
-# EXPOSE THE APPLICATION
+# INSTALL THE APPLICATION
 # -------------------------------------------------------------------------------------
 
-# Run the command below to expose the Traefik dashboard
-# kubectl port-forward $(kubectl get pods --selector "app.kubernetes.io/name=traefik" --output=name) 9000:9000
+echo
+echo "Installing application"
+echo
+helm install $APPLICATION $BASEDIR/chart
+
+
 
 echo
 echo "---------------------------------------------------------------------------------"
-echo "Leaving - Install Traefik"
+echo "Done installing component"
 echo "---------------------------------------------------------------------------------"
-

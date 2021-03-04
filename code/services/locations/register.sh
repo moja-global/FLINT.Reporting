@@ -1,8 +1,9 @@
 #!/bin/bash
 
+
 echo
 echo "---------------------------------------------------------------------------------"
-echo "Entering - Install Traefik"
+echo "Registering component"
 echo "---------------------------------------------------------------------------------"
 
 
@@ -18,37 +19,42 @@ BASEDIR="$( cd "$( dirname "$0" )" && pwd )"
 
 
 # -------------------------------------------------------------------------------------
-# ADD TRAEFIK TO THE HELM CHARTS REPO & UPDATE IT
+# SET WORKING DIRECTORY
 # -------------------------------------------------------------------------------------
 
 echo
-echo "Adding Traefik to the Helm Charts Repo"
-helm repo add traefik https://helm.traefik.io/traefik
-
-echo
-echo "Update the Helm Charts Repo"
-helm repo update
+echo "Changing working directory"
+cd $BASEDIR
 
 
 
 # -------------------------------------------------------------------------------------
-# INSTALL APPLICATION
+# BUILD, TAG & PUSH VERSIONED IMAGE
 # -------------------------------------------------------------------------------------
 
 echo
-echo "Installing Traefik"
-helm install traefik -f $BASEDIR/values.yaml traefik/traefik
+echo "Building, tagging & pushing versioned image"
+echo
+bash mvnw dockerfile:build@tag-version
+bash mvnw dockerfile:tag@tag-version
+bash mvnw dockerfile:push@tag-version
+
 
 
 # -------------------------------------------------------------------------------------
-# EXPOSE THE APPLICATION
+# BUILD, TAG & PUSH LATEST IMAGE
 # -------------------------------------------------------------------------------------
 
-# Run the command below to expose the Traefik dashboard
-# kubectl port-forward $(kubectl get pods --selector "app.kubernetes.io/name=traefik" --output=name) 9000:9000
+#echo
+#echo "Building, tagging & pushing latest image"
+#echo
+#bash mvnw dockerfile:build@tag-latest
+#bash mvnw dockerfile:tag@tag-latest
+#bash mvnw dockerfile:push@tag-latest
+
+
 
 echo
 echo "---------------------------------------------------------------------------------"
-echo "Leaving - Install Traefik"
+echo "Done registering component"
 echo "---------------------------------------------------------------------------------"
-
