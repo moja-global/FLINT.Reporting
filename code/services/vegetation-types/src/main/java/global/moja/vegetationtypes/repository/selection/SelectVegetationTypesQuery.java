@@ -41,7 +41,7 @@ public class SelectVegetationTypesQuery {
         log.trace("Entering selectVegetationTypes()");
 
         String query =
-                "SELECT * FROM vegetation_type" +
+                "SELECT * FROM vegtypeinfo_dimension" +
                         new QueryWhereClauseBuilder()
                                 .queryParameters(parameters)
                                 .build();
@@ -55,12 +55,11 @@ public class SelectVegetationTypesQuery {
                                                 .select(query)
                                                 .get(rs ->
                                                         new VegetationTypeBuilder()
-                                                                .id(rs.getLong("id"))
-                                                                .coverTypeId(rs.getLong("cover_type_id"))
-                                                                .name(rs.getString("name"))
-                                                                .woodyType(rs.getBoolean("woody_type"))
-                                                                .naturalSystem(rs.getBoolean("natural_system"))
-                                                                .version(rs.getInt("version"))
+                                                                .id(rs.getLong("vegtypeinfo_dimension_id_pk"))
+                                                                .coverTypeId(rs.getLong("ipcccovertypeinfo_dimension_id_fk"))
+                                                                .name(rs.getString("vegtypename"))
+                                                                .woodyType(rs.getBoolean("woodtype"))
+                                                                .naturalSystem(rs.getBoolean("naturalsystem"))
                                                                 .build())));
 
 

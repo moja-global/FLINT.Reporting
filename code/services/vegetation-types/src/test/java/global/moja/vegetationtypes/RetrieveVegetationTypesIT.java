@@ -72,7 +72,6 @@ public class RetrieveVegetationTypesIT {
                         .name("First Vegetation Type")
                         .woodyType(false)
                         .naturalSystem(false)
-                        .version(1)
                         .build();
 
         vegetationType2 =
@@ -82,7 +81,6 @@ public class RetrieveVegetationTypesIT {
                         .name("Second Vegetation Type")
                         .woodyType(true)
                         .naturalSystem(false)
-                        .version(1)
                         .build();
 
         vegetationType3 =
@@ -92,7 +90,6 @@ public class RetrieveVegetationTypesIT {
                         .name("Third Vegetation Type")
                         .woodyType(true)
                         .naturalSystem(true)
-                        .version(1)
                         .build();
     }
 
@@ -132,7 +129,6 @@ public class RetrieveVegetationTypesIT {
                                         .processed(false)
                                         .published(false)
                                         .archived(false)
-                                        .version(1)
                                         .build()));
 
         webTestClient
@@ -154,14 +150,12 @@ public class RetrieveVegetationTypesIT {
                             Assertions.assertThat(response.get(0).getName()).isEqualTo(vegetationType1.getName());
                             Assertions.assertThat(response.get(0).getWoodyType()).isEqualTo(vegetationType1.getWoodyType());
                             Assertions.assertThat(response.get(0).getNaturalSystem()).isEqualTo(vegetationType1.getNaturalSystem());
-                            Assertions.assertThat(response.get(0).getVersion()).isEqualTo(1);
 
                             Assertions.assertThat(response.get(1).getId()).isEqualTo(vegetationType3.getId());
                             Assertions.assertThat(response.get(1).getCoverTypeId()).isEqualTo(vegetationType3.getCoverTypeId());
                             Assertions.assertThat(response.get(1).getName()).isEqualTo(vegetationType3.getName());
                             Assertions.assertThat(response.get(1).getWoodyType()).isEqualTo(vegetationType3.getWoodyType());
                             Assertions.assertThat(response.get(1).getNaturalSystem()).isEqualTo(vegetationType3.getNaturalSystem());
-                            Assertions.assertThat(response.get(1).getVersion()).isEqualTo(1);
 
 
                         }
@@ -186,7 +180,6 @@ public class RetrieveVegetationTypesIT {
                                         .processed(false)
                                         .published(false)
                                         .archived(false)
-                                        .version(1)
                                         .build()));
 
         webTestClient
@@ -208,7 +201,6 @@ public class RetrieveVegetationTypesIT {
                             Assertions.assertThat(response.get(0).getName()).isEqualTo(vegetationType3.getName());
                             Assertions.assertThat(response.get(0).getWoodyType()).isEqualTo(vegetationType3.getWoodyType());
                             Assertions.assertThat(response.get(0).getNaturalSystem()).isEqualTo(vegetationType3.getNaturalSystem());
-                            Assertions.assertThat(response.get(0).getVersion()).isEqualTo(1);
 
                         }
                 );
@@ -232,7 +224,6 @@ public class RetrieveVegetationTypesIT {
                                         .processed(false)
                                         .published(false)
                                         .archived(false)
-                                        .version(1)
                                         .build()));
 
         webTestClient
@@ -254,14 +245,12 @@ public class RetrieveVegetationTypesIT {
                             Assertions.assertThat(response.get(0).getName()).isEqualTo(vegetationType2.getName());
                             Assertions.assertThat(response.get(0).getWoodyType()).isEqualTo(vegetationType2.getWoodyType());
                             Assertions.assertThat(response.get(0).getNaturalSystem()).isEqualTo(vegetationType2.getNaturalSystem());
-                            Assertions.assertThat(response.get(0).getVersion()).isEqualTo(1);
 
                             Assertions.assertThat(response.get(1).getId()).isEqualTo(vegetationType3.getId());
                             Assertions.assertThat(response.get(1).getCoverTypeId()).isEqualTo(vegetationType3.getCoverTypeId());
                             Assertions.assertThat(response.get(1).getName()).isEqualTo(vegetationType3.getName());
                             Assertions.assertThat(response.get(1).getWoodyType()).isEqualTo(vegetationType3.getWoodyType());
                             Assertions.assertThat(response.get(1).getNaturalSystem()).isEqualTo(vegetationType3.getNaturalSystem());
-                            Assertions.assertThat(response.get(1).getVersion()).isEqualTo(1);
 
                         }
                 );
@@ -285,7 +274,6 @@ public class RetrieveVegetationTypesIT {
                                         .processed(false)
                                         .published(false)
                                         .archived(false)
-                                        .version(1)
                                         .build()));
 
 
@@ -308,7 +296,6 @@ public class RetrieveVegetationTypesIT {
                             Assertions.assertThat(response.get(0).getName()).isEqualTo(vegetationType3.getName());
                             Assertions.assertThat(response.get(0).getWoodyType()).isEqualTo(vegetationType3.getWoodyType());
                             Assertions.assertThat(response.get(0).getNaturalSystem()).isEqualTo(vegetationType3.getNaturalSystem());
-                            Assertions.assertThat(response.get(0).getVersion()).isEqualTo(1);
 
                         }
                 );
@@ -332,7 +319,6 @@ public class RetrieveVegetationTypesIT {
                                         .processed(false)
                                         .published(false)
                                         .archived(false)
-                                        .version(1)
                                         .build()));
 
 
@@ -355,7 +341,7 @@ public class RetrieveVegetationTypesIT {
                             Assertions.assertThat(response.get(0).getName()).isEqualTo(vegetationType3.getName());
                             Assertions.assertThat(response.get(0).getWoodyType()).isEqualTo(vegetationType3.getWoodyType());
                             Assertions.assertThat(response.get(0).getNaturalSystem()).isEqualTo(vegetationType3.getNaturalSystem());
-                            Assertions.assertThat(response.get(0).getVersion()).isEqualTo(1);
+                            
 
                         }
                 );
@@ -379,7 +365,6 @@ public class RetrieveVegetationTypesIT {
                                         .processed(false)
                                         .published(false)
                                         .archived(false)
-                                        .version(1)
                                         .build()));
 
         webTestClient
@@ -400,21 +385,21 @@ public class RetrieveVegetationTypesIT {
                             Assertions.assertThat(response.get(0).getName()).isEqualTo(vegetationType1.getName());
                             Assertions.assertThat(response.get(0).getWoodyType()).isEqualTo(vegetationType1.getWoodyType());
                             Assertions.assertThat(response.get(0).getNaturalSystem()).isEqualTo(vegetationType1.getNaturalSystem());
-                            Assertions.assertThat(response.get(0).getVersion()).isEqualTo(1);
+                            
 
                             Assertions.assertThat(response.get(1).getId()).isEqualTo(vegetationType2.getId());
                             Assertions.assertThat(response.get(1).getCoverTypeId()).isEqualTo(vegetationType2.getCoverTypeId());
                             Assertions.assertThat(response.get(1).getName()).isEqualTo(vegetationType2.getName());
                             Assertions.assertThat(response.get(1).getWoodyType()).isEqualTo(vegetationType2.getWoodyType());
                             Assertions.assertThat(response.get(1).getNaturalSystem()).isEqualTo(vegetationType2.getNaturalSystem());
-                            Assertions.assertThat(response.get(1).getVersion()).isEqualTo(1);
+                            
 
                             Assertions.assertThat(response.get(2).getId()).isEqualTo(vegetationType3.getId());
                             Assertions.assertThat(response.get(2).getCoverTypeId()).isEqualTo(vegetationType3.getCoverTypeId());
                             Assertions.assertThat(response.get(2).getName()).isEqualTo(vegetationType3.getName());
                             Assertions.assertThat(response.get(2).getWoodyType()).isEqualTo(vegetationType3.getWoodyType());
                             Assertions.assertThat(response.get(2).getNaturalSystem()).isEqualTo(vegetationType3.getNaturalSystem());
-                            Assertions.assertThat(response.get(2).getVersion()).isEqualTo(1);
+                            
 
 
                         }

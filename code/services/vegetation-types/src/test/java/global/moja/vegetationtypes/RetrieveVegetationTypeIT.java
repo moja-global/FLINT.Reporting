@@ -69,7 +69,6 @@ public class RetrieveVegetationTypeIT {
                         .name("First Vegetation Type")
                         .woodyType(false)
                         .naturalSystem(false)
-                        .version(1)
                         .build();
     }
 
@@ -108,7 +107,6 @@ public class RetrieveVegetationTypeIT {
                                         .processed(false)
                                         .published(false)
                                         .archived(false)
-                                        .version(1)
                                         .build()));
 
         webTestClient
@@ -126,7 +124,6 @@ public class RetrieveVegetationTypeIT {
                             Assertions.assertThat(response.getName()).isEqualTo(vegetationType1.getName());
                             Assertions.assertThat(response.getWoodyType()).isEqualTo(vegetationType1.getWoodyType());
                             Assertions.assertThat(response.getNaturalSystem()).isEqualTo(vegetationType1.getNaturalSystem());
-                            Assertions.assertThat(response.getVersion()).isEqualTo(1);
                         }
                 );
     }

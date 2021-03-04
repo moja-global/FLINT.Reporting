@@ -26,7 +26,6 @@ public class VegetationType implements Comparable<VegetationType> {
     private String name;
     private Boolean woodyType;
     private Boolean naturalSystem;
-    private Integer version;
 
     @Override
     public int compareTo(VegetationType vegetationType) {

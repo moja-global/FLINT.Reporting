@@ -30,9 +30,9 @@ public class QueryWhereClauseBuilder {
         // Ids
         if(queryParameters.getIds() != null && queryParameters.getIds().length != 0) {
             if(queryParameters.getIds().length == 1) {
-                query = new StringBuilder("id = " + queryParameters.getIds()[0]);
+                query = new StringBuilder("vegtypeinfo_dimension_id_pk = " + queryParameters.getIds()[0]);
             } else {
-                query = new StringBuilder("id IN (");
+                query = new StringBuilder("vegtypeinfo_dimension_id_pk IN (");
 
                 int i = 0;
                 while (i < queryParameters.getIds().length) {
@@ -57,7 +57,7 @@ public class QueryWhereClauseBuilder {
                 query = new StringBuilder();
             }
 
-            query.append("cover_type_id = ").append(queryParameters.getCoverTypeId());
+            query.append("ipcccovertypeinfo_dimension_id_fk = ").append(queryParameters.getCoverTypeId());
 
         }
 
@@ -71,7 +71,7 @@ public class QueryWhereClauseBuilder {
                 query = new StringBuilder();
             }
 
-            query.append("woody_type = ").append(queryParameters.getWoodyType());
+            query.append("woodtype = ").append(queryParameters.getWoodyType());
 
         }
 
@@ -84,7 +84,7 @@ public class QueryWhereClauseBuilder {
                 query = new StringBuilder();
             }
 
-            query.append("natural_system = ").append(queryParameters.getNaturalSystem());
+            query.append("naturalsystem = ").append(queryParameters.getNaturalSystem());
 
         }
 
@@ -98,7 +98,7 @@ public class QueryWhereClauseBuilder {
             }
 
             // Finds any values that have the name in any position
-            query.append("name LIKE '%").append(queryParameters.getName()).append("%'");
+            query.append("vegtypename LIKE '%").append(queryParameters.getName()).append("%'");
 
         }
 

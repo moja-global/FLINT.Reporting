@@ -22,7 +22,6 @@ public class VegetationTypeBuilder {
 	private String name;
 	private Boolean woodyType;
 	private Boolean naturalSystem;
-	private Integer version;
 
 	public VegetationTypeBuilder id(Long id) {
 		this.id = id;
@@ -49,14 +48,7 @@ public class VegetationTypeBuilder {
 		return this;
 	}
 
-
-
-	public VegetationTypeBuilder version(Integer version) {
-		this.version = version;
-		return this;
-	}
-
 	public VegetationType build(){
-		return new VegetationType(id,coverTypeId,name,woodyType,naturalSystem,version);
+		return new VegetationType(id,coverTypeId,name,woodyType,naturalSystem);
 	}
 }

@@ -73,12 +73,6 @@ public class DatabaseBuilder {
 		return this;
 	}
 
-
-	public DatabaseBuilder version(Integer version) {
-		this.version = version;
-		return this;
-	}
-
 	public Database build(){
 
 		return new Database(id,label,description,url,startYear,endYear,processed,published,archived,version);
