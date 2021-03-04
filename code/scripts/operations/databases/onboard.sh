@@ -39,7 +39,7 @@ read DATABASE
 # Check if the database's backup file exists locally; quit if it doesn't
 # -------------------------------------------------------------------------------------
 
-if [ ! -f '$PROJECT_DIR/data/$DATABASE.backup' ]; then
+if [ ! -f $PROJECT_DIR/data/$DATABASE.backup ]; then
     echo
     echo "$DATABASE's backup does not exist"
     echo "Terminating $DATABASE's onboarding"

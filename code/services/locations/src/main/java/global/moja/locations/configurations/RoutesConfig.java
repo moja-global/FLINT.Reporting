@@ -46,6 +46,11 @@ public class RoutesConfig {
                                         .description("Retrieves a single Location Record from the database given its unique identifier")
                                         .parameter(
                                                 parameterBuilder()
+                                                        .name("databaseId").in(ParameterIn.PATH)
+                                                        .description("The unique identifier of the database from which the record should be retrieved")
+                                                        .implementation(Long.class))
+                                        .parameter(
+                                                parameterBuilder()
                                                         .name("id").in(ParameterIn.PATH)
                                                         .description("The unique identifier of the Location Record")
                                                         .implementation(Long.class))
@@ -69,6 +74,11 @@ public class RoutesConfig {
                                         .beanClass(LocationsHandler.class)
                                         .beanMethod("retrieveLocations")
                                         .description("Retrieves all or some of the Locations Records from the database depending on whether or not query parameters were included in the query string")
+                                        .parameter(
+                                                parameterBuilder()
+                                                        .name("databaseId").in(ParameterIn.PATH)
+                                                        .description("The unique identifier of the database from which the record should be retrieved")
+                                                        .implementation(Long.class))
                                         .parameter(
                                                 parameterBuilder()
                                                         .name("ids").in(ParameterIn.QUERY)
