@@ -40,7 +40,7 @@ public class SelectLocationsQuery {
         log.trace("Entering selectLocations()");
 
         String query =
-                "SELECT * FROM location" +
+                "SELECT * FROM location_dimension" +
                         new QueryWhereClauseBuilder()
                                 .queryParameters(parameters)
                                 .build();

@@ -1,7 +1,7 @@
 -- ------------------------------------------------------------
 -- Create Table
 -- ------------------------------------------------------------
-CREATE TABLE location (
+CREATE TABLE location_dimension (
     location_dimension_id_pk SERIAL UNIQUE PRIMARY KEY NOT NULL,
     countyinfo_dimension_id_fk INTEGER NOT NULL,
     tileinfo_dimension_id_fk INTEGER NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE location (
 -- Add Some dummy data
 -- ------------------------------------------------------------
 
-INSERT INTO location(
+INSERT INTO location_dimension(
 location_dimension_id_pk,
 countyinfo_dimension_id_fk,
 tileinfo_dimension_id_fk,
@@ -24,7 +24,7 @@ unitcount,
 unitareasum)
 VALUES(1,1,1,1,1,1.0);
 
-INSERT INTO location(
+INSERT INTO location_dimension(
 location_dimension_id_pk,
 countyinfo_dimension_id_fk,
 tileinfo_dimension_id_fk,
@@ -33,7 +33,7 @@ unitcount,
 unitareasum)
 VALUES(2,2,2,2,2,2.0);
 
-INSERT INTO location(
+INSERT INTO location_dimension(
 location_dimension_id_pk,
 countyinfo_dimension_id_fk,
 tileinfo_dimension_id_fk,

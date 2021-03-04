@@ -36,7 +36,7 @@ public class SelectLocationQuery {
 
 		log.trace("Entering selectLocation()");
 
-		String query = "SELECT * FROM location WHERE location_dimension_id_pk = ?";
+		String query = "SELECT * FROM location_dimension WHERE location_dimension_id_pk = ?";
 
 
 		return
