@@ -35,6 +35,7 @@ echo
 CONVERSION_AND_REMAINING_PERIODS=1
 COVER_TYPES=1
 DATABASES=1
+DATES=1
 EMISSION_TYPES=1
 FLUXES_TO_REPORTING_VARIABLES=1
 FLUX_TYPES=1
@@ -71,6 +72,14 @@ fi
 if [ $DATABASES -eq 1 ]; then
 	bash $PROJECT_DIR/services/databases/uninstall.sh
 fi
+
+
+# dates
+# -------------------------------------------------------------------------------------
+if [ $DATES -eq 1 ]; then
+	bash $PROJECT_DIR/services/dates/uninstall.sh
+fi
+
 
 # emission-types
 # -------------------------------------------------------------------------------------
