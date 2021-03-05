@@ -4,7 +4,7 @@
 CREATE TABLE accountability_rule (
     id SERIAL UNIQUE PRIMARY KEY NOT NULL,
     accountability_type_id INTEGER NOT NULL,
-    parent_party_type_id INTEGER NOT NULL,
+    parent_party_type_id INTEGER NULL,
     subsidiary_party_type_id INTEGER NOT NULL,
     version INTEGER NOT NULL);
 

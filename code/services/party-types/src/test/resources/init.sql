@@ -3,7 +3,7 @@
 -- ------------------------------------------------------------
 CREATE TABLE party_type (
     id SERIAL UNIQUE PRIMARY KEY NOT NULL,
-    parent_party_type_id INTEGER NOT NULL,
+    parent_party_type_id INTEGER NULL,
     name VARCHAR(250) NOT NULL,
     version INTEGER NOT NULL);
 
