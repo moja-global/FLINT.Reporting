@@ -1,49 +1,49 @@
-"Parent Party Type Id","Parent Party Type Name","Name","Version"
-4,"Country","Kenya",1
-5,"County","Baringo",1
-5,"County","Bomet",1
-5,"County","Bungoma",1
-5,"County","Busia",1
-5,"County","Elgeyo / Marakwet",1
-5,"County","Garissa",1
-5,"County","Homa Bay",1
-5,"County","Isiolo",1
-5,"County","Kajiado",1
-5,"County","Kakamega",1
-5,"County","Kericho",1
-5,"County","Kirinyaga",1
-5,"County","Kisii",1
-5,"County","Kisumu",1
-5,"County","Kitui",1
-5,"County","Kwale",1
-5,"County","Laikipia",1
-5,"County","Lamu",1
-5,"County","Mandera",1
-5,"County","Marsabit",1
-5,"County","Meru",1
-5,"County","Migori",1
-5,"County","Nakuru",1
-5,"County","Nandi",1
-5,"County","Narok",1
-5,"County","Nyamira",1
-5,"County","Nyandarua",1
-5,"County","Nyeri",1
-5,"County","Samburu",1
-5,"County","Siaya",1
-5,"County","Taita / Taveta",1
-5,"County","Tana River",1
-5,"County","Trans - Nzoia",1
-5,"County","Turkana",1
-5,"County","Uasin Gishu",1
-5,"County","Vihiga",1
-5,"County","Wajir",1
-5,"County","Mombasa",1
-5,"County","Kilifi",1
-5,"County","Embu",1
-5,"County","Makueni",1
-5,"County","Nairobi",1
-5,"County","Machakos",1
-5,"County","Kiambu",1
-5,"County","Muranga",1
-5,"County","West Pokot",1
-5,"County","Tharaka Nithi",1
+"Parent Party Type Id","Name","Version"
+4,"Kenya",1
+5,"Baringo",1
+5,"Bomet",1
+5,"Bungoma",1
+5,"Busia",1
+5,"Elgeyo / Marakwet",1
+5,"Garissa",1
+5,"Homa Bay",1
+5,"Isiolo",1
+5,"Kajiado",1
+5,"Kakamega",1
+5,"Kericho",1
+5,"Kirinyaga",1
+5,"Kisii",1
+5,"Kisumu",1
+5,"Kitui",1
+5,"Kwale",1
+5,"Laikipia",1
+5,"Lamu",1
+5,"Mandera",1
+5,"Marsabit",1
+5,"Meru",1
+5,"Migori",1
+5,"Nakuru",1
+5,"Nandi",1
+5,"Narok",1
+5,"Nyamira",1
+5,"Nyandarua",1
+5,"Nyeri",1
+5,"Samburu",1
+5,"Siaya",1
+5,"Taita / Taveta",1
+5,"Tana River",1
+5,"Trans - Nzoia",1
+5,"Turkana",1
+5,"Uasin Gishu",1
+5,"Vihiga",1
+5,"Wajir",1
+5,"Mombasa",1
+5,"Kilifi",1
+5,"Embu",1
+5,"Makueni",1
+5,"Nairobi",1
+5,"Machakos",1
+5,"Kiambu",1
+5,"Muranga",1
+5,"West Pokot",1
+5,"Tharaka Nithi",1
