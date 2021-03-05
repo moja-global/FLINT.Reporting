@@ -4,7 +4,7 @@
 
 echo
 echo "---------------------------------------------------------------------------------"
-echo "Entering Databases Initialization Script"
+echo "Entering databases Initialization Script"
 echo "---------------------------------------------------------------------------------"
 echo
 
@@ -65,6 +65,9 @@ fi
 # ----------------------------------------------------------------------------------
 
 # Single databases
+ACCOUNTABILITIES=1
+ACCOUNTABILITY_RULES=1
+ACCOUNTABILITY_TYPES=1
 CONVERSION_AND_REMAINING_PERIODS=1
 COVER_TYPES=1
 DATABASES=1
@@ -74,6 +77,8 @@ FLUX_TYPES=1
 LAND_USE_CATEGORIES=1
 LAND_USES_FLUX_TYPES=1
 LAND_USES_FLUX_TYPES_TO_REPORTING_TABLES=1
+PARTIES=1
+PARTY_TYPES=1
 POOLS=1
 QUANTITY_OBSERVATIONS=1
 REPORTING_FRAMEWORKS=1
@@ -84,7 +89,7 @@ UNITS=1
 
 
 
-# Database Collections
+# database Collections
 
 
 
@@ -94,12 +99,84 @@ echo "--------------------------------------------------------------------------
 echo
 
 
+# accountabilities
+# -------------------------------------------------------------------------------------
+if [ $ACCOUNTABILITIES -eq 1 ]; then
+
+  echo
+  echo "Setting up accountabilities database"
+  echo
+
+  # drop the accountabilities database if it exists
+  psql -c "DROP DATABASE IF EXISTS accountabilities"
+
+  # create a new accountabilities database
+  psql -c "CREATE DATABASE accountabilities"
+
+  # Create the accountability's database objects
+  psql -d "accountabilities" -1 -f "$PROJECT_DIR/services/accountabilities/src/main/resources/accountabilities.sql"
+
+  # Load the accountability's database data
+  psql -d "accountabilities" -1 -c "\copy accountability(accountability_type_id,parent_party_id,subsidiary_party_id,version) from \
+          '$PROJECT_DIR/data/accountabilities.csv' DELIMITER ',' CSV HEADER"
+
+fi
+
+
+# accountability rules
+# -------------------------------------------------------------------------------------
+if [ $ACCOUNTABILITY_RULES -eq 1 ]; then
+
+  echo
+  echo "Setting up accountability rules database"
+  echo
+
+  # drop the accountability rules database if it exists
+  psql -c "DROP DATABASE IF EXISTS accountability_rules"
+
+  # create a new accountability rules database
+  psql -c "CREATE DATABASE accountability_rules"
+
+  # Create the accountability rules database objects
+  psql -d "accountability_rules" -1 -f "$PROJECT_DIR/services/accountability-rules/src/main/resources/accountability_rules.sql"
+
+  # Load the accountability rules database data
+  psql -d "accountability_rules" -1 -c "\copy accountability_rule(accountability_type_id,parent_party_type_id,subsidiary_party_type_id, version) from \
+          '$PROJECT_DIR/data/accountability_rules.csv' DELIMITER ',' CSV HEADER"
+
+fi
+
+
+# accountability types
+# -------------------------------------------------------------------------------------
+if [ $ACCOUNTABILITY_TYPES -eq 1 ]; then
+
+  echo
+  echo "Setting up accountability types database"
+  echo
+
+  # drop the accountability types database if it exists
+  psql -c "DROP DATABASE IF EXISTS accountability_types"
+
+  # create a new accountability types database
+  psql -c "CREATE DATABASE accountability_types"
+
+  # Create the accountability types database objects
+  psql -d "accountability_types" -1 -f "$PROJECT_DIR/services/accountability-types/src/main/resources/accountability_types.sql"
+
+  # Load the accountability types database data
+  psql -d "accountability_types" -1 -c "\copy accountability_type(name, version) from \
+          '$PROJECT_DIR/data/accountability_types.csv' DELIMITER ',' CSV HEADER"
+
+fi
+
+
 # conversion and remaining periods
 # -------------------------------------------------------------------------------------
 if [ $CONVERSION_AND_REMAINING_PERIODS -eq 1 ]; then
 
   echo
-  echo "Setting up conversion and remaining periods Database"
+  echo "Setting up conversion and remaining periods database"
   echo
 
   # drop the conversion and remaining periods database if it exists
@@ -123,7 +200,7 @@ fi
 if [ $COVER_TYPES -eq 1 ]; then
 
   echo
-  echo "Setting up cover types Database"
+  echo "Setting up cover types database"
   echo
 
   # drop the cover types database if it exists
@@ -171,7 +248,7 @@ fi
 if [ $EMISSION_TYPES -eq 1 ]; then
 
   echo
-  echo "Setting up emission types Database"
+  echo "Setting up emission types database"
   echo
 
   # drop the emission types database if it exists
@@ -326,6 +403,54 @@ if [ $LAND_USES_FLUX_TYPES_TO_REPORTING_TABLES -eq 1 ]; then
   # Load the land uses flux types to reporting tables database data
   psql -d "land_uses_flux_types_to_reporting_tables" -1 -c "\copy land_use_flux_type_to_reporting_table(land_use_flux_type_id, emission_type_id, reporting_table_id, version) from \
           '$PROJECT_DIR/data/land_uses_flux_types_to_reporting_tables.csv' DELIMITER ',' CSV HEADER"
+
+fi
+
+
+# parties
+# -------------------------------------------------------------------------------------
+if [ $PARTIES -eq 1 ]; then
+
+  echo
+  echo "Setting up parties party"
+  echo
+
+  # drop the parties party if it exists
+  psql -c "DROP DATABASE IF EXISTS parties"
+
+  # create a new parties party
+  psql -c "CREATE DATABASE parties"
+
+  # Create the party's party objects
+  psql -d "parties" -1 -f "$PROJECT_DIR/services/parties/src/main/resources/parties.sql"
+
+  # Load the party's party data
+  psql -d "parties" -1 -c "\copy party(party_type_id,name,version) from \
+          '$PROJECT_DIR/data/parties.csv' DELIMITER ',' CSV HEADER"
+
+fi
+
+
+# party types
+# -------------------------------------------------------------------------------------
+if [ $PARTY_TYPES -eq 1 ]; then
+
+  echo
+  echo "Setting up party types database"
+  echo
+
+  # drop the party types database if it exists
+  psql -c "DROP DATABASE IF EXISTS party_types"
+
+  # create a new party types database
+  psql -c "CREATE DATABASE party_types"
+
+  # Create the party types database objects
+  psql -d "party_types" -1 -f "$PROJECT_DIR/services/party-types/src/main/resources/party_types.sql"
+
+  # Load the party types database data
+  psql -d "party_types" -1 -c "\copy party_type(parent_party_type_id, name, version) from \
+          '$PROJECT_DIR/data/party_types.csv' DELIMITER ',' CSV HEADER"
 
 fi
 
@@ -510,6 +635,6 @@ echo
 
 echo
 echo "---------------------------------------------------------------------------------"
-echo "Leaving Databases Initialization Script"
+echo "Leaving databases Initialization Script"
 echo "---------------------------------------------------------------------------------"
 echo

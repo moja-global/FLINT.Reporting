@@ -1,0 +1,48 @@
+# Default values for the Helm Chart.
+# This is a YAML-formatted file.
+
+microservice:
+
+  # Ingress
+  ingress:
+    name: party-types
+    class: traefik 
+    rules:
+      host: reporter.miles.co.ke
+      http:
+        path: /api/v1/party_types
+        backend:
+          service:
+            name: party-types
+            port: 80
+
+  # Service
+  service:
+    name: party-types
+    port:
+      default: 80
+      target: 8080
+
+  # Deployment
+  deployment:
+    name: party-types
+
+  # Application / Application Replicas
+  application:
+    name: party-types
+    version: 0.0.1
+    image: 
+      id: reporter.miles.co.ke:5043/party-types
+      tag: 0.0.1
+      pull:
+        policy: Always
+        secret: regcred
+    environment: 
+      postgres:
+        host: bitnami-postgres-postgresql
+    replicas: 1
+
+ 
+
+
+

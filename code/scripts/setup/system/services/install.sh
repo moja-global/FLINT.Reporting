@@ -32,6 +32,9 @@ echo
 # Use the flags 1 and 0 below to configure the services that you want to install
 # 1 = on, 0 = off
 # ----------------------------------------------------------------------------------
+ACCOUNTABILITIES=1
+ACCOUNTABILITY_RULES=1
+ACCOUNTABILITY_TYPES=1
 CONVERSION_AND_REMAINING_PERIODS=1
 COVER_TYPES=1
 DATABASES=1
@@ -44,6 +47,8 @@ LAND_USE_CATEGORIES=1
 LAND_USES_FLUX_TYPES=1
 LAND_USES_FLUX_TYPES_TO_REPORTING_TABLES=1
 LOCATIONS=1
+PARTIES=1
+PARTY_TYPES=1
 POOLS=1
 QUANTITY_OBSERVATIONS=1
 REPORTING_FRAMEWORKS=1
@@ -53,6 +58,27 @@ UNIT_CATEGORIES=1
 UNITS=1
 VEGETATION_HISTORY_VEGETATION_TYPES=1
 VEGETATION_TYPES=1
+
+
+# accountabilities
+# -------------------------------------------------------------------------------------
+if [ $ACCOUNTABILITIES -eq 1 ]; then
+	bash $PROJECT_DIR/services/accountabilities/install.sh
+fi
+
+
+# accountability-rules
+# -------------------------------------------------------------------------------------
+if [ $ACCOUNTABILITY_RULES -eq 1 ]; then
+	bash $PROJECT_DIR/services/accountability-rules/install.sh
+fi
+
+
+# accountability-types
+# -------------------------------------------------------------------------------------
+if [ $ACCOUNTABILITY_TYPES -eq 1 ]; then
+	bash $PROJECT_DIR/services/accountability-types/install.sh
+fi
 
 
 # conversion-and-remaining-periods
@@ -136,6 +162,20 @@ fi
 # -------------------------------------------------------------------------------------
 if [ $LOCATIONS -eq 1 ]; then
 	bash $PROJECT_DIR/services/locations/install.sh
+fi
+
+
+# parties
+# -------------------------------------------------------------------------------------
+if [ $PARTIES -eq 1 ]; then
+	bash $PROJECT_DIR/services/parties/install.sh
+fi
+
+
+# party-types
+# -------------------------------------------------------------------------------------
+if [ $PARTY_TYPES -eq 1 ]; then
+	bash $PROJECT_DIR/services/party-types/install.sh
 fi
 
 

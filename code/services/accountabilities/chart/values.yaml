@@ -1,0 +1,48 @@
+# Default values for the Helm Chart.
+# This is a YAML-formatted file.
+
+microservice:
+
+  # Ingress
+  ingress:
+    name: accountabilities
+    class: traefik 
+    rules:
+      host: reporter.miles.co.ke
+      http:
+        path: /api/v1/accountabilities
+        backend:
+          service:
+            name: accountabilities
+            port: 80
+
+  # Service
+  service:
+    name: accountabilities
+    port:
+      default: 80
+      target: 8080
+
+  # Deployment
+  deployment:
+    name: accountabilities
+
+  # Application / Application Replicas
+  application:
+    name: accountabilities
+    version: 0.0.1
+    image: 
+      id: reporter.miles.co.ke:5043/accountabilities
+      tag: 0.0.1
+      pull:
+        policy: Always
+        secret: regcred
+    environment: 
+      postgres:
+        host: bitnami-postgres-postgresql
+    replicas: 1
+
+ 
+
+
+
