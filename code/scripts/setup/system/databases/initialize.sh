@@ -75,6 +75,7 @@ LAND_USE_CATEGORIES=1
 LAND_USES_FLUX_TYPES=1
 LAND_USES_FLUX_TYPES_TO_REPORTING_TABLES=1
 POOLS=1
+QUANTITY_OBSERVATIONS=1
 REPORTING_FRAMEWORKS=1
 REPORTING_TABLES=1
 REPORTING_VARIABLES=1
@@ -349,6 +350,27 @@ if [ $POOLS -eq 1 ]; then
   # Load the pool's database data
   psql -d "pools" -1 -c "\copy pool(name,description,version) from \
           '$PROJECT_DIR/data/pools.csv' DELIMITER ',' CSV HEADER"
+
+fi
+
+
+# quantity observations
+# -------------------------------------------------------------------------------------
+if [ $QUANTITY_OBSERVATIONS -eq 1 ]; then
+
+  echo
+  echo "Setting up quantity observations database"
+  echo
+
+  # drop the quantity observations database if it exists
+  psql -c "DROP DATABASE IF EXISTS quantity_observations"
+
+  # create a new quantity observations database
+  psql -c "CREATE DATABASE quantity_observations"
+
+  # Create the quantity observations database objects
+  psql -d "quantity_observations" -1 -f "$PROJECT_DIR/services/quantity-observations/src/main/resources/quantity_observations.sql"
+
 
 fi
 

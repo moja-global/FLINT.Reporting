@@ -1,0 +1,48 @@
+# Default values for the Helm Chart.
+# This is a YAML-formatted file.
+
+microservice:
+
+  # Ingress
+  ingress:
+    name: quantity-observations
+    class: traefik 
+    rules:
+      host: reporter.miles.co.ke
+      http:
+        path: /api/v1/quantity_observations
+        backend:
+          service:
+            name: quantity-observations
+            port: 80
+
+  # Service
+  service:
+    name: quantity-observations
+    port:
+      default: 80
+      target: 8080
+
+  # Deployment
+  deployment:
+    name: quantity-observations
+
+  # Application / Application Replicas
+  application:
+    name: quantity-observations
+    version: 0.0.1
+    image: 
+      id: reporter.miles.co.ke:5043/quantity-observations
+      tag: 0.0.1
+      pull:
+        policy: Always
+        secret: regcred
+    environment: 
+      postgres:
+        host: bitnami-postgres-postgresql
+    replicas: 1
+
+ 
+
+
+

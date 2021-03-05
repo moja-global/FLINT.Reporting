@@ -45,6 +45,7 @@ LAND_USES_FLUX_TYPES=1
 LAND_USES_FLUX_TYPES_TO_REPORTING_TABLES=1
 LOCATIONS=1
 POOLS=1
+QUANTITY_OBSERVATIONS=1
 REPORTING_FRAMEWORKS=1
 REPORTING_TABLES=1
 REPORTING_VARIABLES=1
@@ -142,6 +143,13 @@ fi
 # -------------------------------------------------------------------------------------
 if [ $POOLS -eq 1 ]; then
 	bash $PROJECT_DIR/services/pools/register.sh
+fi
+
+
+# quantity-observations
+# -------------------------------------------------------------------------------------
+if [ $QUANTITY_OBSERVATIONS -eq 1 ]; then
+	bash $PROJECT_DIR/services/quantity-observations/register.sh
 fi
 
 
