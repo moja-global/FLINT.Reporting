@@ -38,6 +38,7 @@ DATABASES=1
 DATES=1
 EMISSION_TYPES=1
 FLUXES_TO_REPORTING_VARIABLES=1
+FLUX_REPORTING_RESULTS=1
 FLUX_TYPES=1
 LAND_USE_CATEGORIES=1
 LAND_USES_FLUX_TYPES=1
@@ -95,10 +96,10 @@ if [ $FLUXES_TO_REPORTING_VARIABLES -eq 1 ]; then
 fi
 
 
-# locations
+# flux-reporting-results
 # -------------------------------------------------------------------------------------
-if [ $LOCATIONS -eq 1 ]; then
-	bash $PROJECT_DIR/services/locations/install.sh
+if [ $FLUX_REPORTING_RESULTS -eq 1 ]; then
+	bash $PROJECT_DIR/services/flux-reporting-results/install.sh
 fi
 
 
@@ -127,6 +128,13 @@ fi
 # -------------------------------------------------------------------------------------
 if [ $LAND_USES_FLUX_TYPES_TO_REPORTING_TABLES -eq 1 ]; then
 	bash $PROJECT_DIR/services/land-uses-flux-types-to-reporting-tables/install.sh
+fi
+
+
+# locations
+# -------------------------------------------------------------------------------------
+if [ $LOCATIONS -eq 1 ]; then
+	bash $PROJECT_DIR/services/locations/install.sh
 fi
 
 

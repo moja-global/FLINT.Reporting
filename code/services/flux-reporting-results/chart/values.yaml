@@ -1,0 +1,48 @@
+# Default values for the Helm Chart.
+# This is a YAML-formatted file.
+
+microservice:
+
+  # Ingress
+  ingress:
+    name: flux-reporting-results
+    class: traefik 
+    rules:
+      host: reporter.miles.co.ke
+      http:
+        path: /api/v1/flux_reporting_results
+        backend:
+          service:
+            name: flux-reporting-results
+            port: 80
+
+  # Service
+  service:
+    name: flux-reporting-results
+    port:
+      default: 80
+      target: 8080
+
+  # Deployment
+  deployment:
+    name: flux-reporting-results
+
+  # Application / Application Replicas
+  application:
+    name: flux-reporting-results
+    version: 0.0.1
+    image: 
+      id: reporter.miles.co.ke:5043/flux-reporting-results
+      tag: 0.0.1
+      pull:
+        policy: Always
+        secret: regcred
+    environment: 
+      postgres:
+        host: bitnami-postgres-postgresql
+    replicas: 1
+
+ 
+
+
+
