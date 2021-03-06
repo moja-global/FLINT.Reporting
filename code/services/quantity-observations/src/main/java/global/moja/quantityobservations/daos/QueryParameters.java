@@ -23,6 +23,8 @@ public class QueryParameters {
     private Long[] ids;
     private Long taskId;
     private Long partyId;
+    private Long databaseId;
+    private Long reportingTableId;
     private Long reportingVariableId;
     private Integer year;
 }

@@ -20,6 +20,8 @@ public class QuantityObservationBuilder {
 	private Long id;
 	private Long taskId;
 	private Long partyId;
+	private Long databaseId;
+	private Long reportingTableId;
 	private Long reportingVariableId;
 	private Integer year;
 	private Double amount;
@@ -38,6 +40,16 @@ public class QuantityObservationBuilder {
 
 	public QuantityObservationBuilder partyId(Long partyId) {
 		this.partyId = partyId;
+		return this;
+	}
+
+	public QuantityObservationBuilder databaseId(Long databaseId) {
+		this.databaseId = databaseId;
+		return this;
+	}
+
+	public QuantityObservationBuilder reportingTableId(Long reportingTableId) {
+		this.reportingTableId = reportingTableId;
 		return this;
 	}
 
@@ -67,6 +79,6 @@ public class QuantityObservationBuilder {
 	}
 
 	public QuantityObservation build(){
-		return new QuantityObservation(id,taskId,partyId,reportingVariableId,year,amount,unitId,version);
+		return new QuantityObservation(id,taskId,partyId,databaseId,reportingTableId,reportingVariableId,year,amount,unitId,version);
 	}
 }

@@ -144,6 +144,16 @@ public class RoutesConfig {
                                                         .implementation(Long.class))
                                         .parameter(
                                                 parameterBuilder()
+                                                        .name("databaseId").in(ParameterIn.QUERY)
+                                                        .description("The unique identifier of the FLINT Output Database to filter the returned values by")
+                                                        .implementation(Long.class))
+                                        .parameter(
+                                                parameterBuilder()
+                                                        .name("reportingTableId").in(ParameterIn.QUERY)
+                                                        .description("The unique identifier of the Reporting Table to filter the returned values by")
+                                                        .implementation(Long.class))
+                                        .parameter(
+                                                parameterBuilder()
                                                         .name("reportingVariableId").in(ParameterIn.QUERY)
                                                         .description("The unique identifier of the Reporting Variable to filter the returned values by")
                                                         .implementation(Long.class))
@@ -254,6 +264,16 @@ public class RoutesConfig {
                                                 parameterBuilder()
                                                         .name("partyId").in(ParameterIn.QUERY)
                                                         .description("The unique identifier of the Party (Party being an organization or place e.g. County) to filter the deleted values by")
+                                                        .implementation(Long.class))
+                                        .parameter(
+                                                parameterBuilder()
+                                                        .name("databaseId").in(ParameterIn.QUERY)
+                                                        .description("The unique identifier of the FLINT Output Database to filter the deleted values by")
+                                                        .implementation(Long.class))
+                                        .parameter(
+                                                parameterBuilder()
+                                                        .name("reportingTableId").in(ParameterIn.QUERY)
+                                                        .description("The unique identifier of the Reporting Table to filter the deleted values by")
                                                         .implementation(Long.class))
                                         .parameter(
                                                 parameterBuilder()

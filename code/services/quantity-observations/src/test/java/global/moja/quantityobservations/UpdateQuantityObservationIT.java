@@ -60,6 +60,8 @@ public class UpdateQuantityObservationIT {
                         .id(1L)
                         .taskId(10L)
                         .partyId(10L)
+                        .databaseId(10L)
+                        .reportingTableId(10L)
                         .reportingVariableId(10L)
                         .year(2001)
                         .amount(10.0)
@@ -103,6 +105,8 @@ public class UpdateQuantityObservationIT {
                             Assertions.assertThat(response.getId()).isEqualTo(quantityObservation1.getId());
                             Assertions.assertThat(response.getTaskId()).isEqualTo(quantityObservation1.getTaskId());
                             Assertions.assertThat(response.getPartyId()).isEqualTo(quantityObservation1.getPartyId());
+                            Assertions.assertThat(response.getDatabaseId()).isEqualTo(quantityObservation1.getDatabaseId());
+                            Assertions.assertThat(response.getReportingTableId()).isEqualTo(quantityObservation1.getReportingTableId());
                             Assertions.assertThat(response.getReportingVariableId()).isEqualTo(quantityObservation1.getReportingVariableId());
                             Assertions.assertThat(response.getYear()).isEqualTo(quantityObservation1.getYear());
                             Assertions.assertThat(response.getAmount()).isEqualTo(quantityObservation1.getAmount());

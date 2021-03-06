@@ -22,6 +22,8 @@ public class QueryParametersBuilder {
     private Long[] ids;
     private Long taskId;
     private Long partyId;
+    private Long databaseId;
+    private Long reportingTableId;
     private Long reportingVariableId;
     private Integer year;
 
@@ -52,6 +54,20 @@ public class QueryParametersBuilder {
         return this;
     }
 
+    public QueryParametersBuilder databaseId(ServerRequest request) {
+        this.databaseId =
+                request.queryParam("databaseId").isPresent() ?
+                        Long.parseLong(request.queryParam("databaseId").get()) : null;
+        return this;
+    }
+
+    public QueryParametersBuilder reportingTableId(ServerRequest request) {
+        this.reportingTableId =
+                request.queryParam("reportingTableId").isPresent() ?
+                        Long.parseLong(request.queryParam("reportingTableId").get()) : null;
+        return this;
+    }
+
     public QueryParametersBuilder reportingVariableId(ServerRequest request) {
         this.reportingVariableId =
                 request.queryParam("reportingVariableId").isPresent() ?
@@ -68,7 +84,7 @@ public class QueryParametersBuilder {
 
 
     public QueryParameters build() {
-        return new QueryParameters(ids, taskId, partyId, reportingVariableId, year);
+        return new QueryParameters(ids, taskId, partyId,databaseId,reportingTableId,reportingVariableId, year);
     }
 
 }

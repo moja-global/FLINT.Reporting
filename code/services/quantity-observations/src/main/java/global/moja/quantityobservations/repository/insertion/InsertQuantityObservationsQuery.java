@@ -42,8 +42,15 @@ public class InsertQuantityObservationsQuery {
         log.trace("Entering insertQuantityObservations");
 
         String query =
-                "INSERT INTO quantity_observation(task_id,party_id,reporting_variable_id,year,amount,unit_id) " +
-                        "VALUES(?,?,?,?,?,?)";
+                "INSERT INTO quantity_observation(" +
+                        "task_id,party_id,database_id," +
+                        "reporting_table_id," +
+                        "reporting_variable_id," +
+                        "year," +
+                        "amount," +
+                        "unit_id) " +
+                        "VALUES(?,?,?,?,?,?,?,?)";
+
         return
                 Flux.from(
                         databaseConfig
@@ -62,6 +69,8 @@ public class InsertQuantityObservationsQuery {
             temp.add(Arrays.asList(
                     quantityObservation.getTaskId(),
                     quantityObservation.getPartyId(),
+                    quantityObservation.getDatabaseId(),
+                    quantityObservation.getReportingTableId(),
                     quantityObservation.getReportingVariableId(),
                     quantityObservation.getYear(),
                     quantityObservation.getAmount(),

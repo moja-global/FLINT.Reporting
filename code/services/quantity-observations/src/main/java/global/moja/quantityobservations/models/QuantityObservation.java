@@ -24,6 +24,8 @@ public class QuantityObservation implements Comparable<QuantityObservation> {
     private Long id;
     private Long taskId;
     private Long partyId;
+    private Long databaseId;
+    private Long reportingTableId;
     private Long reportingVariableId;
     private Integer year;
     private Double amount;

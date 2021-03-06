@@ -59,6 +59,8 @@ public class CreateQuantityObservationIT {
                         .id(4L)
                         .taskId(4L)
                         .partyId(4L)
+                        .databaseId(4L)
+                        .reportingTableId(4L)
                         .reportingVariableId(4L)
                         .year(1994)
                         .amount(4.0)
@@ -101,6 +103,8 @@ public class CreateQuantityObservationIT {
                     Assertions.assertThat(response.getId()).isEqualTo(quantityObservation4.getId());
                     Assertions.assertThat(response.getTaskId()).isEqualTo(quantityObservation4.getTaskId());
                     Assertions.assertThat(response.getPartyId()).isEqualTo(quantityObservation4.getPartyId());
+                    Assertions.assertThat(response.getDatabaseId()).isEqualTo(quantityObservation4.getDatabaseId());
+                    Assertions.assertThat(response.getReportingTableId()).isEqualTo(quantityObservation4.getReportingTableId());
                     Assertions.assertThat(response.getReportingVariableId()).isEqualTo(quantityObservation4.getReportingVariableId());
                     Assertions.assertThat(response.getYear()).isEqualTo(quantityObservation4.getYear());
                     Assertions.assertThat(response.getAmount()).isEqualTo(quantityObservation4.getAmount());

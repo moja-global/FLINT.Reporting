@@ -37,8 +37,16 @@ public class InsertQuantityObservationQuery {
         log.trace("Entering insertQuantityObservation()");
 
         String query =
-                "INSERT INTO quantity_observation(task_id,party_id,reporting_variable_id,year,amount,unit_id) " +
-                        "VALUES(?,?,?,?,?,?)";
+                "INSERT INTO quantity_observation(" +
+                        "task_id," +
+                        "party_id," +
+                        "database_id," +
+                        "reporting_table_id," +
+                        "reporting_variable_id," +
+                        "year," +
+                        "amount," +
+                        "unit_id) " +
+                        "VALUES(?,?,?,?,?,?,?,?)";
 
         return
                 Mono.from(
@@ -48,6 +56,8 @@ public class InsertQuantityObservationQuery {
                                 .parameters(
                                         quantityObservation.getTaskId(),
                                         quantityObservation.getPartyId(),
+                                        quantityObservation.getDatabaseId(),
+                                        quantityObservation.getReportingTableId(),
                                         quantityObservation.getReportingVariableId(),
                                         quantityObservation.getYear(),
                                         quantityObservation.getAmount(),

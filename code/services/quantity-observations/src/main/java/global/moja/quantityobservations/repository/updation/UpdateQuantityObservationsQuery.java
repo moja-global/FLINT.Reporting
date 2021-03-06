@@ -44,6 +44,8 @@ public class UpdateQuantityObservationsQuery {
         String query = "UPDATE quantity_observation SET " +
                 "task_id = ?, " +
                 "party_id = ?, " +
+                "database_id = ?, " +
+                "reporting_table_id = ?, " +
                 "reporting_variable_id = ?, " +
                 "year = ?, " +
                 "amount = ?, " +
@@ -67,6 +69,8 @@ public class UpdateQuantityObservationsQuery {
             temp.add(Arrays.asList(
                     quantityObservation.getTaskId(),
                     quantityObservation.getPartyId(),
+                    quantityObservation.getDatabaseId(),
+                    quantityObservation.getReportingTableId(),
                     quantityObservation.getReportingVariableId(),
                     quantityObservation.getYear(),
                     quantityObservation.getAmount(),

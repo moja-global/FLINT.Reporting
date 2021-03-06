@@ -55,6 +55,8 @@ public class SelectQuantityObservationsQuery {
                                                 .id(rs.getLong("id"))
                                                 .taskId(rs.getLong("task_id"))
                                                 .partyId(rs.getLong("party_id"))
+                                                .databaseId(rs.getLong("database_id"))
+                                                .reportingTableId(rs.getLong("reporting_table_id"))
                                                 .reportingVariableId(rs.getLong("reporting_variable_id"))
                                                 .year(rs.getInt("year"))
                                                 .amount(rs.getDouble("amount"))

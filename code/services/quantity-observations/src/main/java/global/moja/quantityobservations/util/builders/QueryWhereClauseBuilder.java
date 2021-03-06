@@ -47,7 +47,6 @@ public class QueryWhereClauseBuilder {
             }
         }
 
-
         // Task Id
         if(queryParameters.getTaskId() != null){
 
@@ -61,7 +60,6 @@ public class QueryWhereClauseBuilder {
 
         }
 
-
         // Party Id
         if(queryParameters.getPartyId() != null){
 
@@ -72,6 +70,32 @@ public class QueryWhereClauseBuilder {
             }
 
             query.append("party_id = ").append(queryParameters.getPartyId());
+
+        }
+
+        // Database Id
+        if(queryParameters.getDatabaseId() != null){
+
+            if(query != null){
+                query.append(" AND ");
+            } else {
+                query = new StringBuilder();
+            }
+
+            query.append("database_id = ").append(queryParameters.getDatabaseId());
+
+        }
+
+        // Table Id
+        if(queryParameters.getReportingTableId() != null){
+
+            if(query != null){
+                query.append(" AND ");
+            } else {
+                query = new StringBuilder();
+            }
+
+            query.append("reporting_table_id = ").append(queryParameters.getReportingTableId());
 
         }
 

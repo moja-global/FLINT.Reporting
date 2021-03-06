@@ -58,6 +58,8 @@ public class DeleteQuantityObservationsHandler {
                                         .ids(request)
                                         .taskId(request)
                                         .partyId(request)
+                                        .databaseId(request)
+                                        .reportingTableId(request)
                                         .reportingVariableId(request)
                                         .year(request)
                                         .build());
