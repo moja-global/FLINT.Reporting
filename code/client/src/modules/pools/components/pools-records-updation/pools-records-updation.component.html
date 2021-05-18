@@ -2,18 +2,18 @@
     <div class="form-group">
         <label for="name">Name</label>
         <input type="text" class="form-control" id="name" placeholder="" formControlName="name">
-        <div *ngIf="poolsForm.get('name').invalid && (poolsForm.get('name').dirty || poolsForm.get('name').touched)"
+        <div *ngIf="poolsForm.get('name')?.invalid && (poolsForm.get('name')?.dirty || poolsForm.get('name')?.touched)"
             class="alert alert-danger mt-3">
-            <div *ngIf="poolsForm.get('name').errors.required">
+            <div *ngIf="poolsForm.get('name')?.errors.required">
                 Name is required.
             </div>
-            <div *ngIf="poolsForm.get('name').errors.minlength">
+            <div *ngIf="poolsForm.get('name')?.errors.minlength">
                 Name cannot be less than 2 characters long.
             </div>              
-            <div *ngIf="poolsForm.get('name').errors.maxlength">
+            <div *ngIf="poolsForm.get('name')?.errors.maxlength">
                 Name cannot be more than 50 characters long.
             </div>
-            <div *ngIf="poolsForm.get('name').errors.exists">
+            <div *ngIf="poolsForm.get('name')?.errors.exists">
                 Name should be unique.
             </div>
         </div>
@@ -22,9 +22,9 @@
         <label for="description">Description <span class="text-secondary"> (Optional)</span></label>
         <textarea class="form-control" id="description" placeholder="" rows="3"
             formControlName="description"></textarea>
-        <div *ngIf="poolsForm.get('description').invalid && (poolsForm.get('description').dirty || poolsForm.get('description').touched)"
+        <div *ngIf="poolsForm.get('description')?.invalid && (poolsForm.get('description')?.dirty || poolsForm.get('description')?.touched)"
             class="alert alert-danger mt-3">
-            <div *ngIf="poolsForm.get('description').errors.maxlength">
+            <div *ngIf="poolsForm.get('description')?.errors.maxlength">
                 Description cannot be more than 250 characters long.
             </div>
         </div>

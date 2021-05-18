@@ -2,18 +2,18 @@
     <div class="form-group">
         <label for="name">Name</label>
         <input type="text" class="form-control" id="name" placeholder="" formControlName="name">
-        <div *ngIf="emissionTypesForm.get('name').invalid && (emissionTypesForm.get('name').dirty || emissionTypesForm.get('name').touched)"
+        <div *ngIf="emissionTypesForm.get('name')?.invalid && (emissionTypesForm.get('name')?.dirty || emissionTypesForm.get('name')?.touched)"
             class="alert alert-danger mt-3">
-            <div *ngIf="emissionTypesForm.get('name').errors.required">
+            <div *ngIf="emissionTypesForm.get('name')?.errors.required">
                 Name is required.
             </div>
-            <div *ngIf="emissionTypesForm.get('name').errors.minlength">
+            <div *ngIf="emissionTypesForm.get('name')?.errors.minlength">
                 Name cannot be less than 2 characters long.
             </div>
-            <div *ngIf="emissionTypesForm.get('name').errors.maxlength">
+            <div *ngIf="emissionTypesForm.get('name')?.errors.maxlength">
                 Name cannot be more than 50 characters long.
             </div>            
-            <div *ngIf="emissionTypesForm.get('name').errors.exists">
+            <div *ngIf="emissionTypesForm.get('name')?.errors.exists">
                 Name should be unique.
             </div>
         </div>
@@ -21,15 +21,15 @@
     <div class="form-group">
         <label for="abbreviation">Abbreviation</label>
         <input type="text" class="form-control" id="abbreviation" placeholder="" formControlName="abbreviation">
-        <div *ngIf="emissionTypesForm.get('abbreviation').invalid && (emissionTypesForm.get('abbreviation').dirty || emissionTypesForm.get('abbreviation').touched)"
+        <div *ngIf="emissionTypesForm.get('abbreviation')?.invalid && (emissionTypesForm.get('abbreviation')?.dirty || emissionTypesForm.get('abbreviation')?.touched)"
             class="alert alert-danger mt-3">
-            <div *ngIf="emissionTypesForm.get('abbreviation').errors.required">
+            <div *ngIf="emissionTypesForm.get('abbreviation')?.errors.required">
                 Abbreviation is required.
             </div>
-            <div *ngIf="emissionTypesForm.get('abbreviation').errors.maxlength">
+            <div *ngIf="emissionTypesForm.get('abbreviation')?.errors.maxlength">
                 Abbreviation cannot be more than 50 characters long.
             </div>
-            <div *ngIf="emissionTypesForm.get('abbreviation').errors.exists">
+            <div *ngIf="emissionTypesForm.get('abbreviation')?.errors.exists">
                 Abbreviation should be unique.
             </div>
         </div>
@@ -38,9 +38,9 @@
         <label for="description">Description <span class="text-secondary"> (Optional)</span></label>
         <textarea class="form-control" id="description" placeholder="" rows="3"
             formControlName="description"></textarea>
-        <div *ngIf="emissionTypesForm.get('description').invalid && (emissionTypesForm.get('description').dirty || emissionTypesForm.get('description').touched)"
+        <div *ngIf="emissionTypesForm.get('description')?.invalid && (emissionTypesForm.get('description')?.dirty || emissionTypesForm.get('description')?.touched)"
             class="alert alert-danger mt-3">
-            <div *ngIf="emissionTypesForm.get('description').errors.maxlength">
+            <div *ngIf="emissionTypesForm.get('description')?.errors.maxlength">
                 Description cannot be more than 250 characters long.
             </div>
         </div>

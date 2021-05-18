@@ -2,18 +2,18 @@
     <div class="form-group">
         <label for="name">Name</label>
         <input type="text" class="form-control" id="name" placeholder="" formControlName="name">
-        <div *ngIf="unitCategoriesForm.get('name').invalid && (unitCategoriesForm.get('name').dirty || unitCategoriesForm.get('name').touched)"
+        <div *ngIf="unitCategoriesForm.get('name')?.invalid && (unitCategoriesForm.get('name')?.dirty || unitCategoriesForm.get('name')?.touched)"
             class="alert alert-danger mt-3">
-            <div *ngIf="unitCategoriesForm.get('name').errors.required">
+            <div *ngIf="unitCategoriesForm.get('name')?.errors.required">
                 Name is required.
             </div>
-            <div *ngIf="unitCategoriesForm.get('name').errors.minlength">
+            <div *ngIf="unitCategoriesForm.get('name')?.errors.minlength">
                 Name cannot be less than 2 characters long.
             </div>            
-            <div *ngIf="unitCategoriesForm.get('name').errors.maxlength">
+            <div *ngIf="unitCategoriesForm.get('name')?.errors.maxlength">
                 Name cannot be more than 50 characters long.
             </div>
-            <div *ngIf="unitCategoriesForm.get('name').errors.exists">
+            <div *ngIf="unitCategoriesForm.get('name')?.errors.exists">
                 Name should be unique.
             </div>
         </div>

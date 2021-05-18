@@ -2,18 +2,18 @@ form([formgroup]='coverTypesForm')
   .form-group
     label(for='code') Code
     input#code.form-control(type='text', placeholder='', formcontrolname='code')
-    .alert.alert-danger.mt-3(*ngif="coverTypesForm.get('code').invalid && (coverTypesForm.get('code').dirty || coverTypesForm.get('code').touched)")
-      div(*ngif="coverTypesForm.get('code').errors.required")
+    .alert.alert-danger.mt-3(*ngif="coverTypesForm.get('code')?.invalid && (coverTypesForm.get('code')?.dirty || coverTypesForm.get('code')?.touched)")
+      div(*ngif="coverTypesForm.get('code')?.errors.required")
         | Code is required.
-      div(*ngif="coverTypesForm.get('code').errors.maxlength")
+      div(*ngif="coverTypesForm.get('code')?.errors.maxlength")
         | Code cannot be more than 50 characters long.
-      div(*ngif="coverTypesForm.get('code').errors.exists")
+      div(*ngif="coverTypesForm.get('code')?.errors.exists")
         | Code should be unique.
   .form-group
     label(for='description')
       | Description 
       span.text-secondary  (Optional)
     textarea#description.form-control(placeholder='', rows='3', formcontrolname='description')
-    .alert.alert-danger.mt-3(*ngif="coverTypesForm.get('description').invalid && (coverTypesForm.get('description').dirty || coverTypesForm.get('description').touched)")
-      div(*ngif="coverTypesForm.get('description').errors.maxlength")
+    .alert.alert-danger.mt-3(*ngif="coverTypesForm.get('description')?.invalid && (coverTypesForm.get('description')?.dirty || coverTypesForm.get('description')?.touched)")
+      div(*ngif="coverTypesForm.get('description')?.errors.maxlength")
         | Description cannot be more than 250 characters long.
