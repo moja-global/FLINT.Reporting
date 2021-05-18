@@ -1,0 +1,41 @@
+form
+  .row
+    .col
+      .d-flex.justify-content-between.p-2
+        sb-search((searched)='onSearch($event)')
+        sb-loading-animation
+  .row
+    .col
+      sb-table
+        ng-container(header)
+          tr
+            th.text-center(scope='col')
+              span #
+            th(scope='col', sbsortable='name', (sort)='onSort($event)')
+              span Name
+              sb-sort-icon(*ngif='sortedColumn === "name"', [direction]='sortedDirection')
+            th(scope='col')
+              span Description
+            th(scope='col')
+              span.d-flex.flex-row-reverse
+                | Actions
+        ng-container(footer='')
+          tr
+            td(scope='col', colspan='4')
+              span.d-flex.flex-row-reverse
+                sb-button(action='add', entity='Domain', (add)='onAddDomain()')
+        ng-container(body')
+          tr(*ngfor='let domain of domainsTableService.domains$ | async')
+            td.text-center
+              | {{domain.pos}}
+            td
+              ngb-highlight([result]='domain.name', [term]='domainsTableService.searchTerm')
+            td
+              ngb-highlight([result]='domain.description', [term]='domainsTableService.searchTerm')
+            td
+              span.d-flex.flex-row-reverse
+                sb-button(action='delete', entity='Domain', id='{{domain.id}}', (delete)='onDeleteDomain($event)')
+                sb-button(action='update', entity='Domain', id='{{domain.id}}', (update)='onUpdateDomain($event)')
+  .row
+    .col
+      sb-pagination((pagechanged)='onPageChange($event)', (pagesizechanged)='onPageSizeChange($event)')

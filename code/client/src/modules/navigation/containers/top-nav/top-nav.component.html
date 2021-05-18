@@ -1,0 +1,33 @@
+<nav class="sb-topnav navbar navbar-expand shadow" [ngClass]="customClasses">
+
+    <a class="navbar-brand" routerLink="/dashboard">Moja Reporting Tool</a>
+
+    <button 
+        class="btn btn-link btn-sm order-1 order-lg-0" 
+        id="sidebarToggle" 
+        data-cy="topNavToggleSideNav"
+        (click)="toggleSideNav()">
+        <fa-icon [icon]='["fas", "bars"]'></fa-icon>
+    </button>
+
+    <!-- Navbar Search-->
+    <!--
+    <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+        <div class="input-group">
+            <input class="form-control" type="text" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="button"><fa-icon [icon]='["fas", "search"]'></fa-icon></button>
+            </div>
+        </div>
+    </form>
+    -->
+
+    <!-- Navbar Tools-->
+
+    <ul class="navbar-nav w-100 d-flex flex-row-reverse">
+        <!--<sb-topnav-user></sb-topnav-user>-->
+        <sb-topnav-connectivity></sb-topnav-connectivity>
+    </ul>
+
+
+</nav>

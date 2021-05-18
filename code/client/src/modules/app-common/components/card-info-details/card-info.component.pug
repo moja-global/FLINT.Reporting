@@ -1,0 +1,10 @@
+.card.mb-4.shadow
+  .row.no-gutters
+    .col-2.col-md-1.d-flex.align-items-center.justify-content-center.bg-primary
+      ng-content(select='[image]')
+    .col-10.col-md-11
+      .card-body
+        h5.card-title.text-secondary
+          ng-content(select='[title]')
+        p.card-text
+          ng-content(select='[details]]')

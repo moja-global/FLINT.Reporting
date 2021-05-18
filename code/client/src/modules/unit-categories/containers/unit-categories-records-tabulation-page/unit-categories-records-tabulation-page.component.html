@@ -1,0 +1,19 @@
+<sb-layout-main>
+    
+    <ng-container header>
+        <sb-header title="Unit categories" subtitle="Units of measurements groupings"></sb-header>
+    </ng-container>
+      
+    
+    <ng-container body>
+        <sb-card>
+            <div class="card-header">
+                Unit categories List
+            </div>
+            <div class="card-body">
+                <sb-unit-categories-records-tabulation [pageSize]="6"></sb-unit-categories-records-tabulation>
+            </div>
+        </sb-card>
+    </ng-container>
+
+</sb-layout-main>

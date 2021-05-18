@@ -1,0 +1,168 @@
+sb-layout-home
+  nav#navbar-main.navbar.navbar-expand-lg.navbar-light.fixed-top((scroll)='scrolling($event)')
+    .container
+      a.navbar-brand(routerlink='/') SYSTEM CLIENT
+      button.navbar-toggler.navbar-toggler-right(type='button', (click)='isMenuCollapsed = !isMenuCollapsed' aria-controls='navbarResponsive' aria-expanded='false' aria-label='Toggle navigation')
+        fa-icon.ml-1([icon]='["fas", "bars"]')
+      .collapse.navbar-collapse([ngbcollapse]='isMenuCollapsed')
+        ul.navbar-nav.ml-auto
+          li.nav-item
+            a.nav-link.js-scroll-trigger([ngclass]="{'active' : activeFragment == 'home'}", (click)='scrollToElement(home)') Home
+          li.nav-item
+            a.nav-link.js-scroll-trigger([ngclass]="{'active' : activeFragment == 'about'}", (click)='scrollToElement(about)') About
+          li.nav-item
+            a.nav-link.js-scroll-trigger([ngclass]="{'active' : activeFragment == 'background'}", (click)='scrollToElement(background)') Background
+          li.nav-item
+            a.nav-link(routerlink='/dashboard/overview/situation') Dashboard
+          li.nav-item
+            a.nav-link.js-scroll-trigger([ngclass]="{'active' : activeFragment == 'contacts'}", (click)='scrollToElement(contacts)') Contacts
+  // Masthead
+  header#home.masthead
+    .container.d-flex.h-100.align-items-center
+      .mx-auto.text-center
+        h2.text-white.mx-auto.my-0 The Green Belt Movement
+        h1.mx-auto.mt-2.mb-5.text-uppercase Community MRV
+        a.btn.btn-dark-green.js-scroll-trigger((click)='scrollToElement(about)') Get Started
+  // About
+  section#about.about-section.text-center(#about)
+    .container
+      .row
+        .col-lg-9.mx-auto
+          h2.text-white.mb-4 About
+          p.text-white
+            | Measuring, Reporting and Verification (MRV) is a term used to describe the measures taken to
+            | collect data on emissions together with mitigation actions and support.
+            | Measurement implies the direct measurement or estimation of emission or emission reductions
+            | following strict guidance and protocols.
+            | Reporting implies creating documentation to inform all interested parties of the
+            | measured or estimated results.
+            | Verification implies carrying out expert reviews to verify the quality of the input
+            | data together with the results.
+            br
+            br
+            | By availing MRV components at the community level, The Green Belt Movement hopes to empower
+            | and educate communities about the impact of their activities to the environment, and in turn
+            | cause an awareness that will lead to the addressing of complex environmental problems at the
+            | grassroot level.
+      img.img-fluid(src='assets/img/demo-image-2.png' alt='')
+  // Background
+  section#background.projects-section.bg-light.mt-1(#background)
+    .container
+      h2.text-black.text-center.mb-4 Background
+      // Background Row 1
+      .row.justify-content-center.no-gutters.mb-5.mb-lg-0
+        .col-lg-6
+          img.img-fluid(src='assets/img/demo-image-3.jpg' alt='')
+        .col-lg-6
+          .bg-dark-green.text-center.h-100.project
+            .d-flex.h-100
+              .project-text.w-100.my-auto.text-center.text-lg-left
+                h4.text-white Introduction
+                p.mb-0.text-white
+                  | Being a signatory to the Paris Agreement, Kenya has put in place mechanisms for
+                  | Green Growth. This includes Climate Change Response Strategies and
+                  | National Climate Change Adaptation Plans that are being devolved to each of the 47
+                  | County governments to create a national effect arising from the grassroots.
+                p
+                hr.d-none.d-lg-block.mb-0.ml-0
+      // Background Row 2
+      .row.justify-content-center.no-gutters.mb-5.mb-lg-0
+        .col-lg-6
+          img.img-fluid(src='assets/img/demo-image-4.jpg' alt='')
+        .col-lg-6.order-lg-first
+          .bg-dark-green.text-center.h-100.project
+            .d-flex.h-100
+              .project-text.w-100.my-auto.text-center.text-lg-right
+                h4.text-white The Project
+                p.mb-0.text-white
+                  | In line with the national government efforts, The Green Belt Movement (GBM) has been
+                  | implementing a project on applying strategies for
+                  | regional transition to Low emission rural development in Kenya under the financing
+                  | of the International Climate Initiative (IKI).
+                p
+                hr.d-none.d-lg-block.mb-0.mr-0
+      // Background Row 3
+      .row.justify-content-center.no-gutters.mb-5.mb-lg-0
+        .col-lg-6
+          img.img-fluid(src='assets/img/demo-image-5.png' alt='')
+        .col-lg-6
+          .bg-dark-green.text-center.h-100.project
+            .d-flex.h-100
+              .project-text.w-100.my-auto.text-center.text-lg-left
+                h4.text-white The System
+                p.mb-0.text-white
+                  | This led to the development of a
+                  | community web based MRV (Monitoring, Reporting and Verification) system.
+                  | The system&apos;s sector - coverage is designed to combine adaptation and mitigation
+                  | functions at the community level. This will in turn help county
+                  | governments monitor effects of adaptation and mitigation actions on their overall
+                  | GHG profile.
+                p
+                hr.d-none.d-lg-block.mb-0.ml-0
+      // Background Row 4
+      .row.justify-content-center.no-gutters.mb-5.mb-lg-0
+        .col-lg-6
+          img.img-fluid(src='assets/img/demo-image-6.jpg' alt='')
+        .col-lg-6.order-lg-first
+          .bg-dark-green.text-center.h-100.project
+            .d-flex.h-100
+              .project-text.w-100.my-auto.text-center.text-lg-right
+                h4.text-white Status
+                p.mb-0.text-white
+                  | Between June 22, 2020 and July 05, 2020 the system was successfully piloted in
+                  | Nakuru and Nandi Counties.
+                  | It is now ready for use and can be accessed by clicking 
+                  a.text-white(routerlink='/dashboard/overview/situation')
+                    strong here
+                  |  or at the
+                  strong Dashboard
+                  |  link above.
+                p
+                hr.d-none.d-lg-block.mb-0.mr-0
+  // Dashboard Link
+  section#signup.signup-section(#signup)
+    .container
+      .row
+        .col-md-10.col-lg-8.mx-auto.text-center
+          fa-icon.fa-2x.mb-2.text-white([icon]='["far", "paper-plane"]')
+          h2.text-white.mb-5 Go to the Dashboard to see detailed results
+          a.btn.btn-dark-green.mx-auto(routerlink='/dashboard/overview/situation') Dashboard
+          // <button class="btn btn-dark-green mx-auto" type="submit">Dashboard</button>
+          // Contact
+          section#contacts.contact-section.bg-dark-green(#contacts)
+            .container
+              .row
+                .col-md-4.mb-3.mb-md-0
+                  .card.py-4.h-100
+                    .card-body.text-center
+                      i.fas.fa-map-marked-alt.text-dark-green.mb-2
+                      h4.text-uppercase.m-0
+                        a.text-dark-green(href='https://www.international-climate-initiative.com' target='_blank') International Climate Initiative
+                      hr.my-4.mx-auto
+                      .small.text-black-50
+                        img.img-fluid(src='assets/img/iki.png' alt='')
+                .col-md-4.mb-3.mb-md-0
+                  .card.py-4.h-100
+                    .card-body.text-center
+                      i.fas.fa-envelope.text-dark-green.mb-2
+                      h4.text-uppercase.m-0
+                        a.text-dark-green(href='http://www.greenbeltmovement.org/' target='_blank')
+                          | The
+                          | Green Belt Movement
+                      hr.my-4.mx-auto
+                      .small.text-black-50
+                        img.img-fluid(src='assets/img/gbm.png' alt='')
+                .col-md-4.mb-3.mb-md-0
+                  .card.py-4.h-100
+                    .card-body.text-center
+                      i.fas.fa-mobile-alt.text-dark-green.mb-2
+                      h4.text-uppercase.m-0
+                        a.text-dark-green(href='https://francisallen.co.ke/' target='_blank')
+                          | Francis
+                          | Allen Consulting
+                      hr.my-4.mx-auto.bg-dark-green
+                      .small.text-black-50
+                        img.img-fluid(src='assets/img/FnA.png' alt='')
+          // Footer
+          footer.footer.bg-dark-green.small.text-center.text-white
+            .container Copyright &copy; The Green Belt Movement 2020

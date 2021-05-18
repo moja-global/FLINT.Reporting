@@ -1,0 +1,13 @@
+span([ngClass]='{"sb-nav-fixed": !static}')
+    sb-topnav
+    #sidenav-layout
+        #sidenav-layout-nav
+            sb-side-nav(
+                [sideNavItems]='sideNavItems',
+                [sideNavSections]='sideNavSections'
+            )
+        #sidenav-layout-content
+            main
+                .container-fluid
+                    ng-content
+            sb-footer

@@ -1,0 +1,6 @@
+sb-overlay
+  .text-center
+    p([ngclass]='customClasses')
+      | {{crosshead}} 
+      ng-container([counter]='counter', [interval]='interval', (value)='onValueChange($event)')
+        span.text-muted  {{ count }} 

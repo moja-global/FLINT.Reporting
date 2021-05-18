@@ -1,0 +1,9 @@
+sb-layout-main
+  ng-container(header)
+    sb-header(title='Unit categories', subtitle='Units of measurements groupings')
+  ng-container(body')
+    sb-card
+      .card-header
+        | Unit categories List
+      .card-body
+        sb-unit-categories-records-tabulation([pagesize]='6')

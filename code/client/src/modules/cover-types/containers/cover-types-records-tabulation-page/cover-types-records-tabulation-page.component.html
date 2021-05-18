@@ -1,0 +1,19 @@
+<sb-layout-main>
+    
+    <ng-container header>
+        <sb-header title="Cover Types" subtitle="Vegetation or man-made constructions on the earth surface"></sb-header>
+    </ng-container>
+      
+    
+    <ng-container body>
+        <sb-card>
+            <div class="card-header">
+                Cover Types List
+            </div>
+            <div class="card-body">
+                <sb-cover-types-records-tabulation [pageSize]="6"></sb-cover-types-records-tabulation>
+            </div>
+        </sb-card>
+    </ng-container>
+
+</sb-layout-main>

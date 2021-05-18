@@ -1,0 +1,17 @@
+<div class="card mb-4 shadow">
+  <div class="row no-gutters">
+    <div class="col-2 col-md-1 d-flex align-items-center justify-content-center bg-primary">
+      <ng-content select="[image]"></ng-content>
+    </div>
+    <div class="col-10 col-md-11">
+      <div class="card-body">
+        <h5 class="card-title text-secondary">
+          <ng-content select="[title]"></ng-content>
+        </h5>
+        <p class="card-text">
+          <ng-content select="[details]]"></ng-content>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

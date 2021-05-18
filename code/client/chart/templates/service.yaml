@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.client.service.name }}
+spec:
+  ports:
+    -
+      name: http
+      port: {{ .Values.client.service.port.default }}
+      targetPort: {{ .Values.client.service.port.target }}
+  selector:
+    app: {{ .Values.client.application.name }}

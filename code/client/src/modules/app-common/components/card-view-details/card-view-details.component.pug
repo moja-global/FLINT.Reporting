@@ -1,0 +1,6 @@
+.card.text-white.mb-4([ngclass]='background')
+  ng-content(select='.card-body')
+  .card-footer.d-flex.align-items-center.justify-content-between
+    a.small.text-white.stretched-link([routerlink]='link') View Details
+    .small.text-white
+      fa-icon([icon]='["fas", "angle-right"]')

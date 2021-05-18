@@ -1,0 +1,23 @@
+<form>
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="search-icon">
+                        <fa-icon class="mr-1" [icon]='["fas", "search"]'></fa-icon>
+                    </span>
+                </div>
+                <!--See: https://github.com/angular/angular/issues/22606#issuecomment-371167109 -->
+                <input type="text" 
+                       class="form-control" 
+                       aria-label="Search" 
+                       aria-describedby="search-icon" 
+                       [placeholder]="placeholder" 
+                       [value]="searchTerm" 
+                       (keyup)="searchTerm=$event.target.value" 
+                       name="search" 
+                       #input />
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,19 @@
+<sb-layout-main>
+    
+    <ng-container header>
+        <sb-header title="Emission Types" subtitle="Gaseous compounds in the atmosphere that are capable of absorbing infrared radiation"></sb-header>
+    </ng-container>
+      
+    
+    <ng-container body>
+        <sb-card>
+            <div class="card-header">
+                Emission Types List
+            </div>
+            <div class="card-body">
+                <sb-emission-types-records-tabulation [pageSize]="6"></sb-emission-types-records-tabulation>
+            </div>
+        </sb-card>
+    </ng-container>
+
+</sb-layout-main>

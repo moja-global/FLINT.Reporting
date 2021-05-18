@@ -1,0 +1,27 @@
+<!--Check if table is responsive:
+1) If yes, add the template table code inside an enclosing responsivity div (i.e a div with the correct responsive classes).
+2) If no, add the template table code directly.-->
+<div *ngIf="responsive else nonresponsive" [ngClass]="tableResponsivityClasses">
+    <ng-container *ngTemplateOutlet="table"></ng-container>
+</div>
+<ng-template #nonresponsive="">
+    <ng-container *ngTemplateOutlet="table"></ng-container>
+</ng-template>
+
+<!--The template table code-->
+<ng-template #table>
+    <table [ngClass]="tableClasses">
+        <caption>
+            <ng-content select="[caption]"></ng-content>
+        </caption>
+        <thead>
+            <ng-content select="[header]"></ng-content>
+        </thead>
+        <tfoot>
+            <ng-content select="[footer]"></ng-content>
+        </tfoot>
+        <tbody>
+            <ng-content select="[body]"></ng-content>
+        </tbody>
+    </table>
+</ng-template>

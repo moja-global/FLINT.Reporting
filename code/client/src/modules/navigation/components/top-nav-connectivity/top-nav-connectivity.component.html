@@ -1,0 +1,13 @@
+<li class="nav-item h-100 ml-3 mr-3">
+
+    <div class="d-flex flex-column justify-content-center align-items-center h-100">
+        <span *ngIf="connectivityStatusService.online$ | async" class="text-green-shade-1">
+            <fa-icon [icon]='["far", "dot-circle"]'></fa-icon> <span class="d-none d-md-inline"> online</span>
+        </span>
+    
+        <span *ngIf="!(connectivityStatusService.online$ | async)" class="text-red-shade-1">
+            <fa-icon [icon]='["far", "dot-circle"]'></fa-icon> <span class="d-none d-md-inline"> offline</span>
+        </span>
+    </div>
+    
+</li>

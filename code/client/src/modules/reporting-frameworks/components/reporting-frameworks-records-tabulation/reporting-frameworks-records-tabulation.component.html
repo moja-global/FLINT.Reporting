@@ -1,0 +1,75 @@
+<form>
+    <div class="row">
+        <div class="col">
+            <div class="d-flex justify-content-between p-2">
+                <sb-search (searched)="onSearch($event)"></sb-search>
+                <sb-loading-animation></sb-loading-animation>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="row">
+        <div class="col">
+            <sb-table>
+                <ng-container header>
+                    <tr>
+                        <th scope="col" class="text-center align-middle">
+                            <span>#</span>
+                        </th>
+                        <th scope="col" sbSortable="name" (sort)="onSort($event)" class="align-middle">
+                            <span>Name</span>
+                            <sb-sort-icon *ngIf='sortedColumn === "name"' [direction]="sortedDirection"></sb-sort-icon>
+                        </th>
+                        <th scope="col" class="align-middle">
+                            <span>Description</span>
+                        </th>
+                        <th scope="col" class="align-middle">
+                            <span class="d-flex flex-row-reverse">
+                                Actions
+                            </span>
+                        </th>
+                    </tr>
+                </ng-container>
+
+                <ng-container footer>
+                    <tr>
+                        <td scope="col" colspan="4" class="align-middle">
+                            <span class="d-flex flex-row-reverse">
+                                <sb-button action="add" entity="Reporting Framework" (add)="onAddReportingFramework()"></sb-button>
+                            </span> 
+                        </td>
+                    </tr>
+                </ng-container>                
+
+                <ng-container body>
+                    <tr *ngFor="let reportingFramework of reportingFrameworksTableService.reportingFrameworks$ | async">
+                        <td class="text-center align-middle">
+                            {{reportingFramework.pos}}
+                        </td>
+                        <td class="align-middle">
+                            <ngb-highlight [result]="reportingFramework.name" [term]="reportingFrameworksTableService.searchTerm"></ngb-highlight>
+                        </td>
+                        <td class="align-middle"> 
+                            <ngb-highlight [result]="reportingFramework.description" [term]="reportingFrameworksTableService.searchTerm"></ngb-highlight>
+                        </td>
+                        <td class="align-middle">
+                            <span class="d-flex flex-row-reverse">
+                                <sb-button action="delete" entity="Reporting Framework" id="{{reportingFramework.id}}" (delete)="onDeleteReportingFramework($event)"></sb-button>
+                                <sb-button action="update" entity="Reporting Framework" id="{{reportingFramework.id}}" (update)="onUpdateReportingFramework($event)"></sb-button>
+                            </span> 
+                        </td>
+                    </tr>
+                </ng-container>
+            </sb-table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <sb-pagination (pageChanged)="onPageChange($event)" (pageSizeChanged)="onPageSizeChange($event)">
+            </sb-pagination>
+        </div>
+    </div>
+
+</form>

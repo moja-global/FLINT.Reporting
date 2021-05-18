@@ -1,0 +1,6 @@
+@import 'styles/variables.scss';
+
+button[aria-label="Close"]:focus {
+    outline: none;
+    color: $primary;
+  }

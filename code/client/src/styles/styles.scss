@@ -1,0 +1,75 @@
+/* 
+
+STYLE SHEET FOR [WEB SITE]
+Created by [AUTHOR NAME]
+[URL OF AUTHOR]
+
+ToC
+
+    1. Variables
+	2. Defaults   
+	3. Structure
+	4. Links & Navigation
+	5. Fonts
+	6. Images
+	7. Global
+
+Notes
+
+*/
+
+/* --------- 1. Variables  --------- */
+@import "./variables.scss";
+@import "./mixins.scss";
+
+
+/* --------- 2. Defaults  --------- */
+@import "node_modules/bootstrap/scss/bootstrap.scss";
+
+
+/*  --------- 3. Structure  --------- */
+
+// Pages
+@import "./layout/authentication.scss";
+@import "./layout/default.scss";
+@import "./layout/fixed.scss";
+@import "./layout/error.scss";
+@import "./layout/home.scss";
+
+
+// Sections
+@import "./sections/about.scss";
+@import "./sections/contact.scss";
+@import "./sections/footer.scss";
+@import "./sections/masthead.scss";
+@import "./sections/projects.scss";
+@import "./sections/signup.scss";
+
+
+/* ---------- 4. Links & Navigation ---------- */
+
+
+@import "./navigation/sidenav/sidenav.scss";
+@import "./navigation/sidenav/sidenav-dark.scss";
+@import "./navigation/sidenav/sidenav-light.scss";
+@import "./navigation/topnav/topnav.scss";
+@import "./navigation/navbar-main.scss";
+
+
+/* ---------- 5. Fonts ---------- */
+
+
+/* ---------- 6. Images ---------- */
+
+
+/* ---------- 7. Components ---------- */
+@import "./components/buttons.scss";
+@import "./components/cards.scss";
+@import "./components/headers.scss";
+@import "./components/modals.scss";
+
+
+/* ---------- 8. Global ---------- */
+@import "./global.scss";
+
+

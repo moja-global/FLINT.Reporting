@@ -1,0 +1,9 @@
+.modal-header([ngClass]="customClasses")
+  h5#modal-basic-title.modal-title.text-secondary
+    ng-content(select='[title]')
+  button.close(type='button', aria-label='Close', (click)="activeModal.dismiss('Cross click')")
+    span(aria-hidden='true') &times;
+.modal-body
+  ng-content(select='[body]')
+.modal-footer
+  ng-content(select='[footer]')

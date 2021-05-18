@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.client.deployment.name }}
+  labels:
+    app: {{ .Values.client.application.name }}
+spec:
+  replicas: {{ .Values.client.application.replicas}}
+  selector:
+    matchLabels:
+      app: {{ .Values.client.application.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.client.application.name }}
+        version: {{ .Values.client.application.version }}
+    spec:
+      containers:
+        -
+          name: {{ .Values.client.application.name }}
+          image: "{{ .Values.client.application.image.id }}:{{ .Values.client.application.image.tag }}"
+          imagePullPolicy: {{ default "" .Values.client.application.image.pull.policy | quote }}               
+      imagePullSecrets:
+        -
+          name: {{.Values.client.application.image.pull.secret}}
+

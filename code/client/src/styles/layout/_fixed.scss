@@ -1,0 +1,24 @@
+.sb-nav-fixed {
+  .sb-topnav {
+    @extend .fixed-top;
+    z-index: $topnav-zindex;
+  }
+  #sidenav-layout {
+    #sidenav-layout-nav {
+      @extend .fixed-top;
+      width: $sidenav-base-width;
+      height: 100vh;
+      z-index: $sidenav-zindex;
+      .sb-sidenav {
+        padding-top: $topnav-base-height;
+        .sb-sidenav-menu {
+          overflow-y: auto;
+        }
+      }
+    }
+    #sidenav-layout-content {
+      padding-left: $sidenav-base-width;
+      margin-top: $topnav-base-height;
+    }
+  }
+}

@@ -1,0 +1,78 @@
+#navbar-main {
+    min-height: 3.5rem;
+    background-color: $white;
+    .navbar-toggler {
+        font-size: 80%;
+        padding: 0.75rem;
+        color: $sidenav-light-color;
+        border: $border-width solid $gray-100;
+        &:focus {
+            outline: none;
+        }
+    }
+    .navbar-brand {
+        color: $black;
+        font-weight: 700;
+        padding: 0.9rem 0;
+    }
+    .navbar-nav {
+        .nav-item {
+            &:hover {
+                color: fade($white, 80%);
+                outline: none;
+                //background-color: transparent;
+            }
+            &:active,
+            &:focus {
+                outline: none;
+                //background-color: transparent;
+            }
+        }
+    }
+    @include media-breakpoint-up(lg) {
+        padding-top: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+        background-color: transparent;
+        transition: background-color 0.3s ease-in-out;
+        .navbar-brand {
+            padding: 0.5rem 0;
+            color: fade-out($white, 0.3);
+        }
+        .nav-link {
+            transition: none;
+            padding: 2rem 1.5rem;
+            color: fade-out($white, 0.3);
+            &:hover {
+                //color: $gray-100;
+                font-weight: bold;
+            }
+            &:active {
+                //color: $gray-100;
+                font-weight: bold;
+            }
+        }
+        &.navbar-shrink {
+            background-color: $white;
+            .navbar-brand {
+                color: $black;
+            }
+            .nav-link {
+                color: $black;
+                padding: 1.5rem 1.5rem 1.25rem;
+                border-bottom: 0.25rem solid transparent;
+                &:hover {
+                    color: $sidenav-light-link-color;
+                }
+                &:active {
+                    color: darken($sidenav-light-color, 15%);
+                }
+                &.active {
+                    color: $sidenav-light-color;
+                    outline: none;
+                    border-bottom: 0.25rem solid $sidenav-light-color;
+                }
+            }
+        }
+    }
+}

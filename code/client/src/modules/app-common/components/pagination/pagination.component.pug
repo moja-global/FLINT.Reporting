@@ -1,0 +1,8 @@
+.d-flex.flex-row.justify-content-center.flex-wrap.justify-content-md-between.flex-md-nowrap.p-1
+  ngb-pagination([collectionsize]='total$ | async', [(page)]='page', [pagesize]='pageSize')
+  select.custom-select(style='width: auto;', name='pageSize', [(ngmodel)]='pageSize')
+    option([ngvalue]='2') 2 items per page
+    option([ngvalue]='4') 4 items per page
+    option([ngvalue]='6') 6 items per page
+    option([ngvalue]='8') 8 items per page
+    option([ngvalue]='10') 10 items per page

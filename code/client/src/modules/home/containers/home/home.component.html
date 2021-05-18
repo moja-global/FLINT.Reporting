@@ -1,0 +1,203 @@
+<sb-layout-home>
+
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="navbar-main">
+        <div class="container">
+            <a class="navbar-brand" routerLink="/">SYSTEM</a>
+            <button class="navbar-toggler navbar-toggler-right" type="button"
+                (click)="isMenuCollapsed = !isMenuCollapsed" aria-controls="navbarResponsive" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <fa-icon class="ml-1" [icon]='["fas", "bars"]'></fa-icon>
+            </button>
+            <div class="collapse navbar-collapse" [ngbCollapse]="isMenuCollapsed">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger"
+                            [ngClass]="{'active' : activeFragment == 'home'}" (click)="scrollToElement(home)">Home</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger"
+                            [ngClass]="{'active' : activeFragment == 'about'}"
+                            (click)="scrollToElement(about)">About</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger"
+                            [ngClass]="{'active' : activeFragment == 'background'}"
+                            (click)="scrollToElement(background)">Background</a></li>
+                    <li class="nav-item"><a class="nav-link" routerLink="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger"
+                            [ngClass]="{'active' : activeFragment == 'contacts'}"
+                            (click)="scrollToElement(contacts)">Contacts</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Masthead-->
+    <header class="masthead" id="home">
+        <div class="container d-flex h-100 align-items-center">
+            <div class="mx-auto text-center">
+                <h1 class="mx-auto my-0 text-uppercase">System</h1>
+                <h2 class="text-white-50 mx-auto mt-2 mb-5">A single sentence introducing the system or welcoming users to the system</h2>
+                <a class="btn btn-primary js-scroll-trigger" (click)="scrollToElement(about)">Get Started</a>
+            </div>
+        </div>
+    </header>
+    <!-- About-->
+    <section class="about-section text-center" id="about" #about>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 mx-auto">
+                    <h2 class="text-white mb-4">About</h2>
+                    <p class="text-white">
+                        
+                        A few lines detailing what the system is about and laying down the next steps for its users or would-be users
+                    </p>
+                </div>
+            </div>
+            <img class="img-fluid" src="assets/img/demo-image-2.png" alt="" />
+        </div>
+    </section>
+    <!-- Background-->
+    <section class="projects-section bg-light mt-1" id="background" #background>
+        <div class="container">
+            <h2 class="text-black text-center mb-4">Background</h2>
+            <!-- Background Row 1-->
+            <div class="row justify-content-center no-gutters mb-5 mb-lg-0">
+                <div class="col-lg-6"><img class="img-fluid" src="assets/img/demo-image-3.jpg" alt="" /></div>
+                <div class="col-lg-6">
+                    <div class="bg-primary text-center h-100 project">
+                        <div class="d-flex h-100">
+                            <div class="project-text w-100 my-auto text-center text-lg-left">
+                                <h4 class="text-white">Introduction</h4>
+                                <p class="mb-0 text-white">
+                                    A brief introduction of the circumstances that triggered the system development project
+                                </p>
+                                <p></p>
+                                <hr class="d-none d-lg-block mb-0 ml-0" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Background Row 2-->
+            <div class="row justify-content-center no-gutters mb-5 mb-lg-0">
+                <div class="col-lg-6"><img class="img-fluid" src="assets/img/demo-image-4.jpg" alt="" /></div>
+                <div class="col-lg-6 order-lg-first">
+                    <div class="bg-primary text-center h-100 project">
+                        <div class="d-flex h-100">
+                            <div class="project-text w-100 my-auto text-center text-lg-right">
+                                <h4 class="text-white">The Project</h4>
+                                <p class="mb-0 text-white">
+                                    A few statements about the circumstances that triggered the system development exercise.
+                                </p>
+                                <p></p>
+                                <hr class="d-none d-lg-block mb-0 mr-0" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Background Row 3-->
+            <div class="row justify-content-center no-gutters mb-5 mb-lg-0">
+                <div class="col-lg-6"><img class="img-fluid" src="assets/img/demo-image-5.jpg" alt="" /></div>
+                <div class="col-lg-6">
+                    <div class="bg-primary text-center h-100 project">
+                        <div class="d-flex h-100">
+                            <div class="project-text w-100 my-auto text-center text-lg-left">
+                                <h4 class="text-white">The System</h4>
+                                <p class="mb-0 text-white">
+                                    A few statements about the system that was developed as a result.
+                                </p>
+                                <p></p>
+                                <hr class="d-none d-lg-block mb-0 ml-0" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Background Row 4-->
+            <div class="row justify-content-center no-gutters mb-5 mb-lg-0">
+                <div class="col-lg-6"><img class="img-fluid" src="assets/img/demo-image-6.jpg" alt="" /></div>
+                <div class="col-lg-6 order-lg-first">
+                    <div class="bg-primary text-center h-100 project">
+                        <div class="d-flex h-100">
+                            <div class="project-text w-100 my-auto text-center text-lg-right">
+                                <h4 class="text-white">Status</h4>
+                                <p class="mb-0 text-white">
+                                    A few statements as to the status of the developed system.
+                                </p>
+                                <p></p>
+                                <hr class="d-none d-lg-block mb-0 mr-0" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Link-->
+    <section class="signup-section" id="signup" #signup>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 mx-auto text-center">
+                    <fa-icon class="fa-2x mb-2 text-white" [icon]='["far", "paper-plane"]'></fa-icon>
+                    <h2 class="text-white mb-5">A call for the users to take action</h2>
+                    <a class="btn btn-primary mx-auto" routerLink="/dashboard">Open Dashboard</a>
+                    <!--<button class="btn btn-primary mx-auto" type="submit">Dashboard</button>-->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Contact-->
+    <section class="contact-section bg-primary" id="contacts" #contacts>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="card py-4 h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-map-marked-alt text-primary mb-2"></i>
+                            <h4 class="text-uppercase m-0">
+                                <a href="https://www.miles.co.ke" class="text-primary"
+                                    target="_blank">Partner 1</a>
+                            </h4>
+                            <hr class="my-4 mx-auto" />
+                            <div class="small text-black-50">
+                                <img class="img-fluid" src="assets/img/tiger.png" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="card py-4 h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-envelope text-primary mb-2"></i>
+                            <h4 class="text-uppercase m-0">
+                                <a href="http://www.miles.co.ke" class="text-primary" target="_blank">Partner 2</a>
+                            </h4>
+                            <hr class="my-4 mx-auto" />
+                            <div class="small text-black-50">
+                                <img class="img-fluid" src="assets/img/leo.png" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="card py-4 h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-mobile-alt text-primary mb-2"></i>
+                            <h4 class="text-uppercase m-0">
+                                <a href="https://miles.co.ke/" class="text-primary" target="_blank">Partner 3</a>
+                            </h4>
+                            <hr class="my-4 mx-auto bg-primary" />
+                            <div class="small text-black-50">
+                                <img class="img-fluid" src="assets/img/jaguar.png" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer-->
+    <footer class="footer bg-primary small text-center text-white">
+        <div class="container">Copyright &copy; The Second Mile 2021</div>
+    </footer>
+</sb-layout-home>

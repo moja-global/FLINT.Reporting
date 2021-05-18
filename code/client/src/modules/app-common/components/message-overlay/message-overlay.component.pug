@@ -1,0 +1,11 @@
+sb-overlay
+  .text-center
+    h3([ngclass]='iconClasses')
+      fa-icon([icon]='["fas", icon]')
+    h5([ngclass]='crossheadClasses') {{crosshead}}
+    p.processing(*ngif="(status == 'saving' || status == 'deleting');else other_content")
+      span .
+      span .
+      span .
+ng-template(#other_content='')
+  p([ngclass]='contentClasses') {{content}}

@@ -1,0 +1,809 @@
+// Color system
+
+// Black
+// ----------------------------------
+$black:    #000 !default;
+
+
+// White
+// ----------------------------------
+$white:    #fff !default;
+
+
+// Gray
+// ----------------------------------
+
+$gray-light-100: #e6e6e6 !default;
+$gray-light-200: #d9d9d9 !default;
+$gray-light-300: #cccccc !default;
+$gray-light-400: #c0c0c0 !default;
+$gray-light-500: #b3b3b3 !default;
+$gray-light-600: #a6a6a6 !default;
+$gray-light-700: #999999 !default;
+$gray-light-800: #8d8d8d !default;
+$gray-light-900: #808080 !default;
+
+$gray-lights: () !default;
+$gray-lights: map-merge(
+  (
+    "100": $gray-light-100,
+    "200": $gray-light-200,
+    "300": $gray-light-300,
+    "400": $gray-light-400,
+    "500": $gray-light-500,
+    "600": $gray-light-600,
+    "700": $gray-light-700,
+    "800": $gray-light-800,
+    "900": $gray-light-900
+  ),
+  $gray-lights
+);
+
+$gray-dark-100: #737373 !default;
+$gray-dark-200: #666666 !default;
+$gray-dark-300: #5a5a5a !default;
+$gray-dark-400: #4d4d4d !default;
+$gray-dark-500: #404040 !default;
+$gray-dark-600: #333333 !default;
+$gray-dark-700: #262626 !default;
+$gray-dark-800: #1a1a1a !default;
+$gray-dark-900: #0d0d0d !default;
+
+$gray-darks: () !default;
+$gray-darks: map-merge(
+  (
+    "100": $gray-dark-100,
+    "200": $gray-dark-200,
+    "300": $gray-dark-300,
+    "400": $gray-dark-400,
+    "500": $gray-dark-500,
+    "600": $gray-dark-600,
+    "700": $gray-dark-700,
+    "800": $gray-dark-800,
+    "900": $gray-dark-900
+  ),
+  $gray-darks
+);
+
+$gray: $gray-light-900  !default;
+
+
+// Red
+// ----------------------------------
+
+$red-light-100: #ffcccc !default;
+$red-light-200: #ffb3b3 !default;
+$red-light-300: #ff9999 !default;
+$red-light-400: #ff8080 !default;
+$red-light-500: #ff6666 !default;
+$red-light-600: #ff4d4d !default;
+$red-light-700: #ff3333 !default;
+$red-light-800: #ff1a1a !default;
+$red-light-900: #ff0000 !default;
+
+$red-lights: () !default;
+$red-lights: map-merge(
+  (
+    "100": $red-light-100,
+    "200": $red-light-200,
+    "300": $red-light-300,
+    "400": $red-light-400,
+    "500": $red-light-500,
+    "600": $red-light-600,
+    "700": $red-light-700,
+    "800": $red-light-800,
+    "900": $red-light-900
+  ),
+  $red-lights
+);
+
+$red-dark-100: #e60000 !default;
+$red-dark-200: #cc0000 !default;
+$red-dark-300: #b30000 !default;
+$red-dark-400: #990000 !default;
+$red-dark-500: #800000 !default;
+$red-dark-600: #660000 !default;
+$red-dark-700: #4d0000 !default;
+$red-dark-800: #330000 !default;
+$red-dark-900: #1a0000 !default;
+
+$red-darks: () !default;
+$red-darks: map-merge(
+  (
+    "100": $red-dark-100,
+    "200": $red-dark-200,
+    "300": $red-dark-300,
+    "400": $red-dark-400,
+    "500": $red-dark-500,
+    "600": $red-dark-600,
+    "700": $red-dark-700,
+    "800": $red-dark-800,
+    "900": $red-dark-900
+  ),
+  $red-darks
+);
+
+$red: $red-light-900  !default;
+
+
+// Orange
+// ----------------------------------
+
+$orange-light-100: #ffedcc !default;
+$orange-light-200: #ffe4b3 !default;
+$orange-light-300: #ffdb99 !default;
+$orange-light-400: #ffd280 !default;
+$orange-light-500: #ffc966 !default;
+$orange-light-600: #ffc04d !default;
+$orange-light-700: #ffb733 !default;
+$orange-light-800: #ffae1a !default;
+$orange-light-900: #ffa500 !default;
+
+$orange-lights: () !default;
+$orange-lights: map-merge(
+  (
+    "100": $orange-light-100,
+    "200": $orange-light-200,
+    "300": $orange-light-300,
+    "400": $orange-light-400,
+    "500": $orange-light-500,
+    "600": $orange-light-600,
+    "700": $orange-light-700,
+    "800": $orange-light-800,
+    "900": $orange-light-900
+  ),
+  $orange-lights
+);
+
+$orange-dark-100: #e69500 !default;
+$orange-dark-200: #cc8400 !default;
+$orange-dark-300: #b37300 !default;
+$orange-dark-400: #996300 !default;
+$orange-dark-500: #805300 !default;
+$orange-dark-600: #664200 !default;
+$orange-dark-700: #4d3200 !default;
+$orange-dark-800: #332100 !default;
+$orange-dark-900: #1a1100 !default;
+
+$orange-darks: () !default;
+$orange-darks: map-merge(
+  (
+    "100": $orange-dark-100,
+    "200": $orange-dark-200,
+    "300": $orange-dark-300,
+    "400": $orange-dark-400,
+    "500": $orange-dark-500,
+    "600": $orange-dark-600,
+    "700": $orange-dark-700,
+    "800": $orange-dark-800,
+    "900": $orange-dark-900
+  ),
+  $orange-darks
+);
+
+$orange: $orange-light-900  !default;
+
+
+// Yellow
+// ----------------------------------
+
+$yellow-light-100: #ffffcc !default;
+$yellow-light-200: #ffffb3 !default;
+$yellow-light-300: #ffff99 !default;
+$yellow-light-400: #ffff80 !default;
+$yellow-light-500: #ffff66 !default;
+$yellow-light-600: #ffff4d !default;
+$yellow-light-700: #ffff33 !default;
+$yellow-light-800: #ffff1a !default;
+$yellow-light-900: #ffff00 !default;
+
+$yellow-lights: () !default;
+$yellow-lights: map-merge(
+  (
+    "100": $yellow-light-100,
+    "200": $yellow-light-200,
+    "300": $yellow-light-300,
+    "400": $yellow-light-400,
+    "500": $yellow-light-500,
+    "600": $yellow-light-600,
+    "700": $yellow-light-700,
+    "800": $yellow-light-800,
+    "900": $yellow-light-900
+  ),
+  $yellow-lights
+);
+
+$yellow-dark-100: #e6e600 !default;
+$yellow-dark-200: #cccc00 !default;
+$yellow-dark-300: #b3b300 !default;
+$yellow-dark-400: #999900 !default;
+$yellow-dark-500: #808000 !default;
+$yellow-dark-600: #666600 !default;
+$yellow-dark-700: #4d4d00 !default;
+$yellow-dark-800: #333300 !default;
+$yellow-dark-900: #1a1a00 !default;
+
+$yellow-darks: () !default;
+$yellow-darks: map-merge(
+  (
+    "100": $yellow-dark-100,
+    "200": $yellow-dark-200,
+    "300": $yellow-dark-300,
+    "400": $yellow-dark-400,
+    "500": $yellow-dark-500,
+    "600": $yellow-dark-600,
+    "700": $yellow-dark-700,
+    "800": $yellow-dark-800,
+    "900": $yellow-dark-900
+  ),
+  $yellow-darks
+);
+
+$yellow: $yellow-light-900  !default;
+
+
+// Green
+// ----------------------------------
+
+$green-light-100: #cce6cc !default;
+$green-light-200: #b3d9b3 !default;
+$green-light-300: #99cc99 !default;
+$green-light-400: #80c080 !default;
+$green-light-500: #66b366 !default;
+$green-light-600: #4da64d !default;
+$green-light-700: #339933 !default;
+$green-light-800: #1a8d1a !default;
+$green-light-900: #008000 !default;
+
+$green-lights: () !default;
+$green-lights: map-merge(
+  (
+    "100": $green-light-100,
+    "200": $green-light-200,
+    "300": $green-light-300,
+    "400": $green-light-400,
+    "500": $green-light-500,
+    "600": $green-light-600,
+    "700": $green-light-700,
+    "800": $green-light-800,
+    "900": $green-light-900
+  ),
+  $green-lights
+);
+
+$green-dark-100: #007300 !default;
+$green-dark-200: #006600 !default;
+$green-dark-300: #005a00 !default;
+$green-dark-400: #004d00 !default;
+$green-dark-500: #004000 !default;
+$green-dark-600: #003300 !default;
+$green-dark-700: #002600 !default;
+$green-dark-800: #001a00 !default;
+$green-dark-900: #000d00 !default;
+
+$green-darks: () !default;
+$green-darks: map-merge(
+  (
+    "100": $green-dark-100,
+    "200": $green-dark-200,
+    "300": $green-dark-300,
+    "400": $green-dark-400,
+    "500": $green-dark-500,
+    "600": $green-dark-600,
+    "700": $green-dark-700,
+    "800": $green-dark-800,
+    "900": $green-dark-900
+  ),
+  $green-darks
+);
+
+$green: $green-light-900  !default;
+
+
+// Blue
+// ----------------------------------
+
+$blue-light-100: #ccccff !default;
+$blue-light-200: #b3b3ff !default;
+$blue-light-300: #9999ff !default;
+$blue-light-400: #8080ff !default;
+$blue-light-500: #6666ff !default;
+$blue-light-600: #4d4dff !default;
+$blue-light-700: #3333ff !default;
+$blue-light-800: #1a1aff !default;
+$blue-light-900: #0000ff !default;
+
+$blue-lights: () !default;
+$blue-lights: map-merge(
+  (
+    "100": $blue-light-100,
+    "200": $blue-light-200,
+    "300": $blue-light-300,
+    "400": $blue-light-400,
+    "500": $blue-light-500,
+    "600": $blue-light-600,
+    "700": $blue-light-700,
+    "800": $blue-light-800,
+    "900": $blue-light-900
+  ),
+  $blue-lights
+);
+
+$blue-dark-100: #0000e6 !default;
+$blue-dark-200: #0000cc !default;
+$blue-dark-300: #0000b3 !default;
+$blue-dark-400: #000099 !default;
+$blue-dark-500: #000080 !default;
+$blue-dark-600: #000066 !default;
+$blue-dark-700: #00004d !default;
+$blue-dark-800: #000033 !default;
+$blue-dark-900: #00001a !default;
+
+$blue-darks: () !default;
+$blue-darks: map-merge(
+  (
+    "100": $blue-dark-100,
+    "200": $blue-dark-200,
+    "300": $blue-dark-300,
+    "400": $blue-dark-400,
+    "500": $blue-dark-500,
+    "600": $blue-dark-600,
+    "700": $blue-dark-700,
+    "800": $blue-dark-800,
+    "900": $blue-dark-900
+  ),
+  $blue-darks
+);
+
+$blue: $blue-light-900  !default;
+
+
+// Indigo
+// ----------------------------------
+
+$indigo-light-100: #ccccff !default;
+$indigo-light-200: #b3b3ff !default;
+$indigo-light-300: #9999ff !default;
+$indigo-light-400: #8080ff !default;
+$indigo-light-500: #6666ff !default;
+$indigo-light-600: #4d4dff !default;
+$indigo-light-700: #3333ff !default;
+$indigo-light-800: #1a1aff !default;
+$indigo-light-900: #0000ff !default;
+
+$indigo-lights: () !default;
+$indigo-lights: map-merge(
+  (
+    "100": $indigo-light-100,
+    "200": $indigo-light-200,
+    "300": $indigo-light-300,
+    "400": $indigo-light-400,
+    "500": $indigo-light-500,
+    "600": $indigo-light-600,
+    "700": $indigo-light-700,
+    "800": $indigo-light-800,
+    "900": $indigo-light-900
+  ),
+  $indigo-lights
+);
+
+$indigo-dark-100: #0000e6 !default;
+$indigo-dark-200: #0000cc !default;
+$indigo-dark-300: #0000b3 !default;
+$indigo-dark-400: #000099 !default;
+$indigo-dark-500: #000080 !default;
+$indigo-dark-600: #000066 !default;
+$indigo-dark-700: #00004d !default;
+$indigo-dark-800: #000033 !default;
+$indigo-dark-900: #00001a !default;
+
+$indigo-darks: () !default;
+$indigo-darks: map-merge(
+  (
+    "100": $indigo-dark-100,
+    "200": $indigo-dark-200,
+    "300": $indigo-dark-300,
+    "400": $indigo-dark-400,
+    "500": $indigo-dark-500,
+    "600": $indigo-dark-600,
+    "700": $indigo-dark-700,
+    "800": $indigo-dark-800,
+    "900": $indigo-dark-900
+  ),
+  $indigo-darks
+);
+
+$indigo: $indigo-light-900  !default;
+
+
+// Violet
+// ----------------------------------
+
+$violet-light-100: #fce6fc !default;
+$violet-light-200: #fadafa !default;
+$violet-light-300: #f8cdf8 !default;
+$violet-light-400: #f7c1f7 !default;
+$violet-light-500: #f5b4f5 !default;
+$violet-light-600: #f3a8f3 !default;
+$violet-light-700: #f19bf1 !default;
+$violet-light-800: #f08ff0 !default;
+$violet-light-900: #ee82ee !default;
+
+$violet-lights: () !default;
+$violet-lights: map-merge(
+  (
+    "100": $violet-light-100,
+    "200": $violet-light-200,
+    "300": $violet-light-300,
+    "400": $violet-light-400,
+    "500": $violet-light-500,
+    "600": $violet-light-600,
+    "700": $violet-light-700,
+    "800": $violet-light-800,
+    "900": $violet-light-900
+  ),
+  $violet-lights
+);
+
+$violet-dark-100: #d675d6 !default;
+$violet-dark-200: #be68be !default;
+$violet-dark-300: #a75ba7 !default;
+$violet-dark-400: #8f4e8f !default;
+$violet-dark-500: #774177 !default;
+$violet-dark-600: #5f345f !default;
+$violet-dark-700: #472747 !default;
+$violet-dark-800: #301a30 !default;
+$violet-dark-900: #180d18 !default;
+
+$violet-darks: () !default;
+$violet-darks: map-merge(
+  (
+    "100": $violet-dark-100,
+    "200": $violet-dark-200,
+    "300": $violet-dark-300,
+    "400": $violet-dark-400,
+    "500": $violet-dark-500,
+    "600": $violet-dark-600,
+    "700": $violet-dark-700,
+    "800": $violet-dark-800,
+    "900": $violet-dark-900
+  ),
+  $violet-darks
+);
+
+$violet: $violet-light-900  !default;
+
+
+// Teal
+// ----------------------------------
+
+$teal-light-100: #cce6e6 !default;
+$teal-light-200: #b3d9d9 !default;
+$teal-light-300: #99cccc !default;
+$teal-light-400: #80c0c0 !default;
+$teal-light-500: #66b3b3 !default;
+$teal-light-600: #4da6a6 !default;
+$teal-light-700: #339999 !default;
+$teal-light-800: #1a8d8d !default;
+$teal-light-900: #008080 !default;
+
+$teal-lights: () !default;
+$teal-lights: map-merge(
+  (
+    "100": $teal-light-100,
+    "200": $teal-light-200,
+    "300": $teal-light-300,
+    "400": $teal-light-400,
+    "500": $teal-light-500,
+    "600": $teal-light-600,
+    "700": $teal-light-700,
+    "800": $teal-light-800,
+    "900": $teal-light-900
+  ),
+  $teal-lights
+);
+
+$teal-dark-100: #007373 !default;
+$teal-dark-200: #006666 !default;
+$teal-dark-300: #005a5a !default;
+$teal-dark-400: #004d4d !default;
+$teal-dark-500: #004040 !default;
+$teal-dark-600: #003333 !default;
+$teal-dark-700: #002626 !default;
+$teal-dark-800: #001a1a !default;
+$teal-dark-900: #000d0d !default;
+
+$teal-darks: () !default;
+$teal-darks: map-merge(
+  (
+    "100": $teal-dark-100,
+    "200": $teal-dark-200,
+    "300": $teal-dark-300,
+    "400": $teal-dark-400,
+    "500": $teal-dark-500,
+    "600": $teal-dark-600,
+    "700": $teal-dark-700,
+    "800": $teal-dark-800,
+    "900": $teal-dark-900
+  ),
+  $teal-darks
+);
+
+$teal: $teal-light-900  !default;
+
+
+// Theme Colors
+// ----------------------------------
+
+$primary:         $blue-light-400;
+$secondary:       $gray-light-400;
+$success:         $green-light-400;
+$info:            $teal-light-400;
+$warning:         $orange-light-400;
+$danger:          $red-light-400;
+$light:           $gray-light-100;
+$dark:            $gray-dark-800;
+
+$theme-colors: ();
+$theme-colors: map-merge(
+  (
+    "primary":    $primary,
+    "secondary":  $secondary,
+    "success":    $success,
+    "info":       $info,
+    "warning":    $warning,
+    "danger":     $danger,
+    "light":      $light,
+    "dark":       $dark
+  ),
+  $theme-colors
+);
+
+// Add grays
+$theme-colors: map-merge(
+  (
+    "gray-tint-1": $gray-light-100,
+    "gray-tint-2": $gray-light-200,
+    "gray-tint-3": $gray-light-300,
+    "gray-tint-4": $gray-light-400,
+    "gray-tint-5": $gray-light-500,
+    "gray-tint-6": $gray-light-600,
+    "gray-tint-7": $gray-light-700,
+    "gray-tint-8": $gray-light-800,
+    "gray-tint-9": $gray-light-900
+  ),
+  $theme-colors
+);
+
+$theme-colors: map-merge(
+  (
+    "gray-shade-1": $gray-dark-100,
+    "gray-shade-2": $gray-dark-200,
+    "gray-shade-3": $gray-dark-300,
+    "gray-shade-4": $gray-dark-400,
+    "gray-shade-5": $gray-dark-500,
+    "gray-shade-6": $gray-dark-600,
+    "gray-shade-7": $gray-dark-700,
+    "gray-shade-8": $gray-dark-800,
+    "gray-shade-9": $gray-dark-900
+  ),
+  $theme-colors
+);
+
+
+// Add reds
+$theme-colors: map-merge(
+  (
+    "red-tint-1": $red-light-100,
+    "red-tint-2": $red-light-200,
+    "red-tint-3": $red-light-300,
+    "red-tint-4": $red-light-400,
+    "red-tint-5": $red-light-500,
+    "red-tint-6": $red-light-600,
+    "red-tint-7": $red-light-700,
+    "red-tint-8": $red-light-800,
+    "red-tint-9": $red-light-900
+  ),
+  $theme-colors
+);
+
+$theme-colors: map-merge(
+  (
+    "red-shade-1": $red-dark-100,
+    "red-shade-2": $red-dark-200,
+    "red-shade-3": $red-dark-300,
+    "red-shade-4": $red-dark-400,
+    "red-shade-5": $red-dark-500,
+    "red-shade-6": $red-dark-600,
+    "red-shade-7": $red-dark-700,
+    "red-shade-8": $red-dark-800,
+    "red-shade-9": $red-dark-900
+  ),
+  $theme-colors
+);
+
+// Add oranges
+$theme-colors: map-merge(
+  (
+    "orange-tint-1": $orange-light-100,
+    "orange-tint-2": $orange-light-200,
+    "orange-tint-3": $orange-light-300,
+    "orange-tint-4": $orange-light-400,
+    "orange-tint-5": $orange-light-500,
+    "orange-tint-6": $orange-light-600,
+    "orange-tint-7": $orange-light-700,
+    "orange-tint-8": $orange-light-800,
+    "orange-tint-9": $orange-light-900
+  ),
+  $theme-colors
+);
+
+$theme-colors: map-merge(
+  (
+    "orange-shade-1": $orange-dark-100,
+    "orange-shade-2": $orange-dark-200,
+    "orange-shade-3": $orange-dark-300,
+    "orange-shade-4": $orange-dark-400,
+    "orange-shade-5": $orange-dark-500,
+    "orange-shade-6": $orange-dark-600,
+    "orange-shade-7": $orange-dark-700,
+    "orange-shade-8": $orange-dark-800,
+    "orange-shade-9": $orange-dark-900
+  ),
+  $theme-colors
+);
+
+// Add yellows
+$theme-colors: map-merge(
+  (
+    "yellow-tint-1": $yellow-light-100,
+    "yellow-tint-2": $yellow-light-200,
+    "yellow-tint-3": $yellow-light-300,
+    "yellow-tint-4": $yellow-light-400,
+    "yellow-tint-5": $yellow-light-500,
+    "yellow-tint-6": $yellow-light-600,
+    "yellow-tint-7": $yellow-light-700,
+    "yellow-tint-8": $yellow-light-800,
+    "yellow-tint-9": $yellow-light-900
+  ),
+  $theme-colors
+);
+
+$theme-colors: map-merge(
+  (
+    "yellow-shade-1": $yellow-dark-100,
+    "yellow-shade-2": $yellow-dark-200,
+    "yellow-shade-3": $yellow-dark-300,
+    "yellow-shade-4": $yellow-dark-400,
+    "yellow-shade-5": $yellow-dark-500,
+    "yellow-shade-6": $yellow-dark-600,
+    "yellow-shade-7": $yellow-dark-700,
+    "yellow-shade-8": $yellow-dark-800,
+    "yellow-shade-9": $yellow-dark-900
+  ),
+  $theme-colors
+);
+
+// Add greens
+$theme-colors: map-merge(
+  (
+    "green-tint-1": $green-light-100,
+    "green-tint-2": $green-light-200,
+    "green-tint-3": $green-light-300,
+    "green-tint-4": $green-light-400,
+    "green-tint-5": $green-light-500,
+    "green-tint-6": $green-light-600,
+    "green-tint-7": $green-light-700,
+    "green-tint-8": $green-light-800,
+    "green-tint-9": $green-light-900
+  ),
+  $theme-colors
+);
+
+$theme-colors: map-merge(
+  (
+    "green-shade-1": $green-dark-100,
+    "green-shade-2": $green-dark-200,
+    "green-shade-3": $green-dark-300,
+    "green-shade-4": $green-dark-400,
+    "green-shade-5": $green-dark-500,
+    "green-shade-6": $green-dark-600,
+    "green-shade-7": $green-dark-700,
+    "green-shade-8": $green-dark-800,
+    "green-shade-9": $green-dark-900
+  ),
+  $theme-colors
+);
+
+// Add indigos
+$theme-colors: map-merge(
+  (
+    "indigo-tint-1": $indigo-light-100,
+    "indigo-tint-2": $indigo-light-200,
+    "indigo-tint-3": $indigo-light-300,
+    "indigo-tint-4": $indigo-light-400,
+    "indigo-tint-5": $indigo-light-500,
+    "indigo-tint-6": $indigo-light-600,
+    "indigo-tint-7": $indigo-light-700,
+    "indigo-tint-8": $indigo-light-800,
+    "indigo-tint-9": $indigo-light-900
+  ),
+  $theme-colors
+);
+
+$theme-colors: map-merge(
+  (
+    "indigo-shade-1": $indigo-dark-100,
+    "indigo-shade-2": $indigo-dark-200,
+    "indigo-shade-3": $indigo-dark-300,
+    "indigo-shade-4": $indigo-dark-400,
+    "indigo-shade-5": $indigo-dark-500,
+    "indigo-shade-6": $indigo-dark-600,
+    "indigo-shade-7": $indigo-dark-700,
+    "indigo-shade-8": $indigo-dark-800,
+    "indigo-shade-9": $indigo-dark-900
+  ),
+  $theme-colors
+);
+
+// Add violets
+$theme-colors: map-merge(
+  (
+    "violet-tint-1": $violet-light-100,
+    "violet-tint-2": $violet-light-200,
+    "violet-tint-3": $violet-light-300,
+    "violet-tint-4": $violet-light-400,
+    "violet-tint-5": $violet-light-500,
+    "violet-tint-6": $violet-light-600,
+    "violet-tint-7": $violet-light-700,
+    "violet-tint-8": $violet-light-800,
+    "violet-tint-9": $violet-light-900
+  ),
+  $theme-colors
+);
+
+$theme-colors: map-merge(
+  (
+    "violet-shade-1": $violet-dark-100,
+    "violet-shade-2": $violet-dark-200,
+    "violet-shade-3": $violet-dark-300,
+    "violet-shade-4": $violet-dark-400,
+    "violet-shade-5": $violet-dark-500,
+    "violet-shade-6": $violet-dark-600,
+    "violet-shade-7": $violet-dark-700,
+    "violet-shade-8": $violet-dark-800,
+    "violet-shade-9": $violet-dark-900
+  ),
+  $theme-colors
+);
+
+// Add teals
+$theme-colors: map-merge(
+  (
+    "teal-tint-1": $teal-light-100,
+    "teal-tint-2": $teal-light-200,
+    "teal-tint-3": $teal-light-300,
+    "teal-tint-4": $teal-light-400,
+    "teal-tint-5": $teal-light-500,
+    "teal-tint-6": $teal-light-600,
+    "teal-tint-7": $teal-light-700,
+    "teal-tint-8": $teal-light-800,
+    "teal-tint-9": $teal-light-900
+  ),
+  $theme-colors
+);
+
+$theme-colors: map-merge(
+  (
+    "teal-shade-1": $teal-dark-100,
+    "teal-shade-2": $teal-dark-200,
+    "teal-shade-3": $teal-dark-300,
+    "teal-shade-4": $teal-dark-400,
+    "teal-shade-5": $teal-dark-500,
+    "teal-shade-6": $teal-dark-600,
+    "teal-shade-7": $teal-dark-700,
+    "teal-shade-8": $teal-dark-800,
+    "teal-shade-9": $teal-dark-900
+  ),
+  $theme-colors
+);

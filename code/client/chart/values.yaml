@@ -1,0 +1,45 @@
+# Default values for the Client's Helm Chart.
+# This is a YAML-formatted file.
+
+# Client
+# ----------------------------------------------------------------------------------------
+client:
+
+  # Ingress
+  ingress:
+    name: client
+    class: traefik 
+    rules:
+      host: reporter.miles.co.ke
+      http:
+        path: /client
+        backend:
+          service:
+            name: client
+            port: http
+
+  # Service
+  service:
+    name: client 
+    port:
+      default: 80
+      target: 80
+
+  # Deployment
+  deployment:
+    name: client
+
+  # Application / Application Replicas
+  application:
+    name: client
+    version: 0.0.1
+    image: 
+      id: reporter.miles.co.ke:5043/client
+      tag: 0.0.1
+      pull:
+        policy: Always
+        secret: regcred      
+    replicas: 1
+
+
+

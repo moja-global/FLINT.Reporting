@@ -1,0 +1,33 @@
+<!--
+<sb-layout-dashboard>
+    <sb-dashboard-header title="Dashboard" [hideBreadcrumbs]="false"></sb-dashboard-header>
+    <sb-dashboard-cards></sb-dashboard-cards>
+    <sb-dashboard-charts></sb-dashboard-charts>
+    <sb-dashboard-tables></sb-dashboard-tables>
+</sb-layout-dashboard>
+-->
+
+<sb-layout-main>
+    
+    <ng-container header>
+        <sb-header title="Dashboard" subtitle="{{ time$ | async | date:'fullDate'}} {{ time$ | async | date:'HH:mm'}}"></sb-header>
+    </ng-container>
+      
+    <ng-container body>
+        <sb-card>
+            <div class="card-header">
+                Under Construction
+            </div>
+            <div class="card-body">
+                <div class="text-center">
+                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="assets/img/under_construction.svg" alt="...">
+                </div>
+                <p class="text-center">
+                    This is a placeholder for the Reporting Business Intelligence content. <br />
+                    This page is currently under development and will be updated soon.
+                </p>
+            </div>
+        </sb-card>
+    </ng-container>
+
+</sb-layout-main>

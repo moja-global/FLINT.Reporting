@@ -1,0 +1,19 @@
+//
+  Check if table is responsive:
+  1) If yes, add the template table code inside an enclosing responsivity div (i.e a div with the correct responsive classes).
+  2) If no, add the template table code directly.
+div(*ngif='responsive else nonresponsive', [ngclass]='tableResponsivityClasses')
+  ng-container(*ngtemplateoutlet='table')
+ng-template(#nonresponsive='')
+  ng-container(*ngtemplateoutlet='table')
+// The template table code
+ng-template(#table='')
+  table([ngclass]='tableClasses')
+    caption
+      ng-content(select='[caption]')
+    thead
+      ng-content(select='[header]')
+    tfoot
+      ng-content(select='[footer]')
+    tbody
+      ng-content(select='[body]')

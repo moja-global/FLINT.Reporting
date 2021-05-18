@@ -1,0 +1,65 @@
+<button *ngIf="action === 'add'" 
+    type="button" 
+    [ngClass]="classes$ | async" 
+    data-toggle="tooltip" 
+    data-placement="top"
+    [title]="tooltip$ | async" 
+    [disabled]="disabled$ | async"  
+    (click)="onAdd()">
+    <fa-icon [icon]='["fas", "plus"]'></fa-icon>
+</button>
+
+<button *ngIf="action === 'update'" 
+    type="button" 
+    [ngClass]="classes$ | async" 
+    data-toggle="tooltip"
+    data-placement="top" 
+    [title]="tooltip$ | async"  
+    [disabled]="disabled$ | async" 
+    (click)="onUpdate()">
+    <fa-icon [icon]='["fas", "pen"]'></fa-icon>
+</button>
+
+<button *ngIf="action === 'delete'" 
+    type="button" 
+    [ngClass]="classes$ | async" 
+    data-toggle="tooltip"
+    data-placement="top" 
+    [title]="tooltip$ | async" 
+    [disabled]="disabled$ | async" 
+    (click)="onDelete()">
+    <fa-icon [icon]='["fas", "trash"]'></fa-icon>
+</button>
+
+<button *ngIf="action === 'save'" 
+    type="button" 
+    [ngClass]="classes$ | async" 
+    data-toggle="tooltip"
+    data-placement="top" 
+    [title]="tooltip$ | async" 
+    [disabled]="disabled$ | async" 
+    (click)="onSave()">
+    Save
+</button>
+
+<button *ngIf="action === 'yes'" 
+    type="button" 
+    [ngClass]="classes$ | async" 
+    data-toggle="tooltip"
+    data-placement="top" 
+    [title]="tooltip$ | async" 
+    [disabled]="disabled$ | async" 
+    (click)="onYes()">
+    Yes
+</button>
+
+<button *ngIf="action === 'no'" 
+    type="button" 
+    [ngClass]="classes$ | async" 
+    data-toggle="tooltip"
+    data-placement="top" 
+    [title]="tooltip$ | async" 
+    [disabled]="disabled$ | async" 
+    (click)="onNo()">
+    No
+</button>

@@ -1,0 +1,9 @@
+sb-layout-main
+  ng-container(header)
+    sb-header(title='Cover Types', subtitle='Vegetation or man-made constructions on the earth surface')
+  ng-container(body')
+    sb-card
+      .card-header
+        | Cover Types List
+      .card-body
+        sb-cover-types-records-tabulation([pagesize]='6')

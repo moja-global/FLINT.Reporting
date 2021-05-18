@@ -1,0 +1,66 @@
+<form>
+    <div class="row">
+        <div class="col">
+            <div class="d-flex justify-content-between p-2">
+                <sb-search (searched)="onSearch($event)"></sb-search>
+                <sb-loading-animation></sb-loading-animation>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <sb-table>
+                <ng-container header>
+                    <tr>
+                        <th scope="col" class="text-center">
+                            <span>#</span>
+                        </th>
+                        <th scope="col" sbSortable="name" (sort)="onSort($event)" class="text-left pl-3">
+                            <span>Country</span>
+                            <sb-sort-icon *ngIf='sortedColumn === "name"' [direction]="sortedDirection"></sb-sort-icon>
+                        </th>
+                        <th scope="col" sbSortable="area" (sort)="onSort($event)" class="text-right pr-3">
+                            <span>Area</span>
+                            <sb-sort-icon *ngIf='sortedColumn === "area"' [direction]="sortedDirection"></sb-sort-icon>
+                        </th>
+                        <th scope="col" sbSortable="population" (sort)="onSort($event)" class="text-right pr-3">
+                            <span>Population</span>
+                            <sb-sort-icon *ngIf='sortedColumn === "population"' [direction]="sortedDirection"></sb-sort-icon>
+                        </th>
+                    </tr>
+                </ng-container>
+
+                <ng-container body>
+
+                    <tr *ngFor="let country of countryService.countries$ | async; let i = index">
+                        <td class="text-center">
+                            {{ i + 1 }}
+                        </td>
+                        <td class="text-left pl-3">
+                            <img class="mr-2" [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag"
+                                style="width: 20px" />
+                            <ngb-highlight [result]="country.name" [term]="countryService.searchTerm"></ngb-highlight>
+                        </td>
+                        <td class="text-right pr-3">
+                            <ngb-highlight [result]="country.area | number" [term]="countryService.searchTerm">
+                            </ngb-highlight>
+                        </td>
+                        <td class="text-right pr-3">
+                            <ngb-highlight [result]="country.population | number" [term]="countryService.searchTerm">
+                            </ngb-highlight>
+                        </td>
+                    </tr>
+                </ng-container>
+            </sb-table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <sb-pagination (pageChanged)="onPageChange($event)" (pageSizeChanged)="onPageSizeChange($event)">
+            </sb-pagination>
+        </div>
+    </div>
+
+</form>

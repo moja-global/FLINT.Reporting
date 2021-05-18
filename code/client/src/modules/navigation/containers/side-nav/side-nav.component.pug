@@ -1,0 +1,11 @@
+nav#sidenavAccordion.sb-sidenav.accordion([ngClass]="customClasses")
+  .sb-sidenav-menu
+    .nav
+      ng-container(*ngfor='let section of sideNavSections')
+        .sb-sidenav-menu-heading(*ngif='section.text') {{ section.text }}
+        ng-container(*ngfor='let item of section.items')
+          sb-side-nav-item([sidenavitem]='sideNavItems[item]')
+  .sb-sidenav-footer
+    .small Logged in as:
+    // <span *ngIf="userService.user$ | async as user">{{user.firstName}} {{user.lastName}}</span>
+    | Guest

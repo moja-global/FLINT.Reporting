@@ -1,0 +1,10 @@
+<sb-overlay>
+    <div class="text-center">
+        <p [ngClass]="customClasses">
+            {{crosshead}} 
+            <ng-container [counter]="counter" [interval]="interval" (value)="onValueChange($event)">
+                <span class="text-muted"> {{ count }} </span>
+            </ng-container>
+        </p>
+    </div>
+</sb-overlay>

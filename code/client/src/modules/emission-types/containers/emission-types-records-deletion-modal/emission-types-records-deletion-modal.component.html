@@ -1,0 +1,55 @@
+<sb-modal>
+    <ng-container title>
+        Delete Emission Type Record
+    </ng-container>
+    <ng-container body>
+
+        <sb-emission-types-records-deletion id="{{id}}" (succeeded)="onSucceeded()" (failed)="onFailed($event)">
+        </sb-emission-types-records-deletion>
+
+        <ng-container *ngIf='(status$ | async) === "deleting"'>
+            <sb-message-overlay activity="deleting" status="deleting"></sb-message-overlay>
+        </ng-container>
+
+        <ng-container *ngIf='(status$ | async) === "succeeded"'>
+            <sb-message-overlay activity="deleting" status="succeeded"></sb-message-overlay>
+        </ng-container>
+
+        <ng-container *ngIf='(status$ | async) === "failed"'>
+            <sb-message-overlay activity="deleting" status="failed"></sb-message-overlay>
+        </ng-container>
+
+        <ng-container *ngIf='(status$ | async) === "retrying"'>
+            <sb-countdown-overlay crosshead="Retrying in " (completed)="onDelete()"></sb-countdown-overlay>
+        </ng-container>
+
+    </ng-container>
+    <ng-container footer>
+
+        <ng-container *ngIf='(status$ | async) === "new"'>
+            <sb-button action="yes" entity="Emission Type" (yes)="onDelete()"></sb-button>
+            <sb-button action="no" entity="Emission Type" guarded="false" (no)="onQuit()"></sb-button>             
+        </ng-container>
+
+        <ng-container *ngIf='(status$ | async) === "deleting"'>
+            <sb-button action="yes" entity="Emission Type" disabled="true"></sb-button>
+            <sb-button action="no" entity="Emission Type" disabled="true"></sb-button>             
+        </ng-container>     
+
+        <ng-container *ngIf='(status$ | async) === "succeeded"'>
+            <sb-button action="yes" entity="Emission Type" disabled="true"></sb-button>
+            <sb-button action="no" entity="Emission Type" disabled="true"></sb-button>               
+        </ng-container>
+
+        <ng-container *ngIf='(status$ | async) === "failed"'>
+            <sb-button action="yes" entity="Emission Type" (yes)="onRetry()"></sb-button>
+            <sb-button action="no" entity="Emission Type" guarded="false" (no)="onQuit()"></sb-button>            
+        </ng-container>
+
+        <ng-container *ngIf='(status$ | async) === "retrying"'>
+            <sb-button action="yes" entity="Emission Type" disabled="true"></sb-button>
+            <sb-button action="no" entity="Emission Type" disabled="true"></sb-button> 
+        </ng-container>         
+
+    </ng-container>
+</sb-modal>

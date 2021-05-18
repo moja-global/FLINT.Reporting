@@ -1,0 +1,75 @@
+<form>
+    <div class="row">
+        <div class="col">
+            <div class="d-flex justify-content-between p-2">
+                <sb-search (searched)="onSearch($event)"></sb-search>
+                <sb-loading-animation></sb-loading-animation>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="row">
+        <div class="col">
+            <sb-table>
+                <ng-container header>
+                    <tr>
+                        <th scope="col" class="text-center align-middle">
+                            <span>#</span>
+                        </th>
+                        <th scope="col" sbSortable="code" (sort)="onSort($event)" class="align-middle">
+                            <span>Code</span>
+                            <sb-sort-icon *ngIf='sortedColumn === "code"' [direction]="sortedDirection"></sb-sort-icon>
+                        </th>
+                        <th scope="col" class="align-middle">
+                            <span>Description</span>
+                        </th>
+                        <th scope="col" class="align-middle">
+                            <span class="d-flex flex-row-reverse">
+                                Actions
+                            </span>
+                        </th>
+                    </tr>
+                </ng-container>
+
+                <ng-container footer>
+                    <tr>
+                        <td scope="col" colspan="4" class="align-middle">
+                            <span class="d-flex flex-row-reverse">
+                                <sb-button action="add" entity="Cover Type" (add)="onAddCoverType()"></sb-button>
+                            </span> 
+                        </td>
+                    </tr>
+                </ng-container>                
+
+                <ng-container body>
+                    <tr *ngFor="let coverType of coverTypesTableService.coverTypes$ | async">
+                        <td class="text-center align-middle">
+                            {{coverType.pos}}
+                        </td>
+                        <td class="align-middle">
+                            <ngb-highlight [result]="coverType.code" [term]="coverTypesTableService.searchTerm"></ngb-highlight>
+                        </td>
+                        <td class="align-middle"> 
+                            <ngb-highlight [result]="coverType.description" [term]="coverTypesTableService.searchTerm"></ngb-highlight>
+                        </td>
+                        <td class="align-middle">
+                            <span class="d-flex flex-row-reverse">
+                                <sb-button action="delete" entity="Cover Type" id="{{coverType.id}}" (delete)="onDeleteCoverType($event)"></sb-button>
+                                <sb-button action="update" entity="Cover Type" id="{{coverType.id}}" (update)="onUpdateCoverType($event)"></sb-button>
+                            </span> 
+                        </td>
+                    </tr>
+                </ng-container>
+            </sb-table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <sb-pagination (pageChanged)="onPageChange($event)" (pageSizeChanged)="onPageSizeChange($event)">
+            </sb-pagination>
+        </div>
+    </div>
+
+</form>

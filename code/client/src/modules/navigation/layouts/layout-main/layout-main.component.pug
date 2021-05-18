@@ -1,0 +1,11 @@
+span([ngclass]='{"sb-nav-fixed": !static}')
+  sb-topnav
+  #sidenav-layout
+    #sidenav-layout-nav
+      sb-side-nav([sidenavitems]='sideNavItems', [sidenavsections]='sideNavSections')
+    #sidenav-layout-content
+      main
+        ng-content(select='[header]')
+        .mx-4.mt-n5
+          ng-content(select='[body]')
+      sb-footer

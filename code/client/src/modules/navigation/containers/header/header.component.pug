@@ -1,0 +1,11 @@
+header.bg-primary([ngClass]="customClasses")
+  .container-fluid
+    .pt-4.pb-3
+      .row.align-items-center.justify-content-between
+        .col-auto.mx-2.pb-5
+          h1.text-dark
+            .page-header-icon
+              i(data-feather='layout')
+            |                         {{title}}
+          .text-light
+            | {{subtitle}}

@@ -1,0 +1,20 @@
+<span [ngClass]='{"sb-nav-fixed": !static}'>
+    <sb-topnav></sb-topnav>
+    <div id="sidenav-layout">
+        <div id="sidenav-layout-nav">
+            <sb-side-nav 
+                [sideNavItems]="sideNavItems"
+                [sideNavSections]="sideNavSections">
+            </sb-side-nav>
+        </div>
+        <div id="sidenav-layout-content">
+            <main>
+                <ng-content select="[header]"></ng-content>
+                <div class="mx-4 mt-n5">
+                    <ng-content select="[body]"></ng-content>
+                </div>
+            </main>
+            <sb-footer></sb-footer>
+        </div>
+    </div>
+</span>
