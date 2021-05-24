@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject, fromEvent, Observable, Subscription } from 'rxjs';
 import { filter, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
@@ -11,7 +11,7 @@ const LOG_PREFIX: string = "[Loading Animation Component]";
   templateUrl: './loading-animation.component.html',
   styleUrls: ['loading-animation.component.scss'],
 })
-export class LoadingAnimationComponent implements AfterViewInit {
+export class LoadingAnimationComponent implements OnInit {
 
   // Instantiate a loading status observable field.
   // This field's value will be updated by external processes whenever the user 
@@ -21,9 +21,14 @@ export class LoadingAnimationComponent implements AfterViewInit {
 
   constructor(private log: NGXLogger) { }
 
-  ngAfterViewInit() {}
+  ngOnInit() {
+    this.log.trace(`${LOG_PREFIX} Initializing Component`);
+  }
 
-  ngOnDestroy() {}
+  @HostListener('window:beforeunload')
+  ngOnDestroy() {
+    this.log.trace(`${LOG_PREFIX} Destroying Component`);
+  }
 
   /**
    * Sets the current loading status: true or false

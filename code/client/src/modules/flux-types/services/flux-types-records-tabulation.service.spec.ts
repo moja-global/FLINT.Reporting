@@ -44,7 +44,7 @@ describe('FluxTypesRecordsTabulationService', () => {
 
             fluxTypesTableDataService.fluxTypes$
                 .pipe(
-                    take(3),
+                    take(2),
                     toArray()
                 )
                 .subscribe(response => {

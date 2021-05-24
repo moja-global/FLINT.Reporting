@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, Input, OnInit } from '@angular/core';
 
 const LOG_PREFIX: string = "[Card View Details Component]";
 
@@ -24,4 +24,8 @@ export class CardViewDetailsComponent implements OnInit {
             this.customClasses.push(this.color);
         }
     }
+
+    @HostListener('window:beforeunload')
+    ngOnDestroy() {
+    }    
 }

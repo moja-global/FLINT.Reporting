@@ -83,6 +83,12 @@ tfoot>tr>td{
   }
 }
 
+p.processing {
+  font-size: 3rem;
+  font-weight: bold;
+  color: $primary;
+}
+
 .processing span {
   /**
    * Use the blink animation, which is defined above
@@ -122,6 +128,21 @@ tfoot>tr>td{
    * would animate at the same time
    */
   animation-delay: .4s;
+}
+
+
+// Modals
+.modal-body {
+  min-height: 200px;
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+  /*justify-content: center;*/
+  align-items: center;
+
+  :first-child {
+    width: 100%;
+  }
 }
 
 

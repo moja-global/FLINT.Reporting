@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { Injectable, NgZone } from '@angular/core';
+import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
 import { ReportingFramework } from '../models/reporting-framework.model';
 import { environment } from 'environments/environment';
 import { MessageType } from '@common/models/message.type.model';
-import { MessageService } from '@common/services';
-import { catchError, tap } from 'rxjs/operators';
+import { ConnectivityStatusService, MessageService } from '@common/services';
+import { catchError, first, takeUntil, tap } from 'rxjs/operators';
 
 const LOG_PREFIX: string = "[Reporting Frameworks Data Service]";
 const API_PREFIX: string = "api/v1/reporting_frameworks";
@@ -18,17 +18,68 @@ const HEADERS = { 'Content-Type': 'application/json' };
 })
 export class ReportingFrameworksDataService {
 
+  // The base url of the server
   private _baseUrl: string = environment.baseUrl;
-  private _cache: { reportingFrameworks: ReportingFramework[] } = { reportingFrameworks: [] };
-  private _subject$ = new BehaviorSubject<ReportingFramework[]>([]);
 
-  readonly reportingFrameworks$ = this._subject$.asObservable();
+  // The local data cache
+  private _cache: { reportingFrameworks: ReportingFramework[] } = { reportingFrameworks: [] };
+
+  // The observables that allow subscribers to keep tabs of the current status 
+  // of unit categories records in the data store
+  private _reportingFrameworksSubject$ = new BehaviorSubject<ReportingFramework[]>([]);
+  readonly reportingFrameworks$ = this._reportingFrameworksSubject$.asObservable();
+
+  // The observable that we will use to opt out of initialization subscriptions 
+  // once we are done with them
+  private _done$ = new Subject<boolean>();
+
+  // The api that we'll use to communicate data store changes when components that 
+  // subscribe to this service are outside the current ngzone
+  private bc: BroadcastChannel = new BroadcastChannel("reporting-frameworks-data-channel");
 
   constructor(
     private http: HttpClient,
-    private log: NGXLogger,
-    private messageService: MessageService) {
+    private connectivityStatusService: ConnectivityStatusService,
+    private messageService: MessageService,
+    private zone: NgZone,
+    private log: NGXLogger,) {
 
+    // Subscribe to connectivity status notifications
+    this.log.trace(`${LOG_PREFIX} Subscribing to connectivity status notifications`);
+
+    this.connectivityStatusService.online$
+      .pipe(takeUntil(this._done$))
+      .subscribe(online => {
+
+        // Check if the user is online
+        this.log.trace(`${LOG_PREFIX} Checking if the user is online`);
+        this.log.debug(`${LOG_PREFIX} User is online = ${online}`);
+
+        if (online) {
+
+          // Initialize data
+          this.log.trace(`${LOG_PREFIX} Initializing data`);
+
+          this.getAllReportingFrameworks()
+            .pipe(first()) // This will automatically complete (and therefore unsubscribe) after the first value has been emitted.
+            .subscribe((response => {
+
+              // Data initialization complete
+              this.log.trace(`${LOG_PREFIX} Data initialization complete`);
+
+            }));
+
+          // Unsubscribe from connectivity status notifications
+          this.log.trace(`${LOG_PREFIX} Unsubscribing from connectivity status notifications`);
+          this._done$.next();
+          this._done$.complete();
+
+        }
+
+      });
+
+    //Note: "bc.onmessage" isn't invoked on sender ui
+    this.bc.onmessage = this.zone.run(() => this.handleEvent);
   }
 
   /**
@@ -57,9 +108,17 @@ export class ReportingFrameworksDataService {
           this.log.trace(`${LOG_PREFIX} Adding the newly created Reporting Framework record to the Local Cache`);
           this._cache.reportingFrameworks.push(data);
 
-          // Push a copy of the newly updated Reporting Frameworks records to all Subscribers
-          this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated Reporting Frameworks records to all Subscribers`);
-          this._subject$.next(Object.assign({}, this._cache).reportingFrameworks);
+          // Create an up to date copy of the Reporting Frameworks records
+          this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Reporting Frameworks records`);
+          const copy = Object.assign({}, this._cache).reportingFrameworks;
+
+          // Broadcast the up to date copy of the Reporting Frameworks records to the current listener
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks records to the current listener`);
+          this._reportingFrameworksSubject$.next(copy);
+
+          // Broadcast the up to date copy of the Reporting Frameworks records to the other listeners
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks records to the other listeners`);
+          this.bc.postMessage({ newValue: copy });
 
           // Send a message that states that the Reporting Framework record Creation was successful
           this.log.trace(`${LOG_PREFIX} Sending a message that states that the Reporting Framework record Creation was successful`);
@@ -78,6 +137,15 @@ export class ReportingFrameworksDataService {
 
           return throwError(error);
         }));
+  }
+
+
+  /**
+   * Publish information to current (listening) ui
+   * @param event 
+   */
+  private handleEvent = (event: MessageEvent) => {
+    this.zone.run(() => this._reportingFrameworksSubject$.next(event.data.newValue));
   }
 
 
@@ -128,9 +196,17 @@ export class ReportingFrameworksDataService {
             this._cache.reportingFrameworks.push(data);
           }
 
-          // Push a copy of the newly updated Reporting Frameworks records to all Subscribers
-          this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated Reporting Frameworks records to all Subscribers`);
-          this._subject$.next(Object.assign({}, this._cache).reportingFrameworks);
+          // Create an up to date copy of the Reporting Frameworks records
+          this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Reporting Frameworks records`);
+          const copy = Object.assign({}, this._cache).reportingFrameworks;
+
+          // Broadcast the up to date copy of the Reporting Frameworks records to the current listener
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks records to the current listener`);
+          this._reportingFrameworksSubject$.next(copy);
+
+          // Broadcast the up to date copy of the Reporting Frameworks records to the other listeners
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks records to the other listeners`);
+          this.bc.postMessage({ newValue: copy });
 
           // Send a message that states that the Reporting Framework record Retrieval was successful
           this.log.trace(`${LOG_PREFIX} Sending a message that states that the Reporting Framework record Retrieval was successful`);
@@ -178,9 +254,17 @@ export class ReportingFrameworksDataService {
           this.log.trace(`${LOG_PREFIX} Updating the Reporting Frameworks records in the Local Cache to the newly pulled Reporting Frameworks records`);
           this._cache.reportingFrameworks = data;
 
-          // Push a copy of the newly updated Reporting Frameworks records to all Subscribers
-          this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated Reporting Frameworks records to all Subscribers`);
-          this._subject$.next(Object.assign({}, this._cache).reportingFrameworks);
+          // Create an up to date copy of the Reporting Frameworks records
+          this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Reporting Frameworks records`);
+          const copy = Object.assign({}, this._cache).reportingFrameworks;
+
+          // Broadcast the up to date copy of the Reporting Frameworks records to the current listener
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks records to the current listener`);
+          this._reportingFrameworksSubject$.next(copy);
+
+          // Broadcast the up to date copy of the Reporting Frameworks records to the other listeners
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks records to the other listeners`);
+          this.bc.postMessage({ newValue: copy });
 
           // Send a message that states that the Reporting Frameworks records Retrieval was successful
           this.log.trace(`${LOG_PREFIX} Sending a message that states that the Reporting Frameworks records Retrieval was successful`);
@@ -236,9 +320,17 @@ export class ReportingFrameworksDataService {
             this.log.trace(`${LOG_PREFIX} Updating the locally stored Reporting Framework record`);
             this._cache.reportingFrameworks[index] = data;
 
-            // Push a copy of the newly updated Reporting Frameworks records to all Subscribers
-            this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated Reporting Frameworks records to all Subscribers`);
-            this._subject$.next(Object.assign({}, this._cache).reportingFrameworks);
+            // Create an up to date copy of the Reporting Frameworks records
+            this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Reporting Frameworks records`);
+            const copy = Object.assign({}, this._cache).reportingFrameworks;
+
+            // Broadcast the up to date copy of the Reporting Frameworks records to the current listener
+            this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks records to the current listener`);
+            this._reportingFrameworksSubject$.next(copy);
+
+            // Broadcast the up to date copy of the Reporting Frameworks records to the other listeners
+            this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks records to the other listeners`);
+            this.bc.postMessage({ newValue: copy });
 
             // Send a message that states that the Reporting Framework record Update was successful
             this.log.trace(`${LOG_PREFIX} Sending a message that states that the Reporting Framework record Update was successful`);
@@ -308,9 +400,17 @@ export class ReportingFrameworksDataService {
               this.log.trace(`${LOG_PREFIX} Removing the deleted Reporting Framework record from the Local Cache`);
               this._cache.reportingFrameworks.splice(index, 1);
 
-              // Push a copy of the newly updated Reporting Frameworks records to all Subscribers
-              this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated Reporting Frameworks records to all Subscribers`);
-              this._subject$.next(Object.assign({}, this._cache).reportingFrameworks);
+              // Create an up to date copy of the Reporting Frameworks records
+              this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Reporting Frameworks records`);
+              const copy = Object.assign({}, this._cache).reportingFrameworks;
+
+              // Broadcast the up to date copy of the Reporting Frameworks records to the current listener
+              this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks records to the current listener`);
+              this._reportingFrameworksSubject$.next(copy);
+
+              // Broadcast the up to date copy of the Reporting Frameworks records to the other listeners
+              this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks records to the other listeners`);
+              this.bc.postMessage({ newValue: copy });
 
               // Send a message that states that the Reporting Framework record Deletion was successful
               this.log.trace(`${LOG_PREFIX} Sending a message that states that the Reporting Framework record Deletion was successful`);
@@ -357,6 +457,6 @@ export class ReportingFrameworksDataService {
    * Use BehaviorSubject's getter property named value to get the most recent value passed through it.
    */
   public get records() {
-    return this._subject$.value;
+    return this._reportingFrameworksSubject$.value;
   }
 }

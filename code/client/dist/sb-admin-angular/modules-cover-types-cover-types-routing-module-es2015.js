@@ -190,7 +190,7 @@ let CoverTypesRecordsDeletionModalComponent = class CoverTypesRecordsDeletionMod
         // Keep tabs on whether or not we are online
         this.online = false;
         // Instantiate a central gathering point for all the component's subscriptions.
-        // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+        // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
         this._subscriptions = [];
     }
     ngOnInit() {
@@ -394,7 +394,7 @@ let CoverTypesRecordsUpdationModalComponent = class CoverTypesRecordsUpdationMod
         // Keep tabs on whether or not we are online
         this.online = false;
         // Instantiate a central gathering point for all the component's subscriptions.
-        // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+        // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
         this._subscriptions = [];
     }
     ngOnInit() {
@@ -619,7 +619,7 @@ let CoverTypesRecordsTabulationComponent = class CoverTypesRecordsTabulationComp
         // Keep tabs on whether or not we are online
         this.online = false;
         // Instantiate a central gathering point for all the component's subscriptions.
-        // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+        // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
         this._subscriptions = [];
     }
     ngOnInit() {
@@ -821,7 +821,7 @@ let CoverTypesDataService = class CoverTypesDataService {
             this._cache.coverTypes.push(data);
             // Push a copy of the newly updated Cover Types records to all Subscribers
             this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated Cover Types records to all Subscribers`);
-            this._subject$.next(Object.assign({}, this._cache).coverTypes);
+            this._subject$.next(Object.assign([], this._cache.coverTypes);
             // Send a message that states that the Cover Type record Creation was successful
             this.log.trace(`${LOG_PREFIX} Sending a message that states that the Cover Type record Creation was successful`);
             this.messageService.sendMessage({ "type": _common_models_message_type_model__WEBPACK_IMPORTED_MODULE_6__["MessageType"].Success, "message": "The Cover Type record Creation was successful" });
@@ -870,7 +870,7 @@ let CoverTypesDataService = class CoverTypesDataService {
             }
             // Push a copy of the newly updated Cover Types records to all Subscribers
             this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated Cover Types records to all Subscribers`);
-            this._subject$.next(Object.assign({}, this._cache).coverTypes);
+            this._subject$.next(Object.assign([], this._cache.coverTypes);
             // Send a message that states that the Cover Type record Retrieval was successful
             this.log.trace(`${LOG_PREFIX} Sending a message that states that the Cover Type record Retrieval was successful`);
             this.messageService.sendMessage({ "type": _common_models_message_type_model__WEBPACK_IMPORTED_MODULE_6__["MessageType"].Success, "message": "The Cover Type record Retrieval was successful" });
@@ -903,7 +903,7 @@ let CoverTypesDataService = class CoverTypesDataService {
             this._cache.coverTypes = data;
             // Push a copy of the newly updated Cover Types records to all Subscribers
             this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated Cover Types records to all Subscribers`);
-            this._subject$.next(Object.assign({}, this._cache).coverTypes);
+            this._subject$.next(Object.assign([], this._cache.coverTypes);
             // Send a message that states that the Cover Types records Retrieval was successful
             this.log.trace(`${LOG_PREFIX} Sending a message that states that the Cover Types records Retrieval was successful`);
             this.messageService.sendMessage({ "type": _common_models_message_type_model__WEBPACK_IMPORTED_MODULE_6__["MessageType"].Success, "message": "The Cover Types records Retrieval was successful" });
@@ -942,7 +942,7 @@ let CoverTypesDataService = class CoverTypesDataService {
                 this._cache.coverTypes[index] = data;
                 // Push a copy of the newly updated Cover Types records to all Subscribers
                 this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated Cover Types records to all Subscribers`);
-                this._subject$.next(Object.assign({}, this._cache).coverTypes);
+                this._subject$.next(Object.assign([], this._cache.coverTypes);
                 // Send a message that states that the Cover Type record Update was successful
                 this.log.trace(`${LOG_PREFIX} Sending a message that states that the Cover Type record Update was successful`);
                 this.messageService.sendMessage({ "type": _common_models_message_type_model__WEBPACK_IMPORTED_MODULE_6__["MessageType"].Success, "message": "The Cover Type record Update was successful" });
@@ -991,7 +991,7 @@ let CoverTypesDataService = class CoverTypesDataService {
                     this._cache.coverTypes.splice(index, 1);
                     // Push a copy of the newly updated Cover Types records to all Subscribers
                     this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated Cover Types records to all Subscribers`);
-                    this._subject$.next(Object.assign({}, this._cache).coverTypes);
+                    this._subject$.next(Object.assign([], this._cache.coverTypes);
                     // Send a message that states that the Cover Type record Deletion was successful
                     this.log.trace(`${LOG_PREFIX} Sending a message that states that the Cover Type record Deletion was successful`);
                     this.messageService.sendMessage({ "type": _common_models_message_type_model__WEBPACK_IMPORTED_MODULE_6__["MessageType"].Success, "message": "The Cover Type record Deletion was successful" });
@@ -1589,30 +1589,30 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const LOG_PREFIX = "[Cover Types Records Tabulation Data Service]";
+const LOG_PREFIX = "[Cover Types Records Tabulation Service]";
 let CoverTypesRecordsTabulationService = class CoverTypesRecordsTabulationService {
     constructor(coverTypesDataService, connectivityStatusService, log) {
         this.coverTypesDataService = coverTypesDataService;
         this.connectivityStatusService = connectivityStatusService;
         this.log = log;
         // Instantiate a loading status observable field.
-        // This field's value will be updated / broadcasted whenever a background task is started and completed  
+        // These fields values will be updated / broadcasted whenever a background task is started and completed  
         this._loadingSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"](true);
         this._loading$ = this._loadingSubject$.asObservable();
         // Instantiate a Cover Types records observable field.
-        // This field's value will be updated / broadcasted whenever Cover Types records are transformed as per the user defined criteria    
+        // These fields values will be updated / broadcasted whenever Cover Types records are transformed as per the user defined search or sort criteria    
         this._coverTypesSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"]([]);
         this._coverTypes$ = this._coverTypesSubject$.asObservable();
         // Instantiate a total Cover Types records observable field.
-        // This field's value will be updated / broadcasted whenever Cover Types records are transformed as per the user defined criteria.
-        // It is basically the number of records that meet the user defined criteria    
+        // These fields values will be updated / broadcasted whenever Cover Types records are transformed as per the user defined search or sort criteria.
+        // It is basically the number of records that meet the user defined search or sort criteria    
         this._totalSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"](0);
         this._total$ = this._totalSubject$.asObservable();
         // Instantiate a state field.
-        // This field represents the user defined criteria of which & how many Cover Types records should be displayed
+        // This field represents the user defined search or sort criteria of which & how many Cover Types records should be displayed
         this._state = { page: 1, pageSize: 4, searchTerm: '', sortColumn: '', sortDirection: '' };
-        // Instantiate a gathering point for all the component's subscriptions.
-        // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+        // A common gathering point for all the component's subscriptions.
+        // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
         this._subscriptions = [];
         // Keep tabs on whether or not we are online
         this.online = true;
@@ -1661,7 +1661,7 @@ let CoverTypesRecordsTabulationService = class CoverTypesRecordsTabulationServic
         }));
     }
     ngOnInit() {
-        ononline;
+      ;
     }
     ngOnDestroy() {
         this._subscriptions.forEach((s) => s.unsubscribe());
@@ -1674,7 +1674,7 @@ let CoverTypesRecordsTabulationService = class CoverTypesRecordsTabulationServic
         }));
     }
     /**
-     * Returns an observable containing Cover Types records that have been filtered as per the desired state setting
+     * Returns an observable containing Cover Types records that have been filtered as per the user defined criteria
      */
     get coverTypes$() {
         this.log.trace(`${LOG_PREFIX} Getting coverTypes$ observable`);
@@ -1682,7 +1682,7 @@ let CoverTypesRecordsTabulationService = class CoverTypesRecordsTabulationServic
         return this._coverTypes$;
     }
     /**
-     * Returns an observable containing the total number of Cover Types records that have been filtered as per the desired state setting
+     * Returns an observable containing the total number of Cover Types records that have been filtered as per the user defined criteria
      */
     get total$() {
         this.log.trace(`${LOG_PREFIX} Getting total$ observable`);
@@ -1983,7 +1983,7 @@ let CoverTypesRecordsCreationModalComponent = class CoverTypesRecordsCreationMod
         // Keep tabs on whether or not we are online
         this.online = false;
         // Instantiate a central gathering point for all the component's subscriptions.
-        // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+        // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
         this._subscriptions = [];
     }
     ngOnInit() {

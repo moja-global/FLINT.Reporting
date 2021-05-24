@@ -19,14 +19,14 @@ export const ROUTES: Routes = [
         canActivate: [],
         component: unitCategoriesContainers.UnitCategoriesRecordsTabulationPageComponent,
         data: {
-            title: 'Unit categories',
+            title: 'Unit Categories',
             breadcrumbs: [
                 {
                     text: 'Configurations',
                     active: false
                 },
                 {
-                    text: 'Unit categories',
+                    text: 'Unit Categories',
                     active: false
                 }
             ],

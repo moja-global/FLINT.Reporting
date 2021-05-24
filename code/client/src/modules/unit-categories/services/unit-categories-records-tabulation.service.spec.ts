@@ -32,9 +32,9 @@ describe('UnitCategoriesRecordsTabulationService', () => {
 
     describe('unitCategories$', () => {
 
-        it('should return transformed Unit categories', () => {
+        it('should return transformed Unit Categories', () => {
 
-            // Define a couple of mock Unit categories
+            // Define a couple of mock Unit Categories
             const mockUnitCategories = [
                 new UnitCategory({ id: 1, name: "UnitCategory 1", description: "UnitCategory 1 Description", version: 1 }),
                 new UnitCategory({ id: 2, name: "UnitCategory 2", description: "UnitCategory 2 Description", version: 1 }),
@@ -44,7 +44,7 @@ describe('UnitCategoriesRecordsTabulationService', () => {
 
             unitCategoriesTableDataService.unitCategories$
                 .pipe(
-                    take(3),
+                    take(2),
                     toArray()
                 )
                 .subscribe(response => {
@@ -77,9 +77,9 @@ describe('UnitCategoriesRecordsTabulationService', () => {
         }); 
         
         
-        it('should sort Unit categories records by table column in ascending or descending order', () => {
+        it('should sort Unit Categories records by table column in ascending or descending order', () => {
 
-            // Define a couple of mock Unit categories
+            // Define a couple of mock Unit Categories
 
             const unsortedMockUnitCategories = [
                 new UnitCategory({ id: 2, name: "UnitCategory 2", description: "UnitCategory 2 Description", version: 1 }),
@@ -111,9 +111,9 @@ describe('UnitCategoriesRecordsTabulationService', () => {
         }); 
         
         
-        it('should return true if a Unit category record matches a search string or false otherwise', () => {
+        it('should return true if a Unit Category record matches a search string or false otherwise', () => {
 
-            // Define a couple of mock Unit categories
+            // Define a couple of mock Unit Categories
             let unitCategory1: UnitCategory = new UnitCategory({ id: 1, name: "UnitCategory 1", description: "UnitCategory 1 Description", version: 1 });
             let unitCategory2: UnitCategory = new UnitCategory({ id: 2, name: "UnitCategory 2", description: "UnitCategory 2 Description", version: 1 });
             let unitCategory3: UnitCategory = new UnitCategory({ id: 3, name: "UnitCategory 3", description: "UnitCategory 3 Description", version: 1 });
@@ -124,9 +124,9 @@ describe('UnitCategoriesRecordsTabulationService', () => {
             expect(unitCategoriesTableDataService.matches(unitCategory3, "3")).toBeTrue();
         }); 
 
-        it('should index Unit categories records', () => {
+        it('should index Unit Categories records', () => {
 
-            // Define a couple of mock Unit categories
+            // Define a couple of mock Unit Categories
 
             const unIndexedMockUnitCategories = [
                 new UnitCategory({ id: 1, name: "UnitCategory 1", description: "UnitCategory 1 Description", version: 1 }),
@@ -145,9 +145,9 @@ describe('UnitCategoriesRecordsTabulationService', () => {
         }); 
 
 
-        it('should paginate Unit categories records by page and page sizes', () => {
+        it('should paginate Unit Categories records by page and page sizes', () => {
 
-            // Define a couple of mock Unit categories
+            // Define a couple of mock Unit Categories
 
             const unpaginatedMockUnitCategories = [
                 new UnitCategory({ id: 1, name: "UnitCategory 1", description: "UnitCategory 1 Description", version: 1 }),

@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { Injectable, NgZone } from '@angular/core';
+import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
 import { Pool } from '../models/pool.model';
 import { environment } from 'environments/environment';
 import { MessageType } from '@common/models/message.type.model';
-import { MessageService } from '@common/services';
-import { catchError, tap } from 'rxjs/operators';
+import { ConnectivityStatusService, MessageService } from '@common/services';
+import { catchError, first, takeUntil, tap } from 'rxjs/operators';
 
 const LOG_PREFIX: string = "[Pools Data Service]";
 const API_PREFIX: string = "api/v1/pools";
@@ -18,17 +18,76 @@ const HEADERS = { 'Content-Type': 'application/json' };
 })
 export class PoolsDataService {
 
+  // The base url of the server
   private _baseUrl: string = environment.baseUrl;
-  private _cache: { pools: Pool[] } = { pools: [] };
-  private _subject$ = new BehaviorSubject<Pool[]>([]);
 
-  readonly pools$ = this._subject$.asObservable();
+  // The local data cache
+  private _cache: { pools: Pool[] } = { pools: [] };
+
+  // The observables that allow subscribers to keep tabs of the current status 
+  // of pools records in the data store
+  private _poolsSubject$ = new BehaviorSubject<Pool[]>([]);
+  readonly pools$ = this._poolsSubject$.asObservable();
+
+  // The observable that we will use to opt out of initialization subscriptions 
+  // once we are done with them
+  private _done$ = new Subject<boolean>();
+
+  // The api that we'll use to communicate data store changes when components that 
+  // subscribe to this service are outside the current ngzone
+  private bc: BroadcastChannel = new BroadcastChannel("pools-data-channel");
 
   constructor(
     private http: HttpClient,
-    private log: NGXLogger,
-    private messageService: MessageService) {
+    private connectivityStatusService: ConnectivityStatusService,
+    private messageService: MessageService,
+    private zone: NgZone,
+    private log: NGXLogger,) {
 
+    // Subscribe to connectivity status notifications
+    this.log.trace(`${LOG_PREFIX} Subscribing to connectivity status notifications`);
+
+    this.connectivityStatusService.online$
+      .pipe(takeUntil(this._done$))
+      .subscribe(online => {
+
+        // Check if the user is online
+        this.log.trace(`${LOG_PREFIX} Checking if the user is online`);
+        this.log.debug(`${LOG_PREFIX} User is online = ${online}`);
+
+        if (online) {
+
+          // Initialize data
+          this.log.trace(`${LOG_PREFIX} Initializing data`);
+
+          this.getAllPools()
+            .pipe(first()) // This will automatically complete (and therefore unsubscribe) after the first value has been emitted.
+            .subscribe((response => {
+
+              // Data initialization complete
+              this.log.trace(`${LOG_PREFIX} Data initialization complete`);
+
+            }));
+
+          // Unsubscribe from connectivity status notifications
+          this.log.trace(`${LOG_PREFIX} Unsubscribing from connectivity status notifications`);
+          this._done$.next();
+          this._done$.complete();
+
+        }
+
+      });
+
+    //Note: "bc.onmessage" isn't invoked on sender ui
+    this.bc.onmessage = this.zone.run(() => this.handleEvent);
+  }
+
+  /**
+   * Publish information to current (listening) ui
+   * @param event 
+   */
+  private handleEvent = (event: MessageEvent) => {
+    this.zone.run(() => this._poolsSubject$.next(event.data.newValue));
   }
 
   /**
@@ -57,9 +116,17 @@ export class PoolsDataService {
           this.log.trace(`${LOG_PREFIX} Adding the newly created Pool record to the Local Cache`);
           this._cache.pools.push(data);
 
-          // Push a copy of the newly updated Pools records to all Subscribers
-          this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated Pools records to all Subscribers`);
-          this._subject$.next(Object.assign({}, this._cache).pools);
+          // Create an up to date copy of the Pools records
+          this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Pools records`);
+          const copy = Object.assign({}, this._cache).pools;
+
+          // Broadcast the up to date copy of the Pools records to the current listener
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools records to the current listener`);
+          this._poolsSubject$.next(copy);
+
+          // Broadcast the up to date copy of the Pools records to the other listeners
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools records to the other listeners`);
+          this.bc.postMessage({ newValue: copy });
 
           // Send a message that states that the Pool record Creation was successful
           this.log.trace(`${LOG_PREFIX} Sending a message that states that the Pool record Creation was successful`);
@@ -128,9 +195,17 @@ export class PoolsDataService {
             this._cache.pools.push(data);
           }
 
-          // Push a copy of the newly updated Pools records to all Subscribers
-          this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated Pools records to all Subscribers`);
-          this._subject$.next(Object.assign({}, this._cache).pools);
+          // Create an up to date copy of the Pools records
+          this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Pools records`);
+          const copy = Object.assign({}, this._cache).pools;
+
+          // Broadcast the up to date copy of the Pools records to the current listener
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools records to the current listener`);
+          this._poolsSubject$.next(copy);
+
+          // Broadcast the up to date copy of the Pools records to the other listeners
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools records to the other listeners`);
+          this.bc.postMessage({ newValue: copy });
 
           // Send a message that states that the Pool record Retrieval was successful
           this.log.trace(`${LOG_PREFIX} Sending a message that states that the Pool record Retrieval was successful`);
@@ -178,9 +253,17 @@ export class PoolsDataService {
           this.log.trace(`${LOG_PREFIX} Updating the Pools records in the Local Cache to the newly pulled Pools records`);
           this._cache.pools = data;
 
-          // Push a copy of the newly updated Pools records to all Subscribers
-          this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated Pools records to all Subscribers`);
-          this._subject$.next(Object.assign({}, this._cache).pools);
+          // Create an up to date copy of the Pools records
+          this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Pools records`);
+          const copy = Object.assign({}, this._cache).pools;
+
+          // Broadcast the up to date copy of the Pools records to the current listener
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools records to the current listener`);
+          this._poolsSubject$.next(copy);
+
+          // Broadcast the up to date copy of the Pools records to the other listeners
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools records to the other listeners`);
+          this.bc.postMessage({ newValue: copy });
 
           // Send a message that states that the Pools records Retrieval was successful
           this.log.trace(`${LOG_PREFIX} Sending a message that states that the Pools records Retrieval was successful`);
@@ -236,9 +319,17 @@ export class PoolsDataService {
             this.log.trace(`${LOG_PREFIX} Updating the locally stored Pool record`);
             this._cache.pools[index] = data;
 
-            // Push a copy of the newly updated Pools records to all Subscribers
-            this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated Pools records to all Subscribers`);
-            this._subject$.next(Object.assign({}, this._cache).pools);
+            // Create an up to date copy of the Pools records
+            this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Pools records`);
+            const copy = Object.assign({}, this._cache).pools;
+
+            // Broadcast the up to date copy of the Pools records to the current listener
+            this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools records to the current listener`);
+            this._poolsSubject$.next(copy);
+
+            // Broadcast the up to date copy of the Pools records to the other listeners
+            this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools records to the other listeners`);
+            this.bc.postMessage({ newValue: copy });
 
             // Send a message that states that the Pool record Update was successful
             this.log.trace(`${LOG_PREFIX} Sending a message that states that the Pool record Update was successful`);
@@ -308,9 +399,17 @@ export class PoolsDataService {
               this.log.trace(`${LOG_PREFIX} Removing the deleted Pool record from the Local Cache`);
               this._cache.pools.splice(index, 1);
 
-              // Push a copy of the newly updated Pools records to all Subscribers
-              this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated Pools records to all Subscribers`);
-              this._subject$.next(Object.assign({}, this._cache).pools);
+              // Create an up to date copy of the Pools records
+              this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Pools records`);
+              const copy = Object.assign({}, this._cache).pools;
+
+              // Broadcast the up to date copy of the Pools records to the current listener
+              this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools records to the current listener`);
+              this._poolsSubject$.next(copy);
+
+              // Broadcast the up to date copy of the Pools records to the other listeners
+              this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools records to the other listeners`);
+              this.bc.postMessage({ newValue: copy });
 
               // Send a message that states that the Pool record Deletion was successful
               this.log.trace(`${LOG_PREFIX} Sending a message that states that the Pool record Deletion was successful`);
@@ -357,6 +456,6 @@ export class PoolsDataService {
    * Use BehaviorSubject's getter property named value to get the most recent value passed through it.
    */
   public get records() {
-    return this._subject$.value;
+    return this._poolsSubject$.value;
   }
 }

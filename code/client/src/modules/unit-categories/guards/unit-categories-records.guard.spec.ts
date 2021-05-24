@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { UnitCategoriesRecordsGuard } from './unit-categories-records.guard';
 
-const LOG_PREFIX: string = "[Unit categories Records Guards]";
+const LOG_PREFIX: string = "[Unit Categories Records Guards]";
 
-describe('Unit categories Records Guards', () => {
+describe('Unit Categories Records Guards', () => {
 
     let unitCategoriesRecordsGuard: UnitCategoriesRecordsGuard;
 

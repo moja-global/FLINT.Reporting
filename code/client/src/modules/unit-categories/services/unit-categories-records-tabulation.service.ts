@@ -1,54 +1,44 @@
 import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { UnitCategoriesDataService } from './unit-categories-data.service';
 import { NGXLogger } from 'ngx-logger';
-import { BehaviorSubject, fromEvent, merge, Observable, Observer, of, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { State } from '@common/models';
 import { SortDirection } from '@common/directives/sortable.directive';
-import { first, map, mapTo } from 'rxjs/operators';
-import { ConnectivityStatusService } from '@common/services';
 import { UnitCategory } from '../models/unit-category.model';
 
-const LOG_PREFIX: string = "[Unit categories Records Tabulation Data Service]";
+const LOG_PREFIX: string = "[Unit Categories Records Tabulation Service]";
 
 @Injectable({ providedIn: 'root' })
-export class UnitCategoriesRecordsTabulationService implements OnInit, OnDestroy {
+export class UnitCategoriesRecordsTabulationService implements OnDestroy {
 
-    // Instantiate a loading status observable field.
-    // This field's value will be updated / broadcasted whenever a background task is started and completed  
+    // The observables that will be updated / broadcasted whenever 
+    // a background task is started and completed  
     private _loadingSubject$ = new BehaviorSubject<boolean>(true);
     private _loading$ = this._loadingSubject$.asObservable();
 
-    // Instantiate a Unit categories records observable field.
-    // This field's value will be updated / broadcasted whenever Unit categories records are transformed as per the user defined criteria    
+    // The first set of observables that will be updated / broadcasted whenever 
+    // Unit Categories records are transformed as per the user defined search 
+    // or sort criteria    
     private _unitCategoriesSubject$ = new BehaviorSubject<UnitCategory[]>([]);
     private _unitCategories$ = this._unitCategoriesSubject$.asObservable();
 
-    // Instantiate a total Unit categories records observable field.
-    // This field's value will be updated / broadcasted whenever Unit categories records are transformed as per the user defined criteria.
-    // It is basically the number of records that meet the user defined criteria    
+    // The second set of observables that will be updated / broadcasted whenever 
+    // Unit Categories records are transformed as per the user defined search 
+    // or sort criteria
     private _totalSubject$ = new BehaviorSubject<number>(0);
     private _total$ = this._totalSubject$.asObservable();
 
-    // Instantiate a state field.
-    // This field represents the user defined criteria of which & how many Unit categories records should be displayed
+    // The user defined search or sort criteria.
+    // Determines which & how many Unit Categories records should be displayed
     private _state: State = { page: 1, pageSize: 4, searchTerm: '', sortColumn: '', sortDirection: '' };
 
-    // Instantiate a gathering point for all the component's subscriptions.
-    // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+    // A common gathering point for all the component's subscriptions.
+    // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
     private _subscriptions: Subscription[] = [];
-
-    // Keep tabs on whether or not we are online
-    online: boolean = true;
-
-    // Keeps tabs on whether or not the data service has been initialized 
-    // i.e. initial data loaded from the data service
-    isInitialized: boolean = false;
 
     constructor(
         private unitCategoriesDataService: UnitCategoriesDataService,
-        private connectivityStatusService: ConnectivityStatusService,
         private log: NGXLogger) {
-
 
         this._subscriptions.push(
             this.unitCategoriesDataService.unitCategories$
@@ -57,80 +47,14 @@ export class UnitCategoriesRecordsTabulationService implements OnInit, OnDestroy
                         this._transform(unitCategories);
                     }));
 
-        this._subscriptions.push(
-            this.connectivityStatusService.online$.subscribe(status => {
-
-                // Update the connection status
-                this.log.trace(`${LOG_PREFIX} Updating the connection status`);
-                this.online = status;
-
-                // React based on whether or not the user is online
-                if (this.online) {
-
-                    // Check if the table data service has been initialized
-                    this.log.trace(`${LOG_PREFIX} Checking if the table data service has been initialized`);
-                    this.log.debug(`${LOG_PREFIX} Initialization status = ${this.isInitialized}`);
-                    if (!this.isInitialized) {
-
-                        // Check if there is a need to initialize the table data service
-                        this.log.trace(`${LOG_PREFIX} Checking if there is a need to initialize the table data service`);
-                        if (this.unitCategoriesDataService.records.length == 0) {
-
-                            // Data is not available at the local data store
-                            // There is a need to initialize the table data service
-                            this.log.trace(`${LOG_PREFIX} There is a need to initialize the table data service`);
-
-                            // Initialize the table data service
-                            this.log.trace(`${LOG_PREFIX} Initializing the table data service`);
-                            this.unitCategoriesDataService
-                                .getAllUnitCategories()
-                                .pipe(first()) // This will automatically complete (and therefore unsubscribe) after the first value has been emitted.
-                                .subscribe((unitCategories: UnitCategory[]) => {
-
-                                    // Initialization is complete
-                                    this.log.trace(`${LOG_PREFIX} Initialization is complete`);
-                                    this.isInitialized = true;
-                                });
-
-                        } else {
-
-                            // Data is already available at the local data store
-                            // There is no need to initialize the table data service
-                            this.log.trace(`${LOG_PREFIX} There is a need to initialize the table data service`);
-                            this.isInitialized = true;
-                        }
-                    }
-                }
-
-            })
-        );
-
     }
 
-    ngOnInit() {
-
-        ononline
-    }
-
-    ngOnDestroy() {
+  ngOnDestroy() {
         this._subscriptions.forEach((s) => s.unsubscribe());
     }
 
-    // Observables & Subscriptions to check online/offline connectivity status
-
-
-    isOnline$() {
-        return merge<boolean>(
-            fromEvent(window, 'offline').pipe(map(() => false)),
-            fromEvent(window, 'online').pipe(map(() => true)),
-            new Observable((sub: Observer<boolean>) => {
-                sub.next(navigator.onLine);
-                sub.complete();
-            }));
-    }
-
     /**
-     * Returns an observable containing Unit categories records that have been filtered as per the desired state setting
+     * Returns an observable containing Unit Categories records that have been filtered as per the user defined criteria
      */
     get unitCategories$() {
         this.log.trace(`${LOG_PREFIX} Getting unitCategories$ observable`);
@@ -140,7 +64,7 @@ export class UnitCategoriesRecordsTabulationService implements OnInit, OnDestroy
 
 
     /**
-     * Returns an observable containing the total number of Unit categories records that have been filtered as per the desired state setting
+     * Returns an observable containing the total number of Unit Categories records that have been filtered as per the user defined criteria
      */
     get total$() {
         this.log.trace(`${LOG_PREFIX} Getting total$ observable`);
@@ -245,7 +169,7 @@ export class UnitCategoriesRecordsTabulationService implements OnInit, OnDestroy
         Object.assign(this._state, patch);
 
 
-        // Transform the Unit categories records
+        // Transform the Unit Categories records
         this._transform(this.unitCategoriesDataService.records);
 
     }
@@ -266,15 +190,15 @@ export class UnitCategoriesRecordsTabulationService implements OnInit, OnDestroy
 
 
     /**
-     * Sorts Unit categories Records
+     * Sorts Unit Categories Records
      * 
-     * @param unitCategories The Unit categories records to sort
+     * @param unitCategories The Unit Categories records to sort
      * @param column The table column to sort the records by 
      * @param direction The desired sort direction - ascending or descending
-     * @returns The sorted Unit categories records
+     * @returns The sorted Unit Categories records
      */
     sort(unitCategories: UnitCategory[], column: string, direction: string): UnitCategory[] {
-        this.log.trace(`${LOG_PREFIX} Sorting Unit categories records`);
+        this.log.trace(`${LOG_PREFIX} Sorting Unit Categories records`);
         if (direction === '' || column == null) {
             return unitCategories;
         } else {
@@ -287,17 +211,17 @@ export class UnitCategoriesRecordsTabulationService implements OnInit, OnDestroy
 
 
     /**
-     * Checks if search string is present in Unit category record
+     * Checks if search string is present in Unit Category record
      * 
-     * @param unitCategory The Unit category record
+     * @param unitCategory The Unit Category record
      * @param term The Search String
      * @returns A boolean result indicating whether or not a match was found
      */
     matches(unitCategory: UnitCategory, term: string): boolean {
-        this.log.trace(`${LOG_PREFIX} Checking if search string is present in Unit category record`);
+        this.log.trace(`${LOG_PREFIX} Checking if search string is present in Unit Category record`);
         if (unitCategory != null && unitCategory != undefined) {
 
-            // Try locating the search string in the Unit category's name
+            // Try locating the search string in the Unit Category's name
             if (unitCategory.name != null && unitCategory.name != undefined) {
                 if (unitCategory.name.toLowerCase().includes(term.toLowerCase())) {
                     return true;
@@ -310,24 +234,24 @@ export class UnitCategoriesRecordsTabulationService implements OnInit, OnDestroy
 
 
     /**
-     * Paginates Unit categories Records
+     * Paginates Unit Categories Records
      * 
-     * @param unitCategories The Unit categories records to paginate
-     * @returns The paginated Unit categories records
+     * @param unitCategories The Unit Categories records to paginate
+     * @returns The paginated Unit Categories records
      */
     paginate(unitCategories: UnitCategory[], page: number, pageSize: number): UnitCategory[] {
-        this.log.trace(`${LOG_PREFIX} Paginating Unit categories records`);
+        this.log.trace(`${LOG_PREFIX} Paginating Unit Categories records`);
         return unitCategories.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
     }
 
     /**
-     * Updates the index of the Unit categories Records
+     * Updates the index of the Unit Categories Records
      * 
-     * @param unitCategories The Unit categories records to sort
-     * @returns The newly indexed Unit categories records
+     * @param unitCategories The Unit Categories records to sort
+     * @returns The newly indexed Unit Categories records
      */
     index(unitCategories: UnitCategory[]): UnitCategory[] {
-        this.log.trace(`${LOG_PREFIX} Indexing Unit categories records`);
+        this.log.trace(`${LOG_PREFIX} Indexing Unit Categories records`);
         let pos: number = 0;
         return unitCategories.map(d => {
             d.pos = ++pos;
@@ -337,21 +261,20 @@ export class UnitCategoriesRecordsTabulationService implements OnInit, OnDestroy
 
 
     /**
-     * Sorts, filters and paginates Unit categories records
+     * Sorts, filters and paginates Unit Categories records
      * 
-     * @param records the original Unit categories records
+     * @param records the original Unit Categories records
      */
     private _transform(records: UnitCategory[]) {
 
+        // Flag
+        this._loadingSubject$.next(true);
 
         if (records.length != 0) {
 
-            this.log.trace(`${LOG_PREFIX} Sorting, filtering and paginating Unit categories records`);
+            this.log.trace(`${LOG_PREFIX} Sorting, filtering and paginating Unit Categories records`);
 
             const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
-
-            // Flag
-            this._loadingSubject$.next(true);
 
             // Sort
             let transformed: UnitCategory[] = this.sort(records, sortColumn, sortDirection);
@@ -370,15 +293,15 @@ export class UnitCategoriesRecordsTabulationService implements OnInit, OnDestroy
             this._unitCategoriesSubject$.next(transformed);
             this._totalSubject$.next(total);
 
-            // Flag
-            this._loadingSubject$.next(false);
-
         } else {
 
             // Broadcast
             this._unitCategoriesSubject$.next([]);
             this._totalSubject$.next(0);
         }
+
+        // Flag
+        this._loadingSubject$.next(false);
 
     }
 

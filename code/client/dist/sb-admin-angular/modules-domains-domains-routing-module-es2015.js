@@ -46,8 +46,8 @@ let DomainsRecordsTabulationComponent = class DomainsRecordsTabulationComponent 
         this.pageSize = 4;
         // Keep tabs on whether or not we are online
         this.online = false;
-        // Instantiate a gathering point for all the component's subscriptions.
-        // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+        // A common gathering point for all the component's subscriptions.
+        // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
         this._subscriptions = [];
     }
     ngOnInit() {
@@ -234,30 +234,30 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const LOG_PREFIX = "[Domains Records Tabulation Data Service]";
+const LOG_PREFIX = "[Domains Records Tabulation Service]";
 let DomainsRecordsTabulationService = class DomainsRecordsTabulationService {
     constructor(domainsDataService, connectivityStatusService, log) {
         this.domainsDataService = domainsDataService;
         this.connectivityStatusService = connectivityStatusService;
         this.log = log;
         // Instantiate a loading status observable field.
-        // This field's value will be updated / broadcasted whenever a background task is started and completed  
+        // These fields values will be updated / broadcasted whenever a background task is started and completed  
         this._loadingSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"](true);
         this._loading$ = this._loadingSubject$.asObservable();
         // Instantiate a domains records observable field.
-        // This field's value will be updated / broadcasted whenever domains records are transformed as per the user defined criteria    
+        // These fields values will be updated / broadcasted whenever domains records are transformed as per the user defined search or sort criteria    
         this._domainsSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"]([]);
         this._domains$ = this._domainsSubject$.asObservable();
         // Instantiate a total domains records observable field.
-        // This field's value will be updated / broadcasted whenever domains records are transformed as per the user defined criteria.
-        // It is basically the number of records that meet the user defined criteria    
+        // These fields values will be updated / broadcasted whenever domains records are transformed as per the user defined search or sort criteria.
+        // It is basically the number of records that meet the user defined search or sort criteria    
         this._totalSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"](0);
         this._total$ = this._totalSubject$.asObservable();
         // Instantiate a state field.
-        // This field represents the user defined criteria of which & how many domains records should be displayed
+        // This field represents the user defined search or sort criteria of which & how many domains records should be displayed
         this._state = { page: 1, pageSize: 4, searchTerm: '', sortColumn: '', sortDirection: '' };
-        // Instantiate a gathering point for all the component's subscriptions.
-        // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+        // A common gathering point for all the component's subscriptions.
+        // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
         this._subscriptions = [];
         // Keep tabs on whether or not we are online
         this.online = true;
@@ -306,7 +306,7 @@ let DomainsRecordsTabulationService = class DomainsRecordsTabulationService {
         }));
     }
     ngOnInit() {
-        ononline;
+      ;
     }
     ngOnDestroy() {
         this._subscriptions.forEach((s) => s.unsubscribe());
@@ -319,7 +319,7 @@ let DomainsRecordsTabulationService = class DomainsRecordsTabulationService {
         }));
     }
     /**
-     * Returns an observable containing domains records that have been filtered as per the desired state setting
+     * Returns an observable containing domains records that have been filtered as per the user defined criteria
      */
     get domains$() {
         this.log.trace(`${LOG_PREFIX} Getting domains$ observable`);
@@ -327,7 +327,7 @@ let DomainsRecordsTabulationService = class DomainsRecordsTabulationService {
         return this._domains$;
     }
     /**
-     * Returns an observable containing the total number of domains records that have been filtered as per the desired state setting
+     * Returns an observable containing the total number of domains records that have been filtered as per the user defined criteria
      */
     get total$() {
         this.log.trace(`${LOG_PREFIX} Getting total$ observable`);
@@ -744,8 +744,8 @@ let DomainsRecordsUpdationComponent = class DomainsRecordsUpdationComponent {
                 _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].maxLength(250)
             ])
         });
-        // Instantiate a gathering point for all the component's subscriptions.
-        // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+        // A common gathering point for all the component's subscriptions.
+        // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
         this._subscription = new rxjs__WEBPACK_IMPORTED_MODULE_7__["Subscription"]();
     }
     ngOnInit() { }
@@ -924,8 +924,8 @@ let DomainsRecordsUpdationModalComponent = class DomainsRecordsUpdationModalComp
         this.status$ = this._statusSubject$.asObservable();
         // Keep tabs on whether or not we are online
         this.online = false;
-        // Instantiate a gathering point for all the component's subscriptions.
-        // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+        // A common gathering point for all the component's subscriptions.
+        // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
         this._subscriptions = [];
     }
     ngOnInit() {
@@ -1128,8 +1128,8 @@ let DomainsRecordsCreationComponent = class DomainsRecordsCreationComponent {
                 _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].maxLength(250)
             ])
         });
-        // Instantiate a gathering point for all the component's subscriptions.
-        // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+        // A common gathering point for all the component's subscriptions.
+        // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
         this._subscription = new rxjs__WEBPACK_IMPORTED_MODULE_7__["Subscription"]();
     }
     ngOnInit() { }
@@ -1295,8 +1295,8 @@ let DomainsRecordsCreationModalComponent = class DomainsRecordsCreationModalComp
         this.status$ = this._statusSubject$.asObservable();
         // Keep tabs on whether or not we are online
         this.online = false;
-        // Instantiate a gathering point for all the component's subscriptions.
-        // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+        // A common gathering point for all the component's subscriptions.
+        // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
         this._subscriptions = [];
     }
     ngOnInit() {
@@ -1486,8 +1486,8 @@ let DomainsRecordsDeletionModalComponent = class DomainsRecordsDeletionModalComp
         this.status$ = this._statusSubject$.asObservable();
         // Keep tabs on whether or not we are online
         this.online = false;
-        // Instantiate a gathering point for all the component's subscriptions.
-        // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+        // A common gathering point for all the component's subscriptions.
+        // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
         this._subscriptions = [];
     }
     ngOnInit() {
@@ -1706,7 +1706,7 @@ let DomainsDataService = class DomainsDataService {
             this._cache.domains.push(data);
             // Push a copy of the newly updated domains records to all Subscribers
             this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated domains records to all Subscribers`);
-            this._subject$.next(Object.assign({}, this._cache).domains);
+            this._subject$.next(Object.assign([], this._cache.domains);
             // Send a message that states that the Domain Record Creation was successful
             this.log.trace(`${LOG_PREFIX} Sending a message that states that the Domain Record Creation was successful`);
             this.messageService.sendMessage({ "type": _common_models_message_type_model__WEBPACK_IMPORTED_MODULE_6__["MessageType"].Success, "message": "The Domain Record Creation was successful" });
@@ -1755,7 +1755,7 @@ let DomainsDataService = class DomainsDataService {
             }
             // Push a copy of the newly updated domains records to all Subscribers
             this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated domains records to all Subscribers`);
-            this._subject$.next(Object.assign({}, this._cache).domains);
+            this._subject$.next(Object.assign([], this._cache.domains);
             // Send a message that states that the Domain Record Retrieval was successful
             this.log.trace(`${LOG_PREFIX} Sending a message that states that the Domain Record Retrieval was successful`);
             this.messageService.sendMessage({ "type": _common_models_message_type_model__WEBPACK_IMPORTED_MODULE_6__["MessageType"].Success, "message": "The Domain Record Retrieval was successful" });
@@ -1788,7 +1788,7 @@ let DomainsDataService = class DomainsDataService {
             this._cache.domains = data;
             // Push a copy of the newly updated domains records to all Subscribers
             this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated domains records to all Subscribers`);
-            this._subject$.next(Object.assign({}, this._cache).domains);
+            this._subject$.next(Object.assign([], this._cache.domains);
             // Send a message that states that the domains records Retrieval was successful
             this.log.trace(`${LOG_PREFIX} Sending a message that states that the domains records Retrieval was successful`);
             this.messageService.sendMessage({ "type": _common_models_message_type_model__WEBPACK_IMPORTED_MODULE_6__["MessageType"].Success, "message": "The domains records Retrieval was successful" });
@@ -1827,7 +1827,7 @@ let DomainsDataService = class DomainsDataService {
                 this._cache.domains[index] = data;
                 // Push a copy of the newly updated domains records to all Subscribers
                 this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated domains records to all Subscribers`);
-                this._subject$.next(Object.assign({}, this._cache).domains);
+                this._subject$.next(Object.assign([], this._cache.domains);
                 // Send a message that states that the Domain Record Update was successful
                 this.log.trace(`${LOG_PREFIX} Sending a message that states that the Domain Record Update was successful`);
                 this.messageService.sendMessage({ "type": _common_models_message_type_model__WEBPACK_IMPORTED_MODULE_6__["MessageType"].Success, "message": "The Domain Record Update was successful" });
@@ -1876,7 +1876,7 @@ let DomainsDataService = class DomainsDataService {
                     this._cache.domains.splice(index, 1);
                     // Push a copy of the newly updated domains records to all Subscribers
                     this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated domains records to all Subscribers`);
-                    this._subject$.next(Object.assign({}, this._cache).domains);
+                    this._subject$.next(Object.assign([], this._cache.domains);
                     // Send a message that states that the Domain Record Deletion was successful
                     this.log.trace(`${LOG_PREFIX} Sending a message that states that the Domain Record Deletion was successful`);
                     this.messageService.sendMessage({ "type": _common_models_message_type_model__WEBPACK_IMPORTED_MODULE_6__["MessageType"].Success, "message": "The Domain Record Deletion was successful" });
@@ -2066,8 +2066,8 @@ let DomainsRecordsDeletionComponent = class DomainsRecordsDeletionComponent {
         this.succeeded = new _angular_core__WEBPACK_IMPORTED_MODULE_3__["EventEmitter"]();
         // Instantiate a failed notification Emitter.
         this.failed = new _angular_core__WEBPACK_IMPORTED_MODULE_3__["EventEmitter"]();
-        // Instantiate a gathering point for all the component's subscriptions.
-        // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+        // A common gathering point for all the component's subscriptions.
+        // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
         this._subscription = new rxjs__WEBPACK_IMPORTED_MODULE_6__["Subscription"]();
     }
     ngOnInit() { }

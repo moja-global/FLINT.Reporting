@@ -1,6 +1,7 @@
 import {
     ChangeDetectionStrategy,
     Component,
+    HostListener,
     OnInit,
     ViewChild
 } from '@angular/core';
@@ -17,7 +18,7 @@ const LOG_PREFIX: string = "[Emission Types Records Creation Modal]";
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './emission-types-records-creation-modal.component.html',
     styleUrls: ['emission-types-records-creation-modal.component.scss'],
-})    
+})
 export class EmissionTypesRecordsCreationModalComponent implements OnInit {
 
 
@@ -36,30 +37,23 @@ export class EmissionTypesRecordsCreationModalComponent implements OnInit {
     private _statusSubject$ = new BehaviorSubject<string>("new");
     readonly status$ = this._statusSubject$.asObservable();
 
-    // Keep tabs on whether or not we are online
-    online: boolean = false;
-
     // Instantiate a central gathering point for all the component's subscriptions.
-    // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+    // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
     private _subscriptions: Subscription[] = [];
 
     constructor(
         public activeEmissionTypesModal: NgbActiveModal,
-        public connectivityStatusService: ConnectivityStatusService,
         private log: NGXLogger) { }
 
     ngOnInit() {
 
-        // Subscribe to connectivity status notifications.
-        this.log.trace(`${LOG_PREFIX} Subscribing to connectivity status notifications`);
-        this._subscriptions.push(
-            this.connectivityStatusService.online$.subscribe(
-                (status) => {
-                    this.online = status;
-                }));
+        this.log.trace(`${LOG_PREFIX} Initializing Component`);
     }
 
+    @HostListener('window:beforeunload')
     ngOnDestroy() {
+        
+        this.log.trace(`${LOG_PREFIX} Destroying Component`);
     }
 
     /**

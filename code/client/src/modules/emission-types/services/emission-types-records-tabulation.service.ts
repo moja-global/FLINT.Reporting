@@ -1,54 +1,45 @@
-import { Injectable, OnDestroy, OnInit } from '@angular/core';
-import { EmissionTypesDataService } from './emission-types-data.service';
-import { NGXLogger } from 'ngx-logger';
-import { BehaviorSubject, fromEvent, merge, Observable, Observer, of, Subscription } from 'rxjs';
-import { State } from '@common/models';
-import { SortDirection } from '@common/directives/sortable.directive';
-import { first, map, mapTo } from 'rxjs/operators';
-import { ConnectivityStatusService } from '@common/services';
-import { EmissionType } from '../models/emission-type.model';
+import { Injectable, OnInit, OnDestroy } from "@angular/core";
+import { SortDirection } from "@common/directives";
+import { State } from "@common/models";
+import { NGXLogger } from "ngx-logger";
+import { BehaviorSubject, Subscription } from "rxjs";
+import { EmissionTypesDataService } from "./emission-types-data.service";
+import { EmissionType } from "../models/emission-type.model";
 
-const LOG_PREFIX: string = "[Emission Types Records Tabulation Data Service]";
+
+const LOG_PREFIX: string = "[Emission Types Records Tabulation Service]";
 
 @Injectable({ providedIn: 'root' })
-export class EmissionTypesRecordsTabulationService implements OnInit, OnDestroy {
+export class EmissionTypesRecordsTabulationService implements OnDestroy {
 
-    // Instantiate a loading status observable field.
-    // This field's value will be updated / broadcasted whenever a background task is started and completed  
+    // The observables that will be updated / broadcasted whenever 
+    // a background task is started and completed  
     private _loadingSubject$ = new BehaviorSubject<boolean>(true);
     private _loading$ = this._loadingSubject$.asObservable();
 
-    // Instantiate a Emission Types records observable field.
-    // This field's value will be updated / broadcasted whenever Emission Types records are transformed as per the user defined criteria    
+    // The first set of observables that will be updated / broadcasted whenever 
+    // Emission Types records are transformed as per the user defined search 
+    // or sort criteria    
     private _emissionTypesSubject$ = new BehaviorSubject<EmissionType[]>([]);
     private _emissionTypes$ = this._emissionTypesSubject$.asObservable();
 
-    // Instantiate a total Emission Types records observable field.
-    // This field's value will be updated / broadcasted whenever Emission Types records are transformed as per the user defined criteria.
-    // It is basically the number of records that meet the user defined criteria    
+    // The second set of observables that will be updated / broadcasted whenever 
+    // Emission Types records are transformed as per the user defined search 
+    // or sort criteria
     private _totalSubject$ = new BehaviorSubject<number>(0);
     private _total$ = this._totalSubject$.asObservable();
 
-    // Instantiate a state field.
-    // This field represents the user defined criteria of which & how many Emission Types records should be displayed
+    // The user defined search or sort criteria.
+    // Determines which & how many Emission Types records should be displayed
     private _state: State = { page: 1, pageSize: 4, searchTerm: '', sortColumn: '', sortDirection: '' };
 
-    // Instantiate a gathering point for all the component's subscriptions.
-    // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+    // A common gathering point for all the component's subscriptions.
+    // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
     private _subscriptions: Subscription[] = [];
-
-    // Keep tabs on whether or not we are online
-    online: boolean = true;
-
-    // Keeps tabs on whether or not the data service has been initialized 
-    // i.e. initial data loaded from the data service
-    isInitialized: boolean = false;
 
     constructor(
         private emissionTypesDataService: EmissionTypesDataService,
-        private connectivityStatusService: ConnectivityStatusService,
         private log: NGXLogger) {
-
 
         this._subscriptions.push(
             this.emissionTypesDataService.emissionTypes$
@@ -57,80 +48,14 @@ export class EmissionTypesRecordsTabulationService implements OnInit, OnDestroy 
                         this._transform(emissionTypes);
                     }));
 
-        this._subscriptions.push(
-            this.connectivityStatusService.online$.subscribe(status => {
-
-                // Update the connection status
-                this.log.trace(`${LOG_PREFIX} Updating the connection status`);
-                this.online = status;
-
-                // React based on whether or not the user is online
-                if (this.online) {
-
-                    // Check if the table data service has been initialized
-                    this.log.trace(`${LOG_PREFIX} Checking if the table data service has been initialized`);
-                    this.log.debug(`${LOG_PREFIX} Initialization status = ${this.isInitialized}`);
-                    if (!this.isInitialized) {
-
-                        // Check if there is a need to initialize the table data service
-                        this.log.trace(`${LOG_PREFIX} Checking if there is a need to initialize the table data service`);
-                        if (this.emissionTypesDataService.records.length == 0) {
-
-                            // Data is not available at the local data store
-                            // There is a need to initialize the table data service
-                            this.log.trace(`${LOG_PREFIX} There is a need to initialize the table data service`);
-
-                            // Initialize the table data service
-                            this.log.trace(`${LOG_PREFIX} Initializing the table data service`);
-                            this.emissionTypesDataService
-                                .getAllEmissionTypes()
-                                .pipe(first()) // This will automatically complete (and therefore unsubscribe) after the first value has been emitted.
-                                .subscribe((emissionTypes: EmissionType[]) => {
-
-                                    // Initialization is complete
-                                    this.log.trace(`${LOG_PREFIX} Initialization is complete`);
-                                    this.isInitialized = true;
-                                });
-
-                        } else {
-
-                            // Data is already available at the local data store
-                            // There is no need to initialize the table data service
-                            this.log.trace(`${LOG_PREFIX} There is a need to initialize the table data service`);
-                            this.isInitialized = true;
-                        }
-                    }
-                }
-
-            })
-        );
-
-    }
-
-    ngOnInit() {
-
-        ononline
     }
 
     ngOnDestroy() {
         this._subscriptions.forEach((s) => s.unsubscribe());
     }
 
-    // Observables & Subscriptions to check online/offline connectivity status
-
-
-    isOnline$() {
-        return merge<boolean>(
-            fromEvent(window, 'offline').pipe(map(() => false)),
-            fromEvent(window, 'online').pipe(map(() => true)),
-            new Observable((sub: Observer<boolean>) => {
-                sub.next(navigator.onLine);
-                sub.complete();
-            }));
-    }
-
     /**
-     * Returns an observable containing Emission Types records that have been filtered as per the desired state setting
+     * Returns an observable containing Emission Types records that have been filtered as per the user defined criteria
      */
     get emissionTypes$() {
         this.log.trace(`${LOG_PREFIX} Getting emissionTypes$ observable`);
@@ -140,7 +65,7 @@ export class EmissionTypesRecordsTabulationService implements OnInit, OnDestroy 
 
 
     /**
-     * Returns an observable containing the total number of Emission Types records that have been filtered as per the desired state setting
+     * Returns an observable containing the total number of Emission Types records that have been filtered as per the user defined criteria
      */
     get total$() {
         this.log.trace(`${LOG_PREFIX} Getting total$ observable`);
@@ -309,7 +234,7 @@ export class EmissionTypesRecordsTabulationService implements OnInit, OnDestroy 
                 if (emissionType.abbreviation.toLowerCase().includes(term.toLowerCase())) {
                     return true;
                 }
-            }            
+            }
 
             // Try locating the search string in the Emission Type's description if not yet found
             if (emissionType.description != null && emissionType.description != undefined) {
@@ -357,15 +282,14 @@ export class EmissionTypesRecordsTabulationService implements OnInit, OnDestroy 
      */
     private _transform(records: EmissionType[]) {
 
+        // Flag
+        this._loadingSubject$.next(true);
 
         if (records.length != 0) {
 
             this.log.trace(`${LOG_PREFIX} Sorting, filtering and paginating Emission Types records`);
 
             const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
-
-            // Flag
-            this._loadingSubject$.next(true);
 
             // Sort
             let transformed: EmissionType[] = this.sort(records, sortColumn, sortDirection);
@@ -384,8 +308,6 @@ export class EmissionTypesRecordsTabulationService implements OnInit, OnDestroy 
             this._emissionTypesSubject$.next(transformed);
             this._totalSubject$.next(total);
 
-            // Flag
-            this._loadingSubject$.next(false);
 
         } else {
 
@@ -393,6 +315,9 @@ export class EmissionTypesRecordsTabulationService implements OnInit, OnDestroy 
             this._emissionTypesSubject$.next([]);
             this._totalSubject$.next(0);
         }
+
+        // Flag
+        this._loadingSubject$.next(false);
 
     }
 

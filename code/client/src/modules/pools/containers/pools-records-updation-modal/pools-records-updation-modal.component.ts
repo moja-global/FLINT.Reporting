@@ -1,6 +1,7 @@
 import {
     ChangeDetectionStrategy,
     Component,
+    HostListener,
     Input,
     OnInit,
     ViewChild
@@ -42,30 +43,23 @@ export class PoolsRecordsUpdationModalComponent implements OnInit {
     private _statusSubject$ = new BehaviorSubject<string>("new");
     readonly status$ = this._statusSubject$.asObservable();
 
-    // Keep tabs on whether or not we are online
-    online: boolean = false;
-
     // Instantiate a central gathering point for all the component's subscriptions.
-    // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+    // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
     private _subscriptions: Subscription[] = [];
 
     constructor(
         public activePoolsModal: NgbActiveModal,
-        public connectivityStatusService: ConnectivityStatusService,
         private log: NGXLogger) { }
 
     ngOnInit() {
 
-        // Subscribe to connectivity status notifications.
-        this.log.trace(`${LOG_PREFIX} Subscribing to connectivity status notifications`);
-        this._subscriptions.push(
-            this.connectivityStatusService.online$.subscribe(
-                (status) => {
-                    this.online = status;
-                }));
+        this.log.trace(`${LOG_PREFIX} Initializing Component`);
     }
 
+    @HostListener('window:beforeunload')
     ngOnDestroy() {
+
+        this.log.trace(`${LOG_PREFIX} Destroying Component`);
 
         // Clear all subscriptions
         this.log.trace(`${LOG_PREFIX} Clearing all subscriptions`);
@@ -84,7 +78,7 @@ export class PoolsRecordsUpdationModalComponent implements OnInit {
     /**
      * Sets the processing status to 'succeeded', triggering a display change, and then 
      * autocloses the modal after a short delay.
-     */   
+     */
     onSucceeded() {
         this._statusSubject$.next("succeeded");
         timer(1000).subscribe(x => { this.onQuit(); })
@@ -92,7 +86,7 @@ export class PoolsRecordsUpdationModalComponent implements OnInit {
 
     /**
      * Sets the processing status to either 'failed' or 'invalid' triggering a display change.
-     */    
+     */
     onFailed(event: number) {
         switch (event) {
             case 400:
@@ -106,7 +100,7 @@ export class PoolsRecordsUpdationModalComponent implements OnInit {
 
     /**
      * Sets the processing status to 'retrying' triggering a display change.
-     */    
+     */
     onRetry() {
         this._statusSubject$.next("retrying");
     }
@@ -114,7 +108,7 @@ export class PoolsRecordsUpdationModalComponent implements OnInit {
 
     /**
      * Clears the processing status and closes the modal
-     */    
+     */
     onQuit() {
         this._statusSubject$.next("");
         this.activePoolsModal.close();

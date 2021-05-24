@@ -504,8 +504,8 @@ let NgBootstrapTableComponent = class NgBootstrapTableComponent {
         // For example, a few of the table records can be displayed on the dashboard and 
         // a full set of the table records can be displayed on the table's home page.
         this.pageSize = 4;
-        // Instantiate a gathering point for all the component's subscriptions.
-        // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+        // A common gathering point for all the component's subscriptions.
+        // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
         this._subscription = new rxjs__WEBPACK_IMPORTED_MODULE_7__["Subscription"]();
     }
     ngAfterViewInit() {

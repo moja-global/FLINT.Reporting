@@ -116,8 +116,8 @@
 
           this.pageSize = 4; // Keep tabs on whether or not we are online
 
-          this.online = false; // Instantiate a gathering point for all the component's subscriptions.
-          // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+          this.online = false; // A common gathering point for all the component's subscriptions.
+          // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
 
           this._subscriptions = [];
         }
@@ -439,7 +439,7 @@
       /*! @common/services */
       "gNCb");
 
-      var LOG_PREFIX = "[Domains Records Tabulation Data Service]";
+      var LOG_PREFIX = "[Domains Records Tabulation Service]";
 
       var DomainsRecordsTabulationService = /*#__PURE__*/function () {
         function DomainsRecordsTabulationService(domainsDataService, connectivityStatusService, log) {
@@ -450,20 +450,20 @@
           this.domainsDataService = domainsDataService;
           this.connectivityStatusService = connectivityStatusService;
           this.log = log; // Instantiate a loading status observable field.
-          // This field's value will be updated / broadcasted whenever a background task is started and completed  
+          // These fields values will be updated / broadcasted whenever a background task is started and completed  
 
           this._loadingSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"](true);
           this._loading$ = this._loadingSubject$.asObservable(); // Instantiate a domains records observable field.
-          // This field's value will be updated / broadcasted whenever domains records are transformed as per the user defined criteria    
+          // These fields values will be updated / broadcasted whenever domains records are transformed as per the user defined search or sort criteria    
 
           this._domainsSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"]([]);
           this._domains$ = this._domainsSubject$.asObservable(); // Instantiate a total domains records observable field.
-          // This field's value will be updated / broadcasted whenever domains records are transformed as per the user defined criteria.
-          // It is basically the number of records that meet the user defined criteria    
+          // These fields values will be updated / broadcasted whenever domains records are transformed as per the user defined search or sort criteria.
+          // It is basically the number of records that meet the user defined search or sort criteria    
 
           this._totalSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"](0);
           this._total$ = this._totalSubject$.asObservable(); // Instantiate a state field.
-          // This field represents the user defined criteria of which & how many domains records should be displayed
+          // This field represents the user defined search or sort criteria of which & how many domains records should be displayed
 
           this._state = {
             page: 1,
@@ -471,8 +471,8 @@
             searchTerm: '',
             sortColumn: '',
             sortDirection: ''
-          }; // Instantiate a gathering point for all the component's subscriptions.
-          // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+          }; // A common gathering point for all the component's subscriptions.
+          // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
 
           this._subscriptions = []; // Keep tabs on whether or not we are online
 
@@ -531,7 +531,7 @@
         _createClass(DomainsRecordsTabulationService, [{
           key: "ngOnInit",
           value: function ngOnInit() {
-            ononline;
+          ;
           }
         }, {
           key: "ngOnDestroy",
@@ -554,7 +554,7 @@
             }));
           }
           /**
-           * Returns an observable containing domains records that have been filtered as per the desired state setting
+           * Returns an observable containing domains records that have been filtered as per the user defined criteria
            */
 
         }, {
@@ -728,7 +728,7 @@
             return this._domains$;
           }
           /**
-           * Returns an observable containing the total number of domains records that have been filtered as per the desired state setting
+           * Returns an observable containing the total number of domains records that have been filtered as per the user defined criteria
            */
 
         }, {
@@ -1219,8 +1219,8 @@
           this.domainsForm = new _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormGroup"]({
             name: new _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormControl"]('', [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].minLength(2), _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].maxLength(50), this.exists()]),
             description: new _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormControl"]('', [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].maxLength(250)])
-          }); // Instantiate a gathering point for all the component's subscriptions.
-          // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+          }); // A common gathering point for all the component's subscriptions.
+          // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
 
           this._subscription = new rxjs__WEBPACK_IMPORTED_MODULE_7__["Subscription"]();
         }
@@ -1503,8 +1503,8 @@
           this._statusSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_7__["BehaviorSubject"]("new");
           this.status$ = this._statusSubject$.asObservable(); // Keep tabs on whether or not we are online
 
-          this.online = false; // Instantiate a gathering point for all the component's subscriptions.
-          // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+          this.online = false; // A common gathering point for all the component's subscriptions.
+          // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
 
           this._subscriptions = [];
         }
@@ -1839,8 +1839,8 @@
           this.domainsForm = new _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormGroup"]({
             name: new _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormControl"]('', [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].minLength(2), _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].maxLength(50), this.exists()]),
             description: new _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormControl"]('', [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].maxLength(250)])
-          }); // Instantiate a gathering point for all the component's subscriptions.
-          // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+          }); // A common gathering point for all the component's subscriptions.
+          // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
 
           this._subscription = new rxjs__WEBPACK_IMPORTED_MODULE_7__["Subscription"]();
         }
@@ -2105,8 +2105,8 @@
           this._statusSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_7__["BehaviorSubject"]("new");
           this.status$ = this._statusSubject$.asObservable(); // Keep tabs on whether or not we are online
 
-          this.online = false; // Instantiate a gathering point for all the component's subscriptions.
-          // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+          this.online = false; // A common gathering point for all the component's subscriptions.
+          // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
 
           this._subscriptions = [];
         }
@@ -2428,8 +2428,8 @@
           this._statusSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_7__["BehaviorSubject"]("new");
           this.status$ = this._statusSubject$.asObservable(); // Keep tabs on whether or not we are online
 
-          this.online = false; // Instantiate a gathering point for all the component's subscriptions.
-          // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+          this.online = false; // A common gathering point for all the component's subscriptions.
+          // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
 
           this._subscriptions = [];
         }
@@ -3407,8 +3407,8 @@
 
           this.succeeded = new _angular_core__WEBPACK_IMPORTED_MODULE_3__["EventEmitter"](); // Instantiate a failed notification Emitter.
 
-          this.failed = new _angular_core__WEBPACK_IMPORTED_MODULE_3__["EventEmitter"](); // Instantiate a gathering point for all the component's subscriptions.
-          // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+          this.failed = new _angular_core__WEBPACK_IMPORTED_MODULE_3__["EventEmitter"](); // A common gathering point for all the component's subscriptions.
+          // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
 
           this._subscription = new rxjs__WEBPACK_IMPORTED_MODULE_6__["Subscription"]();
         }

@@ -44,7 +44,7 @@ describe('EmissionTypesRecordsTabulationService', () => {
 
             emissionTypesTableDataService.emissionTypes$
                 .pipe(
-                    take(3),
+                    take(2),
                     toArray()
                 )
                 .subscribe(response => {

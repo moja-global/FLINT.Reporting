@@ -1,6 +1,7 @@
 import {
     ChangeDetectionStrategy,
     Component,
+    HostListener,
     Input,
     OnInit,
     ViewChild
@@ -12,7 +13,7 @@ import { BehaviorSubject, Subscription, timer } from 'rxjs';
 import { ConnectivityStatusService } from '@common/services';
 
 
-const LOG_PREFIX: string = "[Unit categories Records Updation Modal]";
+const LOG_PREFIX: string = "[Unit Categories Records Updation Modal]";
 
 @Component({
     selector: 'sb-unit-categories-records-updation-modal',
@@ -27,7 +28,7 @@ export class UnitCategoriesRecordsUpdationModalComponent implements OnInit {
     // record that has been served up for updation during the component's initialization.
     @Input() id!: number;
 
-    // Inject a reference to the Unit categories records updation component. 
+    // Inject a reference to the Unit Categories records updation component. 
     // This will provide a way of propagating save requests to it
     @ViewChild(UnitCategoriesRecordsUpdationComponent) component!: UnitCategoriesRecordsUpdationComponent;
 
@@ -42,30 +43,23 @@ export class UnitCategoriesRecordsUpdationModalComponent implements OnInit {
     private _statusSubject$ = new BehaviorSubject<string>("new");
     readonly status$ = this._statusSubject$.asObservable();
 
-    // Keep tabs on whether or not we are online
-    online: boolean = false;
-
     // Instantiate a central gathering point for all the component's subscriptions.
-    // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+    // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
     private _subscriptions: Subscription[] = [];
 
     constructor(
         public activeUnitCategoriesModal: NgbActiveModal,
-        public connectivityStatusService: ConnectivityStatusService,
         private log: NGXLogger) { }
 
     ngOnInit() {
 
-        // Subscribe to connectivity status notifications.
-        this.log.trace(`${LOG_PREFIX} Subscribing to connectivity status notifications`);
-        this._subscriptions.push(
-            this.connectivityStatusService.online$.subscribe(
-                (status) => {
-                    this.online = status;
-                }));
+        this.log.trace(`${LOG_PREFIX} Initializing Component`);
     }
 
+    @HostListener('window:beforeunload')
     ngOnDestroy() {
+
+        this.log.trace(`${LOG_PREFIX} Destroying Component`);
 
         // Clear all subscriptions
         this.log.trace(`${LOG_PREFIX} Clearing all subscriptions`);
@@ -74,7 +68,7 @@ export class UnitCategoriesRecordsUpdationModalComponent implements OnInit {
 
     /**
      * Sets the processing status to 'saving', triggering a display change, and then 
-     * propagates the saving request to the Unit categories records updation component
+     * propagates the saving request to the Unit Categories records updation component
      */
     onSave() {
         this._statusSubject$.next("saving");
@@ -84,7 +78,7 @@ export class UnitCategoriesRecordsUpdationModalComponent implements OnInit {
     /**
      * Sets the processing status to 'succeeded', triggering a display change, and then 
      * autocloses the modal after a short delay.
-     */   
+     */
     onSucceeded() {
         this._statusSubject$.next("succeeded");
         timer(1000).subscribe(x => { this.onQuit(); })
@@ -92,7 +86,7 @@ export class UnitCategoriesRecordsUpdationModalComponent implements OnInit {
 
     /**
      * Sets the processing status to either 'failed' or 'invalid' triggering a display change.
-     */    
+     */
     onFailed(event: number) {
         switch (event) {
             case 400:
@@ -106,7 +100,7 @@ export class UnitCategoriesRecordsUpdationModalComponent implements OnInit {
 
     /**
      * Sets the processing status to 'retrying' triggering a display change.
-     */    
+     */
     onRetry() {
         this._statusSubject$.next("retrying");
     }
@@ -114,7 +108,7 @@ export class UnitCategoriesRecordsUpdationModalComponent implements OnInit {
 
     /**
      * Clears the processing status and closes the modal
-     */    
+     */
     onQuit() {
         this._statusSubject$.next("");
         this.activeUnitCategoriesModal.close();

@@ -1,11 +1,12 @@
 import { inject, TestBed } from '@angular/core/testing';
-import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpTestingController, HttpClientTestingModule, TestRequest } from '@angular/common/http/testing';
 import { PoolsDataService } from './pools-data.service';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { MessageService } from '../../app-common/services/messages.service';
 import { environment } from 'environments/environment';
 import { take, toArray } from 'rxjs/operators';
 import { Pool } from '../models';
+import { ConnectivityStatusService } from '@common/services';
 
 describe('Pools Data Service', () => {
 
@@ -16,11 +17,13 @@ describe('Pools Data Service', () => {
 
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, LoggerModule.forRoot({ serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.OFF })],
-            providers: [PoolsDataService, MessageService],
+            providers: [PoolsDataService, MessageService, ConnectivityStatusService],
         });
 
+    
         poolsDataService = TestBed.inject(PoolsDataService);
         httpMock = TestBed.inject(HttpTestingController);
+
     });
 
     describe('createPool', () => {
@@ -29,21 +32,36 @@ describe('Pools Data Service', () => {
                 [HttpTestingController, PoolsDataService],
                 (httpMock: HttpTestingController, poolsDataService: PoolsDataService) => {
 
-                    // Define the mock pool
-                    const mockPool = new Pool({ id: 4, name: "Pool 4", description: "Pool 4 Description", version: 1 });
+          
+                    // Define a couple of mock Pools
+                    const initialPools: Pool[] = <Array<Pool>>[
+                        new Pool({ id: 1, name: "Pool 1", description: "Pool 1 Description", version: 1 }),
+                        new Pool({ id: 2, name: "Pool 2", description: "Pool 2 Description", version: 1 }),
+                        new Pool({ id: 3, name: "Pool 3", description: "Pool 3 Description", version: 1 })
+                    ];
+
+                    const newPool = new Pool({ id: 4, name: "Pool 4", description: "Pool 4 Description", version: 1 });
+                    
+                    const finalPools: Pool[] = <Array<Pool>>[
+                        new Pool({ id: 1, name: "Pool 1", description: "Pool 1 Description", version: 1 }),
+                        new Pool({ id: 2, name: "Pool 2", description: "Pool 2 Description", version: 1 }),
+                        new Pool({ id: 3, name: "Pool 3", description: "Pool 3 Description", version: 1 }),
+                        new Pool({ id: 4, name: "Pool 4", description: "Pool 4 Description", version: 1 })
+                    ];                    
 
                     // Call & subscribe to the createPool() method
                     poolsDataService.createPool(new Pool({ name: "Pool 4", description: "Pool 4 Description" }))
                         .subscribe((response) => {
-                            // Expect that the response is equal to the mocked Pool - i.e with the id / version upated
-                            expect(response).toEqual(mockPool);
+
+                            // Expect that the response is equal to the new Pool - i.e with the id / version upated
+                            expect(response).toEqual(newPool);
                         });
 
 
                     // Subscribe to the Pools observable
                     poolsDataService.pools$
                         .pipe(
-                            take(2),
+                            take(3),
                             toArray()
                         )
                         .subscribe(response => {
@@ -51,30 +69,35 @@ describe('Pools Data Service', () => {
                             // Expect that the first response is equal to an empty array
                             expect(response[0]).toEqual([]);
 
-                            // Expect that the second response is equal to an array containing the mocked Pool - i.e with the id / version upated
-                            expect(response[1]).toEqual([mockPool]);
+                            // Expect that the second response is equal to the initial Pools
+                            expect(response[1]).toEqual(initialPools);                            
+
+                            // Expect that the third response is equal to the final Pools
+                            expect(response[2]).toEqual(finalPools);
                         });
 
 
-                    // Expect that a single request has been made, which matches the provided URL, and return its mock
-                    const mockReq = httpMock.expectOne(`${environment.baseUrl}/api/v1/pools`);
+                    // Expect that a single retrieval request was made during the class initialization phase
+                    httpMock.expectOne(`${environment.baseUrl}/api/v1/pools/all`).flush(initialPools);
 
-                    // Expect that the request method is of type POST
-                    expect(mockReq.request.method).toEqual('POST');
+                    // Expect that a single request was made during the addition phase
+                    const mockReq2 = httpMock.expectOne(`${environment.baseUrl}/api/v1/pools`);
 
-                    // Expect that the request was not cancelled
-                    expect(mockReq.cancelled).toBeFalsy();
+                    // Expect that the addition request was of type POST
+                    expect(mockReq2.request.method).toEqual('POST');
 
-                    // Expect that the request response is of type json
-                    expect(mockReq.request.responseType).toEqual('json');
+                    // Expect that the addition request was not cancelled
+                    expect(mockReq2.cancelled).toBeFalsy();
 
-                    // Resolve the request by returning a body plus additional HTTP information (such as response headers) if provided.
-                    // Pass the mocked Pool as an argument to the flush method so that it is returned as the response
-                    mockReq.flush(mockPool);
+                    // Expect that the addition request response was of type json
+                    expect(mockReq2.request.responseType).toEqual('json');
 
+                    // Resolve the creation request
+                    mockReq2.flush(newPool);
 
                     // Ensure that there are no outstanding requests to be made
                     httpMock.verify();
+
                 }
             )
         );
@@ -86,20 +109,27 @@ describe('Pools Data Service', () => {
                 [HttpTestingController, PoolsDataService],
                 (httpMock: HttpTestingController, poolsDataService: PoolsDataService) => {
 
-                    // Define the mock pool
-                    const mockPool = new Pool({ id: 2, name: "Pool 2", description: "Pool 2 Description", version: 1 });
+                    // Define a couple of mock Pools
+                    const allPools: Pool[] = <Array<Pool>>[
+                        new Pool({ id: 1, name: "Pool 1", description: "Pool 1 Description", version: 1 }),
+                        new Pool({ id: 2, name: "Pool 2", description: "Pool 2 Description", version: 1 }),
+                        new Pool({ id: 3, name: "Pool 3", description: "Pool 3 Description", version: 1 })
+                    ];
+
+                    const targetPool = new Pool({ id: 2, name: "Pool 2", description: "Pool 2 Description", version: 1 });
 
                     // Call the getPool() method
                     poolsDataService.getPool(2)
                         .subscribe((response) => {
-                            // Expect that the response is equal to the mocked Pool
-                            expect(response).toEqual(mockPool);
+
+                            // Expect that the response is equal to the target Pool
+                            expect(response).toEqual(targetPool);
                         });
 
                     // Subscribe to the Pools observable
                     poolsDataService.pools$
                         .pipe(
-                            take(2),
+                            take(3),
                             toArray()
                         )
                         .subscribe(response => {
@@ -107,27 +137,31 @@ describe('Pools Data Service', () => {
                             // Expect that the first response is equal to an empty array
                             expect(response[0]).toEqual([]);
 
-                            // Expect that the second response is equal to an array containing the mocked Pool
-                            expect(response[1]).toEqual([mockPool]);
+                            // Expect that the second response is equal to all the Pools
+                            expect(response[1]).toEqual(allPools);                            
+
+                            // Expect that the third response is equal to all the Pools
+                            expect(response[2]).toEqual(allPools);
+
                         });
 
-                    // Expect that a single request has been made, which matches the provided URL, and return its mock
-                    const mockReq = httpMock.expectOne(`${environment.baseUrl}/api/v1/pools/ids/2`);
+                    // Expect that a single retrieval request was made during the class initialization phase
+                    httpMock.expectOne(`${environment.baseUrl}/api/v1/pools/all`).flush(allPools);
 
-                    // Expect that the request method is of type GET
-                    expect(mockReq.request.method).toEqual('GET');
+                    // Expect that a single request was made during the retrieval phase
+                    const mockReq2 = httpMock.expectOne(`${environment.baseUrl}/api/v1/pools/ids/2`);
 
-                    // Expect that the request was not cancelled
-                    expect(mockReq.cancelled).toBeFalsy();
+                    // Expect that the retrieval request method was of type GET
+                    expect(mockReq2.request.method).toEqual('GET');
 
-                    // Expect that the request response is of type json
-                    expect(mockReq.request.responseType).toEqual('json');
+                    // Expect that the retrieval request was not cancelled
+                    expect(mockReq2.cancelled).toBeFalsy();
 
-                    // Resolve the request by returning a body plus additional HTTP information (such as response headers) if provided.
-                    // Pass the mocked Pool as an argument to the flush method so that it is returned as the response
-                    mockReq.flush(mockPool);
+                    // Expect that the retrieval request response was of type json
+                    expect(mockReq2.request.responseType).toEqual('json');
 
-
+                    // Resolve the retrieval request
+                    mockReq2.flush(targetPool);
 
                     // Ensure that there are no outstanding requests to be made
                     httpMock.verify();
@@ -146,7 +180,7 @@ describe('Pools Data Service', () => {
                 (httpMock: HttpTestingController, poolsDataService: PoolsDataService) => {
 
                     // Define a couple of mock Pools
-                    const mockPools: Pool[] = <Array<Pool>>[
+                    const allPools: Pool[] = <Array<Pool>>[
                         new Pool({ id: 1, name: "Pool 1", description: "Pool 1 Description", version: 1 }),
                         new Pool({ id: 2, name: "Pool 2", description: "Pool 2 Description", version: 1 }),
                         new Pool({ id: 3, name: "Pool 3", description: "Pool 3 Description", version: 1 })
@@ -156,13 +190,13 @@ describe('Pools Data Service', () => {
                     poolsDataService.getAllPools()
                         .subscribe((response) => {
                             // Expect that the response is equal to the mocked Pool
-                            expect(response).toEqual(mockPools);
+                            expect(response).toEqual(allPools);
                         });
 
                     // Subscribe to the Pools observable
                     poolsDataService.pools$
                         .pipe(
-                            take(2),
+                            take(3),
                             toArray()
                         )
                         .subscribe(response => {
@@ -170,25 +204,39 @@ describe('Pools Data Service', () => {
                             // Expect that the first response is equal to an empty array
                             expect(response[0]).toEqual([]);
 
-                            // Expect that the second response is equal to an array containing the mocked Pools
-                            expect(response[1]).toEqual(mockPools);
+                            // Expect that the second response is equal to all the Pools
+                            expect(response[1]).toEqual(allPools);                            
+
+                            // Expect that the third response is equal to all the Pools
+                            expect(response[2]).toEqual(allPools);
                         });
 
-                    // Expect that a single request has been made, which matches the provided URL, and return its mock
-                    const mockReq = httpMock.expectOne(`${environment.baseUrl}/api/v1/pools/all`);
+                    // Expect that two retrieval requests were made: 
+                    // One during the class initialization phase; 
+                    // One during the current retrieval phase
+                    const requests: TestRequest[] = httpMock.match(`${environment.baseUrl}/api/v1/pools/all`); 
+                    expect(requests.length).toEqual(2); 
+                    
+                    // Get the first retrieval request
+                    const mockReq1 = requests[0];
+                    
+                    // Resolve the first retrieval request
+                    mockReq1.flush(allPools);                    
 
-                    // Expect that the request method is of type GET
-                    expect(mockReq.request.method).toEqual('GET');
+                    // Get the second retrieval request
+                    const mockReq2 = requests[1];
 
-                    // Expect that the request was not cancelled
-                    expect(mockReq.cancelled).toBeFalsy();
+                    // Expect that the second retrieval request method was of type GET
+                    expect(mockReq2.request.method).toEqual('GET');
 
-                    // Expect that the request response is of type json
-                    expect(mockReq.request.responseType).toEqual('json');
+                    // Expect that the second retrieval request was not cancelled
+                    expect(mockReq2.cancelled).toBeFalsy();
 
-                    // Resolve the request by returning a body plus additional HTTP information (such as response headers) if provided.
-                    // Pass the mocked Pools as an argument to the flush method so that they are returned as the response
-                    mockReq.flush(mockPools);
+                    // Expect that the second retrieval request response was of type json
+                    expect(mockReq2.request.responseType).toEqual('json');
+
+                    // Resolve the second retrieval request
+                    mockReq2.flush(allPools);
 
                     // Ensure that there are no outstanding requests to be made
                     httpMock.verify();
@@ -204,25 +252,29 @@ describe('Pools Data Service', () => {
                 [HttpTestingController, PoolsDataService],
                 (httpMock: HttpTestingController, poolsDataService: PoolsDataService) => {
 
-                    // Define the mock pool
-                    const mockPool1 = new Pool({ id: 4, name: "Pool Four", description: "Pool Four Description", version: 1 });
-                    const mockPool2 = new Pool({ id: 4, name: "Updated Pool Four", description: "Updated Pool Four Description", version: 2 });
+                    // Define a couple of mock Pools
+                    const initialPools: Pool[] = <Array<Pool>>[
+                        new Pool({ id: 1, name: "Pool 1", description: "Pool 1 Description", version: 1 }),
+                        new Pool({ id: 2, name: "Pool 2", description: "Pool 2 Description", version: 1 }),
+                        new Pool({ id: 3, name: "Pool 3", description: "Pool 3 Description", version: 1 }),
+                        new Pool({ id: 4, name: "Pool 4", description: "Pool 4 Description", version: 1 })
+                    ];  
 
-                    // Call createPool() method to create the mock pool 1 and add it to the list of pools
-                    poolsDataService.createPool(mockPool1)
-                        .subscribe((response) => {
-                            // Expect that the response is equal to the mocked Pool 1
-                            expect(response).toEqual(mockPool1);
-                        });
+                    const updatedPool = new Pool({ id: 4, name: "Updated Pool Four", description: "Updated Pool Four Description", version: 2 });
+                    
+                    const finalPools: Pool[] = <Array<Pool>>[
+                        new Pool({ id: 1, name: "Pool 1", description: "Pool 1 Description", version: 1 }),
+                        new Pool({ id: 2, name: "Pool 2", description: "Pool 2 Description", version: 1 }),
+                        new Pool({ id: 3, name: "Pool 3", description: "Pool 3 Description", version: 1 }),
+                        new Pool({ id: 4, name: "Updated Pool Four", description: "Updated Pool Four Description", version: 2 })
+                    ];                     
 
-                    // Mock the createPool()'s corresponding HTTP POST Request
-                    httpMock.expectOne(`${environment.baseUrl}/api/v1/pools`).flush(mockPool1);
 
                     // Call the updatePool() method
                     poolsDataService.updatePool(new Pool({ id: 4, name: "Updated Pool Four", description: "Updated Pool Four Description", version: 1 }))
                         .subscribe((response) => {
-                            // Expect that the response is equal to the mocked Pool 2
-                            expect(response).toEqual(mockPool2);
+                            // Expect that the response is equal to the updated Pool
+                            expect(response).toEqual(updatedPool);
                         });
 
                     // Subscribe to the Pools observable
@@ -236,28 +288,30 @@ describe('Pools Data Service', () => {
                             // Expect that the first response is equal to an empty array
                             expect(response[0]).toEqual([]);
 
-                            // Expect that the second response is equal to the first (created) Pool
-                            expect(response[1]).toEqual([mockPool1]);
+                            // Expect that the second response is equal to the initial Pools
+                            expect(response[1]).toEqual(initialPools);                            
 
-                            // Expect that the second response is equal to the second (updated) Pool
-                            expect(response[2]).toEqual([mockPool2]);
+                            // Expect that the third response is equal to the final Pools
+                            expect(response[2]).toEqual(finalPools);
                         });
 
-                    // Expect that a single request has been made, which matches the provided URL, and return its mock
-                    const mockReq = httpMock.expectOne(`${environment.baseUrl}/api/v1/pools`);
+                    // Expect that a single retrieval request was made during the class initialization phase
+                    httpMock.expectOne(`${environment.baseUrl}/api/v1/pools/all`).flush(initialPools);                
 
-                    // Expect that the request method is of type PUT
-                    expect(mockReq.request.method).toEqual('PUT');
+                    // Expect that a single request was made during the updation phase
+                    const mockReq2 = httpMock.expectOne(`${environment.baseUrl}/api/v1/pools`);
 
-                    // Expect that the request was not cancelled
-                    expect(mockReq.cancelled).toBeFalsy();
+                    // Expect that the updation request method was of type PUT
+                    expect(mockReq2.request.method).toEqual('PUT');
 
-                    // Expect that the request response is of type json
-                    expect(mockReq.request.responseType).toEqual('json');
+                    // Expect that the updation request was not cancelled
+                    expect(mockReq2.cancelled).toBeFalsy();
 
-                    // Resolve the request by returning a body plus additional HTTP information (such as response headers) if provided.
-                    // Pass the mocked Pool as an argument to the flush method so that it is returned as the response
-                    mockReq.flush(mockPool2);
+                    // Expect that the updation request response wss of type json
+                    expect(mockReq2.request.responseType).toEqual('json');
+
+                    // Resolve the updation request
+                    mockReq2.flush(updatedPool);
 
                     // Ensure that there are no outstanding requests to be made
                     httpMock.verify();
@@ -272,23 +326,26 @@ describe('Pools Data Service', () => {
                 [HttpTestingController, PoolsDataService],
                 (httpMock: HttpTestingController, poolsDataService: PoolsDataService) => {
 
-                    // Define a mock pool
-                    const mockPool = new Pool({ id: 4, name: "Pool 4", description: "Pool 4 Description", version: 1 });
+                    // Define a couple of mock Pools
+                    const initialPools: Pool[] = <Array<Pool>>[
+                        new Pool({ id: 1, name: "Pool 1", description: "Pool 1 Description", version: 1 }),
+                        new Pool({ id: 2, name: "Pool 2", description: "Pool 2 Description", version: 1 }),
+                        new Pool({ id: 3, name: "Pool 3", description: "Pool 3 Description", version: 1 }),
+                        new Pool({ id: 4, name: "Pool 4", description: "Pool 4 Description", version: 1 })
+                    ];  
 
-                    // Call createPool() method to create the mock pool and add it to the list of pools
-                    poolsDataService.createPool(mockPool)
-                        .subscribe((response) => {
-                            // Expect that the response is equal to the mocked Pool - i.e with the id / version upated
-                            expect(response).toEqual(mockPool);
-                        });
+                    const targetPool = new Pool({ id: 4, name: "Pool 4", description: "Pool 4 Description", version: 1 });
 
-                    // Mock the createPool()'s corresponding HTTP POST Request
-                    httpMock.expectOne(`${environment.baseUrl}/api/v1/pools`).flush(mockPool);
+                    const finalPools: Pool[] = <Array<Pool>>[
+                        new Pool({ id: 1, name: "Pool 1", description: "Pool 1 Description", version: 1 }),
+                        new Pool({ id: 2, name: "Pool 2", description: "Pool 2 Description", version: 1 }),
+                        new Pool({ id: 3, name: "Pool 3", description: "Pool 3 Description", version: 1 })
+                    ];
 
-                    // Call deletePool() method to delete the mock pool from the list of pools
+                    // Call deletePool() method to delete the target Pool from the list of Pools
                     poolsDataService.deletePool(4)
                         .subscribe((response) => {
-                            // Expect that the response is equal to 1: the total number of deleted Pool
+                            // Expect that the response is equal to 1: the total number of deleted Pools
                             expect(response).toEqual(1);
                         });
 
@@ -303,15 +360,28 @@ describe('Pools Data Service', () => {
                             // Expect that the first response is equal to an empty array
                             expect(response[0]).toEqual([]);
 
-                            // Expect that the second response is equal to the created Pool
-                            expect(response[1]).toEqual([mockPool]);
+                            // Expect that the second response is equal to the initial Pools
+                            expect(response[1]).toEqual(initialPools);                            
 
-                            // Expect that the second response is equal to an empty array - following the deletion of the created pool
-                            expect(response[2]).toEqual([]);
+                            // Expect that the third response is equal to the final Pools
+                            expect(response[2]).toEqual(finalPools);
                         });
 
-                    // Mock the deletePool()'s corresponding HTTP DELETE Request
-                    httpMock.expectOne(`${environment.baseUrl}/api/v1/pools/ids/4`).flush(1);
+                    // Expect that a single retrieval request was made during the class initialization phase
+                    httpMock.expectOne(`${environment.baseUrl}/api/v1/pools/all`).flush(initialPools);  
+                    
+                    
+                    // Expect that a single request was made during the deletion phase
+                    const mockReq2 = httpMock.expectOne(`${environment.baseUrl}/api/v1/pools/ids/4`);
+
+                    // Expect that the deletion request method was of type DELETE
+                    expect(mockReq2.request.method).toEqual('DELETE');
+
+                    // Expect that the deletion request was not cancelled
+                    expect(mockReq2.cancelled).toBeFalsy();
+
+                    // Resolve the deletion request
+                    mockReq2.flush(1);
 
                     // Ensure that there are no outstanding requests to be made
                     httpMock.verify();
@@ -329,30 +399,30 @@ describe('Pools Data Service', () => {
                 (httpMock: HttpTestingController, poolsDataService: PoolsDataService) => {
 
                     // Define a couple of mock Pools
-                    const mockPools = [
+                    const allPools = [
                         new Pool({ id: 1, name: "Pool 1", description: "Pool 1 Description", version: 1 }),
                         new Pool({ id: 2, name: "Pool 2", description: "Pool 2 Description", version: 1 }),
                         new Pool({ id: 3, name: "Pool 3", description: "Pool 3 Description", version: 1 })
                     ];
 
-                    // Call the getAllPools() method
-                    poolsDataService.getAllPools()
-                        .subscribe((response) => {
-                            // Expect that the response is equal to the mocked Pools
-                            expect(response).toEqual(mockPools);
-                        });
-
-                    // Expect that a single request has been made, which matches the provided URL
-                    httpMock.expectOne(`${environment.baseUrl}/api/v1/pools/all`).flush(mockPools);
-
-                    // Expect that the response is equal to an array containing the mocked Pools
-                    expect(poolsDataService.records).toEqual(mockPools);
+                    // Expect that a single retrieval request was made
+                    httpMock.expectOne(`${environment.baseUrl}/api/v1/pools/all`).flush(allPools);
 
                     // Ensure that there are no outstanding requests to be made
                     httpMock.verify();
+                    
+                    // Expect that the response is equal to the array of all Pools
+                    expect(poolsDataService.records).toEqual(allPools);
+
+
                 }
             )
         );
 
     });
 });
+
+function expectNone() {
+    throw new Error('Function not implemented.');
+}
+

@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  HostListener,
   Input,
   OnInit,
   Output
@@ -68,6 +69,8 @@ export class EmissionTypesRecordsUpdationComponent implements OnInit, AfterConte
 
   ngOnInit() {
 
+    this.log.trace(`${LOG_PREFIX} Initializing Component`);
+
     // Retrieve the Emission Type record with the given id from the data store 
     this.log.trace(`${LOG_PREFIX} Retrieving the Emission Type record with the given id from the data store`);
     this.log.debug(`${LOG_PREFIX} Emission Type record Id = ${this.id}`);
@@ -95,7 +98,10 @@ export class EmissionTypesRecordsUpdationComponent implements OnInit, AfterConte
     }
   }
 
+  @HostListener('window:beforeunload')
   ngOnDestroy() {
+
+    this.log.trace(`${LOG_PREFIX} Destroying Component`);    
 
     // Clear all subscriptions
     this.log.trace(`${LOG_PREFIX} Clearing all subscriptions`);
@@ -118,7 +124,7 @@ export class EmissionTypesRecordsUpdationComponent implements OnInit, AfterConte
 
           const emissionType: EmissionType | undefined | null =
             attribute == "name" ? this.emissionTypesDataService.records.find(d => d.name?.toLowerCase() == s.toLowerCase()) :
-              attribute == "abbreviation" ? this.emissionTypesDataService.records.find(d => d.abbreviation?.toLowerCase().includes(s.toLocaleLowerCase())) :
+              attribute == "abbreviation" ? this.emissionTypesDataService.records.find(d => d.abbreviation?.toLowerCase() == s.toLowerCase()) :
                 null;
 
           if (emissionType != null && emissionType != undefined && emissionType.id != this.id) {

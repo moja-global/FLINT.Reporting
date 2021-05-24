@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  HostListener,
   OnInit,
   Output
 } from '@angular/core';
@@ -49,9 +50,14 @@ export class PoolsRecordsCreationComponent implements OnInit {
 
   constructor(private poolsDataService: PoolsDataService, private log: NGXLogger) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.log.trace(`${LOG_PREFIX} Initializing Component`);
+  }
 
+  @HostListener('window:beforeunload')
   ngOnDestroy() {
+
+    this.log.trace(`${LOG_PREFIX} Destroying Component`);
 
     // Clear all subscriptions
     this.log.trace(`${LOG_PREFIX} Clearing all subscriptions`);

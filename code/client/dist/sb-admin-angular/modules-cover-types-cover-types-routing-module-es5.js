@@ -346,7 +346,7 @@
           this.status$ = this._statusSubject$.asObservable(); // Keep tabs on whether or not we are online
 
           this.online = false; // Instantiate a central gathering point for all the component's subscriptions.
-          // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+          // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
 
           this._subscriptions = [];
         }
@@ -682,7 +682,7 @@
           this.status$ = this._statusSubject$.asObservable(); // Keep tabs on whether or not we are online
 
           this.online = false; // Instantiate a central gathering point for all the component's subscriptions.
-          // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+          // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
 
           this._subscriptions = [];
         }
@@ -1071,7 +1071,7 @@
           this.pageSize = 4; // Keep tabs on whether or not we are online
 
           this.online = false; // Instantiate a central gathering point for all the component's subscriptions.
-          // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+          // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
 
           this._subscriptions = [];
         }
@@ -2647,7 +2647,7 @@
       /*! @common/services */
       "gNCb");
 
-      var LOG_PREFIX = "[Cover Types Records Tabulation Data Service]";
+      var LOG_PREFIX = "[Cover Types Records Tabulation Service]";
 
       var CoverTypesRecordsTabulationService = /*#__PURE__*/function () {
         function CoverTypesRecordsTabulationService(coverTypesDataService, connectivityStatusService, log) {
@@ -2658,20 +2658,20 @@
           this.coverTypesDataService = coverTypesDataService;
           this.connectivityStatusService = connectivityStatusService;
           this.log = log; // Instantiate a loading status observable field.
-          // This field's value will be updated / broadcasted whenever a background task is started and completed  
+          // These fields values will be updated / broadcasted whenever a background task is started and completed  
 
           this._loadingSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"](true);
           this._loading$ = this._loadingSubject$.asObservable(); // Instantiate a Cover Types records observable field.
-          // This field's value will be updated / broadcasted whenever Cover Types records are transformed as per the user defined criteria    
+          // These fields values will be updated / broadcasted whenever Cover Types records are transformed as per the user defined search or sort criteria    
 
           this._coverTypesSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"]([]);
           this._coverTypes$ = this._coverTypesSubject$.asObservable(); // Instantiate a total Cover Types records observable field.
-          // This field's value will be updated / broadcasted whenever Cover Types records are transformed as per the user defined criteria.
-          // It is basically the number of records that meet the user defined criteria    
+          // These fields values will be updated / broadcasted whenever Cover Types records are transformed as per the user defined search or sort criteria.
+          // It is basically the number of records that meet the user defined search or sort criteria    
 
           this._totalSubject$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"](0);
           this._total$ = this._totalSubject$.asObservable(); // Instantiate a state field.
-          // This field represents the user defined criteria of which & how many Cover Types records should be displayed
+          // This field represents the user defined search or sort criteria of which & how many Cover Types records should be displayed
 
           this._state = {
             page: 1,
@@ -2679,8 +2679,8 @@
             searchTerm: '',
             sortColumn: '',
             sortDirection: ''
-          }; // Instantiate a gathering point for all the component's subscriptions.
-          // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+          }; // A common gathering point for all the component's subscriptions.
+          // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
 
           this._subscriptions = []; // Keep tabs on whether or not we are online
 
@@ -2739,7 +2739,7 @@
         _createClass(CoverTypesRecordsTabulationService, [{
           key: "ngOnInit",
           value: function ngOnInit() {
-            ononline;
+          ;
           }
         }, {
           key: "ngOnDestroy",
@@ -2762,7 +2762,7 @@
             }));
           }
           /**
-           * Returns an observable containing Cover Types records that have been filtered as per the desired state setting
+           * Returns an observable containing Cover Types records that have been filtered as per the user defined criteria
            */
 
         }, {
@@ -2936,7 +2936,7 @@
             return this._coverTypes$;
           }
           /**
-           * Returns an observable containing the total number of Cover Types records that have been filtered as per the desired state setting
+           * Returns an observable containing the total number of Cover Types records that have been filtered as per the user defined criteria
            */
 
         }, {
@@ -3225,7 +3225,7 @@
           this.status$ = this._statusSubject$.asObservable(); // Keep tabs on whether or not we are online
 
           this.online = false; // Instantiate a central gathering point for all the component's subscriptions.
-          // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+          // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
 
           this._subscriptions = [];
         }

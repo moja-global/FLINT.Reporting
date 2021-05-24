@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  HostListener,
   OnInit,
   Output
 } from '@angular/core';
@@ -11,7 +12,7 @@ import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
 import { UnitCategory } from '../../models';
 
-const LOG_PREFIX: string = "[Unit categories Records Creation Component]";
+const LOG_PREFIX: string = "[Unit Categories Records Creation Component]";
 
 @Component({
   selector: 'sb-unit-categories-records-creation',
@@ -29,7 +30,7 @@ export class UnitCategoriesRecordsCreationComponent implements OnInit {
   // This will allow us to broadcast fnotifications of failed creation events
   @Output() failed: EventEmitter<number> = new EventEmitter<number>();
 
-  // Instantitate a new reactive Form Group for the Unit categories Form.
+  // Instantitate a new reactive Form Group for the Unit Categories Form.
   // This will allow to define and enforce the validation rules for all the form controls.
   unitCategoriesForm = new FormGroup({
     name: new FormControl('', [
@@ -46,9 +47,14 @@ export class UnitCategoriesRecordsCreationComponent implements OnInit {
 
   constructor(private unitCategoriesDataService: UnitCategoriesDataService, private log: NGXLogger) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.log.trace(`${LOG_PREFIX} Initializing Component`);
+  }
 
+  @HostListener('window:beforeunload')
   ngOnDestroy() {
+
+    this.log.trace(`${LOG_PREFIX} Destroying Component`);
 
     // Clear all subscriptions
     this.log.trace(`${LOG_PREFIX} Clearing all subscriptions`);
@@ -99,7 +105,7 @@ export class UnitCategoriesRecordsCreationComponent implements OnInit {
       // Save the record
       this.log.trace(`${LOG_PREFIX} Saving the Unit category record`);
       this.unitCategoriesDataService
-        .createUnitCategory(new UnitCategory({ name}))
+        .createUnitCategory(new UnitCategory({ name }))
         .subscribe(
           (response: UnitCategory) => {
 

@@ -1,11 +1,12 @@
 import { inject, TestBed } from '@angular/core/testing';
-import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpTestingController, HttpClientTestingModule, TestRequest } from '@angular/common/http/testing';
 import { CoverTypesDataService } from './cover-types-data.service';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { MessageService } from '../../app-common/services/messages.service';
 import { environment } from 'environments/environment';
 import { take, toArray } from 'rxjs/operators';
 import { CoverType } from '../models';
+import { ConnectivityStatusService } from '@common/services';
 
 describe('Cover Types Data Service', () => {
 
@@ -16,11 +17,13 @@ describe('Cover Types Data Service', () => {
 
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, LoggerModule.forRoot({ serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.OFF })],
-            providers: [CoverTypesDataService, MessageService],
+            providers: [CoverTypesDataService, MessageService, ConnectivityStatusService],
         });
 
+    
         coverTypesDataService = TestBed.inject(CoverTypesDataService);
         httpMock = TestBed.inject(HttpTestingController);
+
     });
 
     describe('createCoverType', () => {
@@ -29,21 +32,36 @@ describe('Cover Types Data Service', () => {
                 [HttpTestingController, CoverTypesDataService],
                 (httpMock: HttpTestingController, coverTypesDataService: CoverTypesDataService) => {
 
-                    // Define the mock coverType
-                    const mockCoverType = new CoverType({ id: 4, name: "CoverType 4", description: "CoverType 4 Description", version: 1 });
+          
+                    // Define a couple of mock Cover Types
+                    const initialCoverTypes: CoverType[] = <Array<CoverType>>[
+                        new CoverType({ id: 1, name: "CoverType 1", description: "CoverType 1 Description", version: 1 }),
+                        new CoverType({ id: 2, name: "CoverType 2", description: "CoverType 2 Description", version: 1 }),
+                        new CoverType({ id: 3, name: "CoverType 3", description: "CoverType 3 Description", version: 1 })
+                    ];
+
+                    const newCoverType = new CoverType({ id: 4, name: "CoverType 4", description: "CoverType 4 Description", version: 1 });
+                    
+                    const finalCoverTypes: CoverType[] = <Array<CoverType>>[
+                        new CoverType({ id: 1, name: "CoverType 1", description: "CoverType 1 Description", version: 1 }),
+                        new CoverType({ id: 2, name: "CoverType 2", description: "CoverType 2 Description", version: 1 }),
+                        new CoverType({ id: 3, name: "CoverType 3", description: "CoverType 3 Description", version: 1 }),
+                        new CoverType({ id: 4, name: "CoverType 4", description: "CoverType 4 Description", version: 1 })
+                    ];                    
 
                     // Call & subscribe to the createCoverType() method
                     coverTypesDataService.createCoverType(new CoverType({ name: "CoverType 4", description: "CoverType 4 Description" }))
                         .subscribe((response) => {
-                            // Expect that the response is equal to the mocked CoverType - i.e with the id / version upated
-                            expect(response).toEqual(mockCoverType);
+
+                            // Expect that the response is equal to the new Cover Type - i.e with the id / version upated
+                            expect(response).toEqual(newCoverType);
                         });
 
 
                     // Subscribe to the Cover Types observable
                     coverTypesDataService.coverTypes$
                         .pipe(
-                            take(2),
+                            take(3),
                             toArray()
                         )
                         .subscribe(response => {
@@ -51,30 +69,35 @@ describe('Cover Types Data Service', () => {
                             // Expect that the first response is equal to an empty array
                             expect(response[0]).toEqual([]);
 
-                            // Expect that the second response is equal to an array containing the mocked CoverType - i.e with the id / version upated
-                            expect(response[1]).toEqual([mockCoverType]);
+                            // Expect that the second response is equal to the initial Cover Types
+                            expect(response[1]).toEqual(initialCoverTypes);                            
+
+                            // Expect that the third response is equal to the final Cover Types
+                            expect(response[2]).toEqual(finalCoverTypes);
                         });
 
 
-                    // Expect that a single request has been made, which matches the provided URL, and return its mock
-                    const mockReq = httpMock.expectOne(`${environment.baseUrl}/api/v1/cover_types`);
+                    // Expect that a single retrieval request was made during the class initialization phase
+                    httpMock.expectOne(`${environment.baseUrl}/api/v1/cover_types/all`).flush(initialCoverTypes);
 
-                    // Expect that the request method is of type POST
-                    expect(mockReq.request.method).toEqual('POST');
+                    // Expect that a single request was made during the addition phase
+                    const mockReq2 = httpMock.expectOne(`${environment.baseUrl}/api/v1/cover_types`);
 
-                    // Expect that the request was not cancelled
-                    expect(mockReq.cancelled).toBeFalsy();
+                    // Expect that the addition request was of type POST
+                    expect(mockReq2.request.method).toEqual('POST');
 
-                    // Expect that the request response is of type json
-                    expect(mockReq.request.responseType).toEqual('json');
+                    // Expect that the addition request was not cancelled
+                    expect(mockReq2.cancelled).toBeFalsy();
 
-                    // Resolve the request by returning a body plus additional HTTP information (such as response headers) if provided.
-                    // Pass the mocked CoverType as an argument to the flush method so that it is returned as the response
-                    mockReq.flush(mockCoverType);
+                    // Expect that the addition request response was of type json
+                    expect(mockReq2.request.responseType).toEqual('json');
 
+                    // Resolve the creation request
+                    mockReq2.flush(newCoverType);
 
                     // Ensure that there are no outstanding requests to be made
                     httpMock.verify();
+
                 }
             )
         );
@@ -86,20 +109,27 @@ describe('Cover Types Data Service', () => {
                 [HttpTestingController, CoverTypesDataService],
                 (httpMock: HttpTestingController, coverTypesDataService: CoverTypesDataService) => {
 
-                    // Define the mock coverType
-                    const mockCoverType = new CoverType({ id: 2, name: "CoverType 2", description: "CoverType 2 Description", version: 1 });
+                    // Define a couple of mock Cover Types
+                    const allCoverTypes: CoverType[] = <Array<CoverType>>[
+                        new CoverType({ id: 1, name: "CoverType 1", description: "CoverType 1 Description", version: 1 }),
+                        new CoverType({ id: 2, name: "CoverType 2", description: "CoverType 2 Description", version: 1 }),
+                        new CoverType({ id: 3, name: "CoverType 3", description: "CoverType 3 Description", version: 1 })
+                    ];
+
+                    const targetCoverType = new CoverType({ id: 2, name: "CoverType 2", description: "CoverType 2 Description", version: 1 });
 
                     // Call the getCoverType() method
                     coverTypesDataService.getCoverType(2)
                         .subscribe((response) => {
-                            // Expect that the response is equal to the mocked CoverType
-                            expect(response).toEqual(mockCoverType);
+
+                            // Expect that the response is equal to the target Cover Type
+                            expect(response).toEqual(targetCoverType);
                         });
 
                     // Subscribe to the Cover Types observable
                     coverTypesDataService.coverTypes$
                         .pipe(
-                            take(2),
+                            take(3),
                             toArray()
                         )
                         .subscribe(response => {
@@ -107,27 +137,31 @@ describe('Cover Types Data Service', () => {
                             // Expect that the first response is equal to an empty array
                             expect(response[0]).toEqual([]);
 
-                            // Expect that the second response is equal to an array containing the mocked CoverType
-                            expect(response[1]).toEqual([mockCoverType]);
+                            // Expect that the second response is equal to all the Cover Types
+                            expect(response[1]).toEqual(allCoverTypes);                            
+
+                            // Expect that the third response is equal to all the Cover Types
+                            expect(response[2]).toEqual(allCoverTypes);
+
                         });
 
-                    // Expect that a single request has been made, which matches the provided URL, and return its mock
-                    const mockReq = httpMock.expectOne(`${environment.baseUrl}/api/v1/cover_types/ids/2`);
+                    // Expect that a single retrieval request was made during the class initialization phase
+                    httpMock.expectOne(`${environment.baseUrl}/api/v1/cover_types/all`).flush(allCoverTypes);
 
-                    // Expect that the request method is of type GET
-                    expect(mockReq.request.method).toEqual('GET');
+                    // Expect that a single request was made during the retrieval phase
+                    const mockReq2 = httpMock.expectOne(`${environment.baseUrl}/api/v1/cover_types/ids/2`);
 
-                    // Expect that the request was not cancelled
-                    expect(mockReq.cancelled).toBeFalsy();
+                    // Expect that the retrieval request method was of type GET
+                    expect(mockReq2.request.method).toEqual('GET');
 
-                    // Expect that the request response is of type json
-                    expect(mockReq.request.responseType).toEqual('json');
+                    // Expect that the retrieval request was not cancelled
+                    expect(mockReq2.cancelled).toBeFalsy();
 
-                    // Resolve the request by returning a body plus additional HTTP information (such as response headers) if provided.
-                    // Pass the mocked CoverType as an argument to the flush method so that it is returned as the response
-                    mockReq.flush(mockCoverType);
+                    // Expect that the retrieval request response was of type json
+                    expect(mockReq2.request.responseType).toEqual('json');
 
-
+                    // Resolve the retrieval request
+                    mockReq2.flush(targetCoverType);
 
                     // Ensure that there are no outstanding requests to be made
                     httpMock.verify();
@@ -146,7 +180,7 @@ describe('Cover Types Data Service', () => {
                 (httpMock: HttpTestingController, coverTypesDataService: CoverTypesDataService) => {
 
                     // Define a couple of mock Cover Types
-                    const mockCoverTypes: CoverType[] = <Array<CoverType>>[
+                    const allCoverTypes: CoverType[] = <Array<CoverType>>[
                         new CoverType({ id: 1, name: "CoverType 1", description: "CoverType 1 Description", version: 1 }),
                         new CoverType({ id: 2, name: "CoverType 2", description: "CoverType 2 Description", version: 1 }),
                         new CoverType({ id: 3, name: "CoverType 3", description: "CoverType 3 Description", version: 1 })
@@ -156,13 +190,13 @@ describe('Cover Types Data Service', () => {
                     coverTypesDataService.getAllCoverTypes()
                         .subscribe((response) => {
                             // Expect that the response is equal to the mocked CoverType
-                            expect(response).toEqual(mockCoverTypes);
+                            expect(response).toEqual(allCoverTypes);
                         });
 
                     // Subscribe to the Cover Types observable
                     coverTypesDataService.coverTypes$
                         .pipe(
-                            take(2),
+                            take(3),
                             toArray()
                         )
                         .subscribe(response => {
@@ -170,25 +204,39 @@ describe('Cover Types Data Service', () => {
                             // Expect that the first response is equal to an empty array
                             expect(response[0]).toEqual([]);
 
-                            // Expect that the second response is equal to an array containing the mocked CoverTypes
-                            expect(response[1]).toEqual(mockCoverTypes);
+                            // Expect that the second response is equal to all the Cover Types
+                            expect(response[1]).toEqual(allCoverTypes);                            
+
+                            // Expect that the third response is equal to all the Cover Types
+                            expect(response[2]).toEqual(allCoverTypes);
                         });
 
-                    // Expect that a single request has been made, which matches the provided URL, and return its mock
-                    const mockReq = httpMock.expectOne(`${environment.baseUrl}/api/v1/cover_types/all`);
+                    // Expect that two retrieval requests were made: 
+                    // One during the class initialization phase; 
+                    // One during the current retrieval phase
+                    const requests: TestRequest[] = httpMock.match(`${environment.baseUrl}/api/v1/cover_types/all`); 
+                    expect(requests.length).toEqual(2); 
+                    
+                    // Get the first retrieval request
+                    const mockReq1 = requests[0];
+                    
+                    // Resolve the first retrieval request
+                    mockReq1.flush(allCoverTypes);                    
 
-                    // Expect that the request method is of type GET
-                    expect(mockReq.request.method).toEqual('GET');
+                    // Get the second retrieval request
+                    const mockReq2 = requests[1];
 
-                    // Expect that the request was not cancelled
-                    expect(mockReq.cancelled).toBeFalsy();
+                    // Expect that the second retrieval request method was of type GET
+                    expect(mockReq2.request.method).toEqual('GET');
 
-                    // Expect that the request response is of type json
-                    expect(mockReq.request.responseType).toEqual('json');
+                    // Expect that the second retrieval request was not cancelled
+                    expect(mockReq2.cancelled).toBeFalsy();
 
-                    // Resolve the request by returning a body plus additional HTTP information (such as response headers) if provided.
-                    // Pass the mocked CoverTypes as an argument to the flush method so that they are returned as the response
-                    mockReq.flush(mockCoverTypes);
+                    // Expect that the second retrieval request response was of type json
+                    expect(mockReq2.request.responseType).toEqual('json');
+
+                    // Resolve the second retrieval request
+                    mockReq2.flush(allCoverTypes);
 
                     // Ensure that there are no outstanding requests to be made
                     httpMock.verify();
@@ -204,25 +252,29 @@ describe('Cover Types Data Service', () => {
                 [HttpTestingController, CoverTypesDataService],
                 (httpMock: HttpTestingController, coverTypesDataService: CoverTypesDataService) => {
 
-                    // Define the mock coverType
-                    const mockCoverType1 = new CoverType({ id: 4, name: "CoverType Four", description: "CoverType Four Description", version: 1 });
-                    const mockCoverType2 = new CoverType({ id: 4, name: "Updated CoverType Four", description: "Updated CoverType Four Description", version: 2 });
+                    // Define a couple of mock Cover Types
+                    const initialCoverTypes: CoverType[] = <Array<CoverType>>[
+                        new CoverType({ id: 1, name: "CoverType 1", description: "CoverType 1 Description", version: 1 }),
+                        new CoverType({ id: 2, name: "CoverType 2", description: "CoverType 2 Description", version: 1 }),
+                        new CoverType({ id: 3, name: "CoverType 3", description: "CoverType 3 Description", version: 1 }),
+                        new CoverType({ id: 4, name: "CoverType 4", description: "CoverType 4 Description", version: 1 })
+                    ];  
 
-                    // Call createCoverType() method to create the mock coverType 1 and add it to the list of coverTypes
-                    coverTypesDataService.createCoverType(mockCoverType1)
-                        .subscribe((response) => {
-                            // Expect that the response is equal to the mocked CoverType 1
-                            expect(response).toEqual(mockCoverType1);
-                        });
+                    const updatedCoverType = new CoverType({ id: 4, name: "Updated CoverType Four", description: "Updated CoverType Four Description", version: 2 });
+                    
+                    const finalCoverTypes: CoverType[] = <Array<CoverType>>[
+                        new CoverType({ id: 1, name: "CoverType 1", description: "CoverType 1 Description", version: 1 }),
+                        new CoverType({ id: 2, name: "CoverType 2", description: "CoverType 2 Description", version: 1 }),
+                        new CoverType({ id: 3, name: "CoverType 3", description: "CoverType 3 Description", version: 1 }),
+                        new CoverType({ id: 4, name: "Updated CoverType Four", description: "Updated CoverType Four Description", version: 2 })
+                    ];                     
 
-                    // Mock the createCoverType()'s corresponding HTTP POST Request
-                    httpMock.expectOne(`${environment.baseUrl}/api/v1/cover_types`).flush(mockCoverType1);
 
                     // Call the updateCoverType() method
                     coverTypesDataService.updateCoverType(new CoverType({ id: 4, name: "Updated CoverType Four", description: "Updated CoverType Four Description", version: 1 }))
                         .subscribe((response) => {
-                            // Expect that the response is equal to the mocked CoverType 2
-                            expect(response).toEqual(mockCoverType2);
+                            // Expect that the response is equal to the updated Cover Type
+                            expect(response).toEqual(updatedCoverType);
                         });
 
                     // Subscribe to the Cover Types observable
@@ -236,28 +288,30 @@ describe('Cover Types Data Service', () => {
                             // Expect that the first response is equal to an empty array
                             expect(response[0]).toEqual([]);
 
-                            // Expect that the second response is equal to the first (created) CoverType
-                            expect(response[1]).toEqual([mockCoverType1]);
+                            // Expect that the second response is equal to the initial Cover Types
+                            expect(response[1]).toEqual(initialCoverTypes);                            
 
-                            // Expect that the second response is equal to the second (updated) CoverType
-                            expect(response[2]).toEqual([mockCoverType2]);
+                            // Expect that the third response is equal to the final Cover Types
+                            expect(response[2]).toEqual(finalCoverTypes);
                         });
 
-                    // Expect that a single request has been made, which matches the provided URL, and return its mock
-                    const mockReq = httpMock.expectOne(`${environment.baseUrl}/api/v1/cover_types`);
+                    // Expect that a single retrieval request was made during the class initialization phase
+                    httpMock.expectOne(`${environment.baseUrl}/api/v1/cover_types/all`).flush(initialCoverTypes);                
 
-                    // Expect that the request method is of type PUT
-                    expect(mockReq.request.method).toEqual('PUT');
+                    // Expect that a single request was made during the updation phase
+                    const mockReq2 = httpMock.expectOne(`${environment.baseUrl}/api/v1/cover_types`);
 
-                    // Expect that the request was not cancelled
-                    expect(mockReq.cancelled).toBeFalsy();
+                    // Expect that the updation request method was of type PUT
+                    expect(mockReq2.request.method).toEqual('PUT');
 
-                    // Expect that the request response is of type json
-                    expect(mockReq.request.responseType).toEqual('json');
+                    // Expect that the updation request was not cancelled
+                    expect(mockReq2.cancelled).toBeFalsy();
 
-                    // Resolve the request by returning a body plus additional HTTP information (such as response headers) if provided.
-                    // Pass the mocked CoverType as an argument to the flush method so that it is returned as the response
-                    mockReq.flush(mockCoverType2);
+                    // Expect that the updation request response wss of type json
+                    expect(mockReq2.request.responseType).toEqual('json');
+
+                    // Resolve the updation request
+                    mockReq2.flush(updatedCoverType);
 
                     // Ensure that there are no outstanding requests to be made
                     httpMock.verify();
@@ -272,23 +326,26 @@ describe('Cover Types Data Service', () => {
                 [HttpTestingController, CoverTypesDataService],
                 (httpMock: HttpTestingController, coverTypesDataService: CoverTypesDataService) => {
 
-                    // Define a mock coverType
-                    const mockCoverType = new CoverType({ id: 4, name: "CoverType 4", description: "CoverType 4 Description", version: 1 });
+                    // Define a couple of mock Cover Types
+                    const initialCoverTypes: CoverType[] = <Array<CoverType>>[
+                        new CoverType({ id: 1, name: "CoverType 1", description: "CoverType 1 Description", version: 1 }),
+                        new CoverType({ id: 2, name: "CoverType 2", description: "CoverType 2 Description", version: 1 }),
+                        new CoverType({ id: 3, name: "CoverType 3", description: "CoverType 3 Description", version: 1 }),
+                        new CoverType({ id: 4, name: "CoverType 4", description: "CoverType 4 Description", version: 1 })
+                    ];  
 
-                    // Call createCoverType() method to create the mock coverType and add it to the list of coverTypes
-                    coverTypesDataService.createCoverType(mockCoverType)
-                        .subscribe((response) => {
-                            // Expect that the response is equal to the mocked CoverType - i.e with the id / version upated
-                            expect(response).toEqual(mockCoverType);
-                        });
+                    const targetCoverType = new CoverType({ id: 4, name: "CoverType 4", description: "CoverType 4 Description", version: 1 });
 
-                    // Mock the createCoverType()'s corresponding HTTP POST Request
-                    httpMock.expectOne(`${environment.baseUrl}/api/v1/cover_types`).flush(mockCoverType);
+                    const finalCoverTypes: CoverType[] = <Array<CoverType>>[
+                        new CoverType({ id: 1, name: "CoverType 1", description: "CoverType 1 Description", version: 1 }),
+                        new CoverType({ id: 2, name: "CoverType 2", description: "CoverType 2 Description", version: 1 }),
+                        new CoverType({ id: 3, name: "CoverType 3", description: "CoverType 3 Description", version: 1 })
+                    ];
 
-                    // Call deleteCoverType() method to delete the mock coverType from the list of coverTypes
+                    // Call deleteCoverType() method to delete the target Cover Type from the list of Cover Types
                     coverTypesDataService.deleteCoverType(4)
                         .subscribe((response) => {
-                            // Expect that the response is equal to 1: the total number of deleted CoverType
+                            // Expect that the response is equal to 1: the total number of deleted Cover Types
                             expect(response).toEqual(1);
                         });
 
@@ -303,15 +360,28 @@ describe('Cover Types Data Service', () => {
                             // Expect that the first response is equal to an empty array
                             expect(response[0]).toEqual([]);
 
-                            // Expect that the second response is equal to the created CoverType
-                            expect(response[1]).toEqual([mockCoverType]);
+                            // Expect that the second response is equal to the initial Cover Types
+                            expect(response[1]).toEqual(initialCoverTypes);                            
 
-                            // Expect that the second response is equal to an empty array - following the deletion of the created coverType
-                            expect(response[2]).toEqual([]);
+                            // Expect that the third response is equal to the final Cover Types
+                            expect(response[2]).toEqual(finalCoverTypes);
                         });
 
-                    // Mock the deleteCoverType()'s corresponding HTTP DELETE Request
-                    httpMock.expectOne(`${environment.baseUrl}/api/v1/cover_types/ids/4`).flush(1);
+                    // Expect that a single retrieval request was made during the class initialization phase
+                    httpMock.expectOne(`${environment.baseUrl}/api/v1/cover_types/all`).flush(initialCoverTypes);  
+                    
+                    
+                    // Expect that a single request was made during the deletion phase
+                    const mockReq2 = httpMock.expectOne(`${environment.baseUrl}/api/v1/cover_types/ids/4`);
+
+                    // Expect that the deletion request method was of type DELETE
+                    expect(mockReq2.request.method).toEqual('DELETE');
+
+                    // Expect that the deletion request was not cancelled
+                    expect(mockReq2.cancelled).toBeFalsy();
+
+                    // Resolve the deletion request
+                    mockReq2.flush(1);
 
                     // Ensure that there are no outstanding requests to be made
                     httpMock.verify();
@@ -329,30 +399,30 @@ describe('Cover Types Data Service', () => {
                 (httpMock: HttpTestingController, coverTypesDataService: CoverTypesDataService) => {
 
                     // Define a couple of mock Cover Types
-                    const mockCoverTypes = [
+                    const allCoverTypes = [
                         new CoverType({ id: 1, name: "CoverType 1", description: "CoverType 1 Description", version: 1 }),
                         new CoverType({ id: 2, name: "CoverType 2", description: "CoverType 2 Description", version: 1 }),
                         new CoverType({ id: 3, name: "CoverType 3", description: "CoverType 3 Description", version: 1 })
                     ];
 
-                    // Call the getAllCoverTypes() method
-                    coverTypesDataService.getAllCoverTypes()
-                        .subscribe((response) => {
-                            // Expect that the response is equal to the mocked CoverTypes
-                            expect(response).toEqual(mockCoverTypes);
-                        });
-
-                    // Expect that a single request has been made, which matches the provided URL
-                    httpMock.expectOne(`${environment.baseUrl}/api/v1/cover_types/all`).flush(mockCoverTypes);
-
-                    // Expect that the response is equal to an array containing the mocked CoverTypes
-                    expect(coverTypesDataService.records).toEqual(mockCoverTypes);
+                    // Expect that a single retrieval request was made
+                    httpMock.expectOne(`${environment.baseUrl}/api/v1/cover_types/all`).flush(allCoverTypes);
 
                     // Ensure that there are no outstanding requests to be made
                     httpMock.verify();
+                    
+                    // Expect that the response is equal to the array of all Cover Types
+                    expect(coverTypesDataService.records).toEqual(allCoverTypes);
+
+
                 }
             )
         );
 
     });
 });
+
+function expectNone() {
+    throw new Error('Function not implemented.');
+}
+

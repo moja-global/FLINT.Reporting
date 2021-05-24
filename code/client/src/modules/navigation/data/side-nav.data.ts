@@ -44,12 +44,16 @@ export const sideNavItems: SideNavItems = {
     },
     units: {
         icon: 'cog',
-        text: 'Units of Measure',
+        text: 'Units',
         submenu: [
             {
                 text: 'Categories',
                 link: '/unit_categories',
-            }           
+            },
+            {
+                text: 'List',
+                link: '/units',
+            }                       
         ],
     },            
 };

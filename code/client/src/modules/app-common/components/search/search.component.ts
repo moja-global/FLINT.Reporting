@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, AfterViewInit, Input, Output, ElementRef, EventEmitter } from "@angular/core";
+import { Component, ChangeDetectionStrategy, AfterViewInit, Input, Output, ElementRef, EventEmitter, HostListener } from "@angular/core";
 import { NGXLogger } from "ngx-logger";
 import { fromEvent, Observable, Subscription } from "rxjs";
 import { debounceTime, distinctUntilChanged, map } from "rxjs/operators";
@@ -26,8 +26,8 @@ export class SearchComponent implements AfterViewInit {
   // Instantiate the search term
   public searchTerm: string = '';
 
-  // Instantiate a gathering point for all the component's subscriptions.
-  // This will make it easier to unsubscribe from all of them when the component is destroyed.  
+  // A common gathering point for all the component's subscriptions.
+  // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.  
   private _subscription: Subscription = new Subscription();
 
   constructor(
@@ -57,7 +57,13 @@ export class SearchComponent implements AfterViewInit {
   }
 
 
+  ngOnInit() {
+    this.log.trace(`${LOG_PREFIX} Initializing Component`);
+  }
+
+  @HostListener('window:beforeunload')
   ngOnDestroy() {
+    this.log.trace(`${LOG_PREFIX} Destroying Component`);
 
     // Clear all subscriptions
     this.log.trace(`${LOG_PREFIX} Clearing all subscriptions`);

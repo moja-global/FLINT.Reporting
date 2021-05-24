@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  HostListener,
   Input,
   OnInit,
   Output
@@ -46,7 +47,9 @@ export class PoolsRecordsDeletionComponent implements OnInit, AfterContentInit {
 
   constructor(private poolsDataService: PoolsDataService, private log: NGXLogger) { }
 
-  ngOnInit() { 
+  ngOnInit() {
+
+    this.log.trace(`${LOG_PREFIX} Initializing Component`);
 
     // Retrieve the Pool with the given id from the data store 
     this.log.trace(`${LOG_PREFIX} Retrieving the Pool with the given id from the data store`);
@@ -60,7 +63,10 @@ export class PoolsRecordsDeletionComponent implements OnInit, AfterContentInit {
 
   }
 
+  @HostListener('window:beforeunload')
   ngOnDestroy() {
+
+    this.log.trace(`${LOG_PREFIX} Destroying Component`);
 
     // Clear all subscriptions
     this.log.trace(`${LOG_PREFIX} Clearing all subscriptions`);

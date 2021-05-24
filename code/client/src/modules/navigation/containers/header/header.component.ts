@@ -16,8 +16,8 @@ export class HeaderComponent implements OnInit {
     // Classes that are adjusted on the fly based on the prevailing theme
     customClasses: string[] = [];
 
-    // Instantiate a gathering point for all the component's subscriptions.
-    // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+    // A common gathering point for all the component's subscriptions.
+    // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
     private _subscriptions: Subscription[] = [];
 
     constructor(private themesService: ThemesService) { }
@@ -31,7 +31,8 @@ export class HeaderComponent implements OnInit {
         );
     }
 
-    ngOnDestroy() {
+      
+  ngOnDestroy() {
         this._subscriptions.forEach((s) => s.unsubscribe());
     }
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, Input, OnInit } from '@angular/core';
 
 const LOG_PREFIX: string = "[Card Info Component]";
 
@@ -15,4 +15,8 @@ export class CardInfoComponent implements OnInit {
     ngOnInit() {
 
     }
+
+    @HostListener('window:beforeunload')
+    ngOnDestroy() {
+    }    
 }

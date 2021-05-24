@@ -28,7 +28,8 @@ import {
     faTimesCircle,
     faTrash,
     faUser,
-    faWifi
+    faWifi,
+    faWrench
 } from '@fortawesome/free-solid-svg-icons';
 
 export const fontAwesomeSolidIcons = {
@@ -59,5 +60,6 @@ export const fontAwesomeSolidIcons = {
     faTimesCircle,
     faTrash,
     faUser,
-    faWifi
+    faWifi,
+    faWrench
 };

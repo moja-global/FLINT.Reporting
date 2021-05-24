@@ -1,6 +1,7 @@
 import {
     ChangeDetectionStrategy,
     Component,
+    HostListener,
     OnInit,
     ViewChild
 } from '@angular/core';
@@ -8,7 +9,6 @@ import { CoverTypesRecordsCreationComponent } from '../../components/cover-types
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { ConnectivityStatusService } from '@common/services';
 
 const LOG_PREFIX: string = "[Cover Types Records Creation Modal]";
 
@@ -17,7 +17,7 @@ const LOG_PREFIX: string = "[Cover Types Records Creation Modal]";
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './cover-types-records-creation-modal.component.html',
     styleUrls: ['cover-types-records-creation-modal.component.scss'],
-})    
+})
 export class CoverTypesRecordsCreationModalComponent implements OnInit {
 
 
@@ -36,30 +36,22 @@ export class CoverTypesRecordsCreationModalComponent implements OnInit {
     private _statusSubject$ = new BehaviorSubject<string>("new");
     readonly status$ = this._statusSubject$.asObservable();
 
-    // Keep tabs on whether or not we are online
-    online: boolean = false;
-
     // Instantiate a central gathering point for all the component's subscriptions.
-    // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+    // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
     private _subscriptions: Subscription[] = [];
 
     constructor(
         public activeCoverTypesModal: NgbActiveModal,
-        public connectivityStatusService: ConnectivityStatusService,
         private log: NGXLogger) { }
 
     ngOnInit() {
 
-        // Subscribe to connectivity status notifications.
-        this.log.trace(`${LOG_PREFIX} Subscribing to connectivity status notifications`);
-        this._subscriptions.push(
-            this.connectivityStatusService.online$.subscribe(
-                (status) => {
-                    this.online = status;
-                }));
+        this.log.trace(`${LOG_PREFIX} Initializing Component`);
     }
 
+    @HostListener('window:beforeunload')
     ngOnDestroy() {
+        this.log.trace(`${LOG_PREFIX} Destroying Component`);
     }
 
     /**

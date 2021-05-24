@@ -1,4 +1,4 @@
-<form [formGroup]="unitCategoriesForm">
+<form role="form" [formGroup]="unitCategoriesForm">
     <div class="form-group">
         <label for="name">Name</label>
         <input type="text" class="form-control" id="name" placeholder="" formControlName="name">
@@ -9,7 +9,7 @@
             </div>
             <div *ngIf="unitCategoriesForm.get('name')?.errors.minlength">
                 Name cannot be less than 2 characters long.
-            </div>            
+            </div>
             <div *ngIf="unitCategoriesForm.get('name')?.errors.maxlength">
                 Name cannot be more than 50 characters long.
             </div>

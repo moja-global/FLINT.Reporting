@@ -1,6 +1,8 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 import { OverlayComponent } from './overlay.component';
 
@@ -15,7 +17,7 @@ describe('OverlayComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [OverlayComponent],
-            imports: [NoopAnimationsModule],
+            imports: [NoopAnimationsModule, HttpClientTestingModule, LoggerModule.forRoot({ serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.OFF })],
             providers: [],
             schemas: [NO_ERRORS_SCHEMA],
         }).compileComponents();

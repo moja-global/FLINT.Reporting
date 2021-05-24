@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  HostListener,
   Input,
   OnInit,
   Output
@@ -46,7 +47,9 @@ export class FluxTypesRecordsDeletionComponent implements OnInit, AfterContentIn
 
   constructor(private fluxTypesDataService: FluxTypesDataService, private log: NGXLogger) { }
 
-  ngOnInit() { 
+  ngOnInit() {
+
+    this.log.trace(`${LOG_PREFIX} Initializing Component`);
 
     // Retrieve the Flux Type with the given id from the data store 
     this.log.trace(`${LOG_PREFIX} Retrieving the Flux Type with the given id from the data store`);
@@ -60,7 +63,10 @@ export class FluxTypesRecordsDeletionComponent implements OnInit, AfterContentIn
 
   }
 
+  @HostListener('window:beforeunload')
   ngOnDestroy() {
+
+    this.log.trace(`${LOG_PREFIX} Destroying Component`);
 
     // Clear all subscriptions
     this.log.trace(`${LOG_PREFIX} Clearing all subscriptions`);

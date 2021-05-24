@@ -3,6 +3,7 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
+    HostListener,
     Input,
     OnInit,
     ViewChild,
@@ -18,7 +19,7 @@ import { UnitCategoriesRecordsCreationModalComponent } from '@modules/unit-categ
 import { UnitCategoriesRecordsDeletionModalComponent } from '@modules/unit-categories/containers/unit-categories-records-deletion-modal/unit-categories-records-deletion-modal.component';
 import { UnitCategoriesRecordsUpdationModalComponent } from '@modules/unit-categories/containers/unit-categories-records-updation-modal/unit-categories-records-updation-modal.component';
 
-const LOG_PREFIX: string = "[Unit categories Records Tabulation]";
+const LOG_PREFIX: string = "[Unit Categories Records Tabulation]";
 
 @Component({
     selector: 'sb-unit-categories-records-tabulation',
@@ -55,7 +56,7 @@ export class UnitCategoriesRecordsTabulationComponent implements OnInit, AfterVi
     online: boolean = false;
 
     // Instantiate a central gathering point for all the component's subscriptions.
-    // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+    // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
     private _subscriptions: Subscription[] = [];
 
 
@@ -68,6 +69,8 @@ export class UnitCategoriesRecordsTabulationComponent implements OnInit, AfterVi
     }
 
     ngOnInit() {
+
+        this.log.trace(`${LOG_PREFIX} Initializing Component`);
 
         // Subscribe to connectivity status notifications.
         this.log.trace(`${LOG_PREFIX} Subscribing to connectivity status notifications`);
@@ -106,7 +109,10 @@ export class UnitCategoriesRecordsTabulationComponent implements OnInit, AfterVi
 
     }
 
+    @HostListener('window:beforeunload')
     ngOnDestroy() {
+
+        this.log.trace(`${LOG_PREFIX} Destroying Component`);
 
         // Clear all subscriptions
         this.log.trace(`${LOG_PREFIX} Clearing all subscriptions`);
@@ -157,7 +163,7 @@ export class UnitCategoriesRecordsTabulationComponent implements OnInit, AfterVi
     }
 
     /**
-     * Propagates Unit categories records Addition Requests to the responsible component
+     * Propagates Unit Categories records Addition Requests to the responsible component
      */
     onAddUnitCategory() {
         this.log.trace(`${LOG_PREFIX} Adding a new Unit category record`);
@@ -165,8 +171,8 @@ export class UnitCategoriesRecordsTabulationComponent implements OnInit, AfterVi
     }
 
     /**
-     * Propagates Unit categories records Updation Requests to the responsible component
-     */    
+     * Propagates Unit Categories records Updation Requests to the responsible component
+     */
     onUpdateUnitCategory(id: number) {
         this.log.trace(`${LOG_PREFIX} Updating Unit category record`);
         this.log.debug(`${LOG_PREFIX} Unit category record Id = ${id}`);
@@ -175,8 +181,8 @@ export class UnitCategoriesRecordsTabulationComponent implements OnInit, AfterVi
     }
 
     /**
-     * Propagates Unit categories records Deletion Requests to the responsible component
-     */    
+     * Propagates Unit Categories records Deletion Requests to the responsible component
+     */
     onDeleteUnitCategory(id: number) {
         this.log.trace(`${LOG_PREFIX} Deleting Unit category record`);
         this.log.debug(`${LOG_PREFIX} Unit category record Id = ${id}`);

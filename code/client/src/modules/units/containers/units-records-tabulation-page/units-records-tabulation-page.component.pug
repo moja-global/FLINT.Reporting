@@ -1,0 +1,9 @@
+sb-layout-main
+  ng-container(header)
+    sb-header(title='Units', subtitle='Units of measure and their scale factors relative to the standard unit')
+  ng-container(body')
+    sb-card
+      .card-header
+        | Units List
+      .card-body
+        sb-units-records-tabulation([pagesize]='6')

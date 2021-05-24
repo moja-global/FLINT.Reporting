@@ -3,6 +3,7 @@ import {
     ChangeDetectorRef,
     Component,
     HostBinding,
+    HostListener,
     Input,
     OnDestroy,
     OnInit,
@@ -31,7 +32,7 @@ export class LayoutDashboardComponent implements OnInit, OnDestroy {
     constructor(
         public navigationService: NavigationService,
         private changeDetectorRef: ChangeDetectorRef
-    ) {}
+    ) { }
     ngOnInit() {
         this.subscription.add(
             this.navigationService.sideNavVisible$().subscribe(isVisible => {
@@ -40,6 +41,7 @@ export class LayoutDashboardComponent implements OnInit, OnDestroy {
             })
         );
     }
+    
     ngOnDestroy() {
         this.subscription.unsubscribe();
     }

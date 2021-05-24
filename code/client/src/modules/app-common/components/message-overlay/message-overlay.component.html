@@ -4,7 +4,7 @@
             <fa-icon [icon]='["fas", icon]'></fa-icon>
         </h3>
         <h5>{{crosshead}}</h5>
-        <p *ngIf="(status == 'saving' || status == 'deleting');else other_content" class="processing">
+        <p *ngIf="(status == 'saving' || status == 'deleting' || status == 'initializing');else other_content" class="processing">
             <span>.</span><span>.</span><span>.</span>
         </p>
     </div>

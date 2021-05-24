@@ -1,0 +1,94 @@
+<form [formGroup]="unitsForm">
+
+
+    <div class="form-group">
+        <label for="unitCategoryId">Category</label>
+
+        <select class="custom-select" id="unitCategoryId" formControlName="unitCategoryId">
+            <option [ngValue]="null" disabled selected>Select Unit Category</option>
+            <option *ngFor='let item of unitCategoriesDataService.unitCategories$ | async' [ngValue]="item.id">
+                {{ item.name }}
+            </option>
+        </select>
+
+        <div *ngIf="unitsForm.get('unitCategoryId')?.invalid && (unitsForm.get('unitCategoryId')?.dirty || unitsForm.get('unitCategoryId')?.touched)"
+            class="alert alert-danger mt-3">
+            <div *ngIf="unitsForm.get('unitCategoryId')?.errors.required">
+                Category is required.
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" placeholder="" formControlName="name">
+        <div *ngIf="unitsForm.get('name')?.invalid && (unitsForm.get('name')?.dirty || unitsForm.get('name')?.touched)"
+            class="alert alert-danger mt-3">
+            <div *ngIf="unitsForm.get('name')?.errors.required">
+                Name is required.
+            </div>
+            <div *ngIf="unitsForm.get('name')?.errors.minlength">
+                Name cannot be less than 2 characters long.
+            </div>
+            <div *ngIf="unitsForm.get('name')?.errors.maxlength">
+                Name cannot be more than 50 characters long.
+            </div>
+            <div *ngIf="unitsForm.get('name')?.errors.exists">
+                Name should be unique.
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="plural">Plural</label>
+        <input type="text" class="form-control" id="plural" placeholder="" formControlName="plural">
+        <div *ngIf="unitsForm.get('plural')?.invalid && (unitsForm.get('plural')?.dirty || unitsForm.get('plural')?.touched)"
+            class="alert alert-danger mt-3">
+            <div *ngIf="unitsForm.get('plural')?.errors.required">
+                Plural is required.
+            </div>
+            <div *ngIf="unitsForm.get('plural')?.errors.minlength">
+                Plural cannot be less than 2 characters long.
+            </div>
+            <div *ngIf="unitsForm.get('plural')?.errors.maxlength">
+                Plural cannot be more than 50 characters long.
+            </div>
+            <div *ngIf="unitsForm.get('plural')?.errors.exists">
+                Plural should be unique.
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="symbol">Symbol</label>
+        <input type="text" class="form-control" id="symbol" placeholder="" formControlName="symbol">
+        <div *ngIf="unitsForm.get('symbol')?.invalid && (unitsForm.get('symbol')?.dirty || unitsForm.get('symbol')?.touched)"
+            class="alert alert-danger mt-3">
+            <div *ngIf="unitsForm.get('symbol')?.errors.required">
+                Symbol is required.
+            </div>
+            <div *ngIf="unitsForm.get('symbol')?.errors.maxlength">
+                Symbol cannot be more than 10 characters long.
+            </div>
+            <div *ngIf="unitsForm.get('symbol')?.errors.exists">
+                Symbol should be unique.
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="scaleFactor">Scale Factor</label>
+        <input type="number" class="form-control" id="scaleFactor" placeholder="" formControlName="scaleFactor">
+        <div *ngIf="unitsForm.get('scaleFactor')?.invalid && (unitsForm.get('scaleFactor')?.dirty || unitsForm.get('scaleFactor')?.touched)"
+            class="alert alert-danger mt-3">
+            <div *ngIf="unitsForm.get('scaleFactor')?.errors.required">
+                Scale Factor is required.
+            </div>
+            <div *ngIf="unitsForm.get('scaleFactor')?.errors.pattern">
+                Scale Factor must be a number.
+            </div>
+        </div>
+    </div>
+
+</form>

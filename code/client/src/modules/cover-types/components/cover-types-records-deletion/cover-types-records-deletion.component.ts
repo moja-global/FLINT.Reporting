@@ -3,7 +3,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  HostListener,
   Input,
+  OnDestroy,
   OnInit,
   Output
 } from '@angular/core';
@@ -20,7 +22,7 @@ const LOG_PREFIX: string = "[Cover Types Records Deletion Component]";
   templateUrl: './cover-types-records-deletion.component.html',
   styleUrls: ['cover-types-records-deletion.component.scss'],
 })
-export class CoverTypesRecordsDeletionComponent implements OnInit, AfterContentInit {
+export class CoverTypesRecordsDeletionComponent implements OnInit, OnDestroy {
 
   // Instantiate and avail the id variable to the parent component.
   // This will allow the parent component to inject the id of the 
@@ -48,6 +50,8 @@ export class CoverTypesRecordsDeletionComponent implements OnInit, AfterContentI
 
   ngOnInit() { 
 
+    this.log.trace(`${LOG_PREFIX} Initializing Component`);
+
     // Retrieve the Cover Type with the given id from the data store 
     this.log.trace(`${LOG_PREFIX} Retrieving the Cover Type with the given id from the data store`);
     this.log.debug(`${LOG_PREFIX} Cover Type record Id = ${this.id}`);
@@ -56,11 +60,10 @@ export class CoverTypesRecordsDeletionComponent implements OnInit, AfterContentI
 
   }
 
-  ngAfterContentInit() {
-
-  }
-
+  @HostListener('window:beforeunload')
   ngOnDestroy() {
+
+    this.log.trace(`${LOG_PREFIX} Destroying Component`);
 
     // Clear all subscriptions
     this.log.trace(`${LOG_PREFIX} Clearing all subscriptions`);

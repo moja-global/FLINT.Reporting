@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  HostListener,
   Input,
   OnInit,
   Output
@@ -12,7 +13,7 @@ import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
 import { UnitCategory } from '../../../unit-categories/models/unit-category.model';
 
-const LOG_PREFIX: string = "[Unit categories Records Deletion Component]";
+const LOG_PREFIX: string = "[Unit Categories Records Deletion Component]";
 
 @Component({
   selector: 'sb-unit-categories-records-deletion',
@@ -46,7 +47,9 @@ export class UnitCategoriesRecordsDeletionComponent implements OnInit, AfterCont
 
   constructor(private unitCategoriesDataService: UnitCategoriesDataService, private log: NGXLogger) { }
 
-  ngOnInit() { 
+  ngOnInit() {
+
+    this.log.trace(`${LOG_PREFIX} Initializing Component`);
 
     // Retrieve the Unit category with the given id from the data store 
     this.log.trace(`${LOG_PREFIX} Retrieving the Unit category with the given id from the data store`);
@@ -60,7 +63,10 @@ export class UnitCategoriesRecordsDeletionComponent implements OnInit, AfterCont
 
   }
 
+  @HostListener('window:beforeunload')
   ngOnDestroy() {
+
+    this.log.trace(`${LOG_PREFIX} Destroying Component`);
 
     // Clear all subscriptions
     this.log.trace(`${LOG_PREFIX} Clearing all subscriptions`);

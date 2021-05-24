@@ -3,7 +3,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  HostListener,
   Input,
+  OnDestroy,
   OnInit,
   Output
 } from '@angular/core';
@@ -20,7 +22,7 @@ const LOG_PREFIX: string = "[Emission Types Records Deletion Component]";
   templateUrl: './emission-types-records-deletion.component.html',
   styleUrls: ['emission-types-records-deletion.component.scss'],
 })
-export class EmissionTypesRecordsDeletionComponent implements OnInit, AfterContentInit {
+export class EmissionTypesRecordsDeletionComponent implements OnInit, OnDestroy {
 
   // Instantiate and avail the id variable to the parent component.
   // This will allow the parent component to inject the id of the 
@@ -46,7 +48,9 @@ export class EmissionTypesRecordsDeletionComponent implements OnInit, AfterConte
 
   constructor(private emissionTypesDataService: EmissionTypesDataService, private log: NGXLogger) { }
 
-  ngOnInit() { 
+  ngOnInit() {
+
+    this.log.trace(`${LOG_PREFIX} Initializing Component`);
 
     // Retrieve the Emission Type with the given id from the data store 
     this.log.trace(`${LOG_PREFIX} Retrieving the Emission Type with the given id from the data store`);
@@ -56,12 +60,11 @@ export class EmissionTypesRecordsDeletionComponent implements OnInit, AfterConte
 
   }
 
-  ngAfterContentInit() {
-
-  }
-
+  @HostListener('window:beforeunload')
   ngOnDestroy() {
-
+    
+    this.log.trace(`${LOG_PREFIX} Destroying Component`);
+    
     // Clear all subscriptions
     this.log.trace(`${LOG_PREFIX} Clearing all subscriptions`);
     this._subscriptions.forEach((s) => s.unsubscribe());

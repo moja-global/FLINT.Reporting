@@ -22,8 +22,8 @@ export class SideNavComponent implements OnInit, OnDestroy {
     // Classes that are adjusted on the fly based on the prevailing theme
     customClasses: string[] = [];
 
-    // Instantiate a gathering point for all the component's subscriptions.
-    // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+    // A common gathering point for all the component's subscriptions.
+    // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
     private _subscriptions: Subscription[] = [];   
 
     constructor(
@@ -40,7 +40,8 @@ export class SideNavComponent implements OnInit, OnDestroy {
         );
     }
 
-    ngOnDestroy() {
+      
+  ngOnDestroy() {
         this._subscriptions.forEach((s) => s.unsubscribe());
     } 
 }

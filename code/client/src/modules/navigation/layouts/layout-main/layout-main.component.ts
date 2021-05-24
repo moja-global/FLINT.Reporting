@@ -3,6 +3,7 @@ import {
     ChangeDetectorRef,
     Component,
     HostBinding,
+    HostListener,
     Input,
     OnDestroy,
     OnInit,
@@ -30,7 +31,7 @@ export class LayoutMainComponent implements OnInit, OnDestroy {
     constructor(
         public navigationService: NavigationService,
         private changeDetectorRef: ChangeDetectorRef
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.subscription.add(
@@ -39,8 +40,9 @@ export class LayoutMainComponent implements OnInit, OnDestroy {
                 this.changeDetectorRef.markForCheck();
             })
         );
-    
+
     }
+    
     ngOnDestroy() {
         this.subscription.unsubscribe();
     }

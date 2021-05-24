@@ -3,6 +3,7 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
+    HostListener,
     Input,
     OnInit,
     ViewChild,
@@ -55,7 +56,7 @@ export class EmissionTypesRecordsTabulationComponent implements OnInit, AfterVie
     online: boolean = false;
 
     // Instantiate a central gathering point for all the component's subscriptions.
-    // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+    // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
     private _subscriptions: Subscription[] = [];
 
 
@@ -68,6 +69,8 @@ export class EmissionTypesRecordsTabulationComponent implements OnInit, AfterVie
     }
 
     ngOnInit() {
+
+        this.log.trace(`${LOG_PREFIX} Initializing Component`);
 
         // Subscribe to connectivity status notifications.
         this.log.trace(`${LOG_PREFIX} Subscribing to connectivity status notifications`);
@@ -106,7 +109,10 @@ export class EmissionTypesRecordsTabulationComponent implements OnInit, AfterVie
 
     }
 
+    @HostListener('window:beforeunload')
     ngOnDestroy() {
+
+        this.log.trace(`${LOG_PREFIX} Destroying Component`);        
 
         // Clear all subscriptions
         this.log.trace(`${LOG_PREFIX} Clearing all subscriptions`);
@@ -166,7 +172,7 @@ export class EmissionTypesRecordsTabulationComponent implements OnInit, AfterVie
 
     /**
      * Propagates Emission Types records Updation Requests to the responsible component
-     */    
+     */
     onUpdateEmissionType(id: number) {
         this.log.trace(`${LOG_PREFIX} Updating Emission Type record`);
         this.log.debug(`${LOG_PREFIX} Emission Type record Id = ${id}`);
@@ -176,7 +182,7 @@ export class EmissionTypesRecordsTabulationComponent implements OnInit, AfterVie
 
     /**
      * Propagates Emission Types records Deletion Requests to the responsible component
-     */    
+     */
     onDeleteEmissionType(id: number) {
         this.log.trace(`${LOG_PREFIX} Deleting Emission Type record`);
         this.log.debug(`${LOG_PREFIX} Emission Type record Id = ${id}`);

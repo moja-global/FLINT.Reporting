@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, AfterViewInit, Input, Output, ElementRef, EventEmitter } from "@angular/core";
+import { Component, ChangeDetectionStrategy, AfterViewInit, Input, Output, ElementRef, EventEmitter, HostListener } from "@angular/core";
 import { ConnectivityStatusService } from "@common/services";
 import { NGXLogger } from "ngx-logger";
 import { BehaviorSubject, Observable, Subscription } from "rxjs";
@@ -70,8 +70,8 @@ export class ButtonComponent {
   private _disabledSubject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   readonly disabled$: Observable<boolean> = this._disabledSubject$.asObservable();
 
-  // Instantiate a gathering point for all the component's subscriptions.
-  // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+  // A common gathering point for all the component's subscriptions.
+  // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
   private _subscriptions: Subscription[] = [];
 
   constructor(
@@ -80,6 +80,8 @@ export class ButtonComponent {
   }
 
   ngOnInit() {
+
+    this.log.trace(`${LOG_PREFIX} Initializing Component`);
 
     // Subscribe to connectivity status notifications.
     this.log.trace(`${LOG_PREFIX} Subscribing to connectivity status notifications`);
@@ -95,7 +97,10 @@ export class ButtonComponent {
         }));
   }
 
+  @HostListener('window:beforeunload')
   ngOnDestroy() {
+
+    this.log.trace(`${LOG_PREFIX} Destroying Component`);
 
     // Clear all subscriptions
     this.log.trace(`${LOG_PREFIX} Clearing all subscriptions`);

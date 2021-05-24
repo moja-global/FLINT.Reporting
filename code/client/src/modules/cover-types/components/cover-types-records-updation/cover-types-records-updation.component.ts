@@ -3,6 +3,7 @@ import {
     ChangeDetectionStrategy,
     Component,
     EventEmitter,
+    HostListener,
     Input,
     OnInit,
     Output
@@ -62,6 +63,8 @@ import {
   
     ngOnInit() { 
 
+      this.log.trace(`${LOG_PREFIX} Initializing Component`);
+
         // Retrieve the Cover Type record with the given id from the data store 
         this.log.trace(`${LOG_PREFIX} Retrieving the Cover Type record with the given id from the data store`);
         this.log.debug(`${LOG_PREFIX} Cover Type record Id = ${this.id}`);
@@ -88,7 +91,11 @@ import {
         }
     }
   
+  
+    @HostListener('window:beforeunload')
     ngOnDestroy() {
+
+      this.log.trace(`${LOG_PREFIX} Destroying Component`);
 
       // Clear all subscriptions
       this.log.trace(`${LOG_PREFIX} Clearing all subscriptions`);
@@ -111,7 +118,7 @@ import {
   
             const s: string = control.value;
 
-            const coverType: CoverType | undefined = this.coverTypesDataService.records.find(d => d.code ?.toLowerCase().includes(s.toLocaleLowerCase()));
+            const coverType: CoverType | undefined = this.coverTypesDataService.records.find(d => d.code?.toLowerCase() == s.toLowerCase());
 
             if(coverType != undefined && coverType.id != this.id){
               return { 'exists': true }

@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { Injectable, NgZone } from '@angular/core';
+import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
 import { CoverType } from '../models/cover-type.model';
 import { environment } from 'environments/environment';
 import { MessageType } from '@common/models/message.type.model';
-import { MessageService } from '@common/services';
-import { catchError, tap } from 'rxjs/operators';
+import { ConnectivityStatusService, MessageService } from '@common/services';
+import { catchError, first, takeUntil, tap } from 'rxjs/operators';
 
 const LOG_PREFIX: string = "[Cover Types Data Service]";
 const API_PREFIX: string = "api/v1/cover_types";
@@ -18,17 +18,77 @@ const HEADERS = { 'Content-Type': 'application/json' };
 })
 export class CoverTypesDataService {
 
+  // The base url of the server
   private _baseUrl: string = environment.baseUrl;
-  private _cache: { coverTypes: CoverType[] } = { coverTypes: [] };
-  private _subject$ = new BehaviorSubject<CoverType[]>([]);
 
-  readonly coverTypes$ = this._subject$.asObservable();
+  // The local data cache
+  private _cache: { coverTypes: CoverType[] } = { coverTypes: [] };
+
+  // The observables that allow subscribers to keep tabs of the current status 
+  // of cover types records in the data store
+  private _coverTypesSubject$ = new BehaviorSubject<CoverType[]>([]);
+  readonly coverTypes$ = this._coverTypesSubject$.asObservable();
+
+  // The observable that we will use to opt out of initialization subscriptions 
+  // once we are done with them
+  private _done$ = new Subject<boolean>();
+
+  // The api that we'll use to communicate data store changes when components that 
+  // subscribe to this service are outside the current ngzone
+  private bc: BroadcastChannel = new BroadcastChannel("cover-types-data-channel");
 
   constructor(
     private http: HttpClient,
-    private log: NGXLogger,
-    private messageService: MessageService) {
+    private connectivityStatusService: ConnectivityStatusService,
+    private messageService: MessageService,
+    private zone: NgZone,
+    private log: NGXLogger,) {
 
+    // Subscribe to connectivity status notifications
+    this.log.trace(`${LOG_PREFIX} Subscribing to connectivity status notifications`);
+
+    this.connectivityStatusService.online$
+      .pipe(takeUntil(this._done$))
+      .subscribe(online => {
+
+        // Check if the user is online
+        this.log.trace(`${LOG_PREFIX} Checking if the user is online`);
+        this.log.debug(`${LOG_PREFIX} User is online = ${online}`);
+
+        if (online) {
+
+          // Initialize data
+          this.log.trace(`${LOG_PREFIX} Initializing data`);
+
+          this.getAllCoverTypes()
+            .pipe(first()) // This will automatically complete (and therefore unsubscribe) after the first value has been emitted.
+            .subscribe((response => {
+
+              // Data initialization complete
+              this.log.trace(`${LOG_PREFIX} Data initialization complete`);
+
+            }));
+
+          // Unsubscribe from connectivity status notifications
+          this.log.trace(`${LOG_PREFIX} Unsubscribing from connectivity status notifications`);
+          this._done$.next();
+          this._done$.complete();
+
+        }
+
+      });
+
+    //Note: "bc.onmessage" isn't invoked on sender ui
+    this.bc.onmessage = this.zone.run(() => this.handleEvent);
+
+  }
+
+  /**
+   * Publish information to current (listening) ui
+   * @param event 
+   */
+  private handleEvent = (event: MessageEvent) => {
+    this.zone.run(() => this._coverTypesSubject$.next(event.data.newValue));
   }
 
   /**
@@ -57,9 +117,17 @@ export class CoverTypesDataService {
           this.log.trace(`${LOG_PREFIX} Adding the newly created Cover Type record to the Local Cache`);
           this._cache.coverTypes.push(data);
 
-          // Push a copy of the newly updated Cover Types records to all Subscribers
-          this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated Cover Types records to all Subscribers`);
-          this._subject$.next(Object.assign({}, this._cache).coverTypes);
+          // Create an up to date copy of the Cover Types records
+          this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Cover Types records`);
+          const copy = Object.assign({}, this._cache).coverTypes;
+
+          // Broadcast the up to date copy of the Cover Types records to the current listener
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Cover Types records to the current listener`);
+          this._coverTypesSubject$.next(copy);
+
+          // Broadcast the up to date copy of the Cover Types records to the other listeners
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Cover Types records to the other listeners`);
+          this.bc.postMessage({ newValue: copy });
 
           // Send a message that states that the Cover Type record Creation was successful
           this.log.trace(`${LOG_PREFIX} Sending a message that states that the Cover Type record Creation was successful`);
@@ -128,9 +196,17 @@ export class CoverTypesDataService {
             this._cache.coverTypes.push(data);
           }
 
-          // Push a copy of the newly updated Cover Types records to all Subscribers
-          this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated Cover Types records to all Subscribers`);
-          this._subject$.next(Object.assign({}, this._cache).coverTypes);
+          // Create an up to date copy of the Cover Types records
+          this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Cover Types records`);
+          const copy = Object.assign({}, this._cache).coverTypes;
+
+          // Broadcast the up to date copy of the Cover Types records to the current listener
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Cover Types records to the current listener`);
+          this._coverTypesSubject$.next(copy);
+
+          // Broadcast the up to date copy of the Cover Types records to the other listeners
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Cover Types records to the other listeners`);
+          this.bc.postMessage({ newValue: copy });
 
           // Send a message that states that the Cover Type record Retrieval was successful
           this.log.trace(`${LOG_PREFIX} Sending a message that states that the Cover Type record Retrieval was successful`);
@@ -178,9 +254,17 @@ export class CoverTypesDataService {
           this.log.trace(`${LOG_PREFIX} Updating the Cover Types records in the Local Cache to the newly pulled Cover Types records`);
           this._cache.coverTypes = data;
 
-          // Push a copy of the newly updated Cover Types records to all Subscribers
-          this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated Cover Types records to all Subscribers`);
-          this._subject$.next(Object.assign({}, this._cache).coverTypes);
+          // Create an up to date copy of the Cover Types records
+          this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Cover Types records`);
+          const copy = Object.assign({}, this._cache).coverTypes;
+
+          // Broadcast the up to date copy of the Cover Types records to the current listener
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Cover Types records to the current listener`);
+          this._coverTypesSubject$.next(copy);
+
+          // Broadcast the up to date copy of the Cover Types records to the other listeners
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Cover Types records to the other listeners`);
+          this.bc.postMessage({ newValue: copy });
 
           // Send a message that states that the Cover Types records Retrieval was successful
           this.log.trace(`${LOG_PREFIX} Sending a message that states that the Cover Types records Retrieval was successful`);
@@ -236,9 +320,17 @@ export class CoverTypesDataService {
             this.log.trace(`${LOG_PREFIX} Updating the locally stored Cover Type record`);
             this._cache.coverTypes[index] = data;
 
-            // Push a copy of the newly updated Cover Types records to all Subscribers
-            this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated Cover Types records to all Subscribers`);
-            this._subject$.next(Object.assign({}, this._cache).coverTypes);
+            // Create an up to date copy of the Cover Types records
+            this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Cover Types records`);
+            const copy = Object.assign({}, this._cache).coverTypes;
+
+            // Broadcast the up to date copy of the Cover Types records to the current listener
+            this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Cover Types records to the current listener`);
+            this._coverTypesSubject$.next(copy);
+
+            // Broadcast the up to date copy of the Cover Types records to the other listeners
+            this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Cover Types records to the other listeners`);
+            this.bc.postMessage({ newValue: copy });
 
             // Send a message that states that the Cover Type record Update was successful
             this.log.trace(`${LOG_PREFIX} Sending a message that states that the Cover Type record Update was successful`);
@@ -308,9 +400,17 @@ export class CoverTypesDataService {
               this.log.trace(`${LOG_PREFIX} Removing the deleted Cover Type record from the Local Cache`);
               this._cache.coverTypes.splice(index, 1);
 
-              // Push a copy of the newly updated Cover Types records to all Subscribers
-              this.log.trace(`${LOG_PREFIX} Pushing a copy of the newly updated Cover Types records to all Subscribers`);
-              this._subject$.next(Object.assign({}, this._cache).coverTypes);
+              // Create an up to date copy of the Cover Types records
+              this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Cover Types records`);
+              const copy = Object.assign({}, this._cache).coverTypes;
+
+              // Broadcast the up to date copy of the Cover Types records to the current listener
+              this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Cover Types records to the current listener`);
+              this._coverTypesSubject$.next(copy);
+
+              // Broadcast the up to date copy of the Cover Types records to the other listeners
+              this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Cover Types records to the other listeners`);
+              this.bc.postMessage({ newValue: copy });
 
               // Send a message that states that the Cover Type record Deletion was successful
               this.log.trace(`${LOG_PREFIX} Sending a message that states that the Cover Type record Deletion was successful`);
@@ -353,10 +453,11 @@ export class CoverTypesDataService {
   }
 
 
+
   /**
    * Use BehaviorSubject's getter property named value to get the most recent value passed through it.
    */
   public get records() {
-    return this._subject$.value;
+    return this._coverTypesSubject$.value;
   }
 }

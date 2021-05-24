@@ -1,4 +1,5 @@
-import { Component, ChangeDetectionStrategy, Input, AfterContentInit } from "@angular/core";
+import { Component, ChangeDetectionStrategy, Input, AfterContentInit, OnInit, OnDestroy, HostListener } from "@angular/core";
+import { NGXLogger } from "ngx-logger";
 
 const LOG_PREFIX: string = "[Message Overlay Component]";
 
@@ -8,7 +9,7 @@ const LOG_PREFIX: string = "[Message Overlay Component]";
   templateUrl: './message-overlay.component.html',
   styleUrls: ['message-overlay.component.scss'],
 })
-export class MessageOverlayComponent implements AfterContentInit {
+export class MessageOverlayComponent implements OnInit, OnDestroy, AfterContentInit {
 
   @Input() activity!: string; // creating, updating, deleting
   @Input() status!: string; // saving, succeeded, failed
@@ -19,12 +20,26 @@ export class MessageOverlayComponent implements AfterContentInit {
 
   iconClasses: string[] = [];
 
-  constructor() { }
+  constructor(private log: NGXLogger) { }
+
+  ngOnInit() {
+    this.log.trace(`${LOG_PREFIX} Initializing Component`);
+  }
+
+  @HostListener('window:beforeunload')
+  ngOnDestroy() {
+    this.log.trace(`${LOG_PREFIX} Destroying Component`);
+  }
 
   ngAfterContentInit() {
     switch (this.activity) {
       case "creating":
         switch (this.status) {
+          case "initializing":
+            this._icon = "wrench";
+            this._crosshead = "Initializing";
+            this.iconClasses.push("text-primary");
+            break;
           case "saving":
             this._icon = "stopwatch";
             this._crosshead = "Saving";
@@ -46,6 +61,11 @@ export class MessageOverlayComponent implements AfterContentInit {
         break;
       case "updating":
         switch (this.status) {
+          case "initializing":
+            this._icon = "wrench";
+            this._crosshead = "Initializing";
+            this.iconClasses.push("text-primary");
+            break;
           case "saving":
             this._icon = "stopwatch";
             this._crosshead = "Saving";

@@ -41,7 +41,7 @@ describe('UnitCategoriesRecordsTabulationComponent', () => {
         expect(component).toBeDefined();
     });
 
-    it('should display the Unit categories headers correctly', () => {
+    it('should display the Unit Categories headers correctly', () => {
 
         // #
         const th1: HTMLTableHeaderCellElement = componentDE.query(By.css('tr th:nth-of-type(1)')).nativeElement;
@@ -65,7 +65,7 @@ describe('UnitCategoriesRecordsTabulationComponent', () => {
         
     }); 
     
-    it('should trigger the search for Unit categories records with the specified search term', () => {
+    it('should trigger the search for Unit Categories records with the specified search term', () => {
 
         const searchTermSetter = spyOnProperty(component.unitCategoriesTableService, 'searchTerm', 'set');
         
@@ -81,7 +81,7 @@ describe('UnitCategoriesRecordsTabulationComponent', () => {
 
     });  
     
-    it('should trigger the loading of the Unit categories records page change', () => {
+    it('should trigger the loading of the Unit Categories records page change', () => {
 
         const pageSetter = spyOnProperty(component.unitCategoriesTableService, 'page', 'set');
         
@@ -97,7 +97,7 @@ describe('UnitCategoriesRecordsTabulationComponent', () => {
 
     });
     
-    it('should trigger the loading of the Unit categories records page size change', () => {
+    it('should trigger the loading of the Unit Categories records page size change', () => {
 
         const pageSizeSetter = spyOnProperty(component.unitCategoriesTableService, 'pageSize', 'set');
         
@@ -113,7 +113,7 @@ describe('UnitCategoriesRecordsTabulationComponent', () => {
 
     });    
     
-    it('should trigger the sorting of Unit categories records by name', () => {
+    it('should trigger the sorting of Unit Categories records by name', () => {
 
         const sortColumnSetter = spyOnProperty(component.unitCategoriesTableService, 'sortColumn', 'set');
         const sortDirectionSetter = spyOnProperty(component.unitCategoriesTableService, 'sortDirection', 'set');

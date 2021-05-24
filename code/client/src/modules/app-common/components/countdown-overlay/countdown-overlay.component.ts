@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, AfterViewInit, Input, Output, ElementRef, EventEmitter, AfterContentInit } from "@angular/core";
+import { Component, ChangeDetectionStrategy, AfterViewInit, Input, Output, ElementRef, EventEmitter, AfterContentInit, HostListener } from "@angular/core";
 import { NGXLogger } from "ngx-logger";
 
 const LOG_PREFIX: string = "[Countdown Overlay Component]";
@@ -9,7 +9,7 @@ const LOG_PREFIX: string = "[Countdown Overlay Component]";
   templateUrl: './countdown-overlay.component.html',
   styleUrls: ['countdown-overlay.component.scss'],
 })
-export class CountdownOverlayComponent{
+export class CountdownOverlayComponent {
 
   // Declare and avail a crosshead variable to the parent component.
   // This will provide the parent component with a means of specifying what the countdown is all about.
@@ -29,11 +29,20 @@ export class CountdownOverlayComponent{
 
   customClasses: string[] = ["text-primary"];
 
-  constructor() { }
+  constructor(private log: NGXLogger) { }
 
-  onValueChange(event: any){
+  ngOnInit() {
+    this.log.trace(`${LOG_PREFIX} Initializing Component`);
+  }
+
+  @HostListener('window:beforeunload')
+  ngOnDestroy() {
+    this.log.trace(`${LOG_PREFIX} Destroying Component`);
+  }
+
+  onValueChange(event: any) {
     this.count = event;
-    if(this.count == 0) {
+    if (this.count == 0) {
       this.completed.emit();
     }
   }

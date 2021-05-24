@@ -1,4 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, Input, OnInit } from '@angular/core';
+import { NGXLogger } from 'ngx-logger';
+
+const LOG_PREFIX: string = "[Table Component]";
 
 @Component({
     selector: 'sb-table',
@@ -22,9 +25,10 @@ export class TableComponent implements OnInit {
     tableClasses: string[] = ["table"];
     tableHeaderClasses: string[] = [];
 
-    constructor() { }
+    constructor(private log: NGXLogger) { }
 
     ngOnInit() {
+        this.log.trace(`${LOG_PREFIX} Initializing Component`);
 
         // Collate custom table responsivity classes
         if (this.responsive) {
@@ -66,4 +70,9 @@ export class TableComponent implements OnInit {
             this.tableClasses.push("table-sm");
         }
     }
+
+    @HostListener('window:beforeunload')
+    ngOnDestroy() {
+        this.log.trace(`${LOG_PREFIX} Destroying Component`);
+    }    
 }

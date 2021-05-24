@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  HostListener,
   OnInit,
   Output
 } from '@angular/core';
@@ -35,7 +36,7 @@ export class FluxTypesRecordsCreationComponent implements OnInit {
     name: new FormControl('', [
       Validators.required,
       Validators.minLength(2),
-      Validators.maxLength(50),      
+      Validators.maxLength(50),
       this.exists()
     ]),
     description: new FormControl('', [
@@ -49,9 +50,14 @@ export class FluxTypesRecordsCreationComponent implements OnInit {
 
   constructor(private fluxTypesDataService: FluxTypesDataService, private log: NGXLogger) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.log.trace(`${LOG_PREFIX} Initializing Component`);
+  }
 
+  @HostListener('window:beforeunload')
   ngOnDestroy() {
+
+    this.log.trace(`${LOG_PREFIX} Destroying Component`);
 
     // Clear all subscriptions
     this.log.trace(`${LOG_PREFIX} Clearing all subscriptions`);

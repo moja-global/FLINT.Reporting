@@ -1,6 +1,7 @@
 import {
     ChangeDetectionStrategy,
     Component,
+    HostListener,
     Input,
     OnInit,
     ViewChild
@@ -11,7 +12,7 @@ import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject, Subscription, timer } from 'rxjs';
 import { ConnectivityStatusService } from '@common/services';
 
-const LOG_PREFIX: string = "[Unit categories Records Deletion Modal]";
+const LOG_PREFIX: string = "[Unit Categories Records Deletion Modal]";
 
 @Component({
     selector: 'sb-unit-categories-records-deletion-modal',
@@ -26,7 +27,7 @@ export class UnitCategoriesRecordsDeletionModalComponent implements OnInit {
     // record that has been served up for deletion during the component's initialization.
     @Input() id!: number;
 
-    // Inject a reference to the Unit categories records deletion component. 
+    // Inject a reference to the Unit Categories records deletion component. 
     // This will provide a way of propagating delete requests to it
     @ViewChild(UnitCategoriesRecordsDeletionComponent) component!: UnitCategoriesRecordsDeletionComponent;
 
@@ -40,35 +41,27 @@ export class UnitCategoriesRecordsDeletionModalComponent implements OnInit {
     private _statusSubject$ = new BehaviorSubject<string>("new");
     readonly status$ = this._statusSubject$.asObservable();
 
-    // Keep tabs on whether or not we are online
-    online: boolean = false;
-
     // Instantiate a central gathering point for all the component's subscriptions.
-    // This will make it easier to unsubscribe from all of them when the component is destroyed.   
+    // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
     private _subscriptions: Subscription[] = [];
 
     constructor(
         public activeUnitCategoriesModal: NgbActiveModal,
-        public connectivityStatusService: ConnectivityStatusService,
         private log: NGXLogger) { }
 
     ngOnInit() {
 
-        // Subscribe to connectivity status notifications.
-        this.log.trace(`${LOG_PREFIX} Subscribing to connectivity status notifications`);
-        this._subscriptions.push(
-            this.connectivityStatusService.online$.subscribe(
-                (status) => {
-                    this.online = status;
-                }));
+        this.log.trace(`${LOG_PREFIX} Initializing Component`);
     }
 
+    @HostListener('window:beforeunload')
     ngOnDestroy() {
+        this.log.trace(`${LOG_PREFIX} Destroying Component`);
     }
 
     /**
      * Sets the processing status to 'deleting', triggering a display change, and then 
-     * propagates the deletion request to the Unit categories records creation component
+     * propagates the deletion request to the Unit Categories records creation component
      */
     onDelete() {
         this._statusSubject$.next("deleting");

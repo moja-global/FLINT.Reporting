@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Output} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, HostListener, OnDestroy, OnInit, Output} from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject} from 'rxjs';
 
@@ -10,7 +10,7 @@ const LOG_PREFIX: string = "[Pagination Component]";
   templateUrl: './pagination.component.html',
   styleUrls: ['pagination.component.scss'],
 })
-export class PaginationComponent implements AfterViewInit {
+export class PaginationComponent implements OnInit, OnDestroy {
 
   // Instantiate the current page number field
   private _page: number = 1;
@@ -31,9 +31,14 @@ export class PaginationComponent implements AfterViewInit {
   
   constructor(private log: NGXLogger) { }
 
-  ngAfterViewInit() {}
+    ngOnInit() {
+        this.log.trace(`${LOG_PREFIX} Initializing Component`);
+    }
 
-  ngOnDestroy() {}
+    @HostListener('window:beforeunload')
+    ngOnDestroy() {
+        this.log.trace(`${LOG_PREFIX} Destroying Component`);
+    }
 
   /**
    * Initializes the component's page and page size fields

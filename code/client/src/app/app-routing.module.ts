@@ -62,15 +62,15 @@ const routes: Routes = [
             import('modules/reporting-frameworks/reporting-frameworks-routing.module').then(m => m.ReportingFrameworksRoutingModule)
     },    
     {
-        path: 'tables',
-        loadChildren: () =>
-            import('modules/tables/tables-routing.module').then(m => m.TablesRoutingModule),
-    },
-    {
         path: 'unit_categories',
         loadChildren: () =>
             import('modules/unit-categories/unit-categories-routing.module').then(m => m.UnitCategoriesRoutingModule)
-    },     
+    },
+    {
+        path: 'units',
+        loadChildren: () =>
+            import('modules/units/units-routing.module').then(m => m.UnitsRoutingModule)
+    },         
     {
         path: 'version',
         loadChildren: () =>
