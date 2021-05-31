@@ -24,7 +24,6 @@ class CoverTypeHistoryProcessorIT {
 
     static List<CoverTypeHistoricDetail> first;
 
-
     @BeforeAll
     public static void setUp() {
 
@@ -36,11 +35,11 @@ class CoverTypeHistoryProcessorIT {
                             .readValue("[\n" +
                                             "  {\n" +
                                             "    \"itemNumber\": 0,\n" +
-                                            "    \"year\": 1984,\n" +
+                                            "    \"year\": 0,\n" +
                                             "    \"coverType\": {\n" +
-                                            "      \"id\": 2,\n" +
-                                            "      \"code\": \"C\",\n" +
-                                            "      \"description\": \"Cropland\",\n" +
+                                            "      \"id\": 3,\n" +
+                                            "      \"code\": \"G\",\n" +
+                                            "      \"description\": \"Grassland\",\n" +
                                             "      \"version\": 1\n" +
                                             "    }\n" +
                                             "  },\n" +
