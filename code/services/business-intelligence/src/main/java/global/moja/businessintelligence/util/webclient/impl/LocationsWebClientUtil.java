@@ -13,31 +13,31 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
- * @since 0.0.1
  * @author Kwaje Anthony <tony@miles.co.ke>
  * @version 1.0
+ * @since 0.0.1
  */
 @Component
-public class DatabasesWebClientUtil {
+public class LocationsWebClientUtil {
 
     // See:
     // https://stackoverflow.com/questions/49095366/right-way-to-use-spring-webclient-in-multi-thread-environment
-    private static WebClient databasesWebClient;
+    private static WebClient locationsWebClient;
 
     @Autowired
     private HostsConfig hosts;
 
-    public WebClient getDatabaseWebClient() {
+    public WebClient getLocationsWebClient() {
 
-        if (databasesWebClient == null) {
-            databasesWebClient =
+        if (locationsWebClient == null) {
+            locationsWebClient =
                     WebClient
                             .builder()
-                            .baseUrl("http://" + hosts.getDatabasesServiceHost())
+                            .baseUrl("http://" + hosts.getLocationsServiceHost())
                             .build();
         }
 
-        return databasesWebClient;
+        return locationsWebClient;
     }
 
 }

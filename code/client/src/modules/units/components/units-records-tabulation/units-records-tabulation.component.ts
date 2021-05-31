@@ -5,7 +5,7 @@ import {
     Component,
     HostListener,
     Input,
-    OnChanges,
+    OnDestroy,
     OnInit,
     ViewChild,
 } from '@angular/core';
@@ -15,10 +15,11 @@ import { Subscription } from 'rxjs';
 import { SortEvent } from '@common/directives/sortable.directive';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UnitsRecordsTabulationService } from '../../services';
-import { ConnectivityStatusService } from '@common/services';
 import { UnitsRecordsCreationModalComponent } from '@modules/units/containers/units-records-creation-modal/units-records-creation-modal.component';
 import { UnitsRecordsDeletionModalComponent } from '@modules/units/containers/units-records-deletion-modal/units-records-deletion-modal.component';
 import { UnitsRecordsUpdationModalComponent } from '@modules/units/containers/units-records-updation-modal/units-records-updation-modal.component';
+import { ActivatedRoute } from '@angular/router';
+import { UnitCategory } from '@modules/unit-categories/models';
 
 const LOG_PREFIX: string = "[Units Records Tabulation Component]";
 
@@ -28,7 +29,7 @@ const LOG_PREFIX: string = "[Units Records Tabulation Component]";
     templateUrl: './units-records-tabulation.component.html',
     styleUrls: ['units-records-tabulation.component.scss'],
 })
-export class UnitsRecordsTabulationComponent implements OnInit, AfterViewInit {
+export class UnitsRecordsTabulationComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Inject a reference to the loading animation component. 
     // This will provide a way of informing it of the status of 
@@ -53,33 +54,52 @@ export class UnitsRecordsTabulationComponent implements OnInit, AfterViewInit {
     // Keep tabs on the direction that the records are currently sorted by: ascending or descending.
     sortedDirection!: string;
 
-    // Keep tabs on whether or not we are online
-    online: boolean = false;
+    //Keep tabs on the target unit category
+    targetUnitCategory: UnitCategory = new UnitCategory();    
 
     // Instantiate a central gathering point for all the component's subscriptions.
     // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
     private _subscriptions: Subscription[] = [];
 
 
+
     constructor(
         public unitsTableService: UnitsRecordsTabulationService,
-        private changeDetectorRef: ChangeDetectorRef,
+        private cd: ChangeDetectorRef,
         private modalService: NgbModal,
-        public connectivityStatusService: ConnectivityStatusService,
+        private activatedRoute: ActivatedRoute,
         private log: NGXLogger) {
+
+            
     }
 
     ngOnInit() {
 
         this.log.trace(`${LOG_PREFIX} Initializing Component`);
 
-        // Subscribe to connectivity status notifications.
-        this.log.trace(`${LOG_PREFIX} Subscribing to connectivity status notifications`);
         this._subscriptions.push(
-            this.connectivityStatusService.online$.subscribe(
-                (status) => {
-                    this.online = status;
-                }));
+            this.activatedRoute.queryParamMap.subscribe(params => {
+
+                // Get and update the name from the query parameters
+                const name: string | null = params.get('name');
+                this.targetUnitCategory.name = name;
+
+            })
+        );         
+
+        this._subscriptions.push(
+            this.activatedRoute.paramMap.subscribe(params => {
+
+                // Get and update the id from the path parameter
+                const id: string | null = params.get('unitCategoryId');
+                this.targetUnitCategory.id = (id == null? null : parseInt(id));
+
+                // Update the unit category id in the tabulation service tool
+                this.onUnitCategoryChange(params.get('unitCategoryId'));
+            })
+        );
+
+       
     }
 
 
@@ -105,7 +125,7 @@ export class UnitsRecordsTabulationComponent implements OnInit, AfterViewInit {
             this.unitsTableService.loading$.subscribe(
                 (loading) => {
                     this.animation.loading = loading;
-                    this.changeDetectorRef.detectChanges();
+                    this.cd.detectChanges();
                 }));
 
     }
@@ -127,7 +147,7 @@ export class UnitsRecordsTabulationComponent implements OnInit, AfterViewInit {
     onSearch(event: any) {
         this.log.trace(`${LOG_PREFIX} Searching for ${event}`);
         this.unitsTableService.searchTerm = event;
-        this.changeDetectorRef.detectChanges();
+        this.cd.detectChanges();
     }
 
     /**
@@ -140,7 +160,7 @@ export class UnitsRecordsTabulationComponent implements OnInit, AfterViewInit {
         this.sortedDirection = direction;
         this.unitsTableService.sortColumn = column;
         this.unitsTableService.sortDirection = direction;
-        this.changeDetectorRef.detectChanges();
+        this.cd.detectChanges();
     }
 
     /**
@@ -150,7 +170,7 @@ export class UnitsRecordsTabulationComponent implements OnInit, AfterViewInit {
     onPageChange(event: any) {
         this.log.trace(`${LOG_PREFIX} Changing Page to ${event}`);
         this.unitsTableService.page = event;
-        this.changeDetectorRef.detectChanges();
+        this.cd.detectChanges();
     }
 
     /**
@@ -160,7 +180,17 @@ export class UnitsRecordsTabulationComponent implements OnInit, AfterViewInit {
     onPageSizeChange(event: any) {
         this.log.trace(`${LOG_PREFIX} Changing Page Size to ${event}`);
         this.unitsTableService.pageSize = event;
-        this.changeDetectorRef.detectChanges();
+        this.cd.detectChanges();
+    }
+
+    /**
+     * Propagates unit category id change events to the table service
+     * @param event The newly desired unit category id
+     */
+    onUnitCategoryChange(event: any) {
+        this.log.trace(`${LOG_PREFIX} Changing Unit Category Id to ${event}`);
+        this.unitsTableService.unitCategoryId = event;
+        this.cd.detectChanges();
     }
 
     /**
@@ -168,7 +198,9 @@ export class UnitsRecordsTabulationComponent implements OnInit, AfterViewInit {
      */
     onAddUnit() {
         this.log.trace(`${LOG_PREFIX} Adding a new Unit record`);
+        this.log.debug(`${LOG_PREFIX} Unit Category = ${JSON.stringify(this.targetUnitCategory)}`);
         const modalRef = this.modalService.open(UnitsRecordsCreationModalComponent, { centered: true, backdrop: 'static' });
+        modalRef.componentInstance.targetUnitCategory = this.targetUnitCategory;
     }
 
     /**
@@ -177,8 +209,11 @@ export class UnitsRecordsTabulationComponent implements OnInit, AfterViewInit {
     onUpdateUnit(id: number) {
         this.log.trace(`${LOG_PREFIX} Updating Unit record`);
         this.log.debug(`${LOG_PREFIX} Unit record Id = ${id}`);
+        this.log.debug(`${LOG_PREFIX} Unit Category = ${JSON.stringify(this.targetUnitCategory)}`);
         const modalRef = this.modalService.open(UnitsRecordsUpdationModalComponent, { centered: true, backdrop: 'static' });
         modalRef.componentInstance.id = id;
+        modalRef.componentInstance.targetUnitCategory = this.targetUnitCategory;
+        
     }
 
     /**
@@ -187,8 +222,10 @@ export class UnitsRecordsTabulationComponent implements OnInit, AfterViewInit {
     onDeleteUnit(id: number) {
         this.log.trace(`${LOG_PREFIX} Deleting Unit record`);
         this.log.debug(`${LOG_PREFIX} Unit record Id = ${id}`);
+        this.log.debug(`${LOG_PREFIX} Unit Category = ${JSON.stringify(this.targetUnitCategory)}`);
         const modalRef = this.modalService.open(UnitsRecordsDeletionModalComponent, { centered: true, backdrop: 'static' });
         modalRef.componentInstance.id = id;
+        modalRef.componentInstance.targetUnitCategory = this.targetUnitCategory;
     }
 
 }

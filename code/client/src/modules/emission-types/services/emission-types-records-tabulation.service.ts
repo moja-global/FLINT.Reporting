@@ -212,14 +212,14 @@ export class EmissionTypesRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Checks if search string is present in Emission Type record
+     * Checks if search string is present in the Emission Type record
      * 
      * @param emissionType The Emission Type record
      * @param term The Search String
      * @returns A boolean result indicating whether or not a match was found
      */
     matches(emissionType: EmissionType, term: string): boolean {
-        this.log.trace(`${LOG_PREFIX} Checking if search string is present in Emission Type record`);
+        this.log.trace(`${LOG_PREFIX} Checking if search string is present in the Emission Type record`);
         if (emissionType != null && emissionType != undefined) {
 
             // Try locating the search string in the Emission Type's name

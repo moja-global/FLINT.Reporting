@@ -25,10 +25,10 @@ describe('ThemesService', () => {
     describe('setTheme', () => {
         it('should set the next theme', () => {
 
-            // Define the theme
+            // Define theme
             let theme: string = "dark";
 
-            // Subscribe to the theme service
+            // Subscribe to theme service
             themesService.themes$
             .pipe(
                 take(2),
@@ -41,7 +41,7 @@ describe('ThemesService', () => {
                 expect(response[1]).toEqual("dark");
             });           
 
-            // Set the theme
+            // Set theme
             themesService.theme = theme;
 
 

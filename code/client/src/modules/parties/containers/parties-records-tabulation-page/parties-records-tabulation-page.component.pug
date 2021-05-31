@@ -1,0 +1,9 @@
+sb-layout-main
+  ng-container(header)
+    sb-header(title='Parties', subtitle='Units of measurements groupings')
+  ng-container(body')
+    sb-card
+      .card-header
+        | Parties List
+      .card-body
+        sb-parties-records-tabulation([pagesize]='6')

@@ -1,6 +1,6 @@
 <sb-modal>
     <ng-container title>
-        Delete Unit category Record
+        Delete Unit Category Record
     </ng-container>
     <ng-container body>
 
@@ -27,28 +27,28 @@
     <ng-container footer>
 
         <ng-container *ngIf='(status$ | async) === "new"'>
-            <sb-button action="yes" entity="Unit category" (yes)="onDelete()"></sb-button>
-            <sb-button action="no" entity="Unit category" guarded="false" (no)="onQuit()"></sb-button>             
+            <sb-button action="yes" entity="Unit Category" (yes)="onDelete()"></sb-button>
+            <sb-button action="no" entity="Unit Category" guarded="false" (no)="onQuit()"></sb-button>             
         </ng-container>
 
         <ng-container *ngIf='(status$ | async) === "deleting"'>
-            <sb-button action="yes" entity="Unit category" disabled="true"></sb-button>
-            <sb-button action="no" entity="Unit category" disabled="true"></sb-button>             
+            <sb-button action="yes" entity="Unit Category" disabled="true"></sb-button>
+            <sb-button action="no" entity="Unit Category" disabled="true"></sb-button>             
         </ng-container>     
 
         <ng-container *ngIf='(status$ | async) === "succeeded"'>
-            <sb-button action="yes" entity="Unit category" disabled="true"></sb-button>
-            <sb-button action="no" entity="Unit category" disabled="true"></sb-button>               
+            <sb-button action="yes" entity="Unit Category" disabled="true"></sb-button>
+            <sb-button action="no" entity="Unit Category" disabled="true"></sb-button>               
         </ng-container>
 
         <ng-container *ngIf='(status$ | async) === "failed"'>
-            <sb-button action="yes" entity="Unit category" (yes)="onRetry()"></sb-button>
-            <sb-button action="no" entity="Unit category" guarded="false" (no)="onQuit()"></sb-button>            
+            <sb-button action="yes" entity="Unit Category" (yes)="onRetry()"></sb-button>
+            <sb-button action="no" entity="Unit Category" guarded="false" (no)="onQuit()"></sb-button>            
         </ng-container>
 
         <ng-container *ngIf='(status$ | async) === "retrying"'>
-            <sb-button action="yes" entity="Unit category" disabled="true"></sb-button>
-            <sb-button action="no" entity="Unit category" disabled="true"></sb-button> 
+            <sb-button action="yes" entity="Unit Category" disabled="true"></sb-button>
+            <sb-button action="no" entity="Unit Category" disabled="true"></sb-button> 
         </ng-container>         
 
     </ng-container>

@@ -18,26 +18,26 @@ import org.springframework.web.reactive.function.client.WebClient;
  * @since 0.0.1
  */
 @Component
-public class VegetationTypesWebClientUtil {
+public class CoverTypesWebClientUtil {
 
     // See:
     // https://stackoverflow.com/questions/49095366/right-way-to-use-spring-webclient-in-multi-thread-environment
-    private static WebClient vegetationTypesWebClient;
+    private static WebClient coverTypesWebClient;
 
     @Autowired
     private HostsConfig hosts;
 
-    public WebClient getVegetationTypesWebClient() {
+    public WebClient getCoverTypesWebClient() {
 
-        if (vegetationTypesWebClient == null) {
-            vegetationTypesWebClient =
+        if (coverTypesWebClient == null) {
+            coverTypesWebClient =
                     WebClient
                             .builder()
-                            .baseUrl("http://" + hosts.getVegetationTypesServiceHost())
+                            .baseUrl("http://" + hosts.getCoverTypesServiceHost())
                             .build();
         }
 
-        return vegetationTypesWebClient;
+        return coverTypesWebClient;
     }
 
 }

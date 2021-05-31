@@ -20,14 +20,14 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CoverTypeHistory implements Comparable<CoverTypeHistory> {
+public class CoverTypeHistoricDetail implements Comparable<CoverTypeHistoricDetail> {
 
     private Long itemNumber;
     private Integer year;
     private CoverType coverType;
 
     @Override
-    public int compareTo(CoverTypeHistory coverType) {
+    public int compareTo(CoverTypeHistoricDetail coverType) {
 
         if(this.itemNumber != null && coverType.getItemNumber() != null){
             return this.itemNumber.compareTo(coverType.getItemNumber());
@@ -35,5 +35,11 @@ public class CoverTypeHistory implements Comparable<CoverTypeHistory> {
             return 0;
         }
 
+    }
+
+    @Override
+    public String toString(){
+        return String.format("Timestep: %d, Year: %d, Cover Type: %s",
+                itemNumber, year, coverType == null ? null : coverType.getDescription());
     }
 }

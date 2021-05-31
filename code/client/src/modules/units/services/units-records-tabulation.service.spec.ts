@@ -62,6 +62,26 @@ describe('UnitsRecordsTabulationService', () => {
         });
 
 
+        it('should filter Units records by unit category id', () => {
+
+            // Define a couple of mock Units
+
+            const unfilteredMockUnits = [
+                new Unit({ id: 1, unitCategoryId: 1, name: "Unit 1", description: "Unit 1 Description", version: 1 }),
+                new Unit({ id: 2, unitCategoryId: 1, name: "Unit 2", description: "Unit 2 Description", version: 1 }),
+                new Unit({ id: 3, unitCategoryId: 2, name: "Unit 3", description: "Unit 3 Description", version: 1 })
+            ]; 
+            
+            const filteredMockUnits = [
+                new Unit({ id: 1, unitCategoryId: 1, name: "Unit 1", description: "Unit 1 Description", version: 1 }),
+                new Unit({ id: 2, unitCategoryId: 1, name: "Unit 2", description: "Unit 2 Description", version: 1 })
+            ];             
+
+
+            expect(unitsTableDataService.filterByUnitCategory(unfilteredMockUnits, 1)).toEqual(filteredMockUnits);            
+        });          
+
+
         it('should return a numerical value indicating how the first value compares to the second value for sorting purposes', () => {
 
             // strings

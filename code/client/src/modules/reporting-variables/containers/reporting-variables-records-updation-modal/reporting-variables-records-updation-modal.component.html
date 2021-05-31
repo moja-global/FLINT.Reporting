@@ -1,0 +1,56 @@
+<sb-modal>
+    <ng-container title>
+        Update {{targetReportingFramework.name}} Reporting Variable Record
+    </ng-container>
+    <ng-container body>
+
+        <sb-reporting-variables-records-updation [targetReportingFramework]="targetReportingFramework" [id]="id" (succeeded)="onSucceeded()" (failed)="onFailed($event)">
+        </sb-reporting-variables-records-updation>
+
+        <ng-container *ngIf='(status$ | async) === "saving"'>
+            <sb-message-overlay activity="updating" status="saving"></sb-message-overlay>
+        </ng-container>
+
+        <ng-container *ngIf='(status$ | async) === "succeeded"'>
+            <sb-message-overlay activity="updating" status="succeeded"></sb-message-overlay>
+        </ng-container>
+
+        <ng-container *ngIf='(status$ | async) === "failed"'>
+            <sb-message-overlay activity="updating" status="failed"></sb-message-overlay>
+        </ng-container>
+
+        <ng-container *ngIf='(status$ | async) === "retrying"'>
+            <sb-countdown-overlay crosshead="Retrying in " (completed)="onSave()"></sb-countdown-overlay>
+        </ng-container>
+
+    </ng-container>
+    <ng-container footer>
+
+    <ng-container *ngIf='(status$ | async) === "new"'>
+        <sb-button action="save" entity="Reporting Variable" (save)="onSave()"></sb-button>
+    </ng-container>
+
+    <ng-container *ngIf='(status$ | async) === "saving"'>
+        <sb-button action="save" entity="Reporting Variable" disabled="true"></sb-button>
+    </ng-container>
+    
+    <ng-container *ngIf='(status$ | async) === "invalid"'>
+        <sb-button action="save" entity="Reporting Variable" (save)="onSave()"></sb-button>
+    </ng-container>        
+
+    <ng-container *ngIf='(status$ | async) === "succeeded"'>
+        <sb-button action="save" entity="Reporting Variable" disabled="true"></sb-button>
+    </ng-container>
+
+    <ng-container *ngIf='(status$ | async) === "failed"'>
+        <sb-button action="yes" entity="Reporting Variable" (yes)="onRetry()"></sb-button>
+        <sb-button action="no" entity="Reporting Variable" guarded="false" (no)="onQuit()"></sb-button>  
+    </ng-container>
+
+    <ng-container *ngIf='(status$ | async) === "retrying"'>
+        <sb-button action="yes" entity="Reporting Variable" disabled="true"></sb-button>
+        <sb-button action="no" entity="Reporting Variable" disabled="true"></sb-button> 
+    </ng-container>     
+
+    </ng-container>
+</sb-modal>

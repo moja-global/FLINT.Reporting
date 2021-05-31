@@ -211,14 +211,14 @@ export class PoolsRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Checks if search string is present in Pool record
+     * Checks if search string is present in the Pool record
      * 
      * @param pool The Pool record
      * @param term The Search String
      * @returns A boolean result indicating whether or not a match was found
      */
     matches(pool: Pool, term: string): boolean {
-        this.log.trace(`${LOG_PREFIX} Checking if search string is present in Pool record`);
+        this.log.trace(`${LOG_PREFIX} Checking if search string is present in the Pool record`);
         if (pool != null && pool != undefined) {
 
             // Try locating the search string in the Pool's name

@@ -12,6 +12,7 @@ import { UnitsDataService } from '../../services/units-data.service';
 import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
 import { Unit } from '../../../units/models/unit.model';
+import { UnitCategory } from '@modules/unit-categories/models/unit-category.model';
 
 const LOG_PREFIX: string = "[Units Records Deletion Component]";
 
@@ -28,6 +29,11 @@ export class UnitsRecordsDeletionComponent implements OnInit, AfterContentInit {
   // record that has been served up for deletion during the component's initialization.
   @Input() id!: number;
 
+  // Instantiate and avail the target unit category variable to the parent component.
+  // This will allow the parent component to inject the details of the current target  
+  // unit category  
+  @Input() targetUnitCategory: UnitCategory = new UnitCategory(); 
+
   // Instantiate an object to hold the details of the Unit record being deleted.
   // This will allow the UI to print readable details of that record that 
   // for the users confirmation
@@ -40,6 +46,7 @@ export class UnitsRecordsDeletionComponent implements OnInit, AfterContentInit {
   // Instantiate a 'failed' state notification Emitter.
   // This will allow us to broadcast fnotifications of failed deletion events
   @Output() failed: EventEmitter<number> = new EventEmitter<number>();
+
 
   // Instantiate a central gathering point for all the component's subscriptions.
   // This will make it easier to unsubscribe from all subscriptions when the component is destroyed.   

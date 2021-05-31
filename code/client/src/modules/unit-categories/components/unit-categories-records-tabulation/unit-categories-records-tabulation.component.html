@@ -22,7 +22,7 @@
                             <sb-sort-icon *ngIf='sortedColumn === "name"' [direction]="sortedDirection"></sb-sort-icon>
                         </th>
                         <th scope="col" class="align-middle">
-                            <span class="d-flex flex-row-reverse">
+                            <span class="d-flex flex-row-reverse pr-1">
                                 Actions
                             </span>
                         </th>
@@ -32,8 +32,8 @@
                 <ng-container footer>
                     <tr>
                         <td scope="col" colspan="4" class="align-middle">
-                            <span class="d-flex flex-row-reverse">
-                                <sb-button action="add" entity="Unit category" (add)="onAddUnitCategory()"></sb-button>
+                            <span class="d-flex flex-row-reverse pr-1">
+                                <sb-button action="add" entity="Unit Category" (add)="onAddUnitCategory()"></sb-button>
                             </span> 
                         </td>
                     </tr>
@@ -47,11 +47,12 @@
                         <td class="align-middle">
                             <ngb-highlight [result]="unitCategory.name" [term]="unitCategoriesTableService.searchTerm"></ngb-highlight>
                         </td>
-                        <td class="align-middle">
-                            <span class="d-flex flex-row-reverse">
-                                <sb-button action="delete" entity="Unit category" id="{{unitCategory.id}}" (delete)="onDeleteUnitCategory($event)"></sb-button>
-                                <sb-button action="update" entity="Unit category" id="{{unitCategory.id}}" (update)="onUpdateUnitCategory($event)"></sb-button>
-                            </span> 
+                        <td>
+                            <span class="d-flex flex-row-reverse pr-1">
+                                <sb-button action="open" entity="Unit Category" id="{{unitCategory.id}}" name="{{unitCategory.name}}"  (open)="onOpenUnitCategory($event)"></sb-button>
+                                <sb-button action="delete" entity="Unit Category" id="{{unitCategory.id}}" (delete)="onDeleteUnitCategory($event)"></sb-button>
+                                <sb-button action="update" entity="Unit Category" id="{{unitCategory.id}}" (update)="onUpdateUnitCategory($event)"></sb-button>
+                            </span>
                         </td>
                     </tr>
                 </ng-container>

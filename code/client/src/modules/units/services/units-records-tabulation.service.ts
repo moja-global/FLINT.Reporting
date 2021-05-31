@@ -5,8 +5,14 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { State } from '@common/models';
 import { SortDirection } from '@common/directives/sortable.directive';
 import { Unit } from '../models/unit.model';
+import { Action } from 'rxjs/internal/scheduler/Action';
+import { ActivatedRoute, Router } from '@angular/router';
 
 const LOG_PREFIX: string = "[Units Records Tabulation Service]";
+
+export interface UnitState extends State {
+    unitCategoryId: number | null;
+}
 
 @Injectable({ providedIn: 'root' })
 export class UnitsRecordsTabulationService implements OnDestroy {
@@ -30,7 +36,7 @@ export class UnitsRecordsTabulationService implements OnDestroy {
 
     // The user defined search or sort criteria.
     // Determines which & how many Units records should be displayed
-    private _state: State = { page: 1, pageSize: 4, searchTerm: '', sortColumn: '', sortDirection: '' };
+    private _state: UnitState = { unitCategoryId: null, page: 1, pageSize: 4, searchTerm: '', sortColumn: '', sortDirection: '' };
 
     // A common gathering point for all the component's subscriptions.
     // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
@@ -159,13 +165,29 @@ export class UnitsRecordsTabulationService implements OnDestroy {
         this._set({ sortDirection });
     }
 
+    /**
+     * Returns the currently set unit category id
+     */
+    get unitCategoryId() {
+        this.log.trace(`${LOG_PREFIX} Getting unit category id detail`);
+        this.log.debug(`${LOG_PREFIX} Current unit category id detail = ${JSON.stringify(this._state.unitCategoryId)}`);
+        return this._state.unitCategoryId;
+    }
+
+    /**
+     * Updates the desired unit category id detail and then triggers data transformation
+     */
+    set unitCategoryId(unitCategoryId: number | null) {
+        this.log.debug(`${LOG_PREFIX} Setting unit category id to ${JSON.stringify(unitCategoryId)}`);
+        this._set({ unitCategoryId });
+    }
 
     /**
      * Utility method for all the class setters.
      * Does the actual updating of details / transforming of data
      * @param patch the partially updated details
      */
-    private _set(patch: Partial<State>) {
+    private _set(patch: Partial<UnitState>) {
 
         // Update the state
         Object.assign(this._state, patch);
@@ -176,6 +198,20 @@ export class UnitsRecordsTabulationService implements OnDestroy {
 
     }
 
+    /**
+     * Filters unit records by category id
+     * @param units 
+     * @param unitCategoryId 
+     * @returns 
+     */
+    filterByUnitCategory(units: Unit[], unitCategoryId: number | null): Unit[] {
+        this.log.trace(`${LOG_PREFIX} Filtering Units records`);
+        if (unitCategoryId == null) {
+            return units;
+        } else {
+            return units.filter((u) => u.unitCategoryId == unitCategoryId);
+        }
+    }
 
     /**
      * Compares two values to find out if the first value preceeds the second.
@@ -213,14 +249,14 @@ export class UnitsRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Checks if search string is present in Unit record
+     * Checks if search string is present in the Unit record
      * 
      * @param unit The Unit record
      * @param term The Search String
      * @returns A boolean result indicating whether or not a match was found
      */
     matches(unit: Unit, term: string): boolean {
-        this.log.trace(`${LOG_PREFIX} Checking if search string is present in Unit record`);
+        this.log.trace(`${LOG_PREFIX} Checking if search string is present in the Unit record`);
         if (unit != null && unit != undefined) {
 
             // Try locating the search string in the Unit's name
@@ -236,13 +272,13 @@ export class UnitsRecordsTabulationService implements OnDestroy {
                     return true;
                 }
             }
-            
+
             // Try locating the search string in the Unit's symbol
             if (unit.symbol != null && unit.symbol != undefined) {
                 if (unit.symbol.toLowerCase().includes(term.toLowerCase())) {
                     return true;
                 }
-            }            
+            }
         }
 
         return false;
@@ -283,20 +319,22 @@ export class UnitsRecordsTabulationService implements OnDestroy {
      */
     private _transform(records: Unit[]) {
 
+        // Flag
+        this._loadingSubject$.next(true);
 
         if (records.length != 0) {
 
             this.log.trace(`${LOG_PREFIX} Sorting, filtering and paginating Units records`);
 
-            const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
+            const { unitCategoryId, sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
 
-            // Flag
-            this._loadingSubject$.next(true);
+            // Filter by Unit Category
+            let transformed: Unit[] = this.filterByUnitCategory(records, unitCategoryId);
 
             // Sort
-            let transformed: Unit[] = this.sort(records, sortColumn, sortDirection);
+            transformed = this.sort(transformed, sortColumn, sortDirection);
 
-            // Filter
+            // Filter by Search Term
             transformed = transformed.filter(unit => this.matches(unit, searchTerm));
             const total: number = transformed.length;
 
@@ -310,8 +348,6 @@ export class UnitsRecordsTabulationService implements OnDestroy {
             this._unitsSubject$.next(transformed);
             this._totalSubject$.next(total);
 
-            // Flag
-            this._loadingSubject$.next(false);
 
         } else {
 
@@ -319,6 +355,9 @@ export class UnitsRecordsTabulationService implements OnDestroy {
             this._unitsSubject$.next([]);
             this._totalSubject$.next(0);
         }
+
+        // Flag
+        this._loadingSubject$.next(false);
 
     }
 

@@ -12,6 +12,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * Holds the mutating details of a location while its undergoing business processing
+ *
  * @since 0.0.1
  * @author Kwaje Anthony <tony@miles.co.ke>
  * @version 1.0
@@ -19,6 +21,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LocationDetails {
-
+public class LocationProcessingResults {
+    private Long id;
+    private Long vegetationHistoryId;
+    private Double unitAreaSum;
 }

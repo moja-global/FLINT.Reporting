@@ -4,6 +4,7 @@ import {
     ChangeDetectorRef,
     Component,
     HostListener,
+    Input,
     OnDestroy,
     OnInit,
     ViewChild} from '@angular/core';
@@ -11,7 +12,7 @@ import { UnitsRecordsCreationComponent } from '../../components/units-records-cr
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { ConnectivityStatusService } from '@common/services';
+import { UnitCategory } from '@modules/unit-categories/models';
 
 const LOG_PREFIX: string = "[Units Records Creation Modal]";
 
@@ -23,6 +24,10 @@ const LOG_PREFIX: string = "[Units Records Creation Modal]";
 })
 export class UnitsRecordsCreationModalComponent implements OnInit, OnDestroy {
 
+    // Instantiate and avail the target unit category variable to the parent component.
+    // This will allow the parent component to inject the details of the current target  
+    // unit category  
+    @Input() targetUnitCategory: UnitCategory = new UnitCategory();
 
     // Inject a reference to the Units records creation component. 
     // This will provide a way of propagating save requests to it

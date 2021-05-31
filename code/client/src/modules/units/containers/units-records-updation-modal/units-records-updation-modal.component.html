@@ -1,10 +1,10 @@
 <sb-modal>
     <ng-container title>
-        Update Unit Record
+        Update {{targetUnitCategory.name}} Unit Record
     </ng-container>
     <ng-container body>
 
-        <sb-units-records-updation id="{{id}}" (succeeded)="onSucceeded()" (failed)="onFailed($event)">
+        <sb-units-records-updation [targetUnitCategory]="targetUnitCategory" [id]="id" (succeeded)="onSucceeded()" (failed)="onFailed($event)">
         </sb-units-records-updation>
 
         <ng-container *ngIf='(status$ | async) === "saving"'>

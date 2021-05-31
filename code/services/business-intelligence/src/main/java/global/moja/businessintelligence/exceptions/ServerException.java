@@ -6,7 +6,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package ke.co.miles.businessintelligence.exceptions;
+package global.moja.businessintelligence.exceptions;
 
 /**
  * @since 0.0.1

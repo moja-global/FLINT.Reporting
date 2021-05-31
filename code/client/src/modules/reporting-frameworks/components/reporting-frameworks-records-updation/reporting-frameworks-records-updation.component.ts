@@ -70,6 +70,9 @@ export class ReportingFrameworksRecordsUpdationComponent implements OnInit, Afte
     this.log.trace(`${LOG_PREFIX} Retrieving the Reporting Framework record with the given id from the data store`);
     this.log.debug(`${LOG_PREFIX} Reporting Framework record Id = ${this.id}`);
     this.reportingFramework = this.reportingFrameworksDataService.records.find(d => d.id == this.id);
+
+    const temp: ReportingFramework | undefined = (this.id == null || this.id == undefined)? undefined : this.reportingFrameworksDataService.records.find(d => d.id == this.id);
+    this.reportingFramework = (temp == undefined)? new ReportingFramework() : temp;   
   }
 
   ngAfterContentInit() {
@@ -83,8 +86,8 @@ export class ReportingFrameworksRecordsUpdationComponent implements OnInit, Afte
       // Initialize the Reporting Framework records form fields
       this.log.trace(`${LOG_PREFIX} Initializing the Reporting Framework records form fields`);
       this.reportingFrameworksForm.setValue({
-        name: this.reportingFramework.name,
-        description: this.reportingFramework.description
+        name: (this.reportingFramework.name)? this.reportingFramework.name : "",
+        description: (this.reportingFramework.description)? this.reportingFramework.description : ""
       });
 
     } else {

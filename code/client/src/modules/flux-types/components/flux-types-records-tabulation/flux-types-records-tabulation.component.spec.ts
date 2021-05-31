@@ -5,6 +5,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute } from '@angular/router';
 import { LoadingAnimationComponent, PaginationComponent } from '@common/components';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
@@ -18,7 +19,6 @@ describe('FluxTypesRecordsTabulationComponent', () => {
     let componentDE: DebugElement;
     let componentNE: Element;
 
-    
 
     beforeEach(() => {
         TestBed.configureTestingModule({

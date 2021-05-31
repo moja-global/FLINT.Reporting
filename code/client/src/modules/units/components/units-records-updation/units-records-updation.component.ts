@@ -11,11 +11,9 @@ import {
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { UnitsDataService } from '../../services/units-data.service';
 import { NGXLogger } from 'ngx-logger';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { Unit } from '../../../units/models';
-import { ConnectivityStatusService } from '@common/services';
 import { UnitCategoriesDataService } from '@modules/unit-categories/services';
-import { takeUntil, first } from 'rxjs/operators';
+import { UnitCategory } from '@modules/unit-categories/models/unit-category.model';
 
 const LOG_PREFIX: string = "[Units Records Updation Component]";
 
@@ -32,10 +30,15 @@ export class UnitsRecordsUpdationComponent implements OnInit, AfterContentInit {
   // record that has been served up for updation during the component's initialization.
   @Input() id!: number;
 
+  // Instantiate and avail the target unit category variable to the parent component.
+  // This will allow the parent component to inject the details of the current target  
+  // unit category  
+  @Input() targetUnitCategory: UnitCategory = new UnitCategory(); 
+
   // Instantiate an object to hold the details of the Unit record being updated.
   // This will allow the UI to get a hold on and prepolulate the current details of the 
   // record being updated
-  unit: Unit | undefined;
+  unit: Unit | undefined = new Unit();
 
   // Instantiate a 'succeeded' state notification Emitter.
   // This will allow us to broadcast notifications of successful updation events
@@ -48,9 +51,6 @@ export class UnitsRecordsUpdationComponent implements OnInit, AfterContentInit {
   // Instantitate a new reactive Form Group for the Units Form.
   // This will allow to define and enforce the validation rules for all the form controls.
   unitsForm = new FormGroup({
-    unitCategoryId: new FormControl('', [
-      Validators.required
-    ]),
     name: new FormControl('', [
       Validators.required,
       Validators.minLength(2),
@@ -86,7 +86,10 @@ export class UnitsRecordsUpdationComponent implements OnInit, AfterContentInit {
     // Retrieve the Unit record with the given id from the data store 
     this.log.trace(`${LOG_PREFIX} Retrieving the Unit record with the given id from the data store`);
     this.log.debug(`${LOG_PREFIX} Unit record Id = ${this.id}`);
-    this.unit = this.unitsDataService.records.find(d => d.id == this.id);
+
+    const temp: Unit | undefined = (this.id == null || this.id == undefined)? undefined : this.unitsDataService.records.find(d => d.id == this.id);
+    this.unit = (temp == undefined)? new Unit() : temp;
+
   }
 
   ngAfterContentInit() {
@@ -100,11 +103,10 @@ export class UnitsRecordsUpdationComponent implements OnInit, AfterContentInit {
       // Initialize the Unit records form fields
       this.log.trace(`${LOG_PREFIX} Initializing the Unit records form fields`);
       this.unitsForm.setValue({
-        unitCategoryId: this.unit.unitCategoryId,
-        name: this.unit.name,
-        plural: this.unit.plural,
-        symbol: this.unit.symbol,
-        scaleFactor: this.unit.scaleFactor
+        name: (this.unit.name)? this.unit.name : "",
+        plural: (this.unit.plural)? this.unit.plural : "",
+        symbol: (this.unit.symbol)? this.unit.symbol : "",
+        scaleFactor: (this.unit.scaleFactor)? this.unit.scaleFactor : ""
       });
 
     } else {
@@ -157,11 +159,6 @@ export class UnitsRecordsUpdationComponent implements OnInit, AfterContentInit {
 
     if (this.unitsForm.valid) {
 
-      // Read in the provided unit category id
-      this.log.trace(`${LOG_PREFIX} Reading in the provided unit category id`);
-      const unitCategoryId: number | null = this.unitsForm.get('unitCategoryId') == null ? null : this.unitsForm.get('unitCategoryId')?.value;
-      this.log.debug(`${LOG_PREFIX} Unit Category Id = ${unitCategoryId}`);
-
       // Read in the provided name
       this.log.trace(`${LOG_PREFIX} Reading in the provided name`);
       const name: string | null = this.unitsForm.get('name') == null ? null : this.unitsForm.get('name')?.value;
@@ -185,7 +182,7 @@ export class UnitsRecordsUpdationComponent implements OnInit, AfterContentInit {
       // Save the record
       this.log.trace(`${LOG_PREFIX} Saving the Unit record`);
       this.unitsDataService
-        .updateUnit(new Unit(Object.assign(this.unit, { unitCategoryId, name, plural, symbol, scaleFactor })))
+        .updateUnit(Object.assign(this.unit, { unitCategoryId: this.targetUnitCategory?.id, name: name, plural: plural, symbol: symbol, scaleFactor: scaleFactor  }))
         .subscribe(
           (response: Unit) => {
 

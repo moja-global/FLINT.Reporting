@@ -1,0 +1,9 @@
+sb-layout-main
+  ng-container(header='')
+    sb-header(title='Land Use Categories', subtitle='The Reporting Framework's Land Use Categories', [hidebreadcrumbs]='false')
+  ng-container(body='')
+    sb-card
+      .card-header
+        | Land Use Categories List
+      .card-body
+        sb-land-use-categories-records-tabulation([pagesize]='6')

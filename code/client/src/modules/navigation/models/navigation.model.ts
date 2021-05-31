@@ -7,6 +7,7 @@ export interface SBRouteData {
 export interface Breadcrumb {
     text: string;
     link?: string;
+    queryParams?: any;    
     active?: boolean;
 }
 

@@ -18,6 +18,7 @@ import { ConnectivityStatusService } from '@common/services';
 import { UnitCategoriesRecordsCreationModalComponent } from '@modules/unit-categories/containers/unit-categories-records-creation-modal/unit-categories-records-creation-modal.component';
 import { UnitCategoriesRecordsDeletionModalComponent } from '@modules/unit-categories/containers/unit-categories-records-deletion-modal/unit-categories-records-deletion-modal.component';
 import { UnitCategoriesRecordsUpdationModalComponent } from '@modules/unit-categories/containers/unit-categories-records-updation-modal/unit-categories-records-updation-modal.component';
+import { Router } from '@angular/router';
 
 const LOG_PREFIX: string = "[Unit Categories Records Tabulation]";
 
@@ -52,33 +53,25 @@ export class UnitCategoriesRecordsTabulationComponent implements OnInit, AfterVi
     // Keep tabs on the direction that the records are currently sorted by: ascending or descending.
     sortedDirection!: string;
 
-    // Keep tabs on whether or not we are online
-    online: boolean = false;
-
     // Instantiate a central gathering point for all the component's subscriptions.
     // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
     private _subscriptions: Subscription[] = [];
 
+    state: any = {};
+
 
     constructor(
         public unitCategoriesTableService: UnitCategoriesRecordsTabulationService,
-        private changeDetectorRef: ChangeDetectorRef,
+        private cd: ChangeDetectorRef,
         private modalService: NgbModal,
         public connectivityStatusService: ConnectivityStatusService,
+        private router: Router,
         private log: NGXLogger) {
     }
 
     ngOnInit() {
 
         this.log.trace(`${LOG_PREFIX} Initializing Component`);
-
-        // Subscribe to connectivity status notifications.
-        this.log.trace(`${LOG_PREFIX} Subscribing to connectivity status notifications`);
-        this._subscriptions.push(
-            this.connectivityStatusService.online$.subscribe(
-                (status) => {
-                    this.online = status;
-                }));
     }
 
 
@@ -104,7 +97,7 @@ export class UnitCategoriesRecordsTabulationComponent implements OnInit, AfterVi
             this.unitCategoriesTableService.loading$.subscribe(
                 (loading) => {
                     this.animation.loading = loading;
-                    this.changeDetectorRef.detectChanges();
+                    this.cd.detectChanges();
                 }));
 
     }
@@ -126,7 +119,7 @@ export class UnitCategoriesRecordsTabulationComponent implements OnInit, AfterVi
     onSearch(event: any) {
         this.log.trace(`${LOG_PREFIX} Searching for ${event}`);
         this.unitCategoriesTableService.searchTerm = event;
-        this.changeDetectorRef.detectChanges();
+        this.cd.detectChanges();
     }
 
     /**
@@ -139,7 +132,7 @@ export class UnitCategoriesRecordsTabulationComponent implements OnInit, AfterVi
         this.sortedDirection = direction;
         this.unitCategoriesTableService.sortColumn = column;
         this.unitCategoriesTableService.sortDirection = direction;
-        this.changeDetectorRef.detectChanges();
+        this.cd.detectChanges();
     }
 
     /**
@@ -149,7 +142,7 @@ export class UnitCategoriesRecordsTabulationComponent implements OnInit, AfterVi
     onPageChange(event: any) {
         this.log.trace(`${LOG_PREFIX} Changing Page to ${event}`);
         this.unitCategoriesTableService.page = event;
-        this.changeDetectorRef.detectChanges();
+        this.cd.detectChanges();
     }
 
     /**
@@ -159,14 +152,14 @@ export class UnitCategoriesRecordsTabulationComponent implements OnInit, AfterVi
     onPageSizeChange(event: any) {
         this.log.trace(`${LOG_PREFIX} Changing Page Size to ${event}`);
         this.unitCategoriesTableService.pageSize = event;
-        this.changeDetectorRef.detectChanges();
+        this.cd.detectChanges();
     }
 
     /**
      * Propagates Unit Categories records Addition Requests to the responsible component
      */
     onAddUnitCategory() {
-        this.log.trace(`${LOG_PREFIX} Adding a new Unit category record`);
+        this.log.trace(`${LOG_PREFIX} Adding a new Unit Category record`);
         const modalRef = this.modalService.open(UnitCategoriesRecordsCreationModalComponent, { centered: true, backdrop: 'static' });
     }
 
@@ -174,8 +167,8 @@ export class UnitCategoriesRecordsTabulationComponent implements OnInit, AfterVi
      * Propagates Unit Categories records Updation Requests to the responsible component
      */
     onUpdateUnitCategory(id: number) {
-        this.log.trace(`${LOG_PREFIX} Updating Unit category record`);
-        this.log.debug(`${LOG_PREFIX} Unit category record Id = ${id}`);
+        this.log.trace(`${LOG_PREFIX} Updating Unit Category record`);
+        this.log.debug(`${LOG_PREFIX} Unit Category record Id = ${id}`);
         const modalRef = this.modalService.open(UnitCategoriesRecordsUpdationModalComponent, { centered: true, backdrop: 'static' });
         modalRef.componentInstance.id = id;
     }
@@ -184,10 +177,22 @@ export class UnitCategoriesRecordsTabulationComponent implements OnInit, AfterVi
      * Propagates Unit Categories records Deletion Requests to the responsible component
      */
     onDeleteUnitCategory(id: number) {
-        this.log.trace(`${LOG_PREFIX} Deleting Unit category record`);
-        this.log.debug(`${LOG_PREFIX} Unit category record Id = ${id}`);
+        this.log.trace(`${LOG_PREFIX} Deleting Unit Category record`);
+        this.log.debug(`${LOG_PREFIX} Unit Category record Id = ${id}`);
         const modalRef = this.modalService.open(UnitCategoriesRecordsDeletionModalComponent, { centered: true, backdrop: 'static' });
         modalRef.componentInstance.id = id;
+    }
+
+
+    /**
+     * Opens Unit Categories records Home Window
+     */
+     onOpenUnitCategory(state: any) {
+        this.log.trace(`${LOG_PREFIX} Opening Unit Category record Home Window`);
+        this.log.debug(`${LOG_PREFIX} State = ${JSON.stringify(state)}`);
+
+        this.router.navigate(['/unit_categories', state.id], {queryParams: {name: state.name}});
+
     }
 
 }

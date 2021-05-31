@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -31,10 +32,12 @@ class CroplandLandUsesDecisionsIT {
 
     /**
      * Decision 3
+     * Classify as land remaining land of the initial cover type
+     *
      * @throws ServerException
      */
     @Test
-    public void Given_InitialTimestepAndCroplandCover_When_GetLandUse_Then_CropLandRemainingCroplandWillBeReturned() throws ServerException {
+    public void Given_InitialTimestepAndCropCover_When_GetLandUse_Then_CroplandRemainingCroplandWillBeReturned() throws ServerException {
 
         Long timestep = 0L;
 
@@ -72,10 +75,12 @@ class CroplandLandUsesDecisionsIT {
 
     /**
      * Decision 8
+     * Classify as land remaining land of the initial land use type
+     *
      * @throws ServerException
      */
     @Test
-    public void Given_NonInitialTimestepAndCroplandCoversFromInitialTimestep_When_GetLandUse_Then_CropLandRemainingCroplandWillBeReturned() throws ServerException {
+    public void Given_NonInitialTimestepAndCropCoversFromInitialTimestep_When_GetLandUse_Then_CroplandRemainingCroplandWillBeReturned() throws ServerException {
 
         Long timestep = 1L;
 
@@ -85,7 +90,7 @@ class CroplandLandUsesDecisionsIT {
                         .code("C")
                         .description("Cropland")
                         .version(1)
-                        .build(), 3);
+                        .build(), 2);
 
 
         List<LandUseHistoricDetail> landUseHistories = getLandUseHistories(
@@ -123,10 +128,12 @@ class CroplandLandUsesDecisionsIT {
 
     /**
      * Decision 11
+     * Classify as land remaining land of the current cover type
+     *
      * @throws ServerException
      */
     @Test
-    public void Given_NonInitialTimestepAndANonCroplandCoverFollowedByCroplandCoversForAPeriodLongerThanPreviousLandConversionPeriodAndLongerThanCroplandRemainingPeriod_When_GetLandUse_Then_CroplandRemainingCroplandWillBeReturned() throws ServerException {
+    public void Given_NonInitialTimestepAndNonCropCoverFollowedByCropCoversForLongerThanPreviousLandConversionPeriodAndLongerThanCroplandRemainingPeriod_When_GetLandUse_Then_CroplandRemainingCroplandWillBeReturned() throws ServerException {
 
         Long timestep = 21L;
 
@@ -187,10 +194,12 @@ class CroplandLandUsesDecisionsIT {
 
     /**
      * Decision 12
+     * Classify as land converted to land of the current cover type
+     *
      * @throws ServerException
      */
     @Test
-    public void Given_NonInitialTimestepAndANonCroplandCoverFollowedByCroplandCoversForAPeriodLongerThanPreviousLandConversionPeriodAndShorterThanCroplandRemainingPeriod_When_GetLandUse_Then_PreviousLandConvertedToCroplandWillBeReturned() throws ServerException {
+    public void Given_NonInitialTimestepAndNonCropCoverFollowedByCropCoversForLongerThanPreviousLandConversionPeriodAndShorterThanCroplandRemainingPeriod_When_GetLandUse_Then_PreviousLandConvertedToCroplandWillBeReturned() throws ServerException {
 
         Long timestep = 4L;
 
@@ -250,11 +259,13 @@ class CroplandLandUsesDecisionsIT {
     }
 
     /**
-     * Decision 15
+     * Decision 16
+     * Classify as Unconfirmed land (of the previous land use) converted to Cropland
+     *
      * @throws ServerException
      */
     @Test
-    public void Given_NonInitialTimestepAndANonCroplandCoverFollowedByCroplandAndGrasslandCoversForAPeriodShorterThanPreviousLandConversionPeriod_When_GetLandUse_Then_UnconfirmedPreviousLandConvertedToCroplandWillBeReturned() throws ServerException {
+    public void Given_NonInitialTimestepAndNonCropCoverFollowedByCropAndGrassCoversForLessThanPreviousLandConversionPeriodAndTimeToEndOfSeriesLessThanPreviousLandConversionPeriod_When_GetLandUse_Then_UnconfirmedPreviousLandConvertedToCroplandWillBeReturned() throws ServerException {
 
         Long timestep = 2L;
 
@@ -320,14 +331,14 @@ class CroplandLandUsesDecisionsIT {
     }
 
     /**
-     * Decision 17
+     * Decision 18
+     * Classify as Cropland remaining Cropland
      * @throws ServerException
      */
     @Test
-    public void Given_NonInitialTimestepAndANonCroplandCoverFollowedByCroplandAndGrasslandCoversForAPeriodLongerThanPreviousLandConversionPeriodAndLongerThanCroplandRemainingPeriod_When_GetLandUse_Then_CroplandRemainingCroplandWillBeReturned() throws ServerException {
+    public void Given_NonInitialTimestepAndNonCropCoverFollowedByCropAndGrassCoversForMoreThanPreviousLandConversionPeriodAndMoreThanLandRemainingPeriod_When_GetLandUse_Then_CroplandRemainingCroplandWillBeReturned() throws ServerException {
 
-        Long timestep = 3L;
-
+        Long timestep = 2L;
 
         List<CoverTypeHistoricDetail> coverTypeHistories = getCoverTypeHistories(
                 new CoverTypeBuilder()
@@ -345,21 +356,21 @@ class CroplandLandUsesDecisionsIT {
 
         coverTypeHistories.addAll(getInterchangingCoverTypeHistories(
                 new CoverTypeBuilder()
-                        .id(2L)
-                        .code("C")
-                        .description("Cropland")
-                        .version(1)
-                        .build(),
-                new CoverTypeBuilder()
                         .id(3L)
                         .code("G")
                         .description("Grassland")
                         .version(1)
                         .build(),
-                19,
+                new CoverTypeBuilder()
+                        .id(2L)
+                        .code("C")
+                        .description("Cropland")
+                        .version(1)
+                        .build(),
+                22,
                 2,
                 1992,
-                1
+                3
         ));
 
 
@@ -380,11 +391,11 @@ class CroplandLandUsesDecisionsIT {
                         .coverTypeId(2L)
                         .name("Forest land Converted To Cropland")
                         .version(1)
-                        .build(), 2);
+                        .build(), 1);
 
         LandUseHistoricDetail landUseHistoricDetail = new LandUseHistoryBuilder()
-                .itemNumber(3L)
-                .year(1993)
+                .itemNumber(2L)
+                .year(1992)
                 .landUseCategory(
                         new LandUseCategoryBuilder()
                                 .id(10L)
@@ -405,82 +416,12 @@ class CroplandLandUsesDecisionsIT {
     }
 
     /**
-     * Decision 18
+     * Decision 19
+     * Classify as land (previous land use) converted to Cropland
      * @throws ServerException
      */
     @Test
-    public void Given_NonInitialTimestepAndANonCroplandCoverFollowedByCroplandAndGrasslandCoversForAPeriodLongerThanPreviousLandConversionPeriodAndShorterThanCroplandRemainingPeriod_When_GetLandUse_Then_PreviousLandConvertedToCroplandWillBeReturned() throws ServerException {
-
-        Long timestep = 3L;
-
-
-        List<CoverTypeHistoricDetail> coverTypeHistories = getCoverTypeHistories(
-                new CoverTypeBuilder()
-                        .id(1L)
-                        .code("F")
-                        .description("Forest land")
-                        .version(1)
-                        .build(),
-                new CoverTypeBuilder()
-                        .id(2L)
-                        .code("C")
-                        .description("Cropland")
-                        .version(1)
-                        .build(), 3,
-                new CoverTypeBuilder()
-                        .id(3L)
-                        .code("G")
-                        .description("Grassland")
-                        .version(1)
-                        .build(), 1);
-
-
-        List<LandUseHistoricDetail> landUseHistories = getLandUseHistories(
-                new LandUseCategoryBuilder()
-                        .id(2L)
-                        .reportingFrameworkId(1L)
-                        .parentLandUseCategoryId(1L)
-                        .coverTypeId(1L)
-                        .name("Forest land Remaining Forest land")
-                        .version(1)
-                        .build(),
-                new LandUseCategoryBuilder()
-                        .id(12L)
-                        .reportingFrameworkId(1L)
-                        .parentLandUseCategoryId(11L)
-                        .coverTypeId(2L)
-                        .name("Forest land Converted To Cropland")
-                        .version(1)
-                        .build(), 2);
-
-        LandUseHistoricDetail landUseHistoricDetail = new LandUseHistoryBuilder()
-                .itemNumber(3L)
-                .year(1993)
-                .landUseCategory(
-                        new LandUseCategoryBuilder()
-                                .id(12L)
-                                .reportingFrameworkId(1L)
-                                .parentLandUseCategoryId(11L)
-                                .coverTypeId(2L)
-                                .name("Forest land Converted To Cropland")
-                                .version(1)
-                                .build())
-                .confirmed(true)
-                .build();
-
-
-        assertThat(landUsesProcessor.process(timestep, coverTypeHistories, landUseHistories))
-                .isEqualTo(landUseHistoricDetail);
-
-
-    }
-
-    /**
-     * Decision 20
-     * @throws ServerException
-     */
-    @Test
-    public void Given_NonInitialTimestepAndANonCroplandCoverFollowedByCroplandCoversForAPeriodShorterThanPreviousLandConversionPeriodAndALengthOfTimeToTheEndOfTheSimulationShorterThanPreviousLandConversionPeriod_When_GetLandUse_Then_UnconfirmedPreviousLandConvertedToCroplandWillBeReturned() throws ServerException {
+    public void Given_NonInitialTimestepAndNonCropCoverFollowedByCropAndGrassCoversForMoreThanPreviousLandConversionPeriodAndLessThanLandRemainingPeriod_When_GetLandUse_Then_PreviousLandConvertedToCroplandWillBeReturned() throws ServerException {
 
         Long timestep = 2L;
 
@@ -497,6 +438,26 @@ class CroplandLandUsesDecisionsIT {
                         .description("Cropland")
                         .version(1)
                         .build(), 2);
+
+        coverTypeHistories.addAll(getInterchangingCoverTypeHistories(
+                new CoverTypeBuilder()
+                        .id(3L)
+                        .code("G")
+                        .description("Grassland")
+                        .version(1)
+                        .build(),
+                new CoverTypeBuilder()
+                        .id(2L)
+                        .code("C")
+                        .description("Cropland")
+                        .version(1)
+                        .build(),
+                5,
+                2,
+                1992,
+                3
+        ));
+
 
 
         List<LandUseHistoricDetail> landUseHistories = getLandUseHistories(
@@ -529,6 +490,70 @@ class CroplandLandUsesDecisionsIT {
                                 .name("Forest land Converted To Cropland")
                                 .version(1)
                                 .build())
+                .confirmed(true)
+                .build();
+
+
+        assertThat(landUsesProcessor.process(timestep, coverTypeHistories, landUseHistories))
+                .isEqualTo(landUseHistoricDetail);
+
+
+    }
+
+    /**
+     * Decision 21
+     * @throws ServerException
+     */
+    @Test
+    public void Given_NonInitialTimestepAndNonCroplandCoverFollowedByCroplandCoversForLessThanPreviousLandConversionPeriodAndTimeToEndOfSeriesLessThanPreviousLandConversionPeriod_When_GetLandUse_Then_UnconfirmedPreviousLandConvertedToCroplandWillBeReturned() throws ServerException {
+
+        Long timestep = 1L;
+
+        List<CoverTypeHistoricDetail> coverTypeHistories = getCoverTypeHistories(
+                new CoverTypeBuilder()
+                        .id(1L)
+                        .code("F")
+                        .description("Forest land")
+                        .version(1)
+                        .build(),
+                new CoverTypeBuilder()
+                        .id(2L)
+                        .code("C")
+                        .description("Cropland")
+                        .version(1)
+                        .build(), 2);
+
+
+        List<LandUseHistoricDetail> landUseHistories = Arrays.asList(
+                new LandUseHistoryBuilder()
+                        .itemNumber(0L)
+                        .year(1990)
+                        .landUseCategory(
+                                new LandUseCategoryBuilder()
+                                        .id(2L)
+                                        .reportingFrameworkId(1L)
+                                        .parentLandUseCategoryId(1L)
+                                        .coverTypeId(1L)
+                                        .name("Forest land Remaining Forest land")
+                                        .version(1)
+                                        .build())
+                        .confirmed(true)
+                        .build()
+        );
+
+
+        LandUseHistoricDetail landUseHistoricDetail = new LandUseHistoryBuilder()
+                .itemNumber(1L)
+                .year(1991)
+                .landUseCategory(
+                        new LandUseCategoryBuilder()
+                                .id(12L)
+                                .reportingFrameworkId(1L)
+                                .parentLandUseCategoryId(11L)
+                                .coverTypeId(2L)
+                                .name("Forest land Converted To Cropland")
+                                .version(1)
+                                .build())
                 .confirmed(false)
                 .build();
 
@@ -540,7 +565,9 @@ class CroplandLandUsesDecisionsIT {
     }
 
     /**
-     * Decision 22
+     * Decision 23
+     * Classify as land remaining land (of the previous land use)
+     *
      * @throws ServerException
      */
     @Test
@@ -560,13 +587,13 @@ class CroplandLandUsesDecisionsIT {
                         .code("C")
                         .description("Cropland")
                         .version(1)
-                        .build(), 1,
+                        .build(), 2,
                 new CoverTypeBuilder()
                         .id(1L)
                         .code("F")
                         .description("Forest land")
                         .version(1)
-                        .build(), 3);
+                        .build(), 2);
 
 
         List<LandUseHistoricDetail> landUseHistories = new ArrayList<>();
@@ -606,13 +633,14 @@ class CroplandLandUsesDecisionsIT {
     }
 
     /**
-     * Decision 23
+     * Decision 24
+     * Classify as land (previous land use) converted to land (current cover type)
      * @throws ServerException
      */
     @Test
-    public void Given_NonInitialTimestepAndANonCroplandCoverFollowedByCroplandCoversForAPeriodShorterThanPreviousLandConversionPeriodAndALengthOfTimeToTheEndOfTheSimulationLongerThanPreviousLandConversionPeriod_When_GetLandUse_Then_PreviousLandConvertedToCropLandWillBeReturned() throws ServerException {
+    public void Given_NonInitialTimestepAndANonCroplandCoverFollowedByCroplandCoversForAPeriodShorterThanPreviousLandConversionPeriodAndALengthOfTimeToTheEndOfTheSimulationLongerThanPreviousLandConversionPeriod_When_GetLandUse_Then_PreviousLandConvertedToCroplandWillBeReturned() throws ServerException {
 
-        Long timestep = 2L;
+        Long timestep = 1L;
 
         List<CoverTypeHistoricDetail> coverTypeHistories = getCoverTypeHistories(
                 new CoverTypeBuilder()
@@ -626,7 +654,13 @@ class CroplandLandUsesDecisionsIT {
                         .code("C")
                         .description("Cropland")
                         .version(1)
-                        .build(), 5);
+                        .build(), 3,
+                new CoverTypeBuilder()
+                        .id(3L)
+                        .code("G")
+                        .description("Grassland")
+                        .version(1)
+                        .build(), 1);
 
 
         List<LandUseHistoricDetail> landUseHistories = getLandUseHistories(
@@ -648,8 +682,8 @@ class CroplandLandUsesDecisionsIT {
                         .build(), 1);
 
         LandUseHistoricDetail landUseHistoricDetail = new LandUseHistoryBuilder()
-                .itemNumber(2L)
-                .year(1992)
+                .itemNumber(1L)
+                .year(1991)
                 .landUseCategory(
                         new LandUseCategoryBuilder()
                                 .id(12L)
@@ -776,14 +810,14 @@ class CroplandLandUsesDecisionsIT {
     }
 
     private List<CoverTypeHistoricDetail> getInterchangingCoverTypeHistories(
-            CoverType firstCoverType, CoverType secondCoverType, int yearCount, long previousStep, int previousYear, int idx) {
+            CoverType firstCoverType, CoverType secondCoverType, int totalDesiredNumberOfYears, long previousStep, int previousYear, int startIndex) {
 
         List<CoverTypeHistoricDetail> coverTypeHistories = new ArrayList<>();
 
         AtomicLong step = new AtomicLong(previousStep);
         AtomicInteger year = new AtomicInteger(previousYear);
 
-        int index = idx;
+        int index = startIndex;
         boolean status = true;
 
         do {
@@ -804,7 +838,7 @@ class CroplandLandUsesDecisionsIT {
             index += 1;
             status = !status;
 
-        }while(index <= yearCount);
+        }while(index <= totalDesiredNumberOfYears);
 
         return coverTypeHistories;
 

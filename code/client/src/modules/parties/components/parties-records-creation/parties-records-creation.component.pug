@@ -1,0 +1,11 @@
+form([formgroup]='partiesForm')
+  .form-group
+    label(for='name') Name
+    input#name.form-control(type='text', placeholder='', formcontrolname='name')
+    .alert.alert-danger.mt-3(*ngif="partiesForm.get('name')?.invalid && (partiesForm.get('name')?.dirty || partiesForm.get('name')?.touched)")
+      div(*ngif="partiesForm.get('name')?.errors.required")
+        | Name is required.
+      div(*ngif="partiesForm.get('name')?.errors.maxlength")
+        | Name cannot be more than 50 characters long.
+      div(*ngif="partiesForm.get('name')?.errors.exists")
+        | Name should be unique.

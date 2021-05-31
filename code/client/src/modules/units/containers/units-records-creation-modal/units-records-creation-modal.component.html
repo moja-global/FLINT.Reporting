@@ -1,12 +1,12 @@
 <sb-modal>
 
     <ng-container title>
-        Create Unit Record
+        Create {{targetUnitCategory.name}} Unit Record
     </ng-container>
 
     <ng-container body>
 
-        <sb-units-records-creation (initialized)="onInitialized()" (succeeded)="onSucceeded()" (failed)="onFailed($event)">
+        <sb-units-records-creation [targetUnitCategory]="targetUnitCategory" (initialized)="onInitialized()" (succeeded)="onSucceeded()" (failed)="onFailed($event)">
         </sb-units-records-creation>  
         
         <ng-container *ngIf='(status$ | async) === "initializing"'>

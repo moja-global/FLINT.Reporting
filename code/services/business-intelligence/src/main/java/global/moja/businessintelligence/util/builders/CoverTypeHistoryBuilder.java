@@ -7,53 +7,36 @@
  */
 package global.moja.businessintelligence.util.builders;
 
-import global.moja.businessintelligence.daos.VegetationHistoryCoverType;
+import global.moja.businessintelligence.daos.CoverTypeHistoricDetail;
+import global.moja.businessintelligence.models.CoverType;
 
 /**
  * @since 0.0.1
  * @author Kwaje Anthony <tony@miles.co.ke>
  * @version 1.0
  */
-public class VegetationHistoryCoverTypeBuilder{
+public class CoverTypeHistoryBuilder {
 
-    private Long id;
-    private Long vegetationHistoryId;
-    private Long coverTypeId;
-    private String coverTypeDescription;
     private Long itemNumber;
     private Integer year;
+    private CoverType coverType;
 
-    public VegetationHistoryCoverTypeBuilder id(Long id) {
-        this.id = id;
-        return this;
-    }
-
-    public VegetationHistoryCoverTypeBuilder vegetationHistoryId(Long vegetationHistoryId) {
-        this.vegetationHistoryId = vegetationHistoryId;
-        return this;
-    }
-
-    public VegetationHistoryCoverTypeBuilder coverTypeId(Long coverTypeId) {
-        this.coverTypeId = coverTypeId;
-        return this;
-    }
-
-    public VegetationHistoryCoverTypeBuilder coverTypeDescription(String coverTypeDescription) {
-        this.coverTypeDescription = coverTypeDescription;
-        return this;
-    }
-
-    public VegetationHistoryCoverTypeBuilder itemNumber(Long itemNumber) {
+    public CoverTypeHistoryBuilder itemNumber(Long itemNumber) {
         this.itemNumber = itemNumber;
         return this;
     }
 
-    public VegetationHistoryCoverTypeBuilder year(Integer year) {
+    public CoverTypeHistoryBuilder year(Integer year) {
         this.year = year;
         return this;
     }
 
-    public VegetationHistoryCoverType build() {
-        return new VegetationHistoryCoverType(id, vegetationHistoryId, coverTypeId, coverTypeDescription, itemNumber, year);
+    public CoverTypeHistoryBuilder coverType(CoverType coverType) {
+        this.coverType = coverType;
+        return this;
+    }
+
+    public CoverTypeHistoricDetail build() {
+        return new CoverTypeHistoricDetail(itemNumber, year, coverType);
     }
 }

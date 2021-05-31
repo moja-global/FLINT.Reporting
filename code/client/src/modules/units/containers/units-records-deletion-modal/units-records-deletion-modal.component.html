@@ -1,10 +1,10 @@
 <sb-modal>
     <ng-container title>
-        Delete Unit Record
+        Delete {{targetUnitCategory.name}} Unit Record
     </ng-container>
     <ng-container body>
 
-        <sb-units-records-deletion id="{{id}}" (succeeded)="onSucceeded()" (failed)="onFailed($event)">
+        <sb-units-records-deletion [targetUnitCategory]="targetUnitCategory" [id]="id" (succeeded)="onSucceeded()" (failed)="onFailed($event)">
         </sb-units-records-deletion>
 
         <ng-container *ngIf='(status$ | async) === "deleting"'>

@@ -63,3 +63,14 @@
     (click)="onNo()">
     No
 </button>
+
+<button *ngIf="action === 'open'" 
+    type="button" 
+    [ngClass]="classes$ | async" 
+    data-toggle="tooltip"
+    data-placement="top" 
+    [title]="tooltip$ | async" 
+    [disabled]="disabled$ | async" 
+    (click)="onOpen()">
+    <fa-icon [icon]='["fas", "external-link-alt"]'></fa-icon>
+</button>

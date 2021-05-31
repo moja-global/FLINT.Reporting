@@ -1,0 +1,33 @@
+form([formgroup]='reportingTablesForm')
+  .form-group
+    label(for='name') Name
+    input#name.form-control(type='text', placeholder='', formcontrolname='name')
+    .alert.alert-danger.mt-3(*ngif="reportingTablesForm.get('name')?.invalid && (reportingTablesForm.get('name')?.dirty || reportingTablesForm.get('name')?.touched)")
+      div(*ngif="reportingTablesForm.get('name')?.errors.required")
+        | Name is required.
+      div(*ngif="reportingTablesForm.get('name')?.errors.minlength")
+        | Name cannot be less than 2 characters long.
+      div(*ngif="reportingTablesForm.get('name')?.errors.maxlength")
+        | Name cannot be more than 50 characters long.
+      div(*ngif="reportingTablesForm.get('name')?.errors.exists")
+        | Name should be unique.
+  .form-group
+    label(for='name') Number
+    input#number.form-control(type='text', placeholder='', formcontrolname='number')
+    .alert.alert-danger.mt-3(*ngif="reportingTablesForm.get('number')?.invalid && (reportingTablesForm.get('number')?.dirty || reportingTablesForm.get('number')?.touched)")
+      div(*ngif="reportingTablesForm.get('number')?.errors.required")
+        | Number is required.
+      div(*ngif="reportingTablesForm.get('number')?.errors.minlength")
+        | Number cannot be less than 2 characters long.
+      div(*ngif="reportingTablesForm.get('number')?.errors.maxlength")
+        | Number cannot be more than 50 characters long.
+      div(*ngif="reportingTablesForm.get('number')?.errors.exists")
+        | Number should be unique.
+  .form-group
+    label(for='description')
+      | Description 
+      span.text-secondary  (Optional)
+    textarea#description.form-control(placeholder='', rows='3', formcontrolname='description')
+    .alert.alert-danger.mt-3(*ngif="reportingTablesForm.get('description')?.invalid && (reportingTablesForm.get('description')?.dirty || reportingTablesForm.get('description')?.touched)")
+      div(*ngif="reportingTablesForm.get('description')?.errors.maxlength")
+        | Description cannot be more than 250 characters long.

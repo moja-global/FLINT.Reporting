@@ -21,7 +21,7 @@ form
           tr
             td.align-middle(scope='col', colspan='4')
               span.d-flex.flex-row-reverse
-                sb-button(action='add', entity='Unit category', (add)='onAddUnitCategory()')
+                sb-button(action='add', entity='Unit Category', (add)='onAddUnitCategory()')
         ng-container(body='')
           tr(*ngfor='let unitCategory of unitCategoriesTableService.unitCategories$ | async')
             td.text-center.align-middle
@@ -30,8 +30,8 @@ form
               ngb-highlight([result]='unitCategory.name', [term]='unitCategoriesTableService.searchTerm')
             td.align-middle
               span.d-flex.flex-row-reverse
-                sb-button(action='delete', entity='Unit category', id='{{unitCategory.id}}', (delete)='onDeleteUnitCategory($event)')
-                sb-button(action='update', entity='Unit category', id='{{unitCategory.id}}', (update)='onUpdateUnitCategory($event)')
+                sb-button(action='delete', entity='Unit Category', id='{{unitCategory.id}}', (delete)='onDeleteUnitCategory($event)')
+                sb-button(action='update', entity='Unit Category', id='{{unitCategory.id}}', (update)='onUpdateUnitCategory($event)')
   .row
     .col
       sb-pagination((pagechanged)='onPageChange($event)', (pagesizechanged)='onPageSizeChange($event)')

@@ -12,6 +12,8 @@ export class HeaderComponent implements OnInit {
 
     @Input() title!: string;
     @Input() subtitle!: string;
+    @Input() hideBreadcrumbs: boolean = true;
+    @Input() dynamicBreadcrumbs: boolean = false;
 
     // Classes that are adjusted on the fly based on the prevailing theme
     customClasses: string[] = [];

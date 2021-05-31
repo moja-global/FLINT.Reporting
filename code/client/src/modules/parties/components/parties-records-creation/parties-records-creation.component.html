@@ -1,0 +1,21 @@
+<form role="form" [formGroup]="partiesForm">
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" placeholder="" formControlName="name">
+        <div *ngIf="partiesForm.get('name')?.invalid && (partiesForm.get('name')?.dirty || partiesForm.get('name')?.touched)"
+            class="alert alert-danger mt-3">
+            <div *ngIf="partiesForm.get('name')?.errors.required">
+                Name is required.
+            </div>
+            <div *ngIf="partiesForm.get('name')?.errors.minlength">
+                Name cannot be less than 2 characters long.
+            </div>
+            <div *ngIf="partiesForm.get('name')?.errors.maxlength">
+                Name cannot be more than 50 characters long.
+            </div>
+            <div *ngIf="partiesForm.get('name')?.errors.exists">
+                Name should be unique.
+            </div>
+        </div>
+    </div>
+</form>

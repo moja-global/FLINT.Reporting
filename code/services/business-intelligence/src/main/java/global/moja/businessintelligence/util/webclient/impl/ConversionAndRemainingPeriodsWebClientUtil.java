@@ -18,26 +18,26 @@ import org.springframework.web.reactive.function.client.WebClient;
  * @since 0.0.1
  */
 @Component
-public class CoverTypesWebClientUtil {
+public class ConversionAndRemainingPeriodsWebClientUtil {
 
     // See:
     // https://stackoverflow.com/questions/49095366/right-way-to-use-spring-webclient-in-multi-thread-environment
-    private static WebClient coverTypesWebClient;
+    private static WebClient conversionAndRemainingPeriodsWebClient;
 
     @Autowired
     private HostsConfig hosts;
 
-    public WebClient getCoverTypesWebClient() {
+    public WebClient getConversionAndRemainingPeriodsWebClient() {
 
-        if (coverTypesWebClient == null) {
-            coverTypesWebClient =
+        if (conversionAndRemainingPeriodsWebClient == null) {
+            conversionAndRemainingPeriodsWebClient =
                     WebClient
                             .builder()
-                            .baseUrl("http://" + hosts.getCoverTypesServiceHost())
+                            .baseUrl("http://" + hosts.getConversionAndRemainingPeriodsServiceHost())
                             .build();
         }
 
-        return coverTypesWebClient;
+        return conversionAndRemainingPeriodsWebClient;
     }
 
 }

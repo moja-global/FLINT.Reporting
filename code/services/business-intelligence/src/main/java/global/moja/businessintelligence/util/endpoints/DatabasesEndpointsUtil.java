@@ -8,19 +8,13 @@
 
 package global.moja.businessintelligence.util.endpoints;
 
-import global.moja.businessintelligence.models.CoverType;
+import global.moja.businessintelligence.models.Database;
 import global.moja.businessintelligence.util.webclient.impl.WebClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author Kwaje Anthony <tony@miles.co.ke>
@@ -29,17 +23,17 @@ import java.util.stream.Collectors;
  */
 @Component
 @Slf4j
-public class CoverTypesEndpointsUtil {
+public class DatabasesEndpointsUtil {
 
     @Autowired
     WebClientUtil webClientUtil;
 
-    public Flux<CoverType> retrieveCoverTypes() {
+    public Flux<Database> retrieveDatabases() {
 
-        log.trace("Entering retrieveCoverTypes()");
+        log.trace("Entering retrieveDatabases()");
 
         return webClientUtil
-                .getCoverTypesWebClient()
+                .getDatabasesWebClient()
                 .get()
                 .uri(uriBuilder ->
                         uriBuilder
@@ -47,7 +41,7 @@ public class CoverTypesEndpointsUtil {
                                 .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToFlux(CoverType.class);
+                .bodyToFlux(Database.class);
 
     }
 

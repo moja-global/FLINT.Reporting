@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LandUseHistory implements Comparable<LandUseHistory> {
+public class LandUseHistoricDetail implements Comparable<LandUseHistoricDetail> {
     
     private Long itemNumber;
     private Integer year;
@@ -28,7 +28,7 @@ public class LandUseHistory implements Comparable<LandUseHistory> {
     private Boolean confirmed;
 
     @Override
-    public int compareTo(LandUseHistory landUseCategory) {
+    public int compareTo(LandUseHistoricDetail landUseCategory) {
 
         if(this.itemNumber != null && landUseCategory.getItemNumber() != null){
             return this.itemNumber.compareTo(landUseCategory.getItemNumber());
@@ -37,4 +37,12 @@ public class LandUseHistory implements Comparable<LandUseHistory> {
         }
 
     }
+
+    @Override
+    public String toString(){
+        return String.format("Timestep: %d, Year: %d, Land Use: %s, Confirmed: %s",
+                itemNumber, year, landUseCategory == null ? null : landUseCategory.getName(), confirmed);
+    }
+
+
 }

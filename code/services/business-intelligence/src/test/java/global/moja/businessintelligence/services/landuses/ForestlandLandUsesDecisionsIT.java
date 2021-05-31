@@ -32,10 +32,12 @@ class ForestlandLandUsesDecisionsIT {
 
     /**
      * Decision 3
+     * Classifying as land remaining land of the initial cover type
+     *
      * @throws ServerException
      */
     @Test
-    public void Given_InitialTimestepAndForestLandCover_When_GetLandUse_Then_ForestLandRemainingForestLandWillBeReturned() throws ServerException {
+    public void Given_InitialTimestepAndForestCover_When_GetLandUse_Then_ForestLandRemainingForestLandWillBeReturned() throws ServerException {
 
         Long timestep = 0L;
 
@@ -67,16 +69,17 @@ class ForestlandLandUsesDecisionsIT {
 
         assertThat(landUsesProcessor.process(timestep, coverTypeHistories, landUseHistories))
                 .isEqualTo(landUseHistoricDetail);
-
-
     }
+
 
     /**
      * Decision 8
+     * Classifying as land remaining land of the initial land use type
+     *
      * @throws ServerException
      */
     @Test
-    public void Given_NonInitialTimestepAndForestLandCoversFromInitialTimestep_When_GetLandUse_Then_ForestLandRemainingForestLandWillBeReturned() throws ServerException {
+    public void Given_NonInitialTimestepAndForestCoversFromInitialTimestep_When_GetLandUse_Then_ForestLandRemainingForestLandWillBeReturned() throws ServerException {
 
         Long timestep = 1L;
 
@@ -86,7 +89,7 @@ class ForestlandLandUsesDecisionsIT {
                         .code("F")
                         .description("Forest land")
                         .version(1)
-                        .build(), 3);
+                        .build(), 2);
 
 
         List<LandUseHistoricDetail> landUseHistories = getLandUseHistories(
@@ -124,10 +127,12 @@ class ForestlandLandUsesDecisionsIT {
 
     /**
      * Decision 11
+     * Classify as land remaining land of the current cover type
+     *
      * @throws ServerException
      */
     @Test
-    public void Given_NonInitialTimestepAndANonForestLandCoverFollowedByForestLandCoversForAPeriodLongerThanPreviousLandConversionPeriodAndLongerThanForestLandRemainingPeriod_When_GetLandUse_Then_ForestLandRemainingForestLandWillBeReturned() throws ServerException {
+    public void Given_NonInitialTimestepAndNonForestCoverFollowedByForestCoversForAPeriodLongerThanPreviousLandConversionPeriodAndLongerThanForestLandRemainingPeriod_When_GetLandUse_Then_ForestLandRemainingForestLandWillBeReturned() throws ServerException {
 
         Long timestep = 21L;
 
@@ -188,10 +193,12 @@ class ForestlandLandUsesDecisionsIT {
 
     /**
      * Decision 12
+     * Classify as land converted to land of the current cover type
+     *
      * @throws ServerException
      */
     @Test
-    public void Given_NonInitialTimestepAndANonForestLandCoverFollowedByForestLandCoversForAPeriodLongerThanPreviousLandConversionPeriodAndShorterThanForestLandRemainingPeriod_When_GetLandUse_Then_PreviousLandConvertedToForestLandWillBeReturned() throws ServerException {
+    public void Given_NonInitialTimestepAndNonForestCoverFollowedByForestCoversForAPeriodLongerThanPreviousLandConversionPeriodAndShorterThanForestLandRemainingPeriod_When_GetLandUse_Then_PreviousLandConvertedToForestLandWillBeReturned() throws ServerException {
 
         Long timestep = 4L;
 

@@ -715,6 +715,37 @@ $theme-colors: map-merge(
   $theme-colors
 );
 
+// Add blues
+$theme-colors: map-merge(
+  (
+    "blue-tint-1": $blue-light-100,
+    "blue-tint-2": $blue-light-200,
+    "blue-tint-3": $blue-light-300,
+    "blue-tint-4": $blue-light-400,
+    "blue-tint-5": $blue-light-500,
+    "blue-tint-6": $blue-light-600,
+    "blue-tint-7": $blue-light-700,
+    "blue-tint-8": $blue-light-800,
+    "blue-tint-9": $blue-light-900
+  ),
+  $theme-colors
+);
+
+$theme-colors: map-merge(
+  (
+    "blue-shade-1": $blue-dark-100,
+    "blue-shade-2": $blue-dark-200,
+    "blue-shade-3": $blue-dark-300,
+    "blue-shade-4": $blue-dark-400,
+    "blue-shade-5": $blue-dark-500,
+    "blue-shade-6": $blue-dark-600,
+    "blue-shade-7": $blue-dark-700,
+    "blue-shade-8": $blue-dark-800,
+    "blue-shade-9": $blue-dark-900
+  ),
+  $theme-colors
+);
+
 // Add indigos
 $theme-colors: map-merge(
   (

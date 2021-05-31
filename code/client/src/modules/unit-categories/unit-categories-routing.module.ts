@@ -32,6 +32,21 @@ export const ROUTES: Routes = [
             ],
         } as SBRouteData,
     },
+    {
+        path: ':unitCategoryId',
+        canActivate: [],
+        component: unitCategoriesContainers.UnitCategoriesRecordsHomePageComponent,
+        data: {
+            title: 'Unit Category Details',
+            breadcrumbs: [
+                {
+                    text: 'Unit Categories',
+                    link: '/unit_categories',
+                    active: false
+                }
+            ],
+        } as SBRouteData,
+    }    
 ];
 
 @NgModule({

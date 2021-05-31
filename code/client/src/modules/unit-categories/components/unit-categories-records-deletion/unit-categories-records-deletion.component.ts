@@ -28,7 +28,7 @@ export class UnitCategoriesRecordsDeletionComponent implements OnInit, AfterCont
   // record that has been served up for deletion during the component's initialization.
   @Input() id!: number;
 
-  // Instantiate an object to hold the details of the Unit category record being deleted.
+  // Instantiate an object to hold the details of the Unit Category record being deleted.
   // This will allow the UI to print readable details of that record that 
   // for the users confirmation
   unitCategory: UnitCategory | undefined;
@@ -51,11 +51,11 @@ export class UnitCategoriesRecordsDeletionComponent implements OnInit, AfterCont
 
     this.log.trace(`${LOG_PREFIX} Initializing Component`);
 
-    // Retrieve the Unit category with the given id from the data store 
-    this.log.trace(`${LOG_PREFIX} Retrieving the Unit category with the given id from the data store`);
-    this.log.debug(`${LOG_PREFIX} Unit category record Id = ${this.id}`);
+    // Retrieve the Unit Category with the given id from the data store 
+    this.log.trace(`${LOG_PREFIX} Retrieving the Unit Category with the given id from the data store`);
+    this.log.debug(`${LOG_PREFIX} Unit Category record Id = ${this.id}`);
     this.unitCategory = this.unitCategoriesDataService.records.find(d => d.id == this.id);
-    this.log.debug(`${LOG_PREFIX} Unit category record = ${JSON.stringify(this.unitCategory)}`);
+    this.log.debug(`${LOG_PREFIX} Unit Category record = ${JSON.stringify(this.unitCategory)}`);
 
   }
 
@@ -75,21 +75,21 @@ export class UnitCategoriesRecordsDeletionComponent implements OnInit, AfterCont
 
 
   /**
-   * Deletes Unit category record.
+   * Deletes Unit Category record.
    * Emits an succeeded or failed event indicating whether or not the saving exercise was successful.
    * Error 500 = Indicates something unexpected happened at the server side
    */
   public delete(): void {
 
     // Save the record
-    this.log.trace(`${LOG_PREFIX} Deleting the Unit category record`);
+    this.log.trace(`${LOG_PREFIX} Deleting the Unit Category record`);
     this.unitCategoriesDataService
       .deleteUnitCategory(this.id)
       .subscribe(
         (response: number) => {
 
-          // The Unit category record was saved successfully
-          this.log.trace(`${LOG_PREFIX} Unit category record was deleted successfuly`);
+          // The Unit Category record was saved successfully
+          this.log.trace(`${LOG_PREFIX} Unit Category record was deleted successfuly`);
 
           // Emit a 'succeeded' event
           this.log.trace(`${LOG_PREFIX} Emitting a 'succeeded' event`);
@@ -97,8 +97,8 @@ export class UnitCategoriesRecordsDeletionComponent implements OnInit, AfterCont
         },
         (error: any) => {
 
-          // The Unit category record was not deleted successfully
-          this.log.trace(`${LOG_PREFIX} Unit category record was not deleted successfuly`);
+          // The Unit Category record was not deleted successfully
+          this.log.trace(`${LOG_PREFIX} Unit Category record was not deleted successfuly`);
 
           // Emit a 'failed' event
           this.log.trace(`${LOG_PREFIX} Emitting a 'failed' event`);

@@ -214,14 +214,14 @@ export class FluxTypesRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Checks if search string is present in Flux Type record
+     * Checks if search string is present in the Flux Type record
      * 
      * @param fluxType The Flux Type record
      * @param term The Search String
      * @returns A boolean result indicating whether or not a match was found
      */
     matches(fluxType: FluxType, term: string): boolean {
-        this.log.trace(`${LOG_PREFIX} Checking if search string is present in Flux Type record`);
+        this.log.trace(`${LOG_PREFIX} Checking if search string is present in the Flux Type record`);
         if (fluxType != null && fluxType != undefined) {
 
             // Try locating the search string in the Flux Type's name

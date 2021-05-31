@@ -23,8 +23,9 @@ export const ROUTES: Routes = [
             breadcrumbs: [
                 {
                     text: 'Configurations',
+                    link: '',
                     active: false
-                },
+                }, 
                 {
                     text: 'Reporting Frameworks',
                     active: false
@@ -32,6 +33,31 @@ export const ROUTES: Routes = [
             ],
         } as SBRouteData,
     },
+    {
+        path: 'home',
+        canActivate: [],
+        component: reportingFrameworksContainers.ReportingFrameworksRecordsHomePageComponent,
+        data: {
+            title: 'Reporting Framework Home',
+            breadcrumbs: [
+                {
+                    text: 'Configurations',
+                    link: '',
+                    active: false
+                },                
+                {
+                    text: 'Reporting Frameworks',
+                    link: '/reporting_frameworks',
+                    active: true
+                },
+                {
+                    text: 'Home',
+                    link: '/reporting_frameworks/home',
+                    active: false
+                }             
+            ],
+        } as SBRouteData,
+    }        
 ];
 
 @NgModule({

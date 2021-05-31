@@ -1,0 +1,55 @@
+<form [formGroup]="reportingTablesForm">
+
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" placeholder="" formControlName="name">
+        <div *ngIf="reportingTablesForm.get('name')?.invalid && (reportingTablesForm.get('name')?.dirty || reportingTablesForm.get('name')?.touched)"
+            class="alert alert-danger mt-3">
+            <div *ngIf="reportingTablesForm.get('name')?.errors.required">
+                Name is required.
+            </div>
+            <div *ngIf="reportingTablesForm.get('name')?.errors.minlength">
+                Name cannot be less than 2 characters long.
+            </div>
+            <div *ngIf="reportingTablesForm.get('name')?.errors.maxlength">
+                Name cannot be more than 50 characters long.
+            </div>
+            <div *ngIf="reportingTablesForm.get('name')?.errors.exists">
+                Name should be unique.
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="name">Number</label>
+        <input type="text" class="form-control" id="number" placeholder="" formControlName="number">
+        <div *ngIf="reportingTablesForm.get('number')?.invalid && (reportingTablesForm.get('number')?.dirty || reportingTablesForm.get('number')?.touched)"
+            class="alert alert-danger mt-3">
+            <div *ngIf="reportingTablesForm.get('number')?.errors.required">
+                Number is required.
+            </div>
+            <div *ngIf="reportingTablesForm.get('number')?.errors.minlength">
+                Number cannot be less than 2 characters long.
+            </div>
+            <div *ngIf="reportingTablesForm.get('number')?.errors.maxlength">
+                Number cannot be more than 50 characters long.
+            </div>
+            <div *ngIf="reportingTablesForm.get('number')?.errors.exists">
+                Number should be unique.
+            </div>
+        </div>
+    </div>    
+
+    <div class="form-group">
+        <label for="description">Description <span class="text-secondary"> (Optional)</span></label>
+        <textarea class="form-control" id="description" placeholder="" rows="3"
+            formControlName="description"></textarea>
+        <div *ngIf="reportingTablesForm.get('description')?.invalid && (reportingTablesForm.get('description')?.dirty || reportingTablesForm.get('description')?.touched)"
+            class="alert alert-danger mt-3">
+            <div *ngIf="reportingTablesForm.get('description')?.errors.maxlength">
+                Description cannot be more than 250 characters long.
+            </div>
+        </div>
+    </div>
+
+</form>

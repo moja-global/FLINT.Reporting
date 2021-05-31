@@ -8,15 +8,17 @@
 
 package global.moja.businessintelligence.util.endpoints;
 
-import global.moja.businessintelligence.models.CoverType;
+import global.moja.businessintelligence.models.LandUseCategory;
 import global.moja.businessintelligence.util.webclient.impl.WebClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -27,60 +29,22 @@ import java.util.stream.Collectors;
  */
 @Component
 @Slf4j
-public class CoverTypesEndpointsUtil {
+public class LandUseCategoriesEndpointsUtil {
 
     @Autowired
     WebClientUtil webClientUtil;
 
-    private final Map<Long, CoverType> cache = new HashMap<>();
-
-    public Mono<CoverType> retrieveCoverType(Long coverTypeId) {
-
-        log.trace("Entering retrieveCoverType()");
-        log.debug("Cover Type Id = {}", coverTypeId);
-
-        // Check if the local cache is empty
-        log.trace("Checking if the local cache is empty");
-        if (cache.isEmpty()) {
-
-            // The local cache is empty
-            log.trace("The local cache is empty");
-
-            // Retrieve a fresh set of cover types from the api endpoint
-            log.trace("Retrieving a fresh set of cover types from the api endpoint");
-            return webClientUtil
-                    .getCoverTypesWebClient()
-                    .get()
-                    .uri(uriBuilder ->
-                            uriBuilder
-                                    .path("/all")
-                                    .build())
-                    .accept(MediaType.APPLICATION_JSON)
-                    .retrieve()
-                    .bodyToFlux(CoverType.class)
-                    .collect(Collectors.toList())
-                    .map(list -> {
-
-                        //Add the cover type details to the cache
-                        log.trace("Adding {} cover type record mappings to the local cache",list.size());
-                        list.forEach(v -> cache.put(v.getId(),v));
-
-                        // Retrieve and return the cover type from the local cache
-                        log.trace("Retrieving and returning the cover type from the local cache");
-                        return cache.get(coverTypeId);
-
-                    });
-        } else {
-
-            // The local cache is not empty
-            log.trace("The local cache is not empty");
-
-            // Retrieve and return the cover type from the local cache
-            log.trace("Retrieving and returning the cover type from the local cache");
-            return Mono.just(cache.get(coverTypeId));
-        }
-
-
+    public Flux<LandUseCategory> retrieveLandUseCategories(){
+        return webClientUtil
+                .getLandUseCategoriesWebClient()
+                .get()
+                .uri(uriBuilder ->
+                        uriBuilder
+                                .path("/all")
+                                .build())
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(LandUseCategory.class);
     }
 
 }

@@ -22,12 +22,9 @@ export const ROUTES: Routes = [
             title: 'Units',
             breadcrumbs: [
                 {
-                    text: 'Configurations',
-                    active: false
-                },
-                {
-                    text: 'Units',
-                    active: false
+                    text: 'Unit Categories',
+                    link: '/unit_categories',
+                    active: true
                 }
             ],
         } as SBRouteData,

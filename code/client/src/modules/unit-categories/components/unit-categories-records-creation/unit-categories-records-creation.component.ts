@@ -62,7 +62,7 @@ export class UnitCategoriesRecordsCreationComponent implements OnInit {
   }
 
   /**
-   * Internal validator that checks whether a Unit category record already exists
+   * Internal validator that checks whether a Unit Category record already exists
    * @returns 
    */
   private exists(): ValidatorFn {
@@ -88,7 +88,7 @@ export class UnitCategoriesRecordsCreationComponent implements OnInit {
   }
 
   /**
-   * Validates and saves a new Unit category record.
+   * Validates and saves a new Unit Category record.
    * Emits a succeeded or failed event in response to whether or not the creation exercise was successful.
    * Error 400 = Indicates an invalid Form Control Entry was supplied.
    * Error 500 = Indicates something unexpected happened at the server side
@@ -100,17 +100,17 @@ export class UnitCategoriesRecordsCreationComponent implements OnInit {
       // Read in the provided name
       this.log.trace(`${LOG_PREFIX} Reading in the provided name`);
       const name: string | null = this.unitCategoriesForm.get('name') == null ? null : this.unitCategoriesForm.get('name')?.value;
-      this.log.debug(`${LOG_PREFIX} Unit category Name = ${name}`);
+      this.log.debug(`${LOG_PREFIX} Unit Category Name = ${name}`);
 
       // Save the record
-      this.log.trace(`${LOG_PREFIX} Saving the Unit category record`);
+      this.log.trace(`${LOG_PREFIX} Saving the Unit Category record`);
       this.unitCategoriesDataService
         .createUnitCategory(new UnitCategory({ name }))
         .subscribe(
           (response: UnitCategory) => {
 
-            // The Unit category record was saved successfully
-            this.log.trace(`${LOG_PREFIX} Unit category record was saved successfuly`);
+            // The Unit Category record was saved successfully
+            this.log.trace(`${LOG_PREFIX} Unit Category record was saved successfuly`);
 
             // Reset the form
             this.log.trace(`${LOG_PREFIX} Resetting the form`);
@@ -122,8 +122,8 @@ export class UnitCategoriesRecordsCreationComponent implements OnInit {
           },
           (error: any) => {
 
-            // The Unit category record was not saved successfully
-            this.log.trace(`${LOG_PREFIX} Unit category record was not saved successfuly`);
+            // The Unit Category record was not saved successfully
+            this.log.trace(`${LOG_PREFIX} Unit Category record was not saved successfuly`);
 
             // Emit a 'failed' event
             this.log.trace(`${LOG_PREFIX} Emitting a 'failed' event`);

@@ -1,0 +1,33 @@
+form([formgroup]='landUseSubcategoriesForm')
+  .form-group
+    label(for='name') Name
+    input#name.form-control(type='text', placeholder='', formcontrolname='name')
+    .alert.alert-danger.mt-3(*ngif="landUseSubcategoriesForm.get('name')?.invalid && (landUseSubcategoriesForm.get('name')?.dirty || landUseSubcategoriesForm.get('name')?.touched)")
+      div(*ngif="landUseSubcategoriesForm.get('name')?.errors.required")
+        | Name is required.
+      div(*ngif="landUseSubcategoriesForm.get('name')?.errors.minlength")
+        | Name cannot be less than 2 characters long.
+      div(*ngif="landUseSubcategoriesForm.get('name')?.errors.maxlength")
+        | Name cannot be more than 50 characters long.
+      div(*ngif="landUseSubcategoriesForm.get('name')?.errors.exists")
+        | Name should be unique.
+  .form-group
+    label(for='name') Number
+    input#number.form-control(type='text', placeholder='', formcontrolname='number')
+    .alert.alert-danger.mt-3(*ngif="landUseSubcategoriesForm.get('number')?.invalid && (landUseSubcategoriesForm.get('number')?.dirty || landUseSubcategoriesForm.get('number')?.touched)")
+      div(*ngif="landUseSubcategoriesForm.get('number')?.errors.required")
+        | Number is required.
+      div(*ngif="landUseSubcategoriesForm.get('number')?.errors.minlength")
+        | Number cannot be less than 2 characters long.
+      div(*ngif="landUseSubcategoriesForm.get('number')?.errors.maxlength")
+        | Number cannot be more than 50 characters long.
+      div(*ngif="landUseSubcategoriesForm.get('number')?.errors.exists")
+        | Number should be unique.
+  .form-group
+    label(for='description')
+      | Description 
+      span.text-secondary  (Optional)
+    textarea#description.form-control(placeholder='', rows='3', formcontrolname='description')
+    .alert.alert-danger.mt-3(*ngif="landUseSubcategoriesForm.get('description')?.invalid && (landUseSubcategoriesForm.get('description')?.dirty || landUseSubcategoriesForm.get('description')?.touched)")
+      div(*ngif="landUseSubcategoriesForm.get('description')?.errors.maxlength")
+        | Description cannot be more than 250 characters long.

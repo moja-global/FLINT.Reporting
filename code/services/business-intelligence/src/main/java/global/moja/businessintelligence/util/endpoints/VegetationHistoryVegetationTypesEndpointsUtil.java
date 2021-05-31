@@ -8,15 +8,14 @@
 
 package global.moja.businessintelligence.util.endpoints;
 
-import global.moja.businessintelligence.models.Database;
 import global.moja.businessintelligence.models.Location;
+import global.moja.businessintelligence.models.VegetationHistoryVegetationType;
 import global.moja.businessintelligence.util.webclient.impl.WebClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * @since 0.0.1
@@ -25,25 +24,28 @@ import reactor.core.publisher.Mono;
  */
 @Component
 @Slf4j
-public class LocationsEndpointsUtil {
+public class VegetationHistoryVegetationTypesEndpointsUtil {
 
     @Autowired
     private WebClientUtil webClientUtil;
 
-    public Flux<Location> retrieveLocations(Long databaseId, Long partyId) {
+    public Flux<VegetationHistoryVegetationType> retrieveVegetationHistoryVegetationTypes(
+            Long databaseId, Long vegetationHistoryId) {
 
-        log.trace("Entering retrieveLocations()");
+        log.trace("Entering retrieveVegetationHistoryVegetationTypes()");
+        log.debug("Database Id = {}",databaseId);
+        log.debug("Vegetation History Id = {}", vegetationHistoryId);
 
         return webClientUtil
-                .getDatabaseWebClient()
+                .getVegetationHistoryVegetationTypesWebClient()
                 .get()
                 .uri(uriBuilder ->
                         uriBuilder
                                 .path("/databases/{param1}/all")
-                                .queryParam("partyId", "{param2}")
-                                .build(Long.toString(databaseId),Long.toString(partyId)))
+                                .queryParam("vegetationHistoryId", "{param2}")
+                                .build(Long.toString(databaseId),Long.toString(vegetationHistoryId)))
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToFlux(Location.class);
+                .bodyToFlux(VegetationHistoryVegetationType.class);
     }
 }

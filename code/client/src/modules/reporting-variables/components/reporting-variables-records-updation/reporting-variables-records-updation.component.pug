@@ -1,0 +1,33 @@
+form([formgroup]='reportingVariablesForm')
+  .form-group
+    label(for='name') Name
+    input#name.form-control(type='text', placeholder='', formcontrolname='name')
+    .alert.alert-danger.mt-3(*ngif="reportingVariablesForm.get('name')?.invalid && (reportingVariablesForm.get('name')?.dirty || reportingVariablesForm.get('name')?.touched)")
+      div(*ngif="reportingVariablesForm.get('name')?.errors.required")
+        | Name is required.
+      div(*ngif="reportingVariablesForm.get('name')?.errors.minlength")
+        | Name cannot be less than 2 characters long.
+      div(*ngif="reportingVariablesForm.get('name')?.errors.maxlength")
+        | Name cannot be more than 50 characters long.
+      div(*ngif="reportingVariablesForm.get('name')?.errors.exists")
+        | Name should be unique.
+  .form-group
+    label(for='name') Number
+    input#number.form-control(type='text', placeholder='', formcontrolname='number')
+    .alert.alert-danger.mt-3(*ngif="reportingVariablesForm.get('number')?.invalid && (reportingVariablesForm.get('number')?.dirty || reportingVariablesForm.get('number')?.touched)")
+      div(*ngif="reportingVariablesForm.get('number')?.errors.required")
+        | Number is required.
+      div(*ngif="reportingVariablesForm.get('number')?.errors.minlength")
+        | Number cannot be less than 2 characters long.
+      div(*ngif="reportingVariablesForm.get('number')?.errors.maxlength")
+        | Number cannot be more than 50 characters long.
+      div(*ngif="reportingVariablesForm.get('number')?.errors.exists")
+        | Number should be unique.
+  .form-group
+    label(for='description')
+      | Description 
+      span.text-secondary  (Optional)
+    textarea#description.form-control(placeholder='', rows='3', formcontrolname='description')
+    .alert.alert-danger.mt-3(*ngif="reportingVariablesForm.get('description')?.invalid && (reportingVariablesForm.get('description')?.dirty || reportingVariablesForm.get('description')?.touched)")
+      div(*ngif="reportingVariablesForm.get('description')?.errors.maxlength")
+        | Description cannot be more than 250 characters long.

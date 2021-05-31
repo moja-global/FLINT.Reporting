@@ -10,7 +10,7 @@ import { UnitsRecordsDeletionComponent } from '../../components/units-records-de
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject, Subscription, timer } from 'rxjs';
-import { ConnectivityStatusService } from '@common/services';
+import { UnitCategory } from '@modules/unit-categories/models/unit-category.model';
 
 const LOG_PREFIX: string = "[Units Records Deletion Modal]";
 
@@ -26,6 +26,11 @@ export class UnitsRecordsDeletionModalComponent implements OnInit {
     // This will allow the parent component to inject the id of the 
     // record that has been served up for deletion during the component's initialization.
     @Input() id!: number;
+
+    // Instantiate and avail the target unit category variable to the parent component.
+    // This will allow the parent component to inject the details of the current target  
+    // unit category  
+    @Input() targetUnitCategory: UnitCategory = new UnitCategory();  
 
     // Inject a reference to the Units records deletion component. 
     // This will provide a way of propagating delete requests to it

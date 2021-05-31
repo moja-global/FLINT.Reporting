@@ -1,0 +1,37 @@
+form
+  .row
+    .col
+      .d-flex.justify-content-between.p-2
+        sb-search((searched)='onSearch($event)')
+        sb-loading-animation
+  .row
+    .col
+      sb-table
+        ng-container(header='')
+          tr
+            th.text-center.align-middle(scope='col')
+              span #
+            th.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
+              span Name
+              sb-sort-icon(*ngif='sortedColumn === "name"', [direction]='sortedDirection')
+            th.align-middle(scope='col')
+              span.d-flex.flex-row-reverse
+                | Actions
+        ng-container(footer='')
+          tr
+            td.align-middle(scope='col', colspan='4')
+              span.d-flex.flex-row-reverse
+                sb-button(action='add', entity='LandUseCategory', (add)='onAddLandUseCategory()')
+        ng-container(body='')
+          tr(*ngfor='let landUseCategory of landUseCategoriesTableService.landUseCategories$ | async')
+            td.text-center.align-middle
+              | {{landUseCategory.pos}}
+            td.align-middle
+              ngb-highlight([result]='landUseCategory.name', [term]='landUseCategoriesTableService.searchTerm')
+            td.align-middle
+              span.d-flex.flex-row-reverse
+                sb-button(action='delete', entity='LandUseCategory', id='{{landUseCategory.id}}', (delete)='onDeleteLandUseCategory($event)')
+                sb-button(action='update', entity='LandUseCategory', id='{{landUseCategory.id}}', (update)='onUpdateLandUseCategory($event)')
+  .row
+    .col
+      sb-pagination((pagechanged)='onPageChange($event)', (pagesizechanged)='onPageSizeChange($event)')

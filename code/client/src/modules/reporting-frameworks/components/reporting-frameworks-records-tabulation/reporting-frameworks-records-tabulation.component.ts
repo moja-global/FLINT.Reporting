@@ -18,6 +18,7 @@ import { ConnectivityStatusService } from '@common/services';
 import { ReportingFrameworksRecordsCreationModalComponent } from '@modules/reporting-frameworks/containers/reporting-frameworks-records-creation-modal/reporting-frameworks-records-creation-modal.component';
 import { ReportingFrameworksRecordsDeletionModalComponent } from '@modules/reporting-frameworks/containers/reporting-frameworks-records-deletion-modal/reporting-frameworks-records-deletion-modal.component';
 import { ReportingFrameworksRecordsUpdationModalComponent } from '@modules/reporting-frameworks/containers/reporting-frameworks-records-updation-modal/reporting-frameworks-records-updation-modal.component';
+import { Router, ActivatedRoute } from '@angular/router';
 
 const LOG_PREFIX: string = "[Reporting Frameworks Records Tabulation]";
 
@@ -52,9 +53,6 @@ export class ReportingFrameworksRecordsTabulationComponent implements OnInit, Af
     // Keep tabs on the direction that the records are currently sorted by: ascending or descending.
     sortedDirection!: string;
 
-    // Keep tabs on whether or not we are online
-    online: boolean = false;
-
     // Instantiate a central gathering point for all the component's subscriptions.
     // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
     private _subscriptions: Subscription[] = [];
@@ -64,21 +62,14 @@ export class ReportingFrameworksRecordsTabulationComponent implements OnInit, Af
         public reportingFrameworksTableService: ReportingFrameworksRecordsTabulationService,
         private changeDetectorRef: ChangeDetectorRef,
         private modalService: NgbModal,
-        public connectivityStatusService: ConnectivityStatusService,
+        private router: Router,
+        private activatedRoute: ActivatedRoute,
         private log: NGXLogger) {
     }
 
     ngOnInit() {
 
         this.log.trace(`${LOG_PREFIX} Initializing Component`);
-
-        // Subscribe to connectivity status notifications.
-        this.log.trace(`${LOG_PREFIX} Subscribing to connectivity status notifications`);
-        this._subscriptions.push(
-            this.connectivityStatusService.online$.subscribe(
-                (status) => {
-                    this.online = status;
-                }));
     }
 
 
@@ -188,6 +179,27 @@ export class ReportingFrameworksRecordsTabulationComponent implements OnInit, Af
         this.log.debug(`${LOG_PREFIX} Reporting Framework record Id = ${id}`);
         const modalRef = this.modalService.open(ReportingFrameworksRecordsDeletionModalComponent, { centered: true, backdrop: 'static' });
         modalRef.componentInstance.id = id;
+    }
+
+
+
+    /**
+     * Opens Reporting Framework Home Window
+     */
+    onOpenReportingFramework(state: any) {
+
+        this.log.trace(`${LOG_PREFIX} Opening Reporting Framework Home Window`);
+        this.log.debug(`${LOG_PREFIX} State = ${JSON.stringify(state)}`);
+
+        this.router.navigate(
+            ['/reporting_frameworks/home'],
+            {
+                queryParams: {
+                    reportingFrameworkId: state.id,
+                    reportingFrameworkName: state.name
+                }
+            });
+
     }
 
 }

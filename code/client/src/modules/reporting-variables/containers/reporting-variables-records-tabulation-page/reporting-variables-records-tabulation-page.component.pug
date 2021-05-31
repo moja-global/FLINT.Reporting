@@ -1,0 +1,9 @@
+sb-layout-main
+  ng-container(header='')
+    sb-header(title='Reporting Variables', subtitle='The Reporting Framework's Reporting Variables', [hidebreadcrumbs]='false')
+  ng-container(body='')
+    sb-card
+      .card-header
+        | Reporting Variables List
+      .card-body
+        sb-reporting-variables-records-tabulation([pagesize]='6')

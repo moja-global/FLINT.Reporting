@@ -20,6 +20,7 @@ export class ButtonComponent {
   @Output() save: EventEmitter<void> = new EventEmitter<void>();
   @Output() yes: EventEmitter<void> = new EventEmitter<void>();
   @Output() no: EventEmitter<void> = new EventEmitter<void>();
+  @Output() open: EventEmitter<any> = new EventEmitter<any>();
 
   // Instantiate and avail the action variable to the parent component for customization.
   // Supported actions are add, update and delete
@@ -36,6 +37,11 @@ export class ButtonComponent {
   @Input() id!: number;
 
 
+  // Instantiate and avail the name variable to the parent component for customization.
+  // The name is the unique identifier of the entity
+  @Input() name!: string;  
+
+
   // Instantiate and avail the guarded variable to the parent component for customization.
   // The guard variable, will determine whether or not a button is disabled when the system goes offline
   @Input() guarded: boolean = true;
@@ -45,6 +51,11 @@ export class ButtonComponent {
   // If true, this value will override the disabled property that is automatically set when the system goes offline.
   // It should thus not be confused with the disabled$ observable
   @Input() disabled: boolean = false;
+
+
+  // Instantiate and avail the tooltip variable to the parent component for customization.
+  // The tooltip, if provided, will be used in place of the getTooltip()'s concatenated result
+  @Input() tooltip!: string;  
 
   // Instantiate an array containing offline css classes
   offlineClasses: string[] = ["btn", "btn-sm", "btn-secondary", "mr-1"];
@@ -131,6 +142,10 @@ export class ButtonComponent {
     this.no.emit();
   }
 
+  onOpen(): void {
+    this.open.emit({ id: this.id , name: this.name });
+  }
+
 
   getClasses(): string[] {
 
@@ -146,70 +161,102 @@ export class ButtonComponent {
 
   getTooltip(): string {
 
+    if(this.tooltip != undefined) {
+
+    }
+
+    let prefix: string;
+
     const disabledSuffix1: string = "is currently disabled because the running process is yet to be completed";
     const disabledSuffix2: string = "is currently disabled because you seem to be offline";
+
+
 
     switch (this.action) {
 
       case "add":
 
+        prefix = this.tooltip != undefined? this.tooltip : `Add ${this.entity}`;
+
         if (this.disabled) {
-          return `Add ${this.entity} ${disabledSuffix1}`;
+          return `${prefix} ${disabledSuffix1}`;
         } else {
           return this.guarded ?
-            this.online ? `Add ${this.entity}` : `Add ${this.entity} ${disabledSuffix2}` :
-            `Add ${this.entity}`;
+            this.online ? `${prefix}` : `${prefix} ${disabledSuffix2}` :
+            `${prefix}`;
         }
 
       case "update":
 
+        prefix = this.tooltip != undefined? this.tooltip : `Update ${this.entity}`;
+
         if (this.disabled) {
-          return `Update ${this.entity} ${disabledSuffix1}`;
+          return `${prefix} ${disabledSuffix1}`;
         } else {
           return this.guarded ?
-            this.online ? `Update ${this.entity}` : `Update ${this.entity} ${disabledSuffix2}` :
-            `Update ${this.entity}`;
+            this.online ? `${prefix}` : `${prefix} ${disabledSuffix2}` :
+            `${prefix}`;
         }
 
       case "delete":
 
+        prefix = this.tooltip != undefined? this.tooltip : `Delete ${this.entity}`;
+
         if (this.disabled) {
-          return `Delete ${this.entity} ${disabledSuffix1}`;
+          return `${prefix} ${disabledSuffix1}`;
         } else {
           return this.guarded ?
-            this.online ? `Delete ${this.entity}` : `Delete ${this.entity} ${disabledSuffix2}` :
-            `Delete ${this.entity}`;
+            this.online ? `${prefix}` : `${prefix} ${disabledSuffix2}` :
+            `${prefix}`;
         }
 
       case "save":
 
+        prefix = this.tooltip != undefined? this.tooltip : `Save`;
+
         if (this.disabled) {
-          return `Save option ${disabledSuffix1}`;
+          return `${prefix} ${disabledSuffix1}`;
         } else {
           return this.guarded ?
-            this.online ? `Save` : `Save option ${disabledSuffix2}` :
-            `Save`;
+            this.online ? `${prefix}` : `${prefix} ${disabledSuffix2}` :
+            `${prefix}`;
         }
 
       case "yes":
 
+        prefix = this.tooltip != undefined? this.tooltip : `Yes`;
+
         if (this.disabled) {
-          return `Yes option ${disabledSuffix1}`;
+          return `${prefix} ${disabledSuffix1}`;
         } else {
           return this.guarded ?
-            this.online ? `Yes` : `Yes option ${disabledSuffix2}` :
-            `Yes`;
+            this.online ? `${prefix}` : `${prefix} ${disabledSuffix2}` :
+            `${prefix}`;
         }
 
       case "no":
 
+        prefix = this.tooltip != undefined? this.tooltip : `No`;
+
         if (this.disabled) {
-          return `No option ${disabledSuffix1}`;
+          return `${prefix} ${disabledSuffix1}`;
         } else {
           return this.guarded ?
-            this.online ? `No` : `No option ${disabledSuffix2}` :
-            `No`;
+            this.online ? `${prefix}` : `${prefix} ${disabledSuffix2}` :
+            `${prefix}`;
         }
+
+        case "open":
+
+          prefix = this.tooltip != undefined? this.tooltip : `More details`;
+
+          if (this.disabled) {
+            return `${prefix} ${disabledSuffix1}`;
+          } else {
+            return this.guarded ?
+              this.online ? `${prefix}` : `${prefix} ${disabledSuffix2}` :
+              `${prefix}`;
+          }        
 
       default:
         return "";

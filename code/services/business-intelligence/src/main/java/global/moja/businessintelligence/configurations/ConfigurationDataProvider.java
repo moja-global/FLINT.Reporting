@@ -8,18 +8,23 @@
  */
 package global.moja.businessintelligence.configurations;
 
+import global.moja.businessintelligence.daos.LandUseHistoricDetail;
 import global.moja.businessintelligence.models.*;
 import global.moja.businessintelligence.util.LandUseChangeAction;
 import global.moja.businessintelligence.util.endpoints.EndpointsUtil;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import reactor.core.publisher.Flux;
 
 import javax.annotation.PostConstruct;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,86 +38,72 @@ import java.util.stream.Collectors;
  */
 @Configuration
 @PropertySource(value = {"classpath:hosts.properties"})
-@Getter
 @Slf4j
 public class ConfigurationDataProvider {
 
-    @Autowired
-    EndpointsUtil endpointsUtil;
+    private EndpointsUtil endpointsUtil;
 
-    private final List<ConversionAndRemainingPeriod> conversionAndRemainingPeriods = new ArrayList<>();
-    private final List<CoverType> coverTypes = new ArrayList<>();
-    private final List<Database> databases = new ArrayList<>();
-    private final List<LandUseCategory> landUseCategories = new ArrayList<>();
-    private final List<ReportingTable> reportingTables = new ArrayList<>();
+    private final List<ConversionAndRemainingPeriod> conversionAndRemainingPeriods;
+    private final List<CoverType> coverTypes;
+    private final List<Database> databases;
+    private final List<LandUseCategory> landUseCategories;
+    private final List<ReportingTable> reportingTables;
     private final Map<Long, List<VegetationType>> databasesVegetationTypes = new HashMap<>();
 
-    @PostConstruct
-    private void init() {
 
-        // Retrieve & Set Conversion & Remaining Periods Records
-        endpointsUtil
-                .retrieveConversionAndRemainingPeriods()
-                .collect(Collectors.toList())
-                .doOnNext(list -> {
-                    log.debug("Adding {} Conversion & Remaining Periods Records to the data configuration");
-                    conversionAndRemainingPeriods.addAll(list);
-                })
-                .thenMany(
+    @Autowired
+    public ConfigurationDataProvider(EndpointsUtil endpointsUtil) {
 
-                        // Retrieve & Set Cover Types Records
+        this.endpointsUtil = endpointsUtil;
+
+        this.conversionAndRemainingPeriods =
+                endpointsUtil
+                        .retrieveConversionAndRemainingPeriods()
+                        .collect(Collectors.toList())
+                        .block();
+
+        this.coverTypes =
+                endpointsUtil
+                        .retrieveCoverTypes()
+                        .collect(Collectors.toList())
+                        .block();
+
+        this.databases =
+                endpointsUtil
+                        .retrieveDatabases()
+                        .collect(Collectors.toList())
+                        .block();
+
+        this.landUseCategories =
+                endpointsUtil
+                        .retrieveLandUseCategories()
+                        .collect(Collectors.toList())
+                        .block();
+
+        this.reportingTables =
+                endpointsUtil
+                        .retrieveReportingTables()
+                        .collect(Collectors.toList())
+                        .block();
+
+        this.databases.forEach(database -> {
+            try{
+                databasesVegetationTypes.put(
+                        database.getId(),
                         endpointsUtil
-                                .retrieveCoverTypes()
+                                .retrieveVegetationTypes(database.getId())
                                 .collect(Collectors.toList())
-                                .doOnNext(list -> {
-                                    log.debug("Adding {} Cover Type Records to the data configuration", list.size());
-                                    coverTypes.addAll(list);
-                                }))
-                .thenMany(
+                                .block(Duration.ofMillis(10000))
+                );
+            } catch (Exception e) {
+                log.error("{} Database Vegetation Types retrieval failed", database.getLabel());
+            }
 
-                        // Retrieve & Set Databases Records
-                        endpointsUtil
-                                .retrieveDatabases()
-                                .collect(Collectors.toList())
-                                .doOnNext(list -> {
-                                    log.debug("Adding {} Databases Records to the data configuration", list.size());
-                                    databases.addAll(list);
-                                }))
-                .thenMany(
+        });
 
-                        // Retrieve & Set Land Use Categories Records
-                        endpointsUtil
-                                .retrieveLandUseCategories()
-                                .collect(Collectors.toList())
-                                .doOnNext(list -> {
-                                    log.debug("Adding {} Land Use Categories Records to the data configuration", list.size());
-                                    landUseCategories.addAll(list);
-                                }))
-                .thenMany(
-
-                        // Retrieve & Set Reporting Tables Records
-                        endpointsUtil
-                                .retrieveReportingTables()
-                                .collect(Collectors.toList())
-                                .doOnNext(list -> {
-                                    log.debug("Adding {} Reporting Tables Records to the data configuration", list.size());
-                                    reportingTables.addAll(list);
-                                }))
-                .thenMany(
-
-                        // Retrieve & Set Vegetation Types Records
-                        Flux.fromStream(databases.stream())
-                                .flatMap(database ->
-                                        endpointsUtil
-                                                .retrieveVegetationTypes(database.getId())
-                                                .collect(Collectors.toList())
-                                                .doOnNext(list -> {
-                                                    log.debug("Adding {} Vegetation Types Records to the data configuration", list.size());
-                                                    databasesVegetationTypes.put(database.getId(), list);
-                                                })))
-                .subscribe();
 
     }
+
 
     //<editor-fold desc="Conversion & Remaining Period">
 
@@ -176,7 +167,8 @@ public class ConfigurationDataProvider {
 
     //<editor-fold desc="Cover Types">
 
-    public CoverType getCoverType(Long coverTypeId) {
+    public CoverType
+    getCoverType(Long coverTypeId) {
 
         log.trace("Entering getCoverType()");
         log.debug("Cover Type Id = {}", coverTypeId);
@@ -197,10 +189,25 @@ public class ConfigurationDataProvider {
         return
                 coverTypes.stream()
                         .filter(coverType ->
-                                coverTypeDescription.equals(coverType.getDescription()))
+                                coverTypeDescription.equalsIgnoreCase(coverType.getDescription()))
                         .findAny()
                         .orElse(null);
     }
+
+    public CoverType getCoverType(LandUseHistoricDetail landUseHistoricDetail) {
+
+        log.trace("Entering getCoverType()");
+        log.debug("Land Use Historic Detail = {}", landUseHistoricDetail);
+
+        try{
+            return
+                    getCoverType(landUseHistoricDetail.getLandUseCategory().getCoverTypeId());
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+
 
     //</editor-fold>
 
@@ -214,9 +221,29 @@ public class ConfigurationDataProvider {
         return
                 landUseCategories.stream()
                         .filter(landUseCategory ->
-                                landUseCategoryName.equals(landUseCategory.getName()))
+                                landUseCategoryName.equalsIgnoreCase(landUseCategory.getName()))
                         .findAny()
                         .orElse(null);
+    }
+
+    public LandUseCategory getLandUseCategory(
+            Long previousCoverTypeId,
+            Long currentCoverTypeId,
+            LandUseChangeAction landUseChangeAction) {
+
+        log.trace("Entering getLandUseCategory()");
+        log.debug("Previous Cover Type Id = {}", previousCoverTypeId);
+        log.debug("Current Cover Type Id = {}", currentCoverTypeId);
+        log.debug("Land Use Change Action = {}", landUseChangeAction);
+
+        return getLandUseCategory(
+                new StringBuilder()
+                        .append(getCoverType(previousCoverTypeId).getDescription())
+                        .append(" ")
+                        .append(landUseChangeAction.getDescription())
+                        .append(" ")
+                        .append(getCoverType(currentCoverTypeId).getDescription())
+                        .toString());
     }
 
     public LandUseCategory getLandUseCategory(
@@ -255,19 +282,6 @@ public class ConfigurationDataProvider {
                         .orElse(null);
     }
 
-    public ReportingTable getReportingTable(String reportingTableNumber) {
-
-        log.trace("Entering getReportingTable()");
-        log.debug("Reporting Table Number = {}", reportingTableNumber);
-
-        return
-                reportingTables.stream()
-                        .filter(reportingTable ->
-                                reportingTableNumber.equals(reportingTable.getNumber()))
-                        .findAny()
-                        .orElse(null);
-    }
-
     //</editor-fold>
 
     //<editor-fold desc="Vegetation Types">
@@ -278,7 +292,7 @@ public class ConfigurationDataProvider {
         log.debug("Database Id = {}", vegetationTypeId);
         log.debug("Vegetation Type Id = {}", vegetationTypeId);
 
-        if(databasesVegetationTypes.get(databaseId) != null) {
+        if (databasesVegetationTypes.get(databaseId) != null) {
 
             return
                     databasesVegetationTypes
@@ -295,4 +309,5 @@ public class ConfigurationDataProvider {
     }
 
     //</editor-fold>
+
 }

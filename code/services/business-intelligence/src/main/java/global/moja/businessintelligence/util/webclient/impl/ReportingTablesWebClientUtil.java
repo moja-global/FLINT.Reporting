@@ -18,26 +18,26 @@ import org.springframework.web.reactive.function.client.WebClient;
  * @since 0.0.1
  */
 @Component
-public class LocationsWebClientUtil {
+public class ReportingTablesWebClientUtil {
 
     // See:
     // https://stackoverflow.com/questions/49095366/right-way-to-use-spring-webclient-in-multi-thread-environment
-    private static WebClient locationsWebClient;
+    private static WebClient reportingTablesWebClient;
 
     @Autowired
     private HostsConfig hosts;
 
-    public WebClient getLocationsWebClient() {
+    public WebClient getReportingTablesWebClient() {
 
-        if (locationsWebClient == null) {
-            locationsWebClient =
+        if (reportingTablesWebClient == null) {
+            reportingTablesWebClient =
                     WebClient
                             .builder()
-                            .baseUrl("http://" + hosts.getLocationsServiceHost())
+                            .baseUrl("http://" + hosts.getReportingTablesServiceHost())
                             .build();
         }
 
-        return locationsWebClient;
+        return reportingTablesWebClient;
     }
 
 }

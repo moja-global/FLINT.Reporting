@@ -1,0 +1,19 @@
+<sb-layout-main>
+     
+    <ng-container header>
+        <sb-header title="Land Use Subcategories" subtitle="The Reporting Framework's Land Use Subcategories" [hideBreadcrumbs]="false"></sb-header>
+    </ng-container>
+      
+    
+    <ng-container body>
+        <sb-card>
+            <div class="card-header">
+                Land Use Subcategories List
+            </div>
+            <div class="card-body">
+                <sb-land-use-subcategories-records-tabulation [pageSize]="6"></sb-land-use-subcategories-records-tabulation>
+            </div>
+        </sb-card>
+    </ng-container>
+
+</sb-layout-main>

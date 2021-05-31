@@ -1,8 +1,9 @@
 <header [ngClass]="customClasses">
+
     <div class="container-fluid">
-        <div class="pt-4 pb-3">
+        <div class="pt-4 pb-5">
             <div class="row align-items-center justify-content-between">
-                <div class="col-auto mx-2 pb-5">
+                <div class="col-auto mx-1 pb-1">
                     <h1 class="header-title">
                         <div class="page-header-icon"><i data-feather="layout"></i></div>
                         {{title}}
@@ -11,6 +12,9 @@
                         {{subtitle}}
                     </div>
                 </div>
+            </div>
+            <div class="row pt-3">
+                <sb-breadcrumbs class="w-100 pl-3 pr-3" *ngIf="!hideBreadcrumbs" [dynamic]="dynamicBreadcrumbs"></sb-breadcrumbs>
             </div>
         </div>
     </div>

@@ -5,9 +5,9 @@
  * If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package ke.co.miles.businessintelligence.util.builders;
+package global.moja.businessintelligence.util.builders;
 
-import ke.co.miles.businessintelligence.daos.QueryParameters;
+import global.moja.businessintelligence.daos.QueryParameters;
 
 /**
  * @since 0.0.1

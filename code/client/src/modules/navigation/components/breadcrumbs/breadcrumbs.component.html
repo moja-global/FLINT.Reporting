@@ -1,3 +1,19 @@
 <ol class="breadcrumb mb-4">
-    <li class="breadcrumb-item" *ngFor="let breadcrumb of breadcrumbs" [ngClass]="{active: breadcrumb.active}"><a *ngIf="breadcrumb.link" [routerLink]="breadcrumb.link">{{breadcrumb.text}}</a><span *ngIf="!breadcrumb.link">{{breadcrumb.text}}</span></li>
+    <ng-container *ngIf="dynamic; else static">
+        <li class="breadcrumb-item" *ngFor="let breadcrumb of breadcrumbs" [ngClass]="{active: breadcrumb.active}">
+            <a *ngIf="breadcrumb.link" [routerLink]="breadcrumb.link" [queryParams]="breadcrumb.queryParams" queryParamsHandling :null >
+                {{breadcrumb.text}}
+            </a>
+            <span *ngIf="!breadcrumb.link">{{breadcrumb.text}}</span>
+        </li> 
+    </ng-container>
 </ol>
+
+<ng-template #static>
+    <li class="breadcrumb-item" *ngFor="let breadcrumb of breadcrumbs" [ngClass]="{active: breadcrumb.active}">
+        <a *ngIf="breadcrumb.link" [routerLink]="breadcrumb.link">
+            {{breadcrumb.text}}
+        </a>
+        <span *ngIf="!breadcrumb.link">{{breadcrumb.text}}</span>
+    </li>  
+</ng-template>

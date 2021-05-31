@@ -211,14 +211,14 @@ export class CoverTypesRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Checks if search string is present in Cover Type record
+     * Checks if search string is present in the Cover Type record
      * 
      * @param coverType The Cover Type record
      * @param term The Search String
      * @returns A boolean result indicating whether or not a match was found
      */
     matches(coverType: CoverType, term: string): boolean {
-        this.log.trace(`${LOG_PREFIX} Checking if search string is present in Cover Type record`);
+        this.log.trace(`${LOG_PREFIX} Checking if search string is present in the Cover Type record`);
         if (coverType != null && coverType != undefined) {
 
             // Try locating the search string in the Cover Type's name

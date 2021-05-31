@@ -63,6 +63,12 @@
             <artifactId>rxjava2-jdbc</artifactId>
             <version>${davidmoten-rxjava2-jdbc.version}</version> 
         </dependency>
+
+        <!-- rabbitmq -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
         
         <!-- api -->
         <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-webflux-ui -->

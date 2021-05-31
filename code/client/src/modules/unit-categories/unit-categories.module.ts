@@ -7,6 +7,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 /* Modules */
 import { AppCommonModule } from '@common/app-common.module';
 import { NavigationModule } from '@modules/navigation/navigation.module';
+import { UnitsModule } from '@modules/units/units.module';
 
 /* Components */
 import * as unitCategoriesComponents from './components';
@@ -29,7 +30,8 @@ import * as unitCategoriesServices from './services';
         ReactiveFormsModule,
         FormsModule,
         AppCommonModule,
-        NavigationModule
+        NavigationModule,
+        UnitsModule
     ],
     providers: [
         DecimalPipe,

@@ -3,13 +3,21 @@ import { ActivatedRoute, ChildActivationEnd, Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { SBRouteData } from '../models';
+import { Breadcrumb, SBRouteData } from '../models';
 
 @Injectable()
 export class NavigationService {
-    _sideNavVisible$ = new BehaviorSubject(true);
-    _routeData$ = new BehaviorSubject({} as SBRouteData);
-    _currentURL$ = new BehaviorSubject('');
+
+    // Main Navigation
+    _sideNavVisibleSubject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+    _routeDataSubject$: BehaviorSubject<SBRouteData> = new BehaviorSubject<SBRouteData>({} as SBRouteData);
+    _currentURLSubject$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+
+    // Breadcrumb Navigation
+    _dynamicBreadcrumbsSubject$ : BehaviorSubject<Breadcrumb[]> = new BehaviorSubject<Breadcrumb[]>([]);
+
+    // In-Page Navigation
+    _currentlySelectedInPageTabSubject$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
 
     constructor(public route: ActivatedRoute, public router: Router) {
         this.router.events
@@ -19,28 +27,44 @@ export class NavigationService {
                 while (snapshot.firstChild !== null) {
                     snapshot = snapshot.firstChild;
                 }
-                this._routeData$.next(snapshot.data as SBRouteData);
-                this._currentURL$.next(router.url);
+                this._routeDataSubject$.next(snapshot.data as SBRouteData);
+                this._currentURLSubject$.next(router.url);
             });
-    }
-
-    sideNavVisible$(): Observable<boolean> {
-        return this._sideNavVisible$;
     }
 
     toggleSideNav(visibility?: boolean) {
         if (typeof visibility !== 'undefined') {
-            this._sideNavVisible$.next(visibility);
+            this._sideNavVisibleSubject$.next(visibility);
         } else {
-            this._sideNavVisible$.next(!this._sideNavVisible$.value);
+            this._sideNavVisibleSubject$.next(!this._sideNavVisibleSubject$.value);
         }
+    }    
+
+    sideNavVisible$(): Observable<boolean> {
+        return this._sideNavVisibleSubject$.asObservable();;
     }
 
     routeData$(): Observable<SBRouteData> {
-        return this._routeData$;
+        return this._routeDataSubject$.asObservable();;
     }
 
     currentURL$(): Observable<string> {
-        return this._currentURL$;
+        return this._currentURLSubject$.asObservable();;
     }
+
+    set dynamicBreadcrumbs(dynamicBreadcrumbs: Breadcrumb[]){
+        this._dynamicBreadcrumbsSubject$.next(Object.assign([],dynamicBreadcrumbs));
+    }
+
+    dynamicBreadcrumbs$(): Observable<Breadcrumb[]> {
+        return this._dynamicBreadcrumbsSubject$.asObservable();
+    }    
+
+    set currentlySelectedInPageTab(currentlySelectedInPageTab: number){
+        this._currentlySelectedInPageTabSubject$.next(currentlySelectedInPageTab);
+    }
+
+    currentlySelectedInPageTab$(): Observable<number> {
+        return this._currentlySelectedInPageTabSubject$.asObservable();
+    }    
 }

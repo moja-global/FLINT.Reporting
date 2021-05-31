@@ -1,0 +1,9 @@
+sb-layout-main
+  ng-container(header='')
+    sb-header(title='Reporting Tables', subtitle='The Reporting Framework's Reporting Tables', [hidebreadcrumbs]='false')
+  ng-container(body='')
+    sb-card
+      .card-header
+        | Reporting Tables List
+      .card-body
+        sb-reporting-tables-records-tabulation([pagesize]='6')

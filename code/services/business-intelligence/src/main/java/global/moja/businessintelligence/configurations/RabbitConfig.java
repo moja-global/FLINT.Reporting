@@ -5,7 +5,7 @@
  * If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package ke.co.miles.dataaggregator.configurations;
+package global.moja.businessintelligence.configurations;
 
 
 import org.springframework.amqp.core.Binding;
@@ -45,18 +45,6 @@ public class RabbitConfig {
   @Value("${spring.rabbitmq.password}")
   private String password;	
 
-  public static final String DATA_IMPORTATION_EXCHANGE_NAME = 
-			"Data-Importation";
-
-  public static final String DATA_IMPORTATION_QUEUE = 
-			"Data-Importation-Queue";	
-	
-  public static final String DATA_IMPORTATION_RESULTS_QUEUE =
-      "Data-Importation-Results-Queue";
-	
-  public static final String DATA_IMPORTATION_ROUTING_KEY = 
-			"Data-Importation";	
-	
   public static final String DATA_AGGREGATION_EXCHANGE_NAME = 
 			"Data-Aggregation";
 
@@ -82,11 +70,7 @@ public class RabbitConfig {
   }
 
   // <editor-fold defaultstate="collapsed" desc="Topic Exchanges">
-  @Bean
-  public TopicExchange dataImportationExchange() {
-    return new TopicExchange(DATA_IMPORTATION_EXCHANGE_NAME);
-  }
-	
+
   @Bean
   public TopicExchange dataAggregationExchange() {
     return new TopicExchange(DATA_AGGREGATION_EXCHANGE_NAME);
@@ -94,16 +78,6 @@ public class RabbitConfig {
   // </editor-fold>
 
   // <editor-fold defaultstate="collapsed" desc="Queues">
-	
-  @Bean
-  public Queue dataImportationQueue() {
-    return new Queue(DATA_IMPORTATION_QUEUE);
-  }
-
-  @Bean
-  public Queue dataImportationResultsQueue() {
-    return new Queue(DATA_IMPORTATION_RESULTS_QUEUE);
-  }	
 
   @Bean
   public Queue dataAggregationQueue() {
@@ -117,22 +91,7 @@ public class RabbitConfig {
   // </editor-fold>
 
   // <editor-fold defaultstate="collapsed" desc="Topic Exchanges / Queues Bindings">
-	
-  @Bean
-  public Binding dataImportationBinding() {
-    return BindingBuilder.bind(dataImportationQueue())
-        .to(dataImportationExchange())
-        .with(DATA_IMPORTATION_ROUTING_KEY);
-  }
-	
-	
-  @Bean
-  public Binding dataImportationResultsBinding() {
-    return BindingBuilder.bind(dataImportationResultsQueue())
-        .to(dataImportationExchange())
-        .with(DATA_IMPORTATION_ROUTING_KEY);
-  }	
-	
+
   @Bean
   public Binding dataAggregationBinding() {
     return BindingBuilder.bind(dataAggregationQueue())

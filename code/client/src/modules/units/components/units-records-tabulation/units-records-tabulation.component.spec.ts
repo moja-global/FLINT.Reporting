@@ -5,12 +5,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute } from '@angular/router';
 import { LoadingAnimationComponent, PaginationComponent } from '@common/components';
+import { UnitsRecordsTabulationService } from '@modules/units/services';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { of } from 'rxjs';
 
 import { UnitsRecordsTabulationComponent } from './units-records-tabulation.component';
 
-describe('UnitsRecordsTabulationComponent', () => {
+describe('UnitsRecordsTabulationComponent', () => { 
 
     let fixture: ComponentFixture<UnitsRecordsTabulationComponent>;
 
@@ -24,7 +27,17 @@ describe('UnitsRecordsTabulationComponent', () => {
         TestBed.configureTestingModule({
             declarations: [LoadingAnimationComponent, PaginationComponent, UnitsRecordsTabulationComponent],
             imports: [NoopAnimationsModule, FormsModule, HttpClientTestingModule, LoggerModule.forRoot({ serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.OFF })],
-            providers: [DecimalPipe],
+            providers: [
+                DecimalPipe, 
+                UnitsRecordsTabulationService, 
+                {
+                    provide: ActivatedRoute, 
+                    useValue: {
+                        paramMap: of({ get: (key: string) => 1 }),
+                        queryParamMap: of({ get: (key: string) => 'value' })
+                    }
+                }
+            ],
             schemas: [NO_ERRORS_SCHEMA],
         }).compileComponents();
 

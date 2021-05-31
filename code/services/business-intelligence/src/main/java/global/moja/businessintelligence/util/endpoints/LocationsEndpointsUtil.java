@@ -9,11 +9,13 @@
 package global.moja.businessintelligence.util.endpoints;
 
 import global.moja.businessintelligence.models.Database;
+import global.moja.businessintelligence.models.Location;
 import global.moja.businessintelligence.util.webclient.impl.WebClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -28,19 +30,22 @@ public class LocationsEndpointsUtil {
     @Autowired
     private WebClientUtil webClientUtil;
 
-    public Mono<Database> retrieveDatabaseById(Long id) {
+    public Flux<Location> retrieveLocations(Long databaseId, Long partyId) {
 
-        log.trace("Entering retrieveDatabaseById()");
+        log.trace("Entering retrieveLocations()");
+        log.debug("Database Id = {}", databaseId);
+        log.debug("Party Id = {}", partyId);
 
         return webClientUtil
-                .getDatabaseWebClient()
+                .getLocationsWebClient()
                 .get()
                 .uri(uriBuilder ->
                         uriBuilder
-                                .path("/ids/{id}")
-                                .build(Long.toString(id)))
+                                .path("/databases/{param1}/all")
+                                .queryParam("partyId", "{param2}")
+                                .build(Long.toString(databaseId),Long.toString(partyId)))
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(Database.class);
+                .bodyToFlux(Location.class);
     }
 }

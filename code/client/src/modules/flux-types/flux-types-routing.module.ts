@@ -29,7 +29,7 @@ export const ROUTES: Routes = [
                     text: 'Flux Types',
                     active: false
                 }
-            ],
+            ]
         } as SBRouteData,
     },
 ];

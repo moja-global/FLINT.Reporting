@@ -1,0 +1,70 @@
+<form>
+    <div class="row">
+        <div class="col">
+            <div class="d-flex justify-content-between p-2">
+                <sb-search (searched)="onSearch($event)"></sb-search>
+                <sb-loading-animation></sb-loading-animation>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="row">
+        <div class="col">
+            <sb-table>
+                <ng-container header>
+                    <tr>
+                        <th scope="col" class="text-center align-middle">
+                            <span>#</span>
+                        </th>
+                        <th scope="col" sbSortable="name" (sort)="onSort($event)" class="align-middle">
+                            <span>Name</span>
+                            <sb-sort-icon *ngIf='sortedColumn === "name"' [direction]="sortedDirection"></sb-sort-icon>
+                        </th>
+                        <th scope="col" class="align-middle">
+                            <span class="d-flex flex-row-reverse pr-1">
+                                Actions
+                            </span>
+                        </th>
+                    </tr>
+                </ng-container>
+
+                <ng-container footer>
+                    <tr>
+                        <td scope="col" colspan="4" class="align-middle">
+                            <span class="d-flex flex-row-reverse pr-1">
+                                <sb-button action="add" [entity]="targetPartyType?.name" (add)="onAddPartyType()"></sb-button>
+                            </span> 
+                        </td>
+                    </tr>
+                </ng-container>                
+
+                <ng-container body>
+                    <tr *ngFor="let partyType of partyTypesTableService.partyTypes$ | async">
+                        <td class="text-center align-middle">
+                            {{partyType.pos}}
+                        </td>
+                        <td class="align-middle">
+                            <ngb-highlight [result]="partyType.name" [term]="partyTypesTableService.searchTerm"></ngb-highlight>
+                        </td>
+                        <td>
+                            <span class="d-flex flex-row-reverse pr-1">
+                                <!--<sb-button action="open" [entity]="targetPartyType?.name" id="{{partyType.id}}" name="{{partyType.name}}" tooltip="{{partyType.name}} {{targetPartyType?.plural}} List" (open)="onOpenPartyType($event)"></sb-button>-->
+                                <sb-button action="delete" [entity]="targetPartyType?.name" id="{{partyType.id}}" (delete)="onDeletePartyType($event)"></sb-button>
+                                <sb-button action="update" [entity]="targetPartyType?.name" id="{{partyType.id}}" (update)="onUpdatePartyType($event)"></sb-button>
+                            </span>
+                        </td>
+                    </tr>
+                </ng-container>
+            </sb-table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <sb-pagination (pageChanged)="onPageChange($event)" (pageSizeChanged)="onPageSizeChange($event)">
+            </sb-pagination>
+        </div>
+    </div>
+
+</form>

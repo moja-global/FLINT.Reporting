@@ -6,6 +6,8 @@ import global.moja.businessintelligence.models.*;
 import global.moja.businessintelligence.util.LandUseChangeAction;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -31,8 +33,8 @@ class ConfigurationDataProviderIT {
     static List<ReportingTable> reportingTables;
     static List<VegetationType> vegetationTypes;
 
-    @BeforeClass
-    void setUp() {
+    @BeforeAll
+    public static void setUp() {
 
         try {
 
@@ -1062,38 +1064,9 @@ class ConfigurationDataProviderIT {
             ex.printStackTrace();
         }
 
-        /*Mockito
-                .when(endpointsUtil.retrieveConversionAndRemainingPeriods())
-                .thenReturn(Flux.fromIterable(conversionAndRemainingPeriods));
-
-        Mockito
-                .when(endpointsUtil.retrieveCoverTypes())
-                .thenReturn(Flux.fromIterable(coverTypes));
-
-        Mockito
-                .when(endpointsUtil.retrieveDatabases())
-                .thenReturn(Flux.fromIterable(databases));
-
-        Mockito
-                .when(endpointsUtil.retrieveLandUseCategories())
-                .thenReturn(Flux.fromIterable(landUseCategories));
-
-        Mockito
-                .when(endpointsUtil.retrieveReportingTables())
-                .thenReturn(Flux.fromIterable(reportingTables));
-
-        Mockito
-                .when(endpointsUtil.retrieveVegetationTypes(1L))
-                .thenReturn(Flux.fromIterable(vegetationTypes));
-
-        Mockito
-                .when(endpointsUtil.retrieveVegetationTypes(2L))
-                .thenReturn(Flux.fromIterable(vegetationTypes));
-*/
-
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDown() {
         conversionAndRemainingPeriods = null;
         coverTypes = null;

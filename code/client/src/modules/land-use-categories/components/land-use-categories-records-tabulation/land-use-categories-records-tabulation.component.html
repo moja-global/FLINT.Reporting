@@ -1,0 +1,75 @@
+<form>
+    <div class="row">
+        <div class="col">
+            <div class="d-flex justify-content-between p-2">
+                <sb-search (searched)="onSearch($event)"></sb-search>
+                <sb-loading-animation></sb-loading-animation>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="row">
+        <div class="col">
+            <sb-table>
+                <ng-container header>
+                    <tr>
+                        <th scope="col" class="text-center align-middle">
+                            <span>#</span>
+                        </th>
+
+                        <th scope="col" sbSortable="name" (sort)="onSort($event)" class="align-middle">
+                            <span>Name</span>
+                            <sb-sort-icon *ngIf='sortedColumn === "name"' [direction]="sortedDirection"></sb-sort-icon>
+                        </th>
+
+                        <th scope="col" class="align-middle">
+                            <span class="d-flex flex-row-reverse">
+                                Actions
+                            </span>
+                        </th>
+                    </tr>
+                </ng-container>
+
+                <ng-container footer>
+                    <tr>
+                        <td scope="col" colspan="3" class="align-middle">
+                            <span class="d-flex flex-row flex-row-reverse">
+                                  <sb-button action="add" entity="Land Use Category" (add)="onAddLandUseCategory()"></sb-button> 
+                            </span>
+
+                        </td>
+                    </tr>
+                </ng-container>                
+
+                <ng-container body>
+                    <tr *ngFor="let landUseCategory of landUseCategoriesTableService.landUseCategories$ | async">
+                        <td class="text-center align-middle">
+                            {{landUseCategory.pos}}
+                        </td>                     
+
+                        <td class="align-middle">
+                            <ngb-highlight [result]="landUseCategory.name" [term]="landUseCategoriesTableService.searchTerm"></ngb-highlight>
+                        </td>                       
+
+                        <td class="align-middle">
+                            <span class="d-flex flex-row-reverse">
+                                <!--<sb-button action="open" entity="Land Use Category Home" id="{{landUseCategory.id}}" name="{{landUseCategory.name}}" tooltip="Configure category and its subcategories" (open)="onOpenLandUseCategory($event)"></sb-button>-->
+                                <sb-button action="delete" entity="Land Use Category" id="{{landUseCategory.id}}" (delete)="onDeleteLandUseCategory($event)"></sb-button>
+                                <sb-button action="update" entity="Land Use Category" id="{{landUseCategory.id}}" (update)="onUpdateLandUseCategory($event)"></sb-button>
+                            </span> 
+                        </td>
+                    </tr>
+                </ng-container>
+            </sb-table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <sb-pagination (pageChanged)="onPageChange($event)" (pageSizeChanged)="onPageSizeChange($event)">
+            </sb-pagination>
+        </div>
+    </div>
+
+</form>

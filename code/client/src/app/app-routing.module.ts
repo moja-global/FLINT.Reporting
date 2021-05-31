@@ -60,14 +60,24 @@ const routes: Routes = [
         path: 'reporting_frameworks',
         loadChildren: () =>
             import('modules/reporting-frameworks/reporting-frameworks-routing.module').then(m => m.ReportingFrameworksRoutingModule)
-    },    
+    },  
+    {
+        path: 'reporting_tables',
+        loadChildren: () =>
+            import('modules/reporting-tables/reporting-tables-routing.module').then(m => m.ReportingTablesRoutingModule)
+    },  
+    {
+        path: 'reporting_variables',
+        loadChildren: () =>
+            import('modules/reporting-variables/reporting-variables-routing.module').then(m => m.ReportingVariablesRoutingModule)
+    },           
     {
         path: 'unit_categories',
         loadChildren: () =>
             import('modules/unit-categories/unit-categories-routing.module').then(m => m.UnitCategoriesRoutingModule)
     },
     {
-        path: 'units',
+        path: 'units/:unitCategoryId',
         loadChildren: () =>
             import('modules/units/units-routing.module').then(m => m.UnitsRoutingModule)
     },         

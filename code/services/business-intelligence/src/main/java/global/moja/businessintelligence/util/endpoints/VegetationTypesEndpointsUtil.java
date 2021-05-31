@@ -8,40 +8,48 @@
 
 package global.moja.businessintelligence.util.endpoints;
 
-import global.moja.businessintelligence.models.Location;
+import global.moja.businessintelligence.models.VegetationType;
 import global.moja.businessintelligence.util.webclient.impl.WebClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
- * @since 0.0.1
  * @author Kwaje Anthony <tony@miles.co.ke>
  * @version 1.0
+ * @since 0.0.1
  */
 @Component
 @Slf4j
-public class VegetationHistoryVegetationTypesEndpointsUtil {
+public class VegetationTypesEndpointsUtil {
 
     @Autowired
-    private WebClientUtil webClientUtil;
+    WebClientUtil webClientUtil;
 
-    public Flux<Location> retrieveVegetationHistoryVegetationTypes(Long databaseId, Long vegetationHistoryId) {
+    public Flux<VegetationType> retrieveVegetationTypes(Long databaseId) {
 
-        log.trace("Entering retrieveVegetationHistoryVegetationTypes()");
+        log.trace("Entering retrieveVegetationType()");
+        log.debug("Database Id = {}", databaseId);
 
         return webClientUtil
-                .getVegetationHistoryVegetationTypesWebClient()
+                .getVegetationTypesWebClient()
                 .get()
                 .uri(uriBuilder ->
                         uriBuilder
                                 .path("/databases/{param1}/all")
-                                .queryParam("vegetationHistoryId", "{param2}")
-                                .build(Long.toString(databaseId),Long.toString(vegetationHistoryId)))
+                                .build(Long.toString(databaseId)))
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToFlux(Location.class);
+                .bodyToFlux(VegetationType.class);
+
+
     }
+
 }

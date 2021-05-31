@@ -211,14 +211,14 @@ export class ReportingFrameworksRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Checks if search string is present in Reporting Framework record
+     * Checks if search string is present in the Reporting Framework record
      * 
      * @param reportingFramework The Reporting Framework record
      * @param term The Search String
      * @returns A boolean result indicating whether or not a match was found
      */
     matches(reportingFramework: ReportingFramework, term: string): boolean {
-        this.log.trace(`${LOG_PREFIX} Checking if search string is present in Reporting Framework record`);
+        this.log.trace(`${LOG_PREFIX} Checking if search string is present in the Reporting Framework record`);
         if (reportingFramework != null && reportingFramework != undefined) {
 
             // Try locating the search string in the Reporting Framework's name

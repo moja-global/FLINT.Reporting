@@ -7,36 +7,43 @@
  */
 package global.moja.businessintelligence.util.builders;
 
-import global.moja.businessintelligence.daos.CoverTypeHistory;
-import global.moja.businessintelligence.models.CoverType;
+
+import global.moja.businessintelligence.daos.LandUseHistoricDetail;
+import global.moja.businessintelligence.models.LandUseCategory;
 
 /**
  * @since 0.0.1
  * @author Kwaje Anthony <tony@miles.co.ke>
  * @version 1.0
  */
-public class CoverTypeHistoryBuilder {
-
+public class LandUseHistoryBuilder {
+    
     private Long itemNumber;
     private Integer year;
-    private CoverType coverType;
+    private LandUseCategory landUseCategory;
+    private Boolean confirmed;
 
-    public CoverTypeHistoryBuilder itemNumber(Long itemNumber) {
+    public LandUseHistoryBuilder itemNumber(Long itemNumber) {
         this.itemNumber = itemNumber;
         return this;
     }
 
-    public CoverTypeHistoryBuilder year(Integer year) {
+    public LandUseHistoryBuilder year(Integer year) {
         this.year = year;
         return this;
     }
 
-    public CoverTypeHistoryBuilder coverType(CoverType coverType) {
-        this.coverType = coverType;
+    public LandUseHistoryBuilder landUseCategory(LandUseCategory landUseCategory) {
+        this.landUseCategory = landUseCategory;
         return this;
     }
 
-    public CoverTypeHistory build() {
-        return new CoverTypeHistory(itemNumber, year, coverType);
+    public LandUseHistoryBuilder confirmed(Boolean confirmed) {
+        this.confirmed = confirmed;
+        return this;
+    }
+
+    public LandUseHistoricDetail build() {
+        return new LandUseHistoricDetail(itemNumber, year, landUseCategory, confirmed);
     }
 }

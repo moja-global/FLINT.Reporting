@@ -7,8 +7,8 @@
  */
 package global.moja.businessintelligence.util.builders;
 
-import global.moja.covertypes.models.CoverType;
 
+import global.moja.businessintelligence.models.CoverType;
 
 /**
  * @since 0.0.1

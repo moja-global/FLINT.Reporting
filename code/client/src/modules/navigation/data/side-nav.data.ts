@@ -45,15 +45,6 @@ export const sideNavItems: SideNavItems = {
     units: {
         icon: 'cog',
         text: 'Units',
-        submenu: [
-            {
-                text: 'Categories',
-                link: '/unit_categories',
-            },
-            {
-                text: 'List',
-                link: '/units',
-            }                       
-        ],
-    },            
+        link: '/unit_categories'
+    }           
 };

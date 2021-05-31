@@ -5,7 +5,7 @@
  * If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package global.moja.conversionandremainingperiods.models;
+package global.moja.businessintelligence.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,5 +37,11 @@ public class ConversionAndRemainingPeriod implements Comparable<ConversionAndRem
             return 0;
         }
 
+    }
+
+    @Override
+    public String toString(){
+        return String.format("From Cover Type: %d, To Cover Type: %d, Conversion Period: %d, Remaining Period: %d",
+                previousLandCoverId, currentLandCoverId, conversionPeriod, remainingPeriod);
     }
 }

@@ -5,8 +5,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { LoadingAnimationComponent, PaginationComponent } from '@common/components';
+import { UnitCategoriesRecordsTabulationService } from '@modules/unit-categories/services/unit-categories-records-tabulation.service';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { of } from 'rxjs';
 
 import { UnitCategoriesRecordsTabulationComponent } from './unit-categories-records-tabulation.component';
 
@@ -23,8 +27,18 @@ describe('UnitCategoriesRecordsTabulationComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [LoadingAnimationComponent, PaginationComponent, UnitCategoriesRecordsTabulationComponent],
-            imports: [NoopAnimationsModule, FormsModule, HttpClientTestingModule, LoggerModule.forRoot({ serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.OFF })],
-            providers: [DecimalPipe],
+            imports: [NoopAnimationsModule, FormsModule, HttpClientTestingModule, RouterTestingModule, LoggerModule.forRoot({ serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.OFF })],
+            providers: [
+                DecimalPipe, 
+                UnitCategoriesRecordsTabulationService, 
+                {
+                    provide: ActivatedRoute, 
+                    useValue: {
+                        paramMap: of({ get: (key: string) => 1 }),
+                        queryParamMap: of({ get: (key: string) => 'value' })
+                    }
+                }
+            ],
             schemas: [NO_ERRORS_SCHEMA],
         }).compileComponents();
 

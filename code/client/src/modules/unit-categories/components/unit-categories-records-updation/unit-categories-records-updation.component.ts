@@ -29,7 +29,7 @@ export class UnitCategoriesRecordsUpdationComponent implements OnInit, AfterCont
   // record that has been served up for updation during the component's initialization.
   @Input() id!: number;
 
-  // Instantiate an object to hold the details of the Unit category record being updated.
+  // Instantiate an object to hold the details of the Unit Category record being updated.
   // This will allow the UI to get a hold on and prepolulate the current details of the 
   // record being updated
   unitCategory: UnitCategory | undefined;
@@ -63,29 +63,31 @@ export class UnitCategoriesRecordsUpdationComponent implements OnInit, AfterCont
 
     this.log.trace(`${LOG_PREFIX} Initializing Component`);
 
-    // Retrieve the Unit category record with the given id from the data store 
-    this.log.trace(`${LOG_PREFIX} Retrieving the Unit category record with the given id from the data store`);
-    this.log.debug(`${LOG_PREFIX} Unit category record Id = ${this.id}`);
+    // Retrieve the Unit Category record with the given id from the data store 
+    this.log.trace(`${LOG_PREFIX} Retrieving the Unit Category record with the given id from the data store`);
+    this.log.debug(`${LOG_PREFIX} Unit Category record Id = ${this.id}`);
     this.unitCategory = this.unitCategoriesDataService.records.find(d => d.id == this.id);
+
+    const temp: UnitCategory | undefined = (this.id == null || this.id == undefined)? undefined : this.unitCategoriesDataService.records.find(d => d.id == this.id);
+    this.unitCategory = (temp == undefined)? new UnitCategory() : temp;    
   }
 
   ngAfterContentInit() {
 
-    // If the Unit category record has been successfully initialize, use it to initialize the form fields
+    // If the Unit Category record has been successfully initialize, use it to initialize the form fields
     if (this.unitCategory != undefined) {
 
-      // The Unit category record was successfully initialized
-      this.log.debug(`${LOG_PREFIX} Unit category record = ${JSON.stringify(this.unitCategory)}`);
+      // The Unit Category record was successfully initialized
+      this.log.debug(`${LOG_PREFIX} Unit Category record = ${JSON.stringify(this.unitCategory)}`);
 
-      // Initialize the Unit category records form fields
-      this.log.trace(`${LOG_PREFIX} Initializing the Unit category records form fields`);
+      // Initialize the Unit Category records form fields
+      this.log.trace(`${LOG_PREFIX} Initializing the Unit Category records form fields`);
       this.unitCategoriesForm.setValue({
-        name: this.unitCategory.name,
-        description: this.unitCategory.description
+        name: (this.unitCategory.name)? this.unitCategory.name : ""
       });
 
     } else {
-      this.log.error(`${LOG_PREFIX} Unit category record ${this.id} was not found in the data store`);
+      this.log.error(`${LOG_PREFIX} Unit Category record ${this.id} was not found in the data store`);
     }
   }
 
@@ -100,7 +102,7 @@ export class UnitCategoriesRecordsUpdationComponent implements OnInit, AfterCont
   }
 
   /**
-   * Internal validator that checks whether another Unit category record with the same attribute already exists
+   * Internal validator that checks whether another Unit Category record with the same attribute already exists
    * @returns 
    */
   private exists(): ValidatorFn {
@@ -128,7 +130,7 @@ export class UnitCategoriesRecordsUpdationComponent implements OnInit, AfterCont
   }
 
   /**
-   * Validates and saves the updated Unit category record.
+   * Validates and saves the updated Unit Category record.
    * Emits a succeeded or failed event in response to whether or not the updation exercise was successful.
    * Error 400 = Indicates an invalid Form Control Entry was supplied.
    * Error 500 = Indicates something unexpected happened at the server side
@@ -143,17 +145,17 @@ export class UnitCategoriesRecordsUpdationComponent implements OnInit, AfterCont
       // Read in the provided name 
       this.log.trace(`${LOG_PREFIX} Reading in the provided name `);
       const name: string | null = this.unitCategoriesForm.get('name') == null ? null : this.unitCategoriesForm.get('name')?.value;
-      this.log.debug(`${LOG_PREFIX} Unit category Name  = ${name}`);
+      this.log.debug(`${LOG_PREFIX} Unit Category Name  = ${name}`);
 
       // Save the record
-      this.log.trace(`${LOG_PREFIX} Saving the Unit category record`);
+      this.log.trace(`${LOG_PREFIX} Saving the Unit Category record`);
       this.unitCategoriesDataService
-        .updateUnitCategory(new UnitCategory(Object.assign(this.unitCategory, { name })))
+        .updateUnitCategory(Object.assign(this.unitCategory, { name }))
         .subscribe(
           (response: UnitCategory) => {
 
-            // The Unit category record was saved successfully
-            this.log.trace(`${LOG_PREFIX} The Unit category record was successfuly updated`);
+            // The Unit Category record was saved successfully
+            this.log.trace(`${LOG_PREFIX} The Unit Category record was successfuly updated`);
 
             // Reset the form
             this.log.trace(`${LOG_PREFIX} Resetting the form`);
@@ -165,8 +167,8 @@ export class UnitCategoriesRecordsUpdationComponent implements OnInit, AfterCont
           },
           (error: any) => {
 
-            // The Unit category record was not saved successfully
-            this.log.trace(`${LOG_PREFIX} The Unit category record was not successfuly updated`);
+            // The Unit Category record was not saved successfully
+            this.log.trace(`${LOG_PREFIX} The Unit Category record was not successfuly updated`);
 
             // Emit a 'failed' event
             this.log.trace(`${LOG_PREFIX} Emitting a 'failed' event`);

@@ -1,25 +1,5 @@
 <form [formGroup]="unitsForm">
 
-
-    <div class="form-group">
-        <label for="unitCategoryId">Category</label>
-
-        <select class="custom-select" id="unitCategoryId" formControlName="unitCategoryId">
-            <option [ngValue]="null" disabled selected>Select Unit Category</option>
-            <option *ngFor='let item of unitCategoriesDataService.unitCategories$ | async' [ngValue]="item.id">
-                {{ item.name }}
-            </option>
-        </select>
-
-        <div *ngIf="unitsForm.get('unitCategoryId')?.invalid && (unitsForm.get('unitCategoryId')?.dirty || unitsForm.get('unitCategoryId')?.touched)"
-            class="alert alert-danger mt-3">
-            <div *ngIf="unitsForm.get('unitCategoryId')?.errors.required">
-                Category is required.
-            </div>
-        </div>
-    </div>
-
-
     <div class="form-group">
         <label for="name">Name</label>
         <input type="text" class="form-control" id="name" placeholder="" formControlName="name">

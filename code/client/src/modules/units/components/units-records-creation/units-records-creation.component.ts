@@ -3,6 +3,7 @@ import {
   Component,
   EventEmitter,
   HostListener,
+  Input,
   OnDestroy,
   OnInit,
   Output
@@ -13,6 +14,7 @@ import { NGXLogger } from 'ngx-logger';
 import { Unit } from '../../models';
 import { UnitCategoriesDataService } from '@modules/unit-categories/services';
 import { Subject } from 'rxjs';
+import { UnitCategory } from '@modules/unit-categories/models';
 
 const LOG_PREFIX: string = "[Units Records Creation Component]";
 
@@ -36,6 +38,11 @@ export class UnitsRecordsCreationComponent implements OnInit, OnDestroy {
   // This will allow us to broadcast fnotifications of failed creation events
   @Output() failed: EventEmitter<number> = new EventEmitter<number>();
 
+  // Instantiate and avail the target unit category variable to the parent component.
+  // This will allow the parent component to inject the details of the current target  
+  // unit category  
+  @Input() targetUnitCategory: UnitCategory = new UnitCategory(); 
+
   // Instantiate a notifier.
   // This is simply an observable that we will use to opt 
   // out of initialization subscriptions once we are done with them
@@ -44,9 +51,6 @@ export class UnitsRecordsCreationComponent implements OnInit, OnDestroy {
   // Instantitate a new reactive Form Group for the Units Form.
   // This will allow to define and enforce the validation rules for all the form controls.
   unitsForm = new FormGroup({
-    unitCategoryId: new FormControl('', [
-      Validators.required
-    ]),
     name: new FormControl('', [
       Validators.required,
       Validators.minLength(2),
@@ -140,11 +144,6 @@ export class UnitsRecordsCreationComponent implements OnInit, OnDestroy {
 
     if (this.unitsForm.valid) {
 
-      // Read in the provided unit category id
-      this.log.trace(`${LOG_PREFIX} Reading in the provided unit category id`);
-      const unitCategoryId: number | null = this.unitsForm.get('unitCategoryId') == null ? null : this.unitsForm.get('unitCategoryId')?.value;
-      this.log.debug(`${LOG_PREFIX} Unit Category Id = ${unitCategoryId}`);
-
       // Read in the provided name
       this.log.trace(`${LOG_PREFIX} Reading in the provided name`);
       const name: string | null = this.unitsForm.get('name') == null ? null : this.unitsForm.get('name')?.value;
@@ -168,7 +167,7 @@ export class UnitsRecordsCreationComponent implements OnInit, OnDestroy {
       // Save the record
       this.log.trace(`${LOG_PREFIX} Saving the Unit record`);
       this.unitsDataService
-        .createUnit(new Unit({ unitCategoryId, name, plural, symbol, scaleFactor }))
+        .createUnit(new Unit({ unitCategoryId: this.targetUnitCategory?.id, name: name, plural: plural, symbol: symbol, scaleFactor: scaleFactor }))
         .subscribe(
           (response: Unit) => {
 

@@ -7,8 +7,8 @@
  */
 package global.moja.businessintelligence.util.builders;
 
-import global.moja.landusecategories.models.LandUseCategory;
 
+import global.moja.businessintelligence.models.LandUseCategory;
 
 /**
  * @since 0.0.1

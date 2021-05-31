@@ -6,10 +6,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package global.moja.businessintelligence.services.covers;
+package global.moja.businessintelligence.services.covertypes;
 
 import global.moja.businessintelligence.configurations.ConfigurationDataProvider;
-import global.moja.businessintelligence.daos.CoverTypeHistory;
+import global.moja.businessintelligence.daos.CoverTypeHistoricDetail;
 import global.moja.businessintelligence.models.CoverType;
 import global.moja.businessintelligence.models.Location;
 import global.moja.businessintelligence.models.VegetationType;
@@ -34,12 +34,15 @@ public class CoverTypeHistoryProcessor {
     ConfigurationDataProvider configurationDataProvider;
 
 
-    public Mono<List<CoverTypeHistory>> processCoverTypeHistory(Long databaseId, Location location) {
+    public Mono<List<CoverTypeHistoricDetail>> processCoverTypeHistory(Long databaseId, Long vegetationHistoryId) {
 
         log.trace("Entering getCoverTypesHistory()");
         log.debug("Database Id = {}", databaseId);
-        log.debug("Location Id = {}", databaseId);
-        log.debug("Vegetation History Id = {}", location.getVegetationHistoryId());
+        log.debug("Vegetation History Id = {}", vegetationHistoryId); 
+
+        if(databaseId == null || vegetationHistoryId == null){ 
+            return Mono.empty();
+        }
 
         return
 
@@ -48,7 +51,7 @@ public class CoverTypeHistoryProcessor {
                 endpointsUtil
                         .retrieveVegetationHistoryVegetationTypes(
                                 databaseId,
-                                location.getVegetationHistoryId())
+                                vegetationHistoryId)
                         .flatMap(vegetationHistoryVegetationType -> {
 
                             // Use the vegetation type id detail in each vegetation history vegetation
@@ -67,9 +70,8 @@ public class CoverTypeHistoryProcessor {
                             if (vegetationType == null) {
 
                                 // Log a warning message
-                                log.warn("Setting Location {}, Timestep {} Cover Type to Null due to missing " +
+                                log.warn("Setting Timestep {} Cover Type to null due to missing " +
                                                 "Vegetation Type {} Record in Database {}",
-                                        location.getId(),
                                         vegetationHistoryVegetationType.getItemNumber(),
                                         vegetationHistoryVegetationType.getVegetationTypeId(),
                                         databaseId);
@@ -104,9 +106,8 @@ public class CoverTypeHistoryProcessor {
                                         vegetationType.getCoverTypeId());
 
                                 // Log a warning message
-                                log.warn("Setting Location {}, Timestep {} Cover Type to Null due to missing " +
+                                log.warn("Setting Timestep {} Cover Type to null due to missing " +
                                                 "Vegetation Type {} Record in Database {}",
-                                        location.getId(),
                                         vegetationHistoryVegetationType.getItemNumber(),
                                         vegetationHistoryVegetationType.getVegetationTypeId(),
                                         databaseId);

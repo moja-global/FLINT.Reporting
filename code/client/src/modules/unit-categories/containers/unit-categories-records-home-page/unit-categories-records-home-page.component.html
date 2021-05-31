@@ -1,0 +1,19 @@
+<sb-layout-main>
+    
+    <ng-container header>
+        <sb-header title="Units" subtitle="Units of measure and their scale factors relative to a standard unit" [hideBreadcrumbs]="false"></sb-header>
+    </ng-container>
+      
+    
+    <ng-container body>
+        <sb-card>
+            <div class="card-header">
+                {{targetUnitCategory.name}} Units List
+            </div>
+            <div class="card-body">
+                <sb-units-records-tabulation [pageSize]="6"></sb-units-records-tabulation>
+            </div>
+        </sb-card>
+    </ng-container>
+
+</sb-layout-main>
