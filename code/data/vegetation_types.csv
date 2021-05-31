@@ -1,27 +1,28 @@
-1;"Forest Natural System";1;TRUE;TRUE
-2;"Forest Plantation";1;TRUE;FALSE
-3;"Crop";2;FALSE;FALSE
-4;"Grass";3;FALSE;TRUE
-5;"Grass Woodi";3;TRUE;TRUE
-6;"Wetland";4;FALSE;TRUE
-7;"Other land";6;FALSE;TRUE
-8;"No data";7;FALSE;FALSE
-1;"Maize";2;FALSE;FALSE
-2;"Wheat";2;FALSE;FALSE
-3;"Native Pasture";3;TRUE;FALSE
-4;"Indigenous Forest";1;TRUE;TRUE
-5;"Eucalypt Plantation";1;FALSE;TRUE
-6;"Acacia Plantation";1;FALSE;TRUE
-7;"Cypress Plantation";1;FALSE;TRUE
-8;"Pinus Plantation";1;FALSE;TRUE
-9;"Casuarina Plantation";1;FALSE;TRUE
-10;"Vitex Plantation";1;FALSE;TRUE
-11;"Douglas Fir";1;FALSE;TRUE
-12;"Improved Pasture";3;FALSE;FALSE
-13;"Oil Palm";2;FALSE;FALSE
-14;"Apple Orchard";2;FALSE;TRUE
-15;"Dam";4;FALSE;FALSE
-16;"Rice";2;FALSE;FALSE
-17;"Natural Shrubs";3;TRUE;TRUE
-18;"Bare Rock";6;TRUE;FALSE
-19;"Roading";5;FALSE;FALSE
+"id","name","coverTypeId","woodyType","naturalSystem"
+1,"Forest Natural System",1,"TRUE","TRUE"
+2,"Forest Plantation",1,"TRUE","FALSE"
+3,"Crop",2,"FALSE","FALSE"
+4,"Grass",3,"FALSE","TRUE"
+5,"Grass Woodi",3,"TRUE","TRUE"
+6,"Wetland",4,"FALSE","TRUE"
+7,"Other land",6,"FALSE","TRUE"
+8,"No data",7,"FALSE","FALSE"
+1,"Maize",2,"FALSE","FALSE"
+2,"Wheat",2,"FALSE","FALSE"
+3,"Native Pasture",3,"TRUE","FALSE"
+4,"Indigenous Forest",1,"TRUE","TRUE"
+5,"Eucalypt Plantation",1,"FALSE","TRUE"
+6,"Acacia Plantation",1,"FALSE","TRUE"
+7,"Cypress Plantation",1,"FALSE","TRUE"
+8,"Pinus Plantation",1,"FALSE","TRUE"
+9,"Casuarina Plantation",1,"FALSE","TRUE"
+10,"Vitex Plantation",1,"FALSE","TRUE"
+11,"Douglas Fir",1,"FALSE","TRUE"
+12,"Improved Pasture",3,"FALSE","FALSE"
+13,"Oil Palm",2,"FALSE","FALSE"
+14,"Apple Orchard",2,"FALSE","TRUE"
+15,"Dam",4,"FALSE","FALSE"
+16,"Rice",2,"FALSE","FALSE"
+17,"Natural Shrubs",3,"TRUE","TRUE"
+18,"Bare Rock",6,"TRUE","FALSE"
+19,"Roading",5,"FALSE","FALSE"

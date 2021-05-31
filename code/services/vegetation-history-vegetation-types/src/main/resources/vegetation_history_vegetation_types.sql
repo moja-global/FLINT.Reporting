@@ -1,7 +1,7 @@
 -- ------------------------------------------------------------
 -- Create Table
 -- ------------------------------------------------------------
-CREATE TABLE vegetation_history_vegetation_type (
+CREATE TABLE veghistory_vegtypeinfo_mapping (
     id SERIAL UNIQUE PRIMARY KEY NOT NULL,
     indicator_type_id INTEGER NOT NULL,
     indicator_data_source_id INTEGER NOT NULL,
@@ -26,7 +26,7 @@ LANGUAGE 'plpgsql' VOLATILE;
 
 CREATE TRIGGER VegetationHistoryVegetationTypeVersionInitializationTrigger7
 BEFORE INSERT
-ON vegetation_history_vegetation_type
+ON veghistory_vegtypeinfo_mapping
 FOR EACH ROW
 EXECUTE PROCEDURE VegetationHistoryVegetationTypeVersionInitializationFunction();
 
@@ -47,6 +47,6 @@ LANGUAGE 'plpgsql' VOLATILE;
 
 CREATE TRIGGER VegetationHistoryVegetationTypeVersionIncrementTrigger
 BEFORE UPDATE
-ON vegetation_history_vegetation_type
+ON veghistory_vegtypeinfo_mapping
 FOR EACH ROW
 EXECUTE PROCEDURE VegetationHistoryVegetationTypeVersionIncrementFunction();

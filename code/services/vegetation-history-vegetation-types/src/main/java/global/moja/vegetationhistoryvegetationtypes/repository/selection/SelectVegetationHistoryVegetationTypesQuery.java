@@ -40,7 +40,7 @@ public class SelectVegetationHistoryVegetationTypesQuery {
         log.trace("Entering selectVegetationHistoryVegetationTypes()");
 
         String query =
-                "SELECT * FROM vegetation_history_vegetation_type" +
+                "SELECT * FROM veghistory_vegtypeinfo_mapping" +
                         new QueryWhereClauseBuilder()
                                 .queryParameters(parameters)
                                 .build();

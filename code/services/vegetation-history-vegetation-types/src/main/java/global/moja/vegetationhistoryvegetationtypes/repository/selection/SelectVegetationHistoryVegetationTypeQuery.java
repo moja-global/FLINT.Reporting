@@ -36,7 +36,7 @@ public class SelectVegetationHistoryVegetationTypeQuery {
 
 		log.trace("Entering selectVegetationHistoryVegetationType()");
 
-		String query = "SELECT * FROM vegetation_history_vegetation_type WHERE veghistory_vegtypeinfo_mapping_id_pk = ?";
+		String query = "SELECT * FROM veghistory_vegtypeinfo_mapping WHERE veghistory_vegtypeinfo_mapping_id_pk = ?";
 
 		return
 				databaseConfig

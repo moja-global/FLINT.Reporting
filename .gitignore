@@ -27,3 +27,7 @@ hs_err_pid*
 /nbproject/
 .DS_Store
 .idea
+/.~lock*
+
+/dist/
+node_modules

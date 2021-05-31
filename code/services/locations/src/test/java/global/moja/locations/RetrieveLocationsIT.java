@@ -138,9 +138,9 @@ public class RetrieveLocationsIT {
                 .get()
                 .uri(uriBuilder ->
                         uriBuilder
-                                .path("/api/v1/locations/databases/1/all")
+                                .path("/api/v1/locations/databases/{param1}/all")
                                 .queryParam("ids", "{id1}", "{id2}")
-                                .build(location1.getId().toString(), location3.getId().toString()))
+                                .build("1",location1.getId().toString(), location3.getId().toString()))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(Location.class)
