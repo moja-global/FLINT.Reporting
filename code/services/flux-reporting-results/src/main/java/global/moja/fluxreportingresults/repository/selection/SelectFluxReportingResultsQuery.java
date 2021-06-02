@@ -40,7 +40,16 @@ public class SelectFluxReportingResultsQuery {
         log.trace("Entering selectFluxReportingResults()");
 
         String query =
-                "SELECT * FROM flux_reporting_results" +
+                "SELECT " +
+                        "flux_reporting_results_id_pk, " +
+                        "date_dimension_id_fk, " +
+                        "location_dimension_id_fk, " +
+                        "fluxtypeinfo_dimension_id_fk, " +
+                        "source_poolinfo_dimension_id_fk, " +
+                        "sink_poolinfo_dimension_id_fk, " +
+                        "round( flux::numeric, 12 ) flux, " +
+                        "itemcount " +
+                        "FROM flux_reporting_results " +
                         new QueryWhereClauseBuilder()
                                 .queryParameters(parameters)
                                 .build();
