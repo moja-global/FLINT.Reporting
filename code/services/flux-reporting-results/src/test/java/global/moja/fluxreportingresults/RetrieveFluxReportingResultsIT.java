@@ -67,29 +67,38 @@ public class RetrieveFluxReportingResultsIT {
 
         fluxReportingResult1 =
                 new FluxReportingResultBuilder()
+                        .id(1L)
                         .dateId(1L)
                         .locationId(1L)
                         .fluxTypeId(1L)
                         .sourcePoolId(1L)
                         .sinkPoolId(1L)
+                        .flux(1.0)
+                        .itemCount(1L)
                         .build();
 
         fluxReportingResult2 =
                 new FluxReportingResultBuilder()
+                        .id(2L)
                         .dateId(2L)
                         .locationId(2L)
                         .fluxTypeId(2L)
                         .sourcePoolId(2L)
                         .sinkPoolId(2L)
+                        .flux(2.0)
+                        .itemCount(2L)
                         .build();
 
         fluxReportingResult3 =
                 new FluxReportingResultBuilder()
+                        .id(3L)
                         .dateId(3L)
                         .locationId(3L)
                         .fluxTypeId(3L)
                         .sourcePoolId(3L)
                         .sinkPoolId(3L)
+                        .flux(3.0)
+                        .itemCount(3L)
                         .build();
     }
 
@@ -110,6 +119,51 @@ public class RetrieveFluxReportingResultsIT {
     public static void shutdown() {
 
         postgreSQLContainer.stop();
+    }
+
+    @Test
+    public void Given_FluxReportingResultRecordsExist_When_GetAllWithIdFilter_Then_OnlyFluxReportingResultRecordsWithTheSpecifiedIdWillBeReturned() {
+
+        Mockito
+                .when(endpointsUtil.retrieveDatabaseById(1L))
+                .thenReturn(
+                        Mono.just(
+                                new DatabaseBuilder()
+                                        .id(null)
+                                        .label("First Database")
+                                        .description(null)
+                                        .url(postgreSQLContainer.getJdbcUrl())
+                                        .startYear(1984)
+                                        .endYear(2014)
+                                        .processed(false)
+                                        .published(false)
+                                        .archived(false)
+                                        .build()));
+
+        webTestClient
+                .get()
+                .uri(uriBuilder ->
+                        uriBuilder
+                                .path("/api/v1/flux_reporting_results/databases/1/all")
+                                .queryParam("id", "{id1}")
+                                .build(fluxReportingResult3.getId().toString()))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(FluxReportingResult.class)
+                .value(response -> {
+
+                            Collections.sort(response);
+
+                            Assertions.assertThat(response.get(0).getId()).isEqualTo(fluxReportingResult3.getId());
+                            Assertions.assertThat(response.get(0).getDateId()).isEqualTo(fluxReportingResult3.getDateId());
+                            Assertions.assertThat(response.get(0).getLocationId()).isEqualTo(fluxReportingResult3.getLocationId());
+                            Assertions.assertThat(response.get(0).getSourcePoolId()).isEqualTo(fluxReportingResult3.getSourcePoolId());
+                            Assertions.assertThat(response.get(0).getSinkPoolId()).isEqualTo(fluxReportingResult3.getSinkPoolId());
+                            Assertions.assertThat(response.get(0).getFlux()).isEqualTo(fluxReportingResult3.getFlux());
+                            Assertions.assertThat(response.get(0).getItemCount()).isEqualTo(fluxReportingResult3.getItemCount());
+
+                        }
+                );
     }
 
 
@@ -146,10 +200,13 @@ public class RetrieveFluxReportingResultsIT {
 
                             Collections.sort(response);
 
+                            Assertions.assertThat(response.get(0).getId()).isEqualTo(fluxReportingResult3.getId());
                             Assertions.assertThat(response.get(0).getDateId()).isEqualTo(fluxReportingResult3.getDateId());
                             Assertions.assertThat(response.get(0).getLocationId()).isEqualTo(fluxReportingResult3.getLocationId());
                             Assertions.assertThat(response.get(0).getSourcePoolId()).isEqualTo(fluxReportingResult3.getSourcePoolId());
                             Assertions.assertThat(response.get(0).getSinkPoolId()).isEqualTo(fluxReportingResult3.getSinkPoolId());
+                            Assertions.assertThat(response.get(0).getFlux()).isEqualTo(fluxReportingResult3.getFlux());
+                            Assertions.assertThat(response.get(0).getItemCount()).isEqualTo(fluxReportingResult3.getItemCount());
 
                         }
                 );
@@ -189,10 +246,13 @@ public class RetrieveFluxReportingResultsIT {
 
                             Collections.sort(response);
 
+                            Assertions.assertThat(response.get(0).getId()).isEqualTo(fluxReportingResult3.getId());
                             Assertions.assertThat(response.get(0).getDateId()).isEqualTo(fluxReportingResult3.getDateId());
                             Assertions.assertThat(response.get(0).getLocationId()).isEqualTo(fluxReportingResult3.getLocationId());
                             Assertions.assertThat(response.get(0).getSourcePoolId()).isEqualTo(fluxReportingResult3.getSourcePoolId());
                             Assertions.assertThat(response.get(0).getSinkPoolId()).isEqualTo(fluxReportingResult3.getSinkPoolId());
+                            Assertions.assertThat(response.get(0).getFlux()).isEqualTo(fluxReportingResult3.getFlux());
+                            Assertions.assertThat(response.get(0).getItemCount()).isEqualTo(fluxReportingResult3.getItemCount());
 
                         }
                 );
@@ -232,10 +292,13 @@ public class RetrieveFluxReportingResultsIT {
 
                             Collections.sort(response);
 
+                            Assertions.assertThat(response.get(0).getId()).isEqualTo(fluxReportingResult3.getId());
                             Assertions.assertThat(response.get(0).getDateId()).isEqualTo(fluxReportingResult3.getDateId());
                             Assertions.assertThat(response.get(0).getLocationId()).isEqualTo(fluxReportingResult3.getLocationId());
                             Assertions.assertThat(response.get(0).getSourcePoolId()).isEqualTo(fluxReportingResult3.getSourcePoolId());
                             Assertions.assertThat(response.get(0).getSinkPoolId()).isEqualTo(fluxReportingResult3.getSinkPoolId());
+                            Assertions.assertThat(response.get(0).getFlux()).isEqualTo(fluxReportingResult3.getFlux());
+                            Assertions.assertThat(response.get(0).getItemCount()).isEqualTo(fluxReportingResult3.getItemCount());
 
                         }
                 );
@@ -274,10 +337,13 @@ public class RetrieveFluxReportingResultsIT {
 
                             Collections.sort(response);
 
+                            Assertions.assertThat(response.get(0).getId()).isEqualTo(fluxReportingResult3.getId());
                             Assertions.assertThat(response.get(0).getDateId()).isEqualTo(fluxReportingResult3.getDateId());
                             Assertions.assertThat(response.get(0).getLocationId()).isEqualTo(fluxReportingResult3.getLocationId());
                             Assertions.assertThat(response.get(0).getSourcePoolId()).isEqualTo(fluxReportingResult3.getSourcePoolId());
                             Assertions.assertThat(response.get(0).getSinkPoolId()).isEqualTo(fluxReportingResult3.getSinkPoolId());
+                            Assertions.assertThat(response.get(0).getFlux()).isEqualTo(fluxReportingResult3.getFlux());
+                            Assertions.assertThat(response.get(0).getItemCount()).isEqualTo(fluxReportingResult3.getItemCount());
 
                         }
                 );
@@ -315,23 +381,77 @@ public class RetrieveFluxReportingResultsIT {
 
                             Collections.sort(response);
 
+                            Assertions.assertThat(response.get(0).getId()).isEqualTo(fluxReportingResult1.getId());
                             Assertions.assertThat(response.get(0).getDateId()).isEqualTo(fluxReportingResult1.getDateId());
                             Assertions.assertThat(response.get(0).getLocationId()).isEqualTo(fluxReportingResult1.getLocationId());
                             Assertions.assertThat(response.get(0).getSourcePoolId()).isEqualTo(fluxReportingResult1.getSourcePoolId());
                             Assertions.assertThat(response.get(0).getSinkPoolId()).isEqualTo(fluxReportingResult1.getSinkPoolId());
+                            Assertions.assertThat(response.get(0).getFlux()).isEqualTo(fluxReportingResult1.getFlux());
+                            Assertions.assertThat(response.get(0).getItemCount()).isEqualTo(fluxReportingResult1.getItemCount());
 
 
+                            Assertions.assertThat(response.get(1).getId()).isEqualTo(fluxReportingResult2.getId());
                             Assertions.assertThat(response.get(1).getDateId()).isEqualTo(fluxReportingResult2.getDateId());
                             Assertions.assertThat(response.get(1).getLocationId()).isEqualTo(fluxReportingResult2.getLocationId());
                             Assertions.assertThat(response.get(1).getSourcePoolId()).isEqualTo(fluxReportingResult2.getSourcePoolId());
                             Assertions.assertThat(response.get(1).getSinkPoolId()).isEqualTo(fluxReportingResult2.getSinkPoolId());
+                            Assertions.assertThat(response.get(1).getFlux()).isEqualTo(fluxReportingResult2.getFlux());
+                            Assertions.assertThat(response.get(1).getItemCount()).isEqualTo(fluxReportingResult2.getItemCount());
 
 
+                            Assertions.assertThat(response.get(2).getId()).isEqualTo(fluxReportingResult3.getId());
                             Assertions.assertThat(response.get(2).getDateId()).isEqualTo(fluxReportingResult3.getDateId());
                             Assertions.assertThat(response.get(2).getLocationId()).isEqualTo(fluxReportingResult3.getLocationId());
                             Assertions.assertThat(response.get(2).getSourcePoolId()).isEqualTo(fluxReportingResult3.getSourcePoolId());
                             Assertions.assertThat(response.get(2).getSinkPoolId()).isEqualTo(fluxReportingResult3.getSinkPoolId());
+                            Assertions.assertThat(response.get(2).getFlux()).isEqualTo(fluxReportingResult3.getFlux());
+                            Assertions.assertThat(response.get(2).getItemCount()).isEqualTo(fluxReportingResult3.getItemCount());
 
+
+                        }
+                );
+    }
+
+    @Test
+    public void Given_FluxReportingResultRecordsExist_When_GetAllWithItemCountFilter_Then_OnlyFluxReportingResultRecordsWithTheSpecifiedItemCountWillBeReturned() {
+
+        Mockito
+                .when(endpointsUtil.retrieveDatabaseById(1L))
+                .thenReturn(
+                        Mono.just(
+                                new DatabaseBuilder()
+                                        .id(null)
+                                        .label("First Database")
+                                        .description(null)
+                                        .url(postgreSQLContainer.getJdbcUrl())
+                                        .startYear(1984)
+                                        .endYear(2014)
+                                        .processed(false)
+                                        .published(false)
+                                        .archived(false)
+                                        .build()));
+
+        webTestClient
+                .get()
+                .uri(uriBuilder ->
+                        uriBuilder
+                                .path("/api/v1/flux_reporting_results/databases/1/all")
+                                .queryParam("itemCount", "{id1}")
+                                .build(fluxReportingResult3.getItemCount().toString()))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(FluxReportingResult.class)
+                .value(response -> {
+
+                            Collections.sort(response);
+
+                            Assertions.assertThat(response.get(0).getId()).isEqualTo(fluxReportingResult3.getId());
+                            Assertions.assertThat(response.get(0).getDateId()).isEqualTo(fluxReportingResult3.getDateId());
+                            Assertions.assertThat(response.get(0).getLocationId()).isEqualTo(fluxReportingResult3.getLocationId());
+                            Assertions.assertThat(response.get(0).getSourcePoolId()).isEqualTo(fluxReportingResult3.getSourcePoolId());
+                            Assertions.assertThat(response.get(0).getSinkPoolId()).isEqualTo(fluxReportingResult3.getSinkPoolId());
+                            Assertions.assertThat(response.get(0).getFlux()).isEqualTo(fluxReportingResult3.getFlux());
+                            Assertions.assertThat(response.get(0).getItemCount()).isEqualTo(fluxReportingResult3.getItemCount());
 
                         }
                 );

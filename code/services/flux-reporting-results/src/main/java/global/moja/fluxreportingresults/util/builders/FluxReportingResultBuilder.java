@@ -17,11 +17,19 @@ import global.moja.fluxreportingresults.models.FluxReportingResult;
  */
 public class FluxReportingResultBuilder {
 
+	private Long id;
 	private Long dateId;
 	private Long locationId;
 	private Long fluxTypeId;
 	private Long sourcePoolId;
 	private Long sinkPoolId;
+	private Double flux;
+	private Long itemCount;
+
+	public FluxReportingResultBuilder id(Long id) {
+		this.id = id;
+		return this;
+	}
 
 	public FluxReportingResultBuilder dateId(Long dateId) {
 		this.dateId = dateId;
@@ -48,7 +56,17 @@ public class FluxReportingResultBuilder {
 		return this;
 	}
 
+	public FluxReportingResultBuilder flux(Double flux) {
+		this.flux = flux;
+		return this;
+	}
+
+	public FluxReportingResultBuilder itemCount(Long itemCount) {
+		this.itemCount = itemCount;
+		return this;
+	}
+
 	public FluxReportingResult build(){
-		return new FluxReportingResult(dateId,locationId,fluxTypeId,sourcePoolId,sinkPoolId);
+		return new FluxReportingResult(id,dateId,locationId,fluxTypeId,sourcePoolId,sinkPoolId,flux,itemCount);
 	}
 }

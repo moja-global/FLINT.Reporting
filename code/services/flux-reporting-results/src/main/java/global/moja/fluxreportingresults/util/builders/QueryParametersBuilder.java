@@ -19,12 +19,20 @@ import org.springframework.web.reactive.function.server.ServerRequest;
  */
 public class QueryParametersBuilder {
 
+    private Long id;
     private Long dateId;
     private Long locationId;
     private Long fluxTypeId;
     private Long sourcePoolId;
     private Long sinkPoolId;
+    private Long itemCount;
 
+    public QueryParametersBuilder id(ServerRequest request) {
+        this.id =
+                request.queryParam("id").isPresent() ?
+                        Long.parseLong(request.queryParam("id").get()) : null;
+        return this;
+    }
 
     public QueryParametersBuilder dateId(ServerRequest request) {
         this.dateId =
@@ -61,10 +69,15 @@ public class QueryParametersBuilder {
         return this;
     }
 
-
+    public QueryParametersBuilder itemCount(ServerRequest request) {
+        this.itemCount =
+                request.queryParam("itemCount").isPresent() ?
+                        Long.parseLong(request.queryParam("itemCount").get()) : null;
+        return this;
+    }
 
     public QueryParameters build() {
-        return new QueryParameters(dateId, locationId, fluxTypeId, sourcePoolId, sinkPoolId);
+        return new QueryParameters(id, dateId, locationId, fluxTypeId, sourcePoolId, sinkPoolId, itemCount);
     }
 
 }

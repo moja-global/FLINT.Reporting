@@ -5,7 +5,7 @@
  * If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package global.moja.fluxreportingresults.daos;
+package global.moja.dates.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,13 +19,19 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class QueryParameters {
+public class Date implements Comparable<Date> {
 
     private Long id;
-    private Long dateId;
-    private Long locationId;
-    private Long fluxTypeId;
-    private Long sourcePoolId;
-    private Long sinkPoolId;
-    private Long itemCount;
+    private Integer year;
+
+    @Override
+    public int compareTo(Date date) {
+
+        if(this.id != null && date.getId() != null){
+            return this.id.compareTo(date.getId());
+        } else {
+            return 0;
+        }
+
+    }
 }

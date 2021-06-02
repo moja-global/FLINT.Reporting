@@ -51,6 +51,11 @@ public class RoutesConfig {
                                         .description("Retrieves all or some of the Flux Reporting Results Records from the database depending on whether or not query parameters were included in the query string")
                                         .parameter(
                                                 parameterBuilder()
+                                                        .name("id").in(ParameterIn.PATH)
+                                                        .description("The unique identifier of the record to be retrieved")
+                                                        .implementation(Long.class))
+                                        .parameter(
+                                                parameterBuilder()
                                                         .name("databaseId").in(ParameterIn.PATH)
                                                         .description("The unique identifier of the database from which the record should be retrieved")
                                                         .implementation(Long.class))
@@ -78,6 +83,11 @@ public class RoutesConfig {
                                                 parameterBuilder()
                                                         .name("sinkPoolId").in(ParameterIn.QUERY)
                                                         .description("The unique identifier of the Sink Pool to filter the returned values by")
+                                                        .implementation(Long.class))
+                                        .parameter(
+                                                parameterBuilder()
+                                                        .name("itemCount").in(ParameterIn.QUERY)
+                                                        .description("The Item Count to filter the returned values by")
                                                         .implementation(Long.class))
                                         .response(
                                                 responseBuilder()

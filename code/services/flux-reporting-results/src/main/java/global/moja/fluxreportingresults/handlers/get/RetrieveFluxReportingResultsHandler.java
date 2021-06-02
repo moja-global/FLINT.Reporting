@@ -58,11 +58,13 @@ public class RetrieveFluxReportingResultsHandler {
                         .selectFluxReportingResults(
                                 Long.parseLong(request.pathVariable("databaseId")),
                                 new QueryParametersBuilder()
+                                        .id(request)
                                         .dateId(request)
                                         .locationId(request)
                                         .fluxTypeId(request)
                                         .sourcePoolId(request)
                                         .sinkPoolId(request)
+                                        .itemCount(request)
                                         .build());
     }
 

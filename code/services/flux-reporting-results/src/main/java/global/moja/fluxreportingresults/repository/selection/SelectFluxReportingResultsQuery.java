@@ -54,11 +54,14 @@ public class SelectFluxReportingResultsQuery {
                                                 .select(query)
                                                 .get(rs ->
                                                         new FluxReportingResultBuilder()
+                                                                .id(rs.getLong("flux_reporting_results_id_pk"))
                                                                 .dateId(rs.getLong("date_dimension_id_fk"))
                                                                 .locationId(rs.getLong("location_dimension_id_fk"))
                                                                 .fluxTypeId(rs.getLong("fluxtypeinfo_dimension_id_fk"))
                                                                 .sourcePoolId(rs.getLong("source_poolinfo_dimension_id_fk"))
                                                                 .sinkPoolId(rs.getLong("sink_poolinfo_dimension_id_fk"))
+                                                                .flux(rs.getDouble("flux"))
+                                                                .itemCount(rs.getLong("itemcount"))
                                                                 .build())));
 
 

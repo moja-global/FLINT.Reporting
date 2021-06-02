@@ -7,27 +7,29 @@
  */
 package global.moja.businessintelligence.daos;
 
-import global.moja.businessintelligence.models.CoverType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import global.moja.businessintelligence.models.VegetationType;
+import lombok.*;
+import lombok.extern.jackson.Jacksonized;
 
 /**
  * @since 0.0.1
  * @author Kwaje Anthony <tony@miles.co.ke>
  * @version 1.0
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class CoverTypeHistoricDetail implements Comparable<CoverTypeHistoricDetail> {
+
+@Jacksonized
+@Builder
+@Setter
+@Getter
+@EqualsAndHashCode
+public class VegetationTypeHistoricDetail implements Comparable<VegetationTypeHistoricDetail> {
 
     private Long itemNumber;
     private Integer year;
-    private CoverType coverType;
+    private VegetationType vegetationType;
 
     @Override
-    public int compareTo(CoverTypeHistoricDetail coverType) {
+    public int compareTo(VegetationTypeHistoricDetail coverType) {
 
         if(this.itemNumber != null && coverType.getItemNumber() != null){
             return this.itemNumber.compareTo(coverType.getItemNumber());
@@ -39,7 +41,8 @@ public class CoverTypeHistoricDetail implements Comparable<CoverTypeHistoricDeta
 
     @Override
     public String toString(){
-        return String.format("Timestep: %d, Year: %d, Cover Type: %s",
-                itemNumber, year, coverType == null ? null : coverType.getDescription());
+        return String.format("Timestep: %d, Year: %d, Vegetation Type: %s",
+                itemNumber, year, vegetationType == null ? null : vegetationType.toString());
     }
+
 }

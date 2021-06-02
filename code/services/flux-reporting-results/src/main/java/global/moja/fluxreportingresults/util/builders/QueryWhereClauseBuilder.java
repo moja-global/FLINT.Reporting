@@ -27,6 +27,19 @@ public class QueryWhereClauseBuilder {
 
         StringBuilder query = null;
 
+        // Id
+        if(queryParameters.getId() != null){
+
+            if(query != null){
+                query.append(" AND ");
+            } else {
+                query = new StringBuilder();
+            }
+
+            query.append("flux_reporting_results_id_pk = ").append(queryParameters.getId());
+
+        }
+
         // Date Id
         if(queryParameters.getDateId() != null){
 
@@ -90,6 +103,20 @@ public class QueryWhereClauseBuilder {
             }
 
             query.append("sink_poolinfo_dimension_id_fk = ").append(queryParameters.getSinkPoolId());
+
+        }
+
+
+        //  Item Count
+        if(queryParameters.getItemCount() != null){
+
+            if(query != null){
+                query.append(" AND ");
+            } else {
+                query = new StringBuilder();
+            }
+
+            query.append("itemcount = ").append(queryParameters.getItemCount());
 
         }
 

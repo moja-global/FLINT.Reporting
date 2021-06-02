@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LandUseHistoricDetail implements Comparable<LandUseHistoricDetail> {
+public class LocationLandUsesHistoricDetail implements Comparable<LocationLandUsesHistoricDetail> {
     
     private Long itemNumber;
     private Integer year;
@@ -28,7 +28,7 @@ public class LandUseHistoricDetail implements Comparable<LandUseHistoricDetail> 
     private Boolean confirmed;
 
     @Override
-    public int compareTo(LandUseHistoricDetail landUseCategory) {
+    public int compareTo(LocationLandUsesHistoricDetail landUseCategory) {
 
         if(this.itemNumber != null && landUseCategory.getItemNumber() != null){
             return this.itemNumber.compareTo(landUseCategory.getItemNumber());

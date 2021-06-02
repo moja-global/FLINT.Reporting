@@ -5,11 +5,14 @@
  * If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package global.moja.fluxreportingresults.daos;
+package global.moja.businessintelligence.daos;
 
+import global.moja.businessintelligence.models.Location;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  * @since 0.0.1
@@ -19,13 +22,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class QueryParameters {
+public class LocationEmissionsReports extends Location {
 
-    private Long id;
-    private Long dateId;
-    private Long locationId;
-    private Long fluxTypeId;
-    private Long sourcePoolId;
-    private Long sinkPoolId;
-    private Long itemCount;
+    private List<LandUsesFluxesEmissionReportsDetail> reports;
 }

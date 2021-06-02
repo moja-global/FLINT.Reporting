@@ -1,8 +1,8 @@
-package global.moja.businessintelligence.services.landuses;
+package global.moja.businessintelligence.services;
 
 import global.moja.businessintelligence.configurations.ConfigurationDataProvider;
-import global.moja.businessintelligence.daos.CoverTypeHistoricDetail;
-import global.moja.businessintelligence.daos.LandUseHistoricDetail;
+import global.moja.businessintelligence.daos.CoverTypesHistoricDetail;
+import global.moja.businessintelligence.daos.LandUsesHistoricDetail;
 import global.moja.businessintelligence.exceptions.ServerException;
 import global.moja.businessintelligence.models.ConversionAndRemainingPeriod;
 import global.moja.businessintelligence.models.CoverType;
@@ -26,7 +26,7 @@ import java.util.stream.LongStream;
  */
 @Component
 @Slf4j
-public class LandUsesProcessor {
+public class LandUseAllocationDecisionTree {
 
 
     private final CoverType croplandCoverType;
@@ -35,17 +35,17 @@ public class LandUsesProcessor {
     private final String lineSeparator;
 
     @Autowired
-    public LandUsesProcessor(ConfigurationDataProvider configurationDataProvider) {
+    public LandUseAllocationDecisionTree(ConfigurationDataProvider configurationDataProvider) {
         this.configurationDataProvider = configurationDataProvider;
         this.croplandCoverType = configurationDataProvider.getCoverType("Cropland");
         this.grasslandCoverType = configurationDataProvider.getCoverType("Grassland");
         this.lineSeparator = System.getProperty("line.separator");
     }
 
-    public LandUseHistoricDetail process(
+    public LandUsesHistoricDetail process(
             Long timestep,
-            List<CoverTypeHistoricDetail> coverTypesHistoricDetails,
-            List<LandUseHistoricDetail> landUseHistoricDetails) throws ServerException {
+            List<CoverTypesHistoricDetail> coverTypesHistoricDetails,
+            List<LandUsesHistoricDetail> landUsesHistoricDetails) throws ServerException {
 
 
         log.trace("Entering Land Uses Processor");
@@ -53,15 +53,15 @@ public class LandUsesProcessor {
 
         // Declare variables
         log.trace("Declaring variables");
-        CoverTypeHistoricDetail currentCoverTypeHistoricDetail;
+        CoverTypesHistoricDetail currentCoverTypesHistoricDetail;
 
-        LandUseHistoricDetail immediatePreviousLandUseHistoricDetail;
-        LandUseHistoricDetail differentPreviousLandUseHistoricDetail;
+        LandUsesHistoricDetail immediatePreviousLandUsesHistoricDetail;
+        LandUsesHistoricDetail differentPreviousLandUsesHistoricDetail;
 
-        CoverTypeHistoricDetail immediateNextCoverTypeHistoricDetail;
-        CoverTypeHistoricDetail differentNextCoverTypeHistoricDetail;
+        CoverTypesHistoricDetail immediateNextCoverTypesHistoricDetail;
+        CoverTypesHistoricDetail differentNextCoverTypesHistoricDetail;
 
-        CoverTypeHistoricDetail lastCoverTypeHistoricDetail;
+        CoverTypesHistoricDetail lastCoverTypesHistoricDetail;
 
         ConversionAndRemainingPeriod conversionAndRemainingPeriod;
 
@@ -69,19 +69,19 @@ public class LandUsesProcessor {
         // Validate the passed-in arguments and throw a Server Exception when one is invalid
         log.trace("Validating the passed-in arguments");
 
-        validate(timestep, coverTypesHistoricDetails, landUseHistoricDetails);
+        validate(timestep, coverTypesHistoricDetails, landUsesHistoricDetails);
 
         // Initialize the current Timestep's Historic Cover Type Detail
         log.trace("Initializing the current Timestep's Historic Cover Type Detail");
 
-        currentCoverTypeHistoricDetail =
+        currentCoverTypesHistoricDetail =
                 coverTypesHistoricDetails
                         .stream()
                         .filter(c -> c.getItemNumber().equals(timestep))
                         .findFirst()
                         .orElse(null);
 
-        log.debug("Current Cover Type Historic Detail = {}", currentCoverTypeHistoricDetail);
+        log.debug("Current Cover Type Historic Detail = {}", currentCoverTypesHistoricDetail);
 
 
         // Check if this is the Initial Timestep
@@ -92,7 +92,7 @@ public class LandUsesProcessor {
             // Check whether the Current Cover Type is Grassland
             log.trace("{}{}Checking whether the Current Cover Type is Grassland{}", lineSeparator, lineSeparator, lineSeparator);
 
-            if (isCoverTypeGrassland(currentCoverTypeHistoricDetail)) {
+            if (isCoverTypeGrassland(currentCoverTypesHistoricDetail)) {
 
                 // Initialize the Conversion & Remaining Period from Cropland to Grassland Land Use
                 log.trace("Initializing the Conversion & Remaining Period from Cropland to Grassland Land Use");
@@ -118,8 +118,8 @@ public class LandUsesProcessor {
 
                     return
                             new LandUseHistoryBuilder()
-                                    .itemNumber(currentCoverTypeHistoricDetail.getItemNumber())
-                                    .year(currentCoverTypeHistoricDetail.getYear())
+                                    .itemNumber(currentCoverTypesHistoricDetail.getItemNumber())
+                                    .year(currentCoverTypesHistoricDetail.getYear())
                                     .landUseCategory(
                                             configurationDataProvider
                                                     .getLandUseCategory(
@@ -136,13 +136,13 @@ public class LandUsesProcessor {
 
                     return
                             new LandUseHistoryBuilder()
-                                    .itemNumber(currentCoverTypeHistoricDetail.getItemNumber())
-                                    .year(currentCoverTypeHistoricDetail.getYear())
+                                    .itemNumber(currentCoverTypesHistoricDetail.getItemNumber())
+                                    .year(currentCoverTypesHistoricDetail.getYear())
                                     .landUseCategory(
                                             configurationDataProvider
                                                     .getLandUseCategory(
-                                                            currentCoverTypeHistoricDetail.getCoverType().getId(),
-                                                            currentCoverTypeHistoricDetail.getCoverType().getId(),
+                                                            currentCoverTypesHistoricDetail.getCoverType().getId(),
+                                                            currentCoverTypesHistoricDetail.getCoverType().getId(),
                                                             LandUseChangeAction.REMAINING))
                                     .confirmed(true)
                                     .build();
@@ -156,13 +156,13 @@ public class LandUsesProcessor {
 
                 return
                         new LandUseHistoryBuilder()
-                                .itemNumber(currentCoverTypeHistoricDetail.getItemNumber())
-                                .year(currentCoverTypeHistoricDetail.getYear())
+                                .itemNumber(currentCoverTypesHistoricDetail.getItemNumber())
+                                .year(currentCoverTypesHistoricDetail.getYear())
                                 .landUseCategory(
                                         configurationDataProvider
                                                 .getLandUseCategory(
-                                                        currentCoverTypeHistoricDetail.getCoverType().getId(),
-                                                        currentCoverTypeHistoricDetail.getCoverType().getId(),
+                                                        currentCoverTypesHistoricDetail.getCoverType().getId(),
+                                                        currentCoverTypesHistoricDetail.getCoverType().getId(),
                                                         LandUseChangeAction.REMAINING))
                                 .confirmed(true)
                                 .build();
@@ -174,41 +174,41 @@ public class LandUsesProcessor {
             // Initialize the previous Land Use Historic Detail.
             log.trace("Initializing the previous Land Use Historic details");
 
-            immediatePreviousLandUseHistoricDetail =
-                    getImmediatePreviousLandUseHistoricDetail(currentCoverTypeHistoricDetail, landUseHistoricDetails);
-            differentPreviousLandUseHistoricDetail =
-                    getDifferentPreviousLandUseHistoricDetail(currentCoverTypeHistoricDetail, landUseHistoricDetails);
+            immediatePreviousLandUsesHistoricDetail =
+                    getImmediatePreviousLandUseHistoricDetail(currentCoverTypesHistoricDetail, landUsesHistoricDetails);
+            differentPreviousLandUsesHistoricDetail =
+                    getDifferentPreviousLandUseHistoricDetail(currentCoverTypesHistoricDetail, landUsesHistoricDetails);
 
-            log.debug("Immediate Previous Land Use Historic Detail = {}", immediatePreviousLandUseHistoricDetail);
-            log.debug("Different Previous Land Use Historic Detail = {}", differentPreviousLandUseHistoricDetail);
+            log.debug("Immediate Previous Land Use Historic Detail = {}", immediatePreviousLandUsesHistoricDetail);
+            log.debug("Different Previous Land Use Historic Detail = {}", differentPreviousLandUsesHistoricDetail);
 
 
             // Initialize the next Cover Type historic Detail.
             log.trace("Initializing the next Cover Type Historic details");
 
-            immediateNextCoverTypeHistoricDetail =
-                    getImmediateNextCoverTypeHistoricDetail(currentCoverTypeHistoricDetail, coverTypesHistoricDetails);
-            differentNextCoverTypeHistoricDetail =
-                    getDifferentNextCoverTypeHistoricDetail(currentCoverTypeHistoricDetail, coverTypesHistoricDetails);
+            immediateNextCoverTypesHistoricDetail =
+                    getImmediateNextCoverTypeHistoricDetail(currentCoverTypesHistoricDetail, coverTypesHistoricDetails);
+            differentNextCoverTypesHistoricDetail =
+                    getDifferentNextCoverTypeHistoricDetail(currentCoverTypesHistoricDetail, coverTypesHistoricDetails);
 
-            log.debug("Immediate Next Cover Type Historic Detail = {}", immediateNextCoverTypeHistoricDetail);
-            log.debug("Different Next Cover Type Historic Detail = {}", differentNextCoverTypeHistoricDetail);
+            log.debug("Immediate Next Cover Type Historic Detail = {}", immediateNextCoverTypesHistoricDetail);
+            log.debug("Different Next Cover Type Historic Detail = {}", differentNextCoverTypesHistoricDetail);
 
 
             // Get the last Cover Type historic detail.
             // By this, we mean get a historic detail
             // whose time step is the last timestep and
             log.trace("Initializing the last Cover Type Historic Detail");
-            lastCoverTypeHistoricDetail =
+            lastCoverTypesHistoricDetail =
                     getLastCoverTypeHistoricDetail(coverTypesHistoricDetails);
 
-            log.debug("Last Cover Type Historic Detail = {}", lastCoverTypeHistoricDetail);
+            log.debug("Last Cover Type Historic Detail = {}", lastCoverTypesHistoricDetail);
 
 
             // Initialize the Conversion & Remaining Period from the Previous Land Use to the current Cover Type
             log.trace("Initializing the Conversion & Remaining Period from the Previous Land Use");
-            conversionAndRemainingPeriod = differentPreviousLandUseHistoricDetail == null ? null :
-                    getConversionAndRemainingPeriod(differentPreviousLandUseHistoricDetail, currentCoverTypeHistoricDetail);
+            conversionAndRemainingPeriod = differentPreviousLandUsesHistoricDetail == null ? null :
+                    getConversionAndRemainingPeriod(differentPreviousLandUsesHistoricDetail, currentCoverTypesHistoricDetail);
 
             log.trace("The Conversion & Remaining Period = {}", conversionAndRemainingPeriod);
 
@@ -217,7 +217,7 @@ public class LandUsesProcessor {
             log.trace("{}{}Checking if the Cover Type changed since the Initial Timestep{}",
                     lineSeparator, lineSeparator, lineSeparator);
 
-            if (hasTheCoverTypeChangedSinceTheInitialTimestep(landUseHistoricDetails, currentCoverTypeHistoricDetail)) {
+            if (hasTheCoverTypeChangedSinceTheInitialTimestep(landUsesHistoricDetails, currentCoverTypesHistoricDetail)) {
 
                 // Check if the Cover Type remained the same for longer than the Land Conversion Period of the
                 // Previous Land Use
@@ -225,9 +225,9 @@ public class LandUsesProcessor {
                         "Conversion Period of the previous Land Use{}", lineSeparator, lineSeparator, lineSeparator);
 
                 if (hasTheCoverTypeRemainedTheSameForLongerThanTheLandConversionPeriodOfThePreviousLandUse(
-                        differentPreviousLandUseHistoricDetail,
-                        differentNextCoverTypeHistoricDetail,
-                        lastCoverTypeHistoricDetail,
+                        differentPreviousLandUsesHistoricDetail,
+                        differentNextCoverTypesHistoricDetail,
+                        lastCoverTypesHistoricDetail,
                         conversionAndRemainingPeriod)) {
 
                     // Check if the Cover Type remained the same for longer than the Land Remaining Period
@@ -235,8 +235,8 @@ public class LandUsesProcessor {
                             "Remaining Period{}", lineSeparator, lineSeparator, lineSeparator);
 
                     if (hasTheCoverTypeRemainedTheSameForLongerThanTheLandRemainingPeriod(
-                            currentCoverTypeHistoricDetail,
-                            differentPreviousLandUseHistoricDetail,
+                            currentCoverTypesHistoricDetail,
+                            differentPreviousLandUsesHistoricDetail,
                             conversionAndRemainingPeriod)) {
 
                         // Classify the Land Use as Land Remaining Land of the Current Cover Type
@@ -244,13 +244,13 @@ public class LandUsesProcessor {
 
                         return
                                 new LandUseHistoryBuilder()
-                                        .itemNumber(currentCoverTypeHistoricDetail.getItemNumber())
-                                        .year(currentCoverTypeHistoricDetail.getYear())
+                                        .itemNumber(currentCoverTypesHistoricDetail.getItemNumber())
+                                        .year(currentCoverTypesHistoricDetail.getYear())
                                         .landUseCategory(
                                                 configurationDataProvider
                                                         .getLandUseCategory(
-                                                                currentCoverTypeHistoricDetail.getCoverType().getId(),
-                                                                currentCoverTypeHistoricDetail.getCoverType().getId(),
+                                                                currentCoverTypesHistoricDetail.getCoverType().getId(),
+                                                                currentCoverTypesHistoricDetail.getCoverType().getId(),
                                                                 LandUseChangeAction.REMAINING))
                                         .confirmed(true)
                                         .build();
@@ -263,15 +263,15 @@ public class LandUsesProcessor {
 
                         return
                                 new LandUseHistoryBuilder()
-                                        .itemNumber(currentCoverTypeHistoricDetail.getItemNumber())
-                                        .year(currentCoverTypeHistoricDetail.getYear())
+                                        .itemNumber(currentCoverTypesHistoricDetail.getItemNumber())
+                                        .year(currentCoverTypesHistoricDetail.getYear())
                                         .landUseCategory(
                                                 configurationDataProvider
                                                         .getLandUseCategory(
-                                                                differentPreviousLandUseHistoricDetail
+                                                                differentPreviousLandUsesHistoricDetail
                                                                         .getLandUseCategory()
                                                                         .getCoverTypeId(),
-                                                                currentCoverTypeHistoricDetail
+                                                                currentCoverTypesHistoricDetail
                                                                         .getCoverType()
                                                                         .getId(),
                                                                 LandUseChangeAction.CONVERSION))
@@ -289,9 +289,9 @@ public class LandUsesProcessor {
                             "and exclude all other Cover Types {}", lineSeparator, lineSeparator, lineSeparator);
 
                     if (doTheCoverTypesOfTheCurrentAndNextTimeStepAndTheLandUseClassOfThePreviousTimeStepIncludeBothCroplandAndGrasslandAndExcludeEverythingElse(
-                            currentCoverTypeHistoricDetail,
-                            immediatePreviousLandUseHistoricDetail,
-                            immediateNextCoverTypeHistoricDetail)) {
+                            currentCoverTypesHistoricDetail,
+                            immediatePreviousLandUsesHistoricDetail,
+                            immediateNextCoverTypesHistoricDetail)) {
 
                         // Calculate how long the Cover Types for the Current and Next Time Steps as well as the
                         // Land Use Classes of the Previous Time Steps have included Cropland and Grassland
@@ -302,10 +302,10 @@ public class LandUsesProcessor {
                                 lineSeparator, lineSeparator, lineSeparator);
 
                         long years = howLongHaveTheCurrentAndFutureCoverTypesAndPreviousLandUseClassesBeenCroplandAndGrasslandExcludingAnythingElse(
-                                currentCoverTypeHistoricDetail,
-                                lastCoverTypeHistoricDetail,
+                                currentCoverTypesHistoricDetail,
+                                lastCoverTypesHistoricDetail,
                                 coverTypesHistoricDetails,
-                                landUseHistoricDetails);
+                                landUsesHistoricDetails);
 
 
                         // Check whether the Cover Types for the Current and Next Time Steps as well as the
@@ -328,25 +328,25 @@ public class LandUsesProcessor {
                                     "Land Conversion Period for the Previous Land Use{}", lineSeparator, lineSeparator, lineSeparator);
 
                             if (isLengthOfTimeToTheEndOfTheSimulationLessThanTheLandConversionPeriodOfThePreviousLandUse(
-                                    currentCoverTypeHistoricDetail,
-                                    lastCoverTypeHistoricDetail,
+                                    currentCoverTypesHistoricDetail,
+                                    lastCoverTypesHistoricDetail,
                                     conversionAndRemainingPeriod)) {
 
                                 // Check whether the Previous Land Use is Cropland
                                 log.trace("{}{} Checking whether the Previous Land Use is Cropland {}",
                                         lineSeparator, lineSeparator, lineSeparator);
 
-                                if (isCoverTypeCropland(differentPreviousLandUseHistoricDetail)) {
+                                if (isCoverTypeCropland(differentPreviousLandUsesHistoricDetail)) {
 
                                     // Classify the Land Use as the Previous Land Use
                                     // TODO Confirm with rdl
                                     log.trace("Classifying the Land Use as the Previous Land Use");
                                     return
                                             new LandUseHistoryBuilder()
-                                                    .itemNumber(currentCoverTypeHistoricDetail.getItemNumber())
-                                                    .year(currentCoverTypeHistoricDetail.getYear())
-                                                    .landUseCategory(differentPreviousLandUseHistoricDetail.getLandUseCategory())
-                                                    .confirmed(differentPreviousLandUseHistoricDetail.getConfirmed())
+                                                    .itemNumber(currentCoverTypesHistoricDetail.getItemNumber())
+                                                    .year(currentCoverTypesHistoricDetail.getYear())
+                                                    .landUseCategory(differentPreviousLandUsesHistoricDetail.getLandUseCategory())
+                                                    .confirmed(differentPreviousLandUsesHistoricDetail.getConfirmed())
                                                     .build();
 
                                 } else {
@@ -356,12 +356,12 @@ public class LandUsesProcessor {
 
                                     return
                                             new LandUseHistoryBuilder()
-                                                    .itemNumber(currentCoverTypeHistoricDetail.getItemNumber())
-                                                    .year(currentCoverTypeHistoricDetail.getYear())
+                                                    .itemNumber(currentCoverTypesHistoricDetail.getItemNumber())
+                                                    .year(currentCoverTypesHistoricDetail.getYear())
                                                     .landUseCategory(
                                                             configurationDataProvider
                                                                     .getLandUseCategory(
-                                                                            differentPreviousLandUseHistoricDetail
+                                                                            differentPreviousLandUsesHistoricDetail
                                                                                     .getLandUseCategory()
                                                                                     .getCoverTypeId(),
                                                                             croplandCoverType.getId(),
@@ -385,7 +385,7 @@ public class LandUsesProcessor {
 
 
                         if (hasTheCoverTypeBeenCroplandOrGrasslandSinceTheInitialTimestep(
-                                currentCoverTypeHistoricDetail, landUseHistoricDetails) ||
+                                currentCoverTypesHistoricDetail, landUsesHistoricDetails) ||
                                 hasTheCoverTypeBeenCroplandOrGrasslandForAPeriodLongerThanTheLandRemainingPeriod(
                                         conversionAndRemainingPeriod, years)) {
 
@@ -394,8 +394,8 @@ public class LandUsesProcessor {
 
                             return
                                     new LandUseHistoryBuilder()
-                                            .itemNumber(currentCoverTypeHistoricDetail.getItemNumber())
-                                            .year(currentCoverTypeHistoricDetail.getYear())
+                                            .itemNumber(currentCoverTypesHistoricDetail.getItemNumber())
+                                            .year(currentCoverTypesHistoricDetail.getYear())
                                             .landUseCategory(
                                                     configurationDataProvider
                                                             .getLandUseCategory(
@@ -411,17 +411,17 @@ public class LandUsesProcessor {
                             log.trace("{}{} Checking whether the Previous Land Use is Cropland {}",
                                     lineSeparator, lineSeparator, lineSeparator);
 
-                            if (isCoverTypeCropland(differentPreviousLandUseHistoricDetail)) {
+                            if (isCoverTypeCropland(differentPreviousLandUsesHistoricDetail)) {
 
                                 // Classify the Land Use as the Previous Land Use
                                 // TODO Confirm with rdl
                                 log.trace("Classifying the Land Use as the Previous Land Use");
                                 return
                                         new LandUseHistoryBuilder()
-                                                .itemNumber(currentCoverTypeHistoricDetail.getItemNumber())
-                                                .year(currentCoverTypeHistoricDetail.getYear())
-                                                .landUseCategory(differentPreviousLandUseHistoricDetail.getLandUseCategory())
-                                                .confirmed(differentPreviousLandUseHistoricDetail.getConfirmed())
+                                                .itemNumber(currentCoverTypesHistoricDetail.getItemNumber())
+                                                .year(currentCoverTypesHistoricDetail.getYear())
+                                                .landUseCategory(differentPreviousLandUsesHistoricDetail.getLandUseCategory())
+                                                .confirmed(differentPreviousLandUsesHistoricDetail.getConfirmed())
                                                 .build();
 
                             } else {
@@ -431,12 +431,12 @@ public class LandUsesProcessor {
 
                                 return
                                         new LandUseHistoryBuilder()
-                                                .itemNumber(currentCoverTypeHistoricDetail.getItemNumber())
-                                                .year(currentCoverTypeHistoricDetail.getYear())
+                                                .itemNumber(currentCoverTypesHistoricDetail.getItemNumber())
+                                                .year(currentCoverTypesHistoricDetail.getYear())
                                                 .landUseCategory(
                                                         configurationDataProvider
                                                                 .getLandUseCategory(
-                                                                        differentPreviousLandUseHistoricDetail
+                                                                        differentPreviousLandUsesHistoricDetail
                                                                                 .getLandUseCategory()
                                                                                 .getCoverTypeId(),
                                                                         croplandCoverType.getId(),
@@ -456,8 +456,8 @@ public class LandUsesProcessor {
                                 "Land Conversion Period for the Previous Land Use{}", lineSeparator, lineSeparator, lineSeparator);
 
                         if (isLengthOfTimeToTheEndOfTheSimulationLessThanTheLandConversionPeriodOfThePreviousLandUse(
-                                currentCoverTypeHistoricDetail,
-                                lastCoverTypeHistoricDetail,
+                                currentCoverTypesHistoricDetail,
+                                lastCoverTypesHistoricDetail,
                                 conversionAndRemainingPeriod)) {
 
                             // Classify as unconfirmed Land Converted to Current Cover
@@ -465,14 +465,14 @@ public class LandUsesProcessor {
 
                             return
                                     new LandUseHistoryBuilder()
-                                            .itemNumber(currentCoverTypeHistoricDetail.getItemNumber())
-                                            .year(currentCoverTypeHistoricDetail.getYear())
+                                            .itemNumber(currentCoverTypesHistoricDetail.getItemNumber())
+                                            .year(currentCoverTypesHistoricDetail.getYear())
                                             .landUseCategory(
                                                     configurationDataProvider
                                                             .getLandUseCategory(
-                                                                    differentPreviousLandUseHistoricDetail
+                                                                    differentPreviousLandUsesHistoricDetail
                                                                             .getLandUseCategory().getCoverTypeId(),
-                                                                    currentCoverTypeHistoricDetail.getCoverType().getId(),
+                                                                    currentCoverTypesHistoricDetail.getCoverType().getId(),
                                                                     LandUseChangeAction.CONVERSION))
                                             .confirmed(false)
                                             .build();
@@ -485,9 +485,9 @@ public class LandUsesProcessor {
                                     "its Land Conversion Period{}", lineSeparator, lineSeparator, lineSeparator);
 
                             if (doesTheCoverTypeChangeBackToAPreviousLandUseBeforeTheEndOfItsLandConversionPeriod(
-                                    currentCoverTypeHistoricDetail,
+                                    currentCoverTypesHistoricDetail,
                                     coverTypesHistoricDetails,
-                                    landUseHistoricDetails,
+                                    landUsesHistoricDetails,
                                     conversionAndRemainingPeriod)) {
 
                                 // Classify as Land Remaining Land of Previous Land Use
@@ -495,14 +495,14 @@ public class LandUsesProcessor {
 
                                 return
                                         new LandUseHistoryBuilder()
-                                                .itemNumber(currentCoverTypeHistoricDetail.getItemNumber())
-                                                .year(currentCoverTypeHistoricDetail.getYear())
+                                                .itemNumber(currentCoverTypesHistoricDetail.getItemNumber())
+                                                .year(currentCoverTypesHistoricDetail.getYear())
                                                 .landUseCategory(
                                                         configurationDataProvider
                                                                 .getLandUseCategory(
-                                                                        differentPreviousLandUseHistoricDetail
+                                                                        differentPreviousLandUsesHistoricDetail
                                                                                 .getLandUseCategory().getCoverTypeId(),
-                                                                        differentPreviousLandUseHistoricDetail
+                                                                        differentPreviousLandUsesHistoricDetail
                                                                                 .getLandUseCategory().getCoverTypeId(),
                                                                         LandUseChangeAction.REMAINING))
                                                 .confirmed(true)
@@ -515,14 +515,14 @@ public class LandUsesProcessor {
 
                                 return
                                         new LandUseHistoryBuilder()
-                                                .itemNumber(currentCoverTypeHistoricDetail.getItemNumber())
-                                                .year(currentCoverTypeHistoricDetail.getYear())
+                                                .itemNumber(currentCoverTypesHistoricDetail.getItemNumber())
+                                                .year(currentCoverTypesHistoricDetail.getYear())
                                                 .landUseCategory(
                                                         configurationDataProvider
                                                                 .getLandUseCategory(
-                                                                        differentPreviousLandUseHistoricDetail
+                                                                        differentPreviousLandUsesHistoricDetail
                                                                                 .getLandUseCategory().getCoverTypeId(),
-                                                                        currentCoverTypeHistoricDetail
+                                                                        currentCoverTypesHistoricDetail
                                                                                 .getCoverType().getId(),
                                                                         LandUseChangeAction.CONVERSION))
                                                 .confirmed(true)
@@ -541,13 +541,13 @@ public class LandUsesProcessor {
 
                 return
                         new LandUseHistoryBuilder()
-                                .itemNumber(currentCoverTypeHistoricDetail.getItemNumber())
-                                .year(currentCoverTypeHistoricDetail.getYear())
+                                .itemNumber(currentCoverTypesHistoricDetail.getItemNumber())
+                                .year(currentCoverTypesHistoricDetail.getYear())
                                 .landUseCategory(
                                         configurationDataProvider
                                                 .getLandUseCategory(
-                                                        currentCoverTypeHistoricDetail.getCoverType().getId(),
-                                                        currentCoverTypeHistoricDetail.getCoverType().getId(),
+                                                        currentCoverTypesHistoricDetail.getCoverType().getId(),
+                                                        currentCoverTypesHistoricDetail.getCoverType().getId(),
                                                         LandUseChangeAction.REMAINING))
                                 .confirmed(true)
                                 .build();
@@ -562,19 +562,19 @@ public class LandUsesProcessor {
 
 
     private ConversionAndRemainingPeriod getConversionAndRemainingPeriod(
-            LandUseHistoricDetail previousLandUseHistoricDetail,
-            CoverTypeHistoricDetail currentCoverTypeHistoricDetail) {
+            LandUsesHistoricDetail previousLandUsesHistoricDetail,
+            CoverTypesHistoricDetail currentCoverTypesHistoricDetail) {
 
         return configurationDataProvider.getConversionAndRemainingPeriod(
-                previousLandUseHistoricDetail.getLandUseCategory().getCoverTypeId(),
-                currentCoverTypeHistoricDetail.getCoverType().getId());
+                previousLandUsesHistoricDetail.getLandUseCategory().getCoverTypeId(),
+                currentCoverTypesHistoricDetail.getCoverType().getId());
     }
 
 
     public boolean validate(
             Long timestep,
-            List<CoverTypeHistoricDetail> coverTypeHistories,
-            List<LandUseHistoricDetail> landUseHistories) throws ServerException {
+            List<CoverTypesHistoricDetail> coverTypeHistories,
+            List<LandUsesHistoricDetail> landUseHistories) throws ServerException {
 
 
         if (timestep == null) {
@@ -603,8 +603,8 @@ public class LandUsesProcessor {
 
         if (timestep.equals(0L)) {
 
-            Optional<CoverTypeHistoricDetail> found = Optional.empty();
-            for (CoverTypeHistoricDetail c : coverTypeHistories) {
+            Optional<CoverTypesHistoricDetail> found = Optional.empty();
+            for (CoverTypesHistoricDetail c : coverTypeHistories) {
                 if (c.getItemNumber() == 0L) {
                     found = Optional.of(c);
                     break;
@@ -618,8 +618,8 @@ public class LandUsesProcessor {
 
             for (long i = 0L; i <= timestep; i++) {
 
-                Optional<CoverTypeHistoricDetail> found = Optional.empty();
-                for (CoverTypeHistoricDetail c : coverTypeHistories) {
+                Optional<CoverTypesHistoricDetail> found = Optional.empty();
+                for (CoverTypesHistoricDetail c : coverTypeHistories) {
                     if (c.getItemNumber() <= i) {
                         found = Optional.of(c);
                         break;
@@ -632,8 +632,8 @@ public class LandUsesProcessor {
 
             for (long i = 0L; i < timestep; i++) {
 
-                Optional<LandUseHistoricDetail> found = Optional.empty();
-                for (LandUseHistoricDetail l : landUseHistories) {
+                Optional<LandUsesHistoricDetail> found = Optional.empty();
+                for (LandUsesHistoricDetail l : landUseHistories) {
                     if (l.getItemNumber() <= i) {
                         found = Optional.of(l);
                         break;
@@ -671,8 +671,8 @@ public class LandUsesProcessor {
     /**
      * Retrieves the last Cover Type Historic Detail.
      */
-    private CoverTypeHistoricDetail getLastCoverTypeHistoricDetail(
-            List<CoverTypeHistoricDetail> coverTypesHistoricDetails) {
+    private CoverTypesHistoricDetail getLastCoverTypeHistoricDetail(
+            List<CoverTypesHistoricDetail> coverTypesHistoricDetails) {
 
         return coverTypesHistoricDetails
                 .stream()
@@ -685,20 +685,20 @@ public class LandUsesProcessor {
     /**
      * Retrieves the immediate-previous Land Use Historic Detail.
      */
-    private LandUseHistoricDetail getImmediatePreviousLandUseHistoricDetail(
-            CoverTypeHistoricDetail currentCoverTypeHistoricDetail,
-            List<LandUseHistoricDetail> landUseHistoricDetails) {
-        return getPreviousLandUseHistoricDetail(currentCoverTypeHistoricDetail, landUseHistoricDetails, true);
+    private LandUsesHistoricDetail getImmediatePreviousLandUseHistoricDetail(
+            CoverTypesHistoricDetail currentCoverTypesHistoricDetail,
+            List<LandUsesHistoricDetail> landUsesHistoricDetails) {
+        return getPreviousLandUseHistoricDetail(currentCoverTypesHistoricDetail, landUsesHistoricDetails, true);
     }
 
 
     /**
      * Retrieves the different-previous Land Use Historic Detail.
      */
-    private LandUseHistoricDetail getDifferentPreviousLandUseHistoricDetail(
-            CoverTypeHistoricDetail currentCoverTypeHistoricDetail,
-            List<LandUseHistoricDetail> landUseHistoricDetails) {
-        return getPreviousLandUseHistoricDetail(currentCoverTypeHistoricDetail, landUseHistoricDetails, false);
+    private LandUsesHistoricDetail getDifferentPreviousLandUseHistoricDetail(
+            CoverTypesHistoricDetail currentCoverTypesHistoricDetail,
+            List<LandUsesHistoricDetail> landUsesHistoricDetails) {
+        return getPreviousLandUseHistoricDetail(currentCoverTypesHistoricDetail, landUsesHistoricDetails, false);
     }
 
 
@@ -715,27 +715,27 @@ public class LandUsesProcessor {
      * <p>
      * It then returns that Land Use history
      */
-    private LandUseHistoricDetail getPreviousLandUseHistoricDetail(
-            CoverTypeHistoricDetail currentCoverTypeHistoricDetail,
-            List<LandUseHistoricDetail> landUseHistoricDetails,
+    private LandUsesHistoricDetail getPreviousLandUseHistoricDetail(
+            CoverTypesHistoricDetail currentCoverTypesHistoricDetail,
+            List<LandUsesHistoricDetail> landUsesHistoricDetails,
             boolean immediate) {
 
         if (immediate) {
             return
-                    landUseHistoricDetails
+                    landUsesHistoricDetails
                             .stream()
                             .filter(c ->
-                                    c.getItemNumber() == (currentCoverTypeHistoricDetail.getItemNumber() - 1))
+                                    c.getItemNumber() == (currentCoverTypesHistoricDetail.getItemNumber() - 1))
                             .reduce((first, second) -> second)
                             .orElse(null);
         } else {
             return
-                    landUseHistoricDetails
+                    landUsesHistoricDetails
                             .stream()
                             .filter(c ->
-                                    c.getItemNumber() < currentCoverTypeHistoricDetail.getItemNumber() &&
+                                    c.getItemNumber() < currentCoverTypesHistoricDetail.getItemNumber() &&
                                             !c.getLandUseCategory().getCoverTypeId()
-                                                    .equals(currentCoverTypeHistoricDetail.getCoverType().getId()))
+                                                    .equals(currentCoverTypesHistoricDetail.getCoverType().getId()))
                             .reduce((first, second) -> second)
                             .orElse(null);
         }
@@ -748,10 +748,10 @@ public class LandUsesProcessor {
      * Retrieves the immediate-next Cover Type Historic Detail.
      *
      */
-    private CoverTypeHistoricDetail getImmediateNextCoverTypeHistoricDetail(
-            CoverTypeHistoricDetail currentCoverTypeHistoricDetail,
-            List<CoverTypeHistoricDetail> coverTypeHistoricDetails) {
-        return getNextCoverTypeHistoricDetail(currentCoverTypeHistoricDetail, coverTypeHistoricDetails, true);
+    private CoverTypesHistoricDetail getImmediateNextCoverTypeHistoricDetail(
+            CoverTypesHistoricDetail currentCoverTypesHistoricDetail,
+            List<CoverTypesHistoricDetail> coverTypesHistoricDetails) {
+        return getNextCoverTypeHistoricDetail(currentCoverTypesHistoricDetail, coverTypesHistoricDetails, true);
     }
 
 
@@ -759,10 +759,10 @@ public class LandUsesProcessor {
      * Retrieves the different-next Cover Type Historic Detail.
      *
      */
-    private CoverTypeHistoricDetail getDifferentNextCoverTypeHistoricDetail(
-            CoverTypeHistoricDetail currentCoverTypeHistoricDetail,
-            List<CoverTypeHistoricDetail> coverTypeHistoricDetails) {
-        return getNextCoverTypeHistoricDetail(currentCoverTypeHistoricDetail, coverTypeHistoricDetails, false);
+    private CoverTypesHistoricDetail getDifferentNextCoverTypeHistoricDetail(
+            CoverTypesHistoricDetail currentCoverTypesHistoricDetail,
+            List<CoverTypesHistoricDetail> coverTypesHistoricDetails) {
+        return getNextCoverTypeHistoricDetail(currentCoverTypesHistoricDetail, coverTypesHistoricDetails, false);
     }
 
 
@@ -778,27 +778,27 @@ public class LandUsesProcessor {
      * <p>
      * It then returns that Cover Type history
      */
-    private CoverTypeHistoricDetail getNextCoverTypeHistoricDetail(
-            CoverTypeHistoricDetail currentCoverTypeHistoricDetail,
-            List<CoverTypeHistoricDetail> coverTypeHistoricDetails,
+    private CoverTypesHistoricDetail getNextCoverTypeHistoricDetail(
+            CoverTypesHistoricDetail currentCoverTypesHistoricDetail,
+            List<CoverTypesHistoricDetail> coverTypesHistoricDetails,
             boolean immediate) {
 
         if (immediate) {
             return
-                    coverTypeHistoricDetails
+                    coverTypesHistoricDetails
                             .stream()
                             .filter(c ->
-                                    c.getItemNumber() == (currentCoverTypeHistoricDetail.getItemNumber() + 1))
+                                    c.getItemNumber() == (currentCoverTypesHistoricDetail.getItemNumber() + 1))
                             .reduce((first, second) -> first)
                             .orElse(null);
         } else {
             return
-                    coverTypeHistoricDetails
+                    coverTypesHistoricDetails
                             .stream()
                             .filter(c ->
-                                    c.getItemNumber() > currentCoverTypeHistoricDetail.getItemNumber() &&
+                                    c.getItemNumber() > currentCoverTypesHistoricDetail.getItemNumber() &&
                                             !c.getCoverType().getId().equals(
-                                                    currentCoverTypeHistoricDetail.getCoverType().getId()))
+                                                    currentCoverTypesHistoricDetail.getCoverType().getId()))
                             .reduce((first, second) -> first)
                             .orElse(null);
         }
@@ -814,40 +814,40 @@ public class LandUsesProcessor {
      * the Next Cover Type Timestep with the Final Timestep when Null
      */
     private long getYearsInBetween(
-            LandUseHistoricDetail previousLandUseHistoricDetail,
-            CoverTypeHistoricDetail nextCoverTypeHistoricDetail,
-            CoverTypeHistoricDetail finalCoverTypeHistoricDetail) {
+            LandUsesHistoricDetail previousLandUsesHistoricDetail,
+            CoverTypesHistoricDetail nextCoverTypesHistoricDetail,
+            CoverTypesHistoricDetail finalCoverTypesHistoricDetail) {
 
         long years;
 
-        if (previousLandUseHistoricDetail != null &&
-                nextCoverTypeHistoricDetail != null) {
+        if (previousLandUsesHistoricDetail != null &&
+                nextCoverTypesHistoricDetail != null) {
 
             years =
                     LongStream.range(
-                            previousLandUseHistoricDetail.getItemNumber() + 1,
-                            nextCoverTypeHistoricDetail.getItemNumber()).count();
+                            previousLandUsesHistoricDetail.getItemNumber() + 1,
+                            nextCoverTypesHistoricDetail.getItemNumber()).count();
 
-        } else if (previousLandUseHistoricDetail != null) {
+        } else if (previousLandUsesHistoricDetail != null) {
 
             years =
                     LongStream.rangeClosed(
-                            previousLandUseHistoricDetail.getItemNumber() + 1,
-                            finalCoverTypeHistoricDetail.getItemNumber()).count();
+                            previousLandUsesHistoricDetail.getItemNumber() + 1,
+                            finalCoverTypesHistoricDetail.getItemNumber()).count();
 
-        } else if (nextCoverTypeHistoricDetail != null) {
+        } else if (nextCoverTypesHistoricDetail != null) {
 
             years =
                     LongStream.range(
                             0L,
-                            nextCoverTypeHistoricDetail.getItemNumber()).count();
+                            nextCoverTypesHistoricDetail.getItemNumber()).count();
 
         } else {
 
             years =
                     LongStream.rangeClosed(
                             0L,
-                            finalCoverTypeHistoricDetail.getItemNumber()).count();
+                            finalCoverTypesHistoricDetail.getItemNumber()).count();
         }
 
         return years;
@@ -858,21 +858,21 @@ public class LandUsesProcessor {
      * and the Final Cover Type
      */
     private long getYearsInBetween(
-            CoverTypeHistoricDetail currentCoverTypeHistoricDetail,
-            CoverTypeHistoricDetail finalCoverTypeHistoricDetail) {
+            CoverTypesHistoricDetail currentCoverTypesHistoricDetail,
+            CoverTypesHistoricDetail finalCoverTypesHistoricDetail) {
 
         long years = 0L;
 
-        if (currentCoverTypeHistoricDetail != null &&
-                finalCoverTypeHistoricDetail != null) {
+        if (currentCoverTypesHistoricDetail != null &&
+                finalCoverTypesHistoricDetail != null) {
 
-            if (!currentCoverTypeHistoricDetail.getItemNumber()
-                    .equals(finalCoverTypeHistoricDetail.getItemNumber())) {
+            if (!currentCoverTypesHistoricDetail.getItemNumber()
+                    .equals(finalCoverTypesHistoricDetail.getItemNumber())) {
 
                 years =
                         LongStream.rangeClosed(
-                                currentCoverTypeHistoricDetail.getItemNumber() + 1,
-                                finalCoverTypeHistoricDetail.getItemNumber()).count();
+                                currentCoverTypesHistoricDetail.getItemNumber() + 1,
+                                finalCoverTypesHistoricDetail.getItemNumber()).count();
 
             }
 
@@ -886,18 +886,18 @@ public class LandUsesProcessor {
      * Retrieves the number of years between the Previous Land Use and the Current Cover Type
      */
     private long getYearsInBetween(
-            LandUseHistoricDetail previousLandUseHistoricDetail,
-            CoverTypeHistoricDetail currentCoverTypeHistoricDetail) {
+            LandUsesHistoricDetail previousLandUsesHistoricDetail,
+            CoverTypesHistoricDetail currentCoverTypesHistoricDetail) {
 
         long years = 0L;
 
-        if (previousLandUseHistoricDetail != null &&
-                currentCoverTypeHistoricDetail != null) {
+        if (previousLandUsesHistoricDetail != null &&
+                currentCoverTypesHistoricDetail != null) {
 
             years =
                     LongStream.rangeClosed(
-                            previousLandUseHistoricDetail.getItemNumber() + 1,
-                            currentCoverTypeHistoricDetail.getItemNumber()).count();
+                            previousLandUsesHistoricDetail.getItemNumber() + 1,
+                            currentCoverTypesHistoricDetail.getItemNumber()).count();
 
         }
 
@@ -910,13 +910,13 @@ public class LandUsesProcessor {
      * or, from the Cover type details otherwise
      */
     private Long getCoverTypeId(
-            List<CoverTypeHistoricDetail> coverTypesHistoricDetails,
-            List<LandUseHistoricDetail> landUsesHistoricDetails,
+            List<CoverTypesHistoricDetail> coverTypesHistoricDetails,
+            List<LandUsesHistoricDetail> landUsesHistoricDetails,
             Long timestep) {
 
         Long coverTypeId = null;
 
-        LandUseHistoricDetail previousLandUseHistoricDetail =
+        LandUsesHistoricDetail previousLandUsesHistoricDetail =
                 landUsesHistoricDetails
                         .stream()
                         .sorted()
@@ -924,13 +924,13 @@ public class LandUsesProcessor {
                         .findFirst()
                         .orElse(null);
 
-        if (previousLandUseHistoricDetail != null) {
+        if (previousLandUsesHistoricDetail != null) {
 
-            coverTypeId = previousLandUseHistoricDetail.getLandUseCategory().getCoverTypeId();
+            coverTypeId = previousLandUsesHistoricDetail.getLandUseCategory().getCoverTypeId();
 
         } else {
 
-            CoverTypeHistoricDetail previousCoverTypeHistoricDetail =
+            CoverTypesHistoricDetail previousCoverTypesHistoricDetail =
                     coverTypesHistoricDetails
                             .stream()
                             .sorted()
@@ -938,8 +938,8 @@ public class LandUsesProcessor {
                             .findFirst()
                             .orElse(null);
 
-            if (previousCoverTypeHistoricDetail != null) {
-                coverTypeId = previousCoverTypeHistoricDetail.getCoverType().getId();
+            if (previousCoverTypesHistoricDetail != null) {
+                coverTypeId = previousCoverTypesHistoricDetail.getCoverType().getId();
             }
         }
 
@@ -962,9 +962,9 @@ public class LandUsesProcessor {
      * Checks if the passed in Cover Type in the Cover Type History is Grassland
      */
     private boolean isCoverTypeGrassland(
-            CoverTypeHistoricDetail coverTypeHistoricDetail) {
+            CoverTypesHistoricDetail coverTypesHistoricDetail) {
 
-        boolean result = coverTypeHistoricDetail.getCoverType().getId().equals(grasslandCoverType.getId());
+        boolean result = coverTypesHistoricDetail.getCoverType().getId().equals(grasslandCoverType.getId());
         log.trace(result ? "Cover Type is Grassland" : "Cover Type is not Grassland");
         return result;
 
@@ -975,9 +975,9 @@ public class LandUsesProcessor {
      * Checks if the Cover Type in the Land Use History is Cropland
      */
     private boolean isCoverTypeCropland(
-            LandUseHistoricDetail landUseHistoricDetail) {
+            LandUsesHistoricDetail landUsesHistoricDetail) {
 
-        boolean result = landUseHistoricDetail.getLandUseCategory().getCoverTypeId().equals(croplandCoverType.getId());
+        boolean result = landUsesHistoricDetail.getLandUseCategory().getCoverTypeId().equals(croplandCoverType.getId());
         log.trace(result ? "Cover Type is Cropland" : "Cover Type is not Cropland");
         return result;
 
@@ -989,7 +989,7 @@ public class LandUsesProcessor {
      * other Cover Type after the current Timestep
      */
     private boolean doesTheCoverTypeBecomeCroplandWithinTheCroplandToGrasslandConversionPeriodWithoutBecomingAnyOtherCoverType(
-            List<CoverTypeHistoricDetail> coverTypeHistories,
+            List<CoverTypesHistoricDetail> coverTypeHistories,
             Long currentTimestep) {
 
         boolean result = false;
@@ -997,7 +997,7 @@ public class LandUsesProcessor {
 
         // Check if the Cover Type becomes Cropland in the future
         log.trace("Checking if the Cover Type becomes Cropland in the future");
-        CoverTypeHistoricDetail croplandCoverTypeHistoricDetail =
+        CoverTypesHistoricDetail croplandCoverTypesHistoricDetail =
                 coverTypeHistories
                         .stream()
                         .sorted()
@@ -1006,33 +1006,33 @@ public class LandUsesProcessor {
                         .findFirst()
                         .orElse(null);
 
-        log.trace(croplandCoverTypeHistoricDetail != null ?
+        log.trace(croplandCoverTypesHistoricDetail != null ?
                 "The Cover Type becomes Cropland in the future" :
                 "The Cover Type does not become Cropland in the future");
 
-        if (croplandCoverTypeHistoricDetail != null) {
+        if (croplandCoverTypesHistoricDetail != null) {
 
 
             // Check if a non Grassland, non Cropland Cover Type preceded the Cover Type becoming Cropland
             log.trace("Checking if a non Grassland, non Cropland Cover Type preceded the Cover Type becoming Cropland");
 
-            CoverTypeHistoricDetail nonGrasslandNonCroplandCoverTypeHistoricDetail =
+            CoverTypesHistoricDetail nonGrasslandNonCroplandCoverTypesHistoricDetail =
                     coverTypeHistories
                             .stream()
                             .sorted()
                             .filter(c -> c.getItemNumber() > currentTimestep &&
-                                    c.getItemNumber() < croplandCoverTypeHistoricDetail.getItemNumber() &&
+                                    c.getItemNumber() < croplandCoverTypesHistoricDetail.getItemNumber() &&
                                     !c.getCoverType().getId().equals(croplandCoverType.getId()) &&
                                     !c.getCoverType().getId().equals(grasslandCoverType.getId()))
                             .findFirst()
                             .orElse(null);
 
-            log.trace(nonGrasslandNonCroplandCoverTypeHistoricDetail != null ?
+            log.trace(nonGrasslandNonCroplandCoverTypesHistoricDetail != null ?
                     "A non Grassland, non Cropland Cover Type preceded the Cover Type becoming Cropland" :
                     "A non Grassland, non Cropland Cover Type did not precede the Cover Type becoming Cropland");
 
 
-            if (nonGrasslandNonCroplandCoverTypeHistoricDetail == null) {
+            if (nonGrasslandNonCroplandCoverTypesHistoricDetail == null) {
 
                 // Get the total number of years that elapsed before the Cover Type turned into Cropland
                 log.trace("Getting the total number of years that elapsed before the Cover Type turned into Cropland");
@@ -1040,7 +1040,7 @@ public class LandUsesProcessor {
                 long years =
                         LongStream.range(
                                 currentTimestep,
-                                croplandCoverTypeHistoricDetail.getItemNumber()).count();
+                                croplandCoverTypesHistoricDetail.getItemNumber()).count();
 
                 log.debug("The Cover Type turned Cropland after {} years", years);
 
@@ -1081,16 +1081,16 @@ public class LandUsesProcessor {
      * Checks whether the Cover Type has changed since the Initial Timestep
      */
     private boolean hasTheCoverTypeChangedSinceTheInitialTimestep(
-            List<LandUseHistoricDetail> landUsesHistoricDetails,
-            CoverTypeHistoricDetail currentCoverTypeHistoricDetail) {
+            List<LandUsesHistoricDetail> landUsesHistoricDetails,
+            CoverTypesHistoricDetail currentCoverTypesHistoricDetail) {
 
 
         boolean result =
                 landUsesHistoricDetails
                         .stream()
                         .anyMatch(l ->
-                                l.getItemNumber() < currentCoverTypeHistoricDetail.getItemNumber() &&
-                                        !l.getLandUseCategory().getCoverTypeId().equals(currentCoverTypeHistoricDetail
+                                l.getItemNumber() < currentCoverTypesHistoricDetail.getItemNumber() &&
+                                        !l.getLandUseCategory().getCoverTypeId().equals(currentCoverTypesHistoricDetail
                                                 .getCoverType().getId()));
 
         log.trace(result ?
@@ -1106,18 +1106,18 @@ public class LandUsesProcessor {
      * Previous Land Use
      */
     private boolean hasTheCoverTypeRemainedTheSameForLongerThanTheLandConversionPeriodOfThePreviousLandUse(
-            LandUseHistoricDetail previousLandUseHistoricDetail,
-            CoverTypeHistoricDetail nextCoverTypeHistoricDetail,
-            CoverTypeHistoricDetail lastCoverTypeHistoricDetail,
+            LandUsesHistoricDetail previousLandUsesHistoricDetail,
+            CoverTypesHistoricDetail nextCoverTypesHistoricDetail,
+            CoverTypesHistoricDetail lastCoverTypesHistoricDetail,
             ConversionAndRemainingPeriod conversionAndRemainingPeriod
     ) {
 
         // Get the number of years between the Previous and Next Cover Type (or Final Cover Type if Next is Null)
         log.trace("Getting the number of years between the Previous and Next Cover Type (or Final Cover Type if Next is Null)");
         long years = getYearsInBetween(
-                previousLandUseHistoricDetail,
-                nextCoverTypeHistoricDetail,
-                lastCoverTypeHistoricDetail);
+                previousLandUsesHistoricDetail,
+                nextCoverTypesHistoricDetail,
+                lastCoverTypesHistoricDetail);
         log.debug("Number of years between the Previous and Next Cover Type = {}", years);
 
         // Check if the number of years is greater than the Land Conversion Period
@@ -1138,14 +1138,14 @@ public class LandUsesProcessor {
      * Checks whether the current Cover Type remained the same for longer than the Land Remaining Period
      */
     private boolean hasTheCoverTypeRemainedTheSameForLongerThanTheLandRemainingPeriod(
-            CoverTypeHistoricDetail currentCoverTypeHistoricDetail,
-            LandUseHistoricDetail previousLandUseHistoricDetail,
+            CoverTypesHistoricDetail currentCoverTypesHistoricDetail,
+            LandUsesHistoricDetail previousLandUsesHistoricDetail,
             ConversionAndRemainingPeriod conversionAndRemainingPeriod) {
 
 
         // Get the number of years between the Previous and Current Cover Type
         log.trace("Getting the number of years between the Previous and Current Cover Type");
-        long years = getYearsInBetween(previousLandUseHistoricDetail, currentCoverTypeHistoricDetail);
+        long years = getYearsInBetween(previousLandUsesHistoricDetail, currentCoverTypesHistoricDetail);
         log.debug("Number of years between the Previous and Current Cover Type = {}", years);
 
 
@@ -1166,15 +1166,15 @@ public class LandUsesProcessor {
      * Previous Time Step includes Cropland and Grassland Cover Types and exclude all other Cover Types given a timestep
      */
     private boolean doTheCoverTypesOfTheCurrentAndNextTimeStepAndTheLandUseClassOfThePreviousTimeStepIncludeBothCroplandAndGrasslandAndExcludeEverythingElse(
-            CoverTypeHistoricDetail currentCoverTypeHistoricDetail,
-            LandUseHistoricDetail previousLandUseHistoricDetail,
-            CoverTypeHistoricDetail nextCoverTypeHistoricDetail) {
+            CoverTypesHistoricDetail currentCoverTypesHistoricDetail,
+            LandUsesHistoricDetail previousLandUsesHistoricDetail,
+            CoverTypesHistoricDetail nextCoverTypesHistoricDetail) {
 
         // Get the Id of the Previous Cover Type
         log.trace("Getting the Id of the Previous Cover Type");
         Long previousCoverTypeId;
         try {
-            previousCoverTypeId = previousLandUseHistoricDetail.getLandUseCategory().getCoverTypeId();
+            previousCoverTypeId = previousLandUsesHistoricDetail.getLandUseCategory().getCoverTypeId();
         } catch (NullPointerException ex) {
             previousCoverTypeId = null;
         }
@@ -1184,7 +1184,7 @@ public class LandUsesProcessor {
         log.trace("Getting the Id of the Current Cover Type");
         Long currentCoverTypeId;
         try {
-            currentCoverTypeId = currentCoverTypeHistoricDetail.getCoverType().getId();
+            currentCoverTypeId = currentCoverTypesHistoricDetail.getCoverType().getId();
         } catch (NullPointerException ex) {
             currentCoverTypeId = null;
         }
@@ -1194,7 +1194,7 @@ public class LandUsesProcessor {
         log.trace("Getting the Id of the Next Cover Type");
         Long nextCoverTypeId;
         try {
-            nextCoverTypeId = nextCoverTypeHistoricDetail.getCoverType().getId();
+            nextCoverTypeId = nextCoverTypesHistoricDetail.getCoverType().getId();
         } catch (NullPointerException ex) {
             nextCoverTypeId = null;
         }
@@ -1230,10 +1230,10 @@ public class LandUsesProcessor {
      * Previous Time Steps have included Cropland and Grassland Cover Types and excluded all other Cover Types
      */
     private long howLongHaveTheCurrentAndFutureCoverTypesAndPreviousLandUseClassesBeenCroplandAndGrasslandExcludingAnythingElse(
-            CoverTypeHistoricDetail currentCoverTypeHistoricDetail,
-            CoverTypeHistoricDetail lastCoverTypeHistoricDetail,
-            List<CoverTypeHistoricDetail> coverTypesHistoricDetails,
-            List<LandUseHistoricDetail> landUsesHistoricDetails) {
+            CoverTypesHistoricDetail currentCoverTypesHistoricDetail,
+            CoverTypesHistoricDetail lastCoverTypesHistoricDetail,
+            List<CoverTypesHistoricDetail> coverTypesHistoricDetails,
+            List<LandUsesHistoricDetail> landUsesHistoricDetails) {
 
 
         // Check how far back the Cover Types was Cropland or Grassland to the exclusion of all other
@@ -1243,7 +1243,7 @@ public class LandUsesProcessor {
 
         // The assumption is when this method is called, the previous Land Use Class is Cropland or Grassland
         // So lets initialize the furthest step back to this step
-        long farBack = currentCoverTypeHistoricDetail.getItemNumber() - 1;
+        long farBack = currentCoverTypesHistoricDetail.getItemNumber() - 1;
 
         // Next, lets check if the trend persists backwards starting a step before the previous step
         long step = farBack - 1;
@@ -1273,11 +1273,11 @@ public class LandUsesProcessor {
 
         // The assumption is when this method is called, the next Cover Type is Cropland or Grassland
         // So lets initialize the furthest step front to this step
-        long farFront = currentCoverTypeHistoricDetail.getItemNumber() + 1;
+        long farFront = currentCoverTypesHistoricDetail.getItemNumber() + 1;
 
         // Next, lets check if the trend persists forward starting a step after the next step
         step = farFront + 1;
-        while (step <= lastCoverTypeHistoricDetail.getItemNumber()) {
+        while (step <= lastCoverTypesHistoricDetail.getItemNumber()) {
             if (isCoverTypeCroplandOrGrassland(
                     coverTypesHistoricDetails,
                     landUsesHistoricDetails,
@@ -1323,14 +1323,14 @@ public class LandUsesProcessor {
      * Checks whether the Cover Type has been Cropland or Grassland since the Initial Timestep
      */
     private boolean hasTheCoverTypeBeenCroplandOrGrasslandSinceTheInitialTimestep(
-            CoverTypeHistoricDetail currentCoverTypeHistoricDetail,
-            List<LandUseHistoricDetail> landUsesHistoricDetails) {
+            CoverTypesHistoricDetail currentCoverTypesHistoricDetail,
+            List<LandUsesHistoricDetail> landUsesHistoricDetails) {
 
 
         boolean excludesAllOtherCoverTypesSinceTheInitialTimestep =
                 landUsesHistoricDetails
                         .stream()
-                        .filter(l -> l.getItemNumber() < currentCoverTypeHistoricDetail.getItemNumber())
+                        .filter(l -> l.getItemNumber() < currentCoverTypesHistoricDetail.getItemNumber())
                         .noneMatch(l ->
                                 !l.getLandUseCategory().getCoverTypeId().equals(croplandCoverType.getId()) &&
                                         !l.getLandUseCategory().getCoverTypeId().equals(grasslandCoverType.getId()));
@@ -1366,13 +1366,13 @@ public class LandUsesProcessor {
      * previous land use
      */
     private boolean isLengthOfTimeToTheEndOfTheSimulationLessThanTheLandConversionPeriodOfThePreviousLandUse(
-            CoverTypeHistoricDetail currentCoverTypeHistoricDetail,
-            CoverTypeHistoricDetail lastCoverTypeHistoricDetail,
+            CoverTypesHistoricDetail currentCoverTypesHistoricDetail,
+            CoverTypesHistoricDetail lastCoverTypesHistoricDetail,
             ConversionAndRemainingPeriod conversionAndRemainingPeriod) {
 
         // Get the number of years to the end of the simulation i.e the years between the Current & Last Cover Types
         log.trace("Getting the number of years to the end of the simulation");
-        long years = getYearsInBetween(currentCoverTypeHistoricDetail, lastCoverTypeHistoricDetail);
+        long years = getYearsInBetween(currentCoverTypesHistoricDetail, lastCoverTypesHistoricDetail);
         log.debug("Years = {}", years);
 
         // TODO Confirm about the LT
@@ -1445,8 +1445,8 @@ public class LandUsesProcessor {
      * Checks whether the Cover Type corresponding to the specified Timestep is Cropland or Grassland
      */
     private boolean isCoverTypeCroplandOrGrassland(
-            List<CoverTypeHistoricDetail> coverTypesHistoricDetails,
-            List<LandUseHistoricDetail> landUsesHistoricDetails,
+            List<CoverTypesHistoricDetail> coverTypesHistoricDetails,
+            List<LandUsesHistoricDetail> landUsesHistoricDetails,
             Long timestep) {
 
         Long coverTypeId =
@@ -1469,9 +1469,9 @@ public class LandUsesProcessor {
 
     // TODO Confirm with Rob about the LTE
     private boolean doesTheCoverTypeChangeBackToAPreviousLandUseBeforeTheEndOfItsLandConversionPeriod(
-            CoverTypeHistoricDetail currentCoverTypeHistoricDetail,
-            List<CoverTypeHistoricDetail> coverTypesHistoricDetails,
-            List<LandUseHistoricDetail> landUsesHistoricDetails,
+            CoverTypesHistoricDetail currentCoverTypesHistoricDetail,
+            List<CoverTypesHistoricDetail> coverTypesHistoricDetails,
+            List<LandUsesHistoricDetail> landUsesHistoricDetails,
             ConversionAndRemainingPeriod conversionAndRemainingPeriod) {
 
         // Get a set of the previous non Current Cover Types Ids
@@ -1480,9 +1480,9 @@ public class LandUsesProcessor {
                 landUsesHistoricDetails
                         .stream()
                         .filter(c ->
-                                c.getItemNumber() < currentCoverTypeHistoricDetail.getItemNumber() &&
+                                c.getItemNumber() < currentCoverTypesHistoricDetail.getItemNumber() &&
                                         !c.getLandUseCategory().getCoverTypeId().equals(
-                                                currentCoverTypeHistoricDetail
+                                                currentCoverTypesHistoricDetail
                                                         .getCoverType().getId()))
                         .map(c -> c.getLandUseCategory().getCoverTypeId())
                         .collect(Collectors.toSet());
@@ -1490,13 +1490,13 @@ public class LandUsesProcessor {
 
         // Get a set of the next non Current Cover Types History
         log.trace("Getting a set of the next non Current Cover Types History");
-        Set<CoverTypeHistoricDetail> nextNonCurrentCoverTypesHistories =
+        Set<CoverTypesHistoricDetail> nextNonCurrentCoverTypesHistories =
                 coverTypesHistoricDetails
                         .stream()
                         .filter(c ->
-                                c.getItemNumber() > currentCoverTypeHistoricDetail.getItemNumber() &&
+                                c.getItemNumber() > currentCoverTypesHistoricDetail.getItemNumber() &&
                                         !c.getCoverType().getId().equals(
-                                                currentCoverTypeHistoricDetail
+                                                currentCoverTypesHistoricDetail
                                                         .getCoverType().getId()))
                         .collect(Collectors.toSet());
         log.debug("Next non Current Cover Types Ids = {}", nextNonCurrentCoverTypesHistories);
@@ -1510,7 +1510,7 @@ public class LandUsesProcessor {
                         .stream()
                         .anyMatch(c ->
                                 previousNonCurrentCoverTypesIds.contains(c.getCoverType().getId()) &&
-                                        getYearsInBetween(currentCoverTypeHistoricDetail, c)
+                                        getYearsInBetween(currentCoverTypesHistoricDetail, c)
                                                 <= conversionAndRemainingPeriod.getConversionPeriod());
 
         log.trace(result ?
