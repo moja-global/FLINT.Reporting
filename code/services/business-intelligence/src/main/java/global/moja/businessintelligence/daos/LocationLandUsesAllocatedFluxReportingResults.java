@@ -8,27 +8,34 @@
 package global.moja.businessintelligence.daos;
 
 import global.moja.businessintelligence.models.LandUseCategory;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.jackson.Jacksonized;
+
+import java.util.List;
 
 /**
  * @since 0.0.1
  * @author Kwaje Anthony <tony@miles.co.ke>
  * @version 1.0
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class LocationLandUsesHistoricDetail implements Comparable<LocationLandUsesHistoricDetail> {
-    
+@Jacksonized
+@Builder
+@Setter
+@Getter
+@EqualsAndHashCode
+public class AllocatedFluxesHistoricDetail implements Comparable<AllocatedFluxesHistoricDetail> {
+
     private Long itemNumber;
     private Integer year;
     private LandUseCategory landUseCategory;
     private Boolean confirmed;
+    private List<LocationLandUsesAllocatedFluxReportingResult> fluxes;
 
     @Override
-    public int compareTo(LocationLandUsesHistoricDetail landUseCategory) {
+    public int compareTo(AllocatedFluxesHistoricDetail landUseCategory) {
 
         if(this.itemNumber != null && landUseCategory.getItemNumber() != null){
             return this.itemNumber.compareTo(landUseCategory.getItemNumber());
@@ -40,8 +47,8 @@ public class LocationLandUsesHistoricDetail implements Comparable<LocationLandUs
 
     @Override
     public String toString(){
-        return String.format("Timestep: %d, Year: %d, Land Use: %s, Confirmed: %s",
-                itemNumber, year, landUseCategory == null ? null : landUseCategory.getName(), confirmed);
+        return String.format("Timestep: %d, Year: %d, Land Use: %s, Confirmed: %s, Fluxes: %s",
+                itemNumber, year, landUseCategory == null ? null : landUseCategory.toString(), confirmed, fluxes.toString());
     }
 
 

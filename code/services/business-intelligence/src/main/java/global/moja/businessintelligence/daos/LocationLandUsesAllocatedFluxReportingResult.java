@@ -7,7 +7,7 @@
  */
 package global.moja.businessintelligence.daos;
 
-import global.moja.businessintelligence.models.VegetationType;
+import global.moja.businessintelligence.models.LandUseCategory;
 import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 
@@ -22,17 +22,18 @@ import lombok.extern.jackson.Jacksonized;
 @Setter
 @Getter
 @EqualsAndHashCode
-public class VegetationTypeHistoricDetail implements Comparable<VegetationTypeHistoricDetail> {
-
+public class LocationLandUsesHistory implements Comparable<LocationLandUsesHistory> {
+    
     private Long itemNumber;
     private Integer year;
-    private VegetationType vegetationType;
+    private LandUseCategory landUseCategory;
+    private Boolean confirmed;
 
     @Override
-    public int compareTo(VegetationTypeHistoricDetail coverType) {
+    public int compareTo(LocationLandUsesHistory locationLandUsesHistory) {
 
-        if(this.itemNumber != null && coverType.getItemNumber() != null){
-            return this.itemNumber.compareTo(coverType.getItemNumber());
+        if(this.itemNumber != null && locationLandUsesHistory.getItemNumber() != null){
+            return this.itemNumber.compareTo(locationLandUsesHistory.getItemNumber());
         } else {
             return 0;
         }
@@ -41,8 +42,9 @@ public class VegetationTypeHistoricDetail implements Comparable<VegetationTypeHi
 
     @Override
     public String toString(){
-        return String.format("Timestep: %d, Year: %d, Vegetation Type: %s",
-                itemNumber, year, vegetationType == null ? null : vegetationType.toString());
+        return String.format("Timestep: %d, Year: %d, Land Use: %s, Confirmed: %s",
+                itemNumber, year, landUseCategory == null ? null : landUseCategory.toString(), confirmed);
     }
+
 
 }

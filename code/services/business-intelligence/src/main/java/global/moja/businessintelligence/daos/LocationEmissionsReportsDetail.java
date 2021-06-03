@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LandUsesFluxesEmissionReportsDetail {
+public class EmissionsReportsDetail {
 
     private long reportingTableId;
     private long landUseCategoryId;

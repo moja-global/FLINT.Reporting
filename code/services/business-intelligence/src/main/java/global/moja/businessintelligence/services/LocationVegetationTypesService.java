@@ -9,15 +9,15 @@
 package global.moja.businessintelligence.services;
 
 import global.moja.businessintelligence.configurations.ConfigurationDataProvider;
+import global.moja.businessintelligence.daos.LocationVegetationTypesHistories;
 import global.moja.businessintelligence.daos.LocationVegetationTypesHistory;
-import global.moja.businessintelligence.daos.VegetationTypeHistoricDetail;
+import global.moja.businessintelligence.exceptions.ServerException;
 import global.moja.businessintelligence.models.Location;
 import global.moja.businessintelligence.util.endpoints.EndpointsUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
-
 import java.util.stream.Collectors;
 
 /**
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  */
 @Component
 @Slf4j
-public class LocationCoverHistoryProcessor {
+public class LocationVegetationTypesHistoryProcessor {
 
     @Autowired
     EndpointsUtil endpointsUtil;
@@ -35,10 +35,11 @@ public class LocationCoverHistoryProcessor {
     @Autowired
     ConfigurationDataProvider configurationDataProvider;
 
-    public Mono<LocationVegetationTypesHistory> process(Long databaseId, Location location) {
 
-        log.trace("Entering Location Vegetation History Processor");
+    public Mono<LocationVegetationTypesHistories> processLocationVegetationTypesHistory
+            (Long databaseId, Location location) {
 
+        log.trace("Entering processLocationVegetationTypesHistory()");
         log.debug("Database id = {}", databaseId);
         log.debug("Location = {}", location);
 
@@ -46,28 +47,28 @@ public class LocationCoverHistoryProcessor {
         log.trace("Validating the database id");
         if (databaseId == null) {
             log.error("The database id should not be null");
-            return Mono.empty();
+            return Mono.error(new ServerException("The database id should not be null"));
         }
 
         // Validate the location
         log.trace("Validating the location");
         if (location == null) {
             log.error("The location should not be null");
-            return Mono.empty();
+            return Mono.error(new ServerException("The location should not be null"));
         }
 
         // Validate the location's id
         log.trace("Validating the location's id");
         if (location.getId() == null) {
             log.error("The location's id should not be null");
-            return Mono.empty();
+            return Mono.error(new ServerException("The location's id should not be null"));
         }
 
         // Validate the location's vegetation history id
         log.trace("Validating the location's vegetation history id");
         if (location.getVegetationHistoryId() == null) {
             log.error("The location's vegetation history id should not be null");
-            return Mono.empty();
+            return Mono.error(new ServerException("The location's vegetation history id should not be null"));
         }
 
         return
@@ -75,15 +76,15 @@ public class LocationCoverHistoryProcessor {
                 endpointsUtil
 
                         // 1. Retrieve the Vegetation History Vegetation Types records corresponding to the provided
-                        // Database Id and Location Vegetation History Id
+                        // Database and Location Vegetation History Ids
                         .retrieveVegetationHistoryVegetationTypes(
                                 databaseId,
                                 location.getVegetationHistoryId())
 
                         // 2. Convert each Vegetation History Vegetation Type record to the corresponding
-                        // Vegetation Type Historic Detail record
+                        // Vegetation Types History record
                         .map(vegetationHistoryVegetationType ->
-                                VegetationTypeHistoricDetail
+                                LocationVegetationTypesHistory
                                         .builder()
                                         .itemNumber(vegetationHistoryVegetationType.getItemNumber())
                                         .year(vegetationHistoryVegetationType.getYear())
@@ -94,20 +95,20 @@ public class LocationCoverHistoryProcessor {
                                                                 vegetationHistoryVegetationType.getVegetationTypeId()))
                                         .build())
 
-                        // 3. Collect the Vegetation Type Historic Detail records
+                        // 3. Collect the Vegetation Types History records
                         .collect(Collectors.toList())
 
                         // 4. Build and return the Location Vegetation Types History record
                         .map(records ->
-                                LocationVegetationTypesHistory
+                                LocationVegetationTypesHistories
                                         .builder()
-                                        .id(location.getId())
+                                        .locationId(location.getId())
                                         .partyId(location.getPartyId())
                                         .tileId(location.getTileId())
                                         .vegetationHistoryId(location.getVegetationHistoryId())
                                         .unitCount(location.getUnitCount())
                                         .unitAreaSum(location.getUnitAreaSum())
-                                        .history(records)
+                                        .histories(records)
                                         .build());
     }
 

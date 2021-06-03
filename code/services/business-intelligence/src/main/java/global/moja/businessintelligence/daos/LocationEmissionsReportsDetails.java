@@ -8,9 +8,7 @@
 package global.moja.businessintelligence.daos;
 
 import global.moja.businessintelligence.models.Location;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Builder;
 
 import java.util.List;
 
@@ -19,10 +17,20 @@ import java.util.List;
  * @author Kwaje Anthony <tony@miles.co.ke>
  * @version 1.0
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class LocationEmissionsReports extends Location {
 
-    private List<LandUsesFluxesEmissionReportsDetail> reports;
+    private List<EmissionsReportsDetail> reports;
+
+    @Builder
+    public LocationEmissionsReports(
+            Long id,
+            Long partyId,
+            Long tileId,
+            Long vegetationHistoryId,
+            Long unitCount,
+            Double unitAreaSum,
+            List<EmissionsReportsDetail> reports) {
+        super(id, partyId, tileId, vegetationHistoryId, unitCount, unitAreaSum);
+        this.reports = reports;
+    }
 }

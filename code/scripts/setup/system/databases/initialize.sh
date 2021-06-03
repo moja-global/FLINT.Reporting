@@ -310,6 +310,13 @@ if [ $FLUXES_TO_REPORTING_VARIABLES -eq 1 ]; then
 
   # Load the fluxes to reporting variables database data
 
+  netCarbonStockChangeInLivingBiomasId=2
+  netCarbonStockChangeInDOMId=3
+  netCarbonStockChangeInMineralSoilsId=4
+  netCarbonStockChangeInOrganicSoilsId=5
+  ch4Id=7
+  n2oId=8
+
   IFS=","
   while read f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11; do
     
@@ -318,18 +325,18 @@ if [ $FLUXES_TO_REPORTING_VARIABLES -eq 1 ]; then
     startPoolName=${f2:=null}
     endPoolId=${f3:=null}
     endPoolName=${f4:=null}
-    netCarbonStockChangeInLivingBiomas=${f5:=null}
-    netCarbonStockChangeInDOM=${f6:=null}
-    netCarbonStockChangeInMineralSoils=${f7:=null}
-    netCarbonStockChangeInOrganicSoils=${f8:=null}
-    ch4=${f9:=null}
-    n2o=${f10:=null}
+    netCarbonStockChangeInLivingBiomasTreatment=${f5:=null}
+    netCarbonStockChangeInDOMTreatment=${f6:=null}
+    netCarbonStockChangeInMineralSoilsTreatment=${f7:=null}
+    netCarbonStockChangeInOrganicSoilsTreatment=${f8:=null}
+    ch4Treatment=${f9:=null}
+    n2oTreatment=${f10:=null}
     version=${f11:=null}
 
     # Create fluxes to reporting variables records
   
     printf '\n%s to %s:\n' "$startPoolName" "$endPoolName"
-    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_reporting_variable(start_pool_id, end_pool_id, reporting_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, 2, $netCarbonStockChangeInLivingBiomas, $version),($startPoolId, $endPoolId, 3, $netCarbonStockChangeInDOM, $version),($startPoolId, $endPoolId, 4, $netCarbonStockChangeInMineralSoils, $version),($startPoolId, $endPoolId, 5, $netCarbonStockChangeInOrganicSoils, $version),($startPoolId, $endPoolId, 10, $ch4, $version),($startPoolId, $endPoolId, 11, $n2o, $version)"
+    psql -d "fluxes_to_reporting_variables" -c "INSERT INTO flux_to_reporting_variable(start_pool_id, end_pool_id, reporting_variable_id, rule, version) VALUES ($startPoolId, $endPoolId, $netCarbonStockChangeInLivingBiomasId, $netCarbonStockChangeInLivingBiomasTreatment, $version),($startPoolId, $endPoolId, $netCarbonStockChangeInDOMId, $netCarbonStockChangeInDOMTreatment, $version),($startPoolId, $endPoolId, $netCarbonStockChangeInMineralSoilsId, $netCarbonStockChangeInMineralSoilsTreatment, $version),($startPoolId, $endPoolId, $netCarbonStockChangeInOrganicSoilsId, $netCarbonStockChangeInOrganicSoilsTreatment, $version),($startPoolId, $endPoolId, $ch4Id, $ch4Treatment, $version),($startPoolId, $endPoolId, $n2oId, $n2oTreatment, $version)"
 
   done <$PROJECT_DIR/data/fluxes_to_reporting_variables.csv
 
