@@ -1,11 +1,10 @@
-package global.moja.businessintelligence.services;
+package global.moja.businessintelligence.util;
 
-import global.moja.businessintelligence.daos.CoverTypesHistoricDetail;
-import global.moja.businessintelligence.daos.LandUsesHistoricDetail;
+import global.moja.businessintelligence.daos.LocationCoverTypesHistory;
+import global.moja.businessintelligence.daos.LocationLandUsesHistory;
 import global.moja.businessintelligence.exceptions.ServerException;
 import global.moja.businessintelligence.models.CoverType;
 import global.moja.businessintelligence.models.LandUseCategory;
-import global.moja.businessintelligence.util.LandUseCategoryAllocationDecisionTree;
 import global.moja.businessintelligence.util.builders.CoverTypeBuilder;
 import global.moja.businessintelligence.util.builders.LandUseCategoryBuilder;
 import org.junit.jupiter.api.Test;
@@ -25,10 +24,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-class GrasslandLandUsesDecisionsIT {
+class GrassLandUsesCategoriesAllocatorIT {
 
     @Autowired
-    LandUseCategoryAllocationDecisionTree landUseCategoryAllocationDecisionTree;
+    LandUsesCategoriesAllocator landUsesCategoriesAllocator;
 
 
     /**
@@ -43,7 +42,7 @@ class GrasslandLandUsesDecisionsIT {
 
         Long timestep = 0L;
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = getCoverTypeHistories(
+        List<LocationCoverTypesHistory> coverTypeHistories = getCoverTypeHistories(
                 new CoverTypeBuilder()
                         .id(3L)
                         .code("G")
@@ -63,9 +62,9 @@ class GrasslandLandUsesDecisionsIT {
                         .version(1)
                         .build(), 2);
 
-        List<LandUsesHistoricDetail> landUseHistories = new ArrayList<>();
+        List<LocationLandUsesHistory> landUseHistories = new ArrayList<>();
 
-        LandUsesHistoricDetail landUsesHistoricDetail = LandUsesHistoricDetail.builder()
+        LocationLandUsesHistory locationLandUsesHistory = LocationLandUsesHistory.builder()
                 .itemNumber(0L)
                 .year(1990)
                 .landUseCategory(
@@ -81,8 +80,8 @@ class GrasslandLandUsesDecisionsIT {
                 .build();
 
 
-        assertThat(landUseCategoryAllocationDecisionTree.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
-                .isEqualTo(landUsesHistoricDetail);
+        assertThat(landUsesCategoriesAllocator.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
+                .isEqualTo(locationLandUsesHistory);
 
 
     }
@@ -99,7 +98,7 @@ class GrasslandLandUsesDecisionsIT {
 
         Long timestep = 0L;
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = getCoverTypeHistories(
+        List<LocationCoverTypesHistory> coverTypeHistories = getCoverTypeHistories(
                 new CoverTypeBuilder()
                         .id(3L)
                         .code("G")
@@ -119,9 +118,9 @@ class GrasslandLandUsesDecisionsIT {
                         .version(1)
                         .build(), 2);
 
-        List<LandUsesHistoricDetail> landUseHistories = new ArrayList<>();
+        List<LocationLandUsesHistory> landUseHistories = new ArrayList<>();
 
-        LandUsesHistoricDetail landUsesHistoricDetail = LandUsesHistoricDetail.builder()
+        LocationLandUsesHistory locationLandUsesHistory = LocationLandUsesHistory.builder()
                 .itemNumber(0L)
                 .year(1990)
                 .landUseCategory(
@@ -137,8 +136,8 @@ class GrasslandLandUsesDecisionsIT {
                 .build();
 
 
-        assertThat(landUseCategoryAllocationDecisionTree.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
-                .isEqualTo(landUsesHistoricDetail);
+        assertThat(landUsesCategoriesAllocator.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
+                .isEqualTo(locationLandUsesHistory);
 
 
     }
@@ -155,7 +154,7 @@ class GrasslandLandUsesDecisionsIT {
 
         Long timestep = 1L;
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = getCoverTypeHistories(
+        List<LocationCoverTypesHistory> coverTypeHistories = getCoverTypeHistories(
                 new CoverTypeBuilder()
                         .id(3L)
                         .code("G")
@@ -164,7 +163,7 @@ class GrasslandLandUsesDecisionsIT {
                         .build(), 2);
 
 
-        List<LandUsesHistoricDetail> landUseHistories = getLandUseHistories(
+        List<LocationLandUsesHistory> landUseHistories = getLandUseHistories(
                 new LandUseCategoryBuilder()
                         .id(18L)
                         .reportingFrameworkId(1L)
@@ -175,7 +174,7 @@ class GrasslandLandUsesDecisionsIT {
                         .build(), 1);
 
 
-        LandUsesHistoricDetail landUsesHistoricDetail = LandUsesHistoricDetail.builder()
+        LocationLandUsesHistory locationLandUsesHistory = LocationLandUsesHistory.builder()
                 .itemNumber(1L)
                 .year(1991)
                 .landUseCategory(
@@ -191,8 +190,8 @@ class GrasslandLandUsesDecisionsIT {
                 .build();
 
 
-        assertThat(landUseCategoryAllocationDecisionTree.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
-                .isEqualTo(landUsesHistoricDetail);
+        assertThat(landUsesCategoriesAllocator.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
+                .isEqualTo(locationLandUsesHistory);
 
 
     }
@@ -208,7 +207,7 @@ class GrasslandLandUsesDecisionsIT {
 
         Long timestep = 21L;
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = getCoverTypeHistories(
+        List<LocationCoverTypesHistory> coverTypeHistories = getCoverTypeHistories(
                 new CoverTypeBuilder()
                         .id(1L)
                         .code("F")
@@ -223,7 +222,7 @@ class GrasslandLandUsesDecisionsIT {
                         .build(), 21);
 
 
-        List<LandUsesHistoricDetail> landUseHistories = getLandUseHistories(
+        List<LocationLandUsesHistory> landUseHistories = getLandUseHistories(
                 new LandUseCategoryBuilder()
                         .id(3L)
                         .reportingFrameworkId(1L)
@@ -241,7 +240,7 @@ class GrasslandLandUsesDecisionsIT {
                         .version(1)
                         .build(), 20);
 
-        LandUsesHistoricDetail landUsesHistoricDetail = LandUsesHistoricDetail.builder()
+        LocationLandUsesHistory locationLandUsesHistory = LocationLandUsesHistory.builder()
                 .itemNumber(21L)
                 .year(2011)
                 .landUseCategory(
@@ -257,8 +256,8 @@ class GrasslandLandUsesDecisionsIT {
                 .build();
 
 
-        assertThat(landUseCategoryAllocationDecisionTree.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
-                .isEqualTo(landUsesHistoricDetail);
+        assertThat(landUsesCategoriesAllocator.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
+                .isEqualTo(locationLandUsesHistory);
 
 
     }
@@ -274,7 +273,7 @@ class GrasslandLandUsesDecisionsIT {
 
         Long timestep = 4L;
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = getCoverTypeHistories(
+        List<LocationCoverTypesHistory> coverTypeHistories = getCoverTypeHistories(
                 new CoverTypeBuilder()
                         .id(1L)
                         .code("F")
@@ -289,7 +288,7 @@ class GrasslandLandUsesDecisionsIT {
                         .build(), 4);
 
 
-        List<LandUsesHistoricDetail> landUseHistories = getLandUseHistories(
+        List<LocationLandUsesHistory> landUseHistories = getLandUseHistories(
                 new LandUseCategoryBuilder()
                         .id(3L)
                         .reportingFrameworkId(1L)
@@ -307,7 +306,7 @@ class GrasslandLandUsesDecisionsIT {
                         .version(1)
                         .build(), 3);
 
-        LandUsesHistoricDetail landUsesHistoricDetail = LandUsesHistoricDetail.builder()
+        LocationLandUsesHistory locationLandUsesHistory = LocationLandUsesHistory.builder()
                 .itemNumber(4L)
                 .year(1994)
                 .landUseCategory(
@@ -323,8 +322,8 @@ class GrasslandLandUsesDecisionsIT {
                 .build();
 
 
-        assertThat(landUseCategoryAllocationDecisionTree.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
-                .isEqualTo(landUsesHistoricDetail);
+        assertThat(landUsesCategoriesAllocator.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
+                .isEqualTo(locationLandUsesHistory);
 
 
     }
@@ -341,7 +340,7 @@ class GrasslandLandUsesDecisionsIT {
 
         Long timestep = 2L;
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = getCoverTypeHistories(
+        List<LocationCoverTypesHistory> coverTypeHistories = getCoverTypeHistories(
                 new CoverTypeBuilder()
                         .id(1L)
                         .code("F")
@@ -362,7 +361,7 @@ class GrasslandLandUsesDecisionsIT {
                         .build(), 1);
 
 
-        List<LandUsesHistoricDetail> landUseHistories = getLandUseHistories(
+        List<LocationLandUsesHistory> landUseHistories = getLandUseHistories(
                 new LandUseCategoryBuilder()
                         .id(2L)
                         .reportingFrameworkId(1L)
@@ -380,7 +379,7 @@ class GrasslandLandUsesDecisionsIT {
                         .version(1)
                         .build(), 1);
 
-        LandUsesHistoricDetail landUsesHistoricDetail = LandUsesHistoricDetail.builder()
+        LocationLandUsesHistory locationLandUsesHistory = LocationLandUsesHistory.builder()
                 .itemNumber(2L)
                 .year(1992)
                 .landUseCategory(
@@ -396,8 +395,8 @@ class GrasslandLandUsesDecisionsIT {
                 .build();
 
 
-        assertThat(landUseCategoryAllocationDecisionTree.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
-                .isEqualTo(landUsesHistoricDetail);
+        assertThat(landUsesCategoriesAllocator.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
+                .isEqualTo(locationLandUsesHistory);
 
 
     }
@@ -416,7 +415,7 @@ class GrasslandLandUsesDecisionsIT {
 
         Long timestep = 1L;
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = getCoverTypeHistories(
+        List<LocationCoverTypesHistory> coverTypeHistories = getCoverTypeHistories(
                 new CoverTypeBuilder()
                         .id(2L)
                         .code("C")
@@ -437,8 +436,8 @@ class GrasslandLandUsesDecisionsIT {
                         .build(), 2);
 
 
-        List<LandUsesHistoricDetail> landUseHistories = Arrays.asList(
-                LandUsesHistoricDetail.builder()
+        List<LocationLandUsesHistory> landUseHistories = Arrays.asList(
+                LocationLandUsesHistory.builder()
                         .itemNumber(0L)
                         .year(1990)
                         .landUseCategory(
@@ -454,7 +453,7 @@ class GrasslandLandUsesDecisionsIT {
                         .build()
         );
 
-        LandUsesHistoricDetail landUsesHistoricDetail = LandUsesHistoricDetail.builder()
+        LocationLandUsesHistory locationLandUsesHistory = LocationLandUsesHistory.builder()
                 .itemNumber(1L)
                 .year(1991)
                 .landUseCategory(
@@ -470,8 +469,8 @@ class GrasslandLandUsesDecisionsIT {
                 .build();
 
 
-        assertThat(landUseCategoryAllocationDecisionTree.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
-                .isEqualTo(landUsesHistoricDetail);
+        assertThat(landUsesCategoriesAllocator.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
+                .isEqualTo(locationLandUsesHistory);
 
 
     }
@@ -487,7 +486,7 @@ class GrasslandLandUsesDecisionsIT {
 
         Long timestep = 2L;
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = getCoverTypeHistories(
+        List<LocationCoverTypesHistory> coverTypeHistories = getCoverTypeHistories(
                 new CoverTypeBuilder()
                         .id(1L)
                         .code("F")
@@ -521,7 +520,7 @@ class GrasslandLandUsesDecisionsIT {
         ));
 
 
-        List<LandUsesHistoricDetail> landUseHistories = getLandUseHistories(
+        List<LocationLandUsesHistory> landUseHistories = getLandUseHistories(
                 new LandUseCategoryBuilder()
                         .id(2L)
                         .reportingFrameworkId(1L)
@@ -539,7 +538,7 @@ class GrasslandLandUsesDecisionsIT {
                         .version(1)
                         .build(), 1);
 
-        LandUsesHistoricDetail landUsesHistoricDetail = LandUsesHistoricDetail.builder()
+        LocationLandUsesHistory locationLandUsesHistory = LocationLandUsesHistory.builder()
                 .itemNumber(2L)
                 .year(1992)
                 .landUseCategory(
@@ -555,8 +554,8 @@ class GrasslandLandUsesDecisionsIT {
                 .build();
 
 
-        assertThat(landUseCategoryAllocationDecisionTree.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
-                .isEqualTo(landUsesHistoricDetail);
+        assertThat(landUsesCategoriesAllocator.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
+                .isEqualTo(locationLandUsesHistory);
 
 
     }
@@ -572,7 +571,7 @@ class GrasslandLandUsesDecisionsIT {
 
         Long timestep = 2L;
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = getCoverTypeHistories(
+        List<LocationCoverTypesHistory> coverTypeHistories = getCoverTypeHistories(
                 new CoverTypeBuilder()
                         .id(1L)
                         .code("F")
@@ -607,7 +606,7 @@ class GrasslandLandUsesDecisionsIT {
         ));
 
 
-        List<LandUsesHistoricDetail> landUseHistories = getLandUseHistories(
+        List<LocationLandUsesHistory> landUseHistories = getLandUseHistories(
                 new LandUseCategoryBuilder()
                         .id(2L)
                         .reportingFrameworkId(1L)
@@ -625,7 +624,7 @@ class GrasslandLandUsesDecisionsIT {
                         .version(1)
                         .build(), 1);
 
-        LandUsesHistoricDetail landUsesHistoricDetail = LandUsesHistoricDetail.builder()
+        LocationLandUsesHistory locationLandUsesHistory = LocationLandUsesHistory.builder()
                 .itemNumber(2L)
                 .year(1992)
                 .landUseCategory(
@@ -641,8 +640,8 @@ class GrasslandLandUsesDecisionsIT {
                 .build();
 
 
-        assertThat(landUseCategoryAllocationDecisionTree.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
-                .isEqualTo(landUsesHistoricDetail);
+        assertThat(landUsesCategoriesAllocator.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
+                .isEqualTo(locationLandUsesHistory);
 
 
     }
@@ -660,7 +659,7 @@ class GrasslandLandUsesDecisionsIT {
 
         Long timestep = 3L;
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = getCoverTypeHistories(
+        List<LocationCoverTypesHistory> coverTypeHistories = getCoverTypeHistories(
                 new CoverTypeBuilder()
                         .id(1L)
                         .code("F")
@@ -695,7 +694,7 @@ class GrasslandLandUsesDecisionsIT {
         ));
 
 
-        List<LandUsesHistoricDetail> landUseHistories = getLandUseHistories(
+        List<LocationLandUsesHistory> landUseHistories = getLandUseHistories(
                 new LandUseCategoryBuilder()
                         .id(2L)
                         .reportingFrameworkId(1L)
@@ -713,7 +712,7 @@ class GrasslandLandUsesDecisionsIT {
                         .version(1)
                         .build(), 2);
 
-        LandUsesHistoricDetail landUsesHistoricDetail = LandUsesHistoricDetail.builder()
+        LocationLandUsesHistory locationLandUsesHistory = LocationLandUsesHistory.builder()
                 .itemNumber(3L)
                 .year(1993)
                 .landUseCategory(
@@ -729,8 +728,8 @@ class GrasslandLandUsesDecisionsIT {
                 .build();
 
 
-        assertThat(landUseCategoryAllocationDecisionTree.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
-                .isEqualTo(landUsesHistoricDetail);
+        assertThat(landUsesCategoriesAllocator.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
+                .isEqualTo(locationLandUsesHistory);
 
 
     }
@@ -746,7 +745,7 @@ class GrasslandLandUsesDecisionsIT {
 
         Long timestep = 1L;
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = getCoverTypeHistories(
+        List<LocationCoverTypesHistory> coverTypeHistories = getCoverTypeHistories(
                 new CoverTypeBuilder()
                         .id(1L)
                         .code("F")
@@ -761,8 +760,8 @@ class GrasslandLandUsesDecisionsIT {
                         .build(), 2);
 
 
-        List<LandUsesHistoricDetail> landUseHistories = Arrays.asList(
-                LandUsesHistoricDetail.builder()
+        List<LocationLandUsesHistory> landUseHistories = Arrays.asList(
+                LocationLandUsesHistory.builder()
                         .itemNumber(0L)
                         .year(1990)
                         .landUseCategory(
@@ -778,7 +777,7 @@ class GrasslandLandUsesDecisionsIT {
                         .build()
         );
 
-        LandUsesHistoricDetail landUsesHistoricDetail = LandUsesHistoricDetail.builder()
+        LocationLandUsesHistory locationLandUsesHistory = LocationLandUsesHistory.builder()
                 .itemNumber(1L)
                 .year(1991)
                 .landUseCategory(
@@ -794,8 +793,8 @@ class GrasslandLandUsesDecisionsIT {
                 .build();
 
 
-        assertThat(landUseCategoryAllocationDecisionTree.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
-                .isEqualTo(landUsesHistoricDetail);
+        assertThat(landUsesCategoriesAllocator.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
+                .isEqualTo(locationLandUsesHistory);
 
 
     }
@@ -811,7 +810,7 @@ class GrasslandLandUsesDecisionsIT {
 
         Long timestep = 1L;
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = getCoverTypeHistories(
+        List<LocationCoverTypesHistory> coverTypeHistories = getCoverTypeHistories(
                 new CoverTypeBuilder()
                         .id(1L)
                         .code("F")
@@ -832,8 +831,8 @@ class GrasslandLandUsesDecisionsIT {
                         .build(), 2);
 
 
-        List<LandUsesHistoricDetail> landUseHistories = new ArrayList<>();
-        landUseHistories.add(LandUsesHistoricDetail.builder()
+        List<LocationLandUsesHistory> landUseHistories = new ArrayList<>();
+        landUseHistories.add(LocationLandUsesHistory.builder()
                 .itemNumber(0L)
                 .year(1990)
                 .landUseCategory(new LandUseCategoryBuilder()
@@ -846,7 +845,7 @@ class GrasslandLandUsesDecisionsIT {
                         .build())
                 .build());
 
-        LandUsesHistoricDetail landUsesHistoricDetail = LandUsesHistoricDetail.builder()
+        LocationLandUsesHistory locationLandUsesHistory = LocationLandUsesHistory.builder()
                 .itemNumber(1L)
                 .year(1991)
                 .landUseCategory(
@@ -862,8 +861,8 @@ class GrasslandLandUsesDecisionsIT {
                 .build();
 
 
-        assertThat(landUseCategoryAllocationDecisionTree.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
-                .isEqualTo(landUsesHistoricDetail);
+        assertThat(landUsesCategoriesAllocator.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
+                .isEqualTo(locationLandUsesHistory);
 
 
     }
@@ -879,7 +878,7 @@ class GrasslandLandUsesDecisionsIT {
 
         Long timestep = 1L;
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = getCoverTypeHistories(
+        List<LocationCoverTypesHistory> coverTypeHistories = getCoverTypeHistories(
                 new CoverTypeBuilder()
                         .id(1L)
                         .code("F")
@@ -900,7 +899,7 @@ class GrasslandLandUsesDecisionsIT {
                         .build(), 1);
 
 
-        List<LandUsesHistoricDetail> landUseHistories = getLandUseHistories(
+        List<LocationLandUsesHistory> landUseHistories = getLandUseHistories(
                 new LandUseCategoryBuilder()
                         .id(3L)
                         .reportingFrameworkId(1L)
@@ -918,7 +917,7 @@ class GrasslandLandUsesDecisionsIT {
                         .version(1)
                         .build(), 1);
 
-        LandUsesHistoricDetail landUsesHistoricDetail = LandUsesHistoricDetail.builder()
+        LocationLandUsesHistory locationLandUsesHistory = LocationLandUsesHistory.builder()
                 .itemNumber(1L)
                 .year(1991)
                 .landUseCategory(
@@ -934,25 +933,25 @@ class GrasslandLandUsesDecisionsIT {
                 .build();
 
 
-        assertThat(landUseCategoryAllocationDecisionTree.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
-                .isEqualTo(landUsesHistoricDetail);
+        assertThat(landUsesCategoriesAllocator.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
+                .isEqualTo(locationLandUsesHistory);
 
 
     }
 
-    private List<CoverTypesHistoricDetail> getCoverTypeHistories(
+    private List<LocationCoverTypesHistory> getCoverTypeHistories(
             CoverType coverType, int coverTypesCount) {
 
         AtomicLong step = new AtomicLong(-1L);
         AtomicInteger year = new AtomicInteger(1989);
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = new ArrayList<>();
+        List<LocationCoverTypesHistory> coverTypeHistories = new ArrayList<>();
 
         // Add First Cover Type
         IntStream
                 .range(0, coverTypesCount)
                 .mapToObj(i ->
-                        CoverTypesHistoricDetail.builder()
+                        LocationCoverTypesHistory.builder()
                                 .itemNumber(step.incrementAndGet())
                                 .year(year.incrementAndGet())
                                 .coverType(coverType)
@@ -962,10 +961,10 @@ class GrasslandLandUsesDecisionsIT {
         return coverTypeHistories;
     }
 
-    private List<CoverTypesHistoricDetail> getCoverTypeHistories(
+    private List<LocationCoverTypesHistory> getCoverTypeHistories(
             CoverType firstCoverType, CoverType secondCoverType, int secondCoverTypesCount) {
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = new ArrayList<>();
+        List<LocationCoverTypesHistory> coverTypeHistories = new ArrayList<>();
 
         AtomicLong step = new AtomicLong(-1L);
         AtomicInteger year = new AtomicInteger(1989);
@@ -974,7 +973,7 @@ class GrasslandLandUsesDecisionsIT {
         IntStream
                 .range(0, 1)
                 .mapToObj(i ->
-                        CoverTypesHistoricDetail.builder()
+                        LocationCoverTypesHistory.builder()
                                 .itemNumber(step.incrementAndGet())
                                 .year(year.incrementAndGet())
                                 .coverType(firstCoverType)
@@ -986,7 +985,7 @@ class GrasslandLandUsesDecisionsIT {
         IntStream
                 .range(0, secondCoverTypesCount)
                 .mapToObj(i ->
-                        CoverTypesHistoricDetail.builder()
+                        LocationCoverTypesHistory.builder()
                                 .itemNumber(step.incrementAndGet())
                                 .year(year.incrementAndGet())
                                 .coverType(secondCoverType)
@@ -998,12 +997,12 @@ class GrasslandLandUsesDecisionsIT {
     }
 
 
-    private List<CoverTypesHistoricDetail> getCoverTypeHistories(
+    private List<LocationCoverTypesHistory> getCoverTypeHistories(
             CoverType firstCoverType,
             CoverType secondCoverType, int secondCoverTypesCount,
             CoverType thirdCoverType, int thirdCoverTypesCount) {
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = new ArrayList<>();
+        List<LocationCoverTypesHistory> coverTypeHistories = new ArrayList<>();
 
         AtomicLong step = new AtomicLong(-1L);
         AtomicInteger year = new AtomicInteger(1989);
@@ -1012,7 +1011,7 @@ class GrasslandLandUsesDecisionsIT {
         IntStream
                 .range(0, 1)
                 .mapToObj(i ->
-                        CoverTypesHistoricDetail.builder()
+                        LocationCoverTypesHistory.builder()
                                 .itemNumber(step.incrementAndGet())
                                 .year(year.incrementAndGet())
                                 .coverType(firstCoverType)
@@ -1024,7 +1023,7 @@ class GrasslandLandUsesDecisionsIT {
         IntStream
                 .range(0, secondCoverTypesCount)
                 .mapToObj(i ->
-                        CoverTypesHistoricDetail.builder()
+                        LocationCoverTypesHistory.builder()
                                 .itemNumber(step.incrementAndGet())
                                 .year(year.incrementAndGet())
                                 .coverType(secondCoverType)
@@ -1035,7 +1034,7 @@ class GrasslandLandUsesDecisionsIT {
         IntStream
                 .range(0, thirdCoverTypesCount)
                 .mapToObj(i ->
-                        CoverTypesHistoricDetail.builder()
+                        LocationCoverTypesHistory.builder()
                                 .itemNumber(step.incrementAndGet())
                                 .year(year.incrementAndGet())
                                 .coverType(thirdCoverType)
@@ -1046,10 +1045,10 @@ class GrasslandLandUsesDecisionsIT {
 
     }
 
-    private List<CoverTypesHistoricDetail> getInterchangingCoverTypeHistories(
+    private List<LocationCoverTypesHistory> getInterchangingCoverTypeHistories(
             CoverType firstCoverType, CoverType secondCoverType, int yearCount, long previousStep, int previousYear, int idx) {
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = new ArrayList<>();
+        List<LocationCoverTypesHistory> coverTypeHistories = new ArrayList<>();
 
         AtomicLong step = new AtomicLong(previousStep);
         AtomicInteger year = new AtomicInteger(previousYear);
@@ -1059,13 +1058,13 @@ class GrasslandLandUsesDecisionsIT {
 
         do {
             if (status) {
-                coverTypeHistories.add(CoverTypesHistoricDetail.builder()
+                coverTypeHistories.add(LocationCoverTypesHistory.builder()
                         .itemNumber(step.incrementAndGet())
                         .year(year.incrementAndGet())
                         .coverType(firstCoverType)
                         .build());
             } else {
-                coverTypeHistories.add(CoverTypesHistoricDetail.builder()
+                coverTypeHistories.add(LocationCoverTypesHistory.builder()
                         .itemNumber(step.incrementAndGet())
                         .year(year.incrementAndGet())
                         .coverType(secondCoverType)
@@ -1082,10 +1081,10 @@ class GrasslandLandUsesDecisionsIT {
     }
 
 
-    private List<LandUsesHistoricDetail> getLandUseHistories(
+    private List<LocationLandUsesHistory> getLandUseHistories(
             LandUseCategory landUse, int landUsesCount) {
 
-        List<LandUsesHistoricDetail> landUseHistories = new ArrayList<>();
+        List<LocationLandUsesHistory> landUseHistories = new ArrayList<>();
 
         AtomicLong step = new AtomicLong(-1L);
         AtomicInteger year = new AtomicInteger(1989);
@@ -1094,7 +1093,7 @@ class GrasslandLandUsesDecisionsIT {
         IntStream
                 .range(0, landUsesCount)
                 .mapToObj(i ->
-                        LandUsesHistoricDetail.builder()
+                        LocationLandUsesHistory.builder()
                                 .itemNumber(step.incrementAndGet())
                                 .year(year.incrementAndGet())
                                 .landUseCategory(landUse)
@@ -1107,10 +1106,10 @@ class GrasslandLandUsesDecisionsIT {
     }
 
 
-    private List<LandUsesHistoricDetail> getLandUseHistories(
+    private List<LocationLandUsesHistory> getLandUseHistories(
             LandUseCategory firstLandUse, LandUseCategory secondLandUse, int secondLandUsesCount) {
 
-        List<LandUsesHistoricDetail> landUseHistories = new ArrayList<>();
+        List<LocationLandUsesHistory> landUseHistories = new ArrayList<>();
 
         AtomicLong step = new AtomicLong(-1L);
         AtomicInteger year = new AtomicInteger(1989);
@@ -1119,7 +1118,7 @@ class GrasslandLandUsesDecisionsIT {
         IntStream
                 .range(0, 1)
                 .mapToObj(i ->
-                        LandUsesHistoricDetail.builder()
+                        LocationLandUsesHistory.builder()
                                 .itemNumber(step.incrementAndGet())
                                 .year(year.incrementAndGet())
                                 .landUseCategory(firstLandUse)
@@ -1131,7 +1130,7 @@ class GrasslandLandUsesDecisionsIT {
         IntStream
                 .range(0, secondLandUsesCount)
                 .mapToObj(i ->
-                        LandUsesHistoricDetail.builder()
+                        LocationLandUsesHistory.builder()
                                 .itemNumber(step.incrementAndGet())
                                 .year(year.incrementAndGet())
                                 .landUseCategory(secondLandUse)

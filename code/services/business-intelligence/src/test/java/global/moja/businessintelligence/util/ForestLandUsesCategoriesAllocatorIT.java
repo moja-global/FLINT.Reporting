@@ -1,11 +1,10 @@
-package global.moja.businessintelligence.services;
+package global.moja.businessintelligence.util;
 
-import global.moja.businessintelligence.daos.CoverTypesHistoricDetail;
-import global.moja.businessintelligence.daos.LandUsesHistoricDetail;
+import global.moja.businessintelligence.daos.LocationCoverTypesHistory;
+import global.moja.businessintelligence.daos.LocationLandUsesHistory;
 import global.moja.businessintelligence.exceptions.ServerException;
 import global.moja.businessintelligence.models.CoverType;
 import global.moja.businessintelligence.models.LandUseCategory;
-import global.moja.businessintelligence.util.LandUseCategoryAllocationDecisionTree;
 import global.moja.businessintelligence.util.builders.CoverTypeBuilder;
 import global.moja.businessintelligence.util.builders.LandUseCategoryBuilder;
 import org.junit.jupiter.api.Test;
@@ -24,10 +23,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-class ForestlandLandUsesDecisionsIT {
+class ForestLandUsesCategoriesAllocatorIT {
 
     @Autowired
-    LandUseCategoryAllocationDecisionTree landUseCategoryAllocationDecisionTree;
+    LandUsesCategoriesAllocator landUsesCategoriesAllocator;
 
     /**
      * Decision 3
@@ -40,7 +39,7 @@ class ForestlandLandUsesDecisionsIT {
 
         Long timestep = 0L;
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = getCoverTypeHistories(
+        List<LocationCoverTypesHistory> coverTypeHistories = getCoverTypeHistories(
                 new CoverTypeBuilder()
                         .id(1L)
                         .code("F")
@@ -48,9 +47,9 @@ class ForestlandLandUsesDecisionsIT {
                         .version(1)
                         .build(), 1);
 
-        List<LandUsesHistoricDetail> landUseHistories = new ArrayList<>();
+        List<LocationLandUsesHistory> landUseHistories = new ArrayList<>();
 
-        LandUsesHistoricDetail landUsesHistoricDetail = LandUsesHistoricDetail.builder()
+        LocationLandUsesHistory locationLandUsesHistory = LocationLandUsesHistory.builder()
                 .itemNumber(0L)
                 .year(1990)
                 .landUseCategory(
@@ -66,8 +65,8 @@ class ForestlandLandUsesDecisionsIT {
                 .build();
 
 
-        assertThat(landUseCategoryAllocationDecisionTree.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
-                .isEqualTo(landUsesHistoricDetail);
+        assertThat(landUsesCategoriesAllocator.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
+                .isEqualTo(locationLandUsesHistory);
     }
 
 
@@ -82,7 +81,7 @@ class ForestlandLandUsesDecisionsIT {
 
         Long timestep = 1L;
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = getCoverTypeHistories(
+        List<LocationCoverTypesHistory> coverTypeHistories = getCoverTypeHistories(
                 new CoverTypeBuilder()
                         .id(1L)
                         .code("F")
@@ -91,7 +90,7 @@ class ForestlandLandUsesDecisionsIT {
                         .build(), 2);
 
 
-        List<LandUsesHistoricDetail> landUseHistories = getLandUseHistories(
+        List<LocationLandUsesHistory> landUseHistories = getLandUseHistories(
                 new LandUseCategoryBuilder()
                         .id(2L)
                         .reportingFrameworkId(1L)
@@ -102,7 +101,7 @@ class ForestlandLandUsesDecisionsIT {
                         .build(), 1);
 
 
-        LandUsesHistoricDetail landUsesHistoricDetail = LandUsesHistoricDetail.builder()
+        LocationLandUsesHistory locationLandUsesHistory = LocationLandUsesHistory.builder()
                 .itemNumber(1L)
                 .year(1991)
                 .landUseCategory(
@@ -118,8 +117,8 @@ class ForestlandLandUsesDecisionsIT {
                 .build();
 
 
-        assertThat(landUseCategoryAllocationDecisionTree.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
-                .isEqualTo(landUsesHistoricDetail);
+        assertThat(landUsesCategoriesAllocator.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
+                .isEqualTo(locationLandUsesHistory);
 
 
     }
@@ -135,7 +134,7 @@ class ForestlandLandUsesDecisionsIT {
 
         Long timestep = 21L;
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = getCoverTypeHistories(
+        List<LocationCoverTypesHistory> coverTypeHistories = getCoverTypeHistories(
                 new CoverTypeBuilder()
                         .id(2L)
                         .code("C")
@@ -150,7 +149,7 @@ class ForestlandLandUsesDecisionsIT {
                         .build(), 21);
 
 
-        List<LandUsesHistoricDetail> landUseHistories = getLandUseHistories(
+        List<LocationLandUsesHistory> landUseHistories = getLandUseHistories(
                 new LandUseCategoryBuilder()
                         .id(10L)
                         .reportingFrameworkId(1L)
@@ -168,7 +167,7 @@ class ForestlandLandUsesDecisionsIT {
                         .version(1)
                         .build(), 20);
 
-        LandUsesHistoricDetail landUsesHistoricDetail = LandUsesHistoricDetail.builder()
+        LocationLandUsesHistory locationLandUsesHistory = LocationLandUsesHistory.builder()
                 .itemNumber(21L)
                 .year(2011)
                 .landUseCategory(
@@ -184,8 +183,8 @@ class ForestlandLandUsesDecisionsIT {
                 .build();
 
 
-        assertThat(landUseCategoryAllocationDecisionTree.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
-                .isEqualTo(landUsesHistoricDetail);
+        assertThat(landUsesCategoriesAllocator.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
+                .isEqualTo(locationLandUsesHistory);
 
 
     }
@@ -201,7 +200,7 @@ class ForestlandLandUsesDecisionsIT {
 
         Long timestep = 4L;
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = getCoverTypeHistories(
+        List<LocationCoverTypesHistory> coverTypeHistories = getCoverTypeHistories(
                 new CoverTypeBuilder()
                         .id(2L)
                         .code("C")
@@ -216,7 +215,7 @@ class ForestlandLandUsesDecisionsIT {
                         .build(), 4);
 
 
-        List<LandUsesHistoricDetail> landUseHistories = getLandUseHistories(
+        List<LocationLandUsesHistory> landUseHistories = getLandUseHistories(
                 new LandUseCategoryBuilder()
                         .id(10L)
                         .reportingFrameworkId(1L)
@@ -234,7 +233,7 @@ class ForestlandLandUsesDecisionsIT {
                         .version(1)
                         .build(), 3);
 
-        LandUsesHistoricDetail landUsesHistoricDetail = LandUsesHistoricDetail.builder()
+        LocationLandUsesHistory locationLandUsesHistory = LocationLandUsesHistory.builder()
                 .itemNumber(4L)
                 .year(1994)
                 .landUseCategory(
@@ -250,25 +249,25 @@ class ForestlandLandUsesDecisionsIT {
                 .build();
 
 
-        assertThat(landUseCategoryAllocationDecisionTree.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
-                .isEqualTo(landUsesHistoricDetail);
+        assertThat(landUsesCategoriesAllocator.allocateLandUseCategory(timestep, coverTypeHistories, landUseHistories))
+                .isEqualTo(locationLandUsesHistory);
 
 
     }
 
-    private List<CoverTypesHistoricDetail> getCoverTypeHistories(
+    private List<LocationCoverTypesHistory> getCoverTypeHistories(
             CoverType coverType, int coverTypesCount) {
 
         AtomicLong step = new AtomicLong(-1L);
         AtomicInteger year = new AtomicInteger(1989);
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = new ArrayList<>();
+        List<LocationCoverTypesHistory> coverTypeHistories = new ArrayList<>();
 
         // Add First Cover Type
         IntStream
                 .range(0, coverTypesCount)
                 .mapToObj(i ->
-                        CoverTypesHistoricDetail.builder()
+                        LocationCoverTypesHistory.builder()
                                 .itemNumber(step.incrementAndGet())
                                 .year(year.incrementAndGet())
                                 .coverType(coverType)
@@ -278,10 +277,10 @@ class ForestlandLandUsesDecisionsIT {
         return coverTypeHistories;
     }
 
-    private List<CoverTypesHistoricDetail> getCoverTypeHistories(
+    private List<LocationCoverTypesHistory> getCoverTypeHistories(
             CoverType firstCoverType, CoverType secondCoverType, int secondCoverTypesCount) {
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = new ArrayList<>();
+        List<LocationCoverTypesHistory> coverTypeHistories = new ArrayList<>();
 
         AtomicLong step = new AtomicLong(-1L);
         AtomicInteger year = new AtomicInteger(1989);
@@ -290,7 +289,7 @@ class ForestlandLandUsesDecisionsIT {
         IntStream
                 .range(0, 1)
                 .mapToObj(i ->
-                        CoverTypesHistoricDetail.builder()
+                        LocationCoverTypesHistory.builder()
                                 .itemNumber(step.incrementAndGet())
                                 .year(year.incrementAndGet())
                                 .coverType(firstCoverType)
@@ -302,7 +301,7 @@ class ForestlandLandUsesDecisionsIT {
         IntStream
                 .range(0, secondCoverTypesCount)
                 .mapToObj(i ->
-                        CoverTypesHistoricDetail.builder()
+                        LocationCoverTypesHistory.builder()
                                 .itemNumber(step.incrementAndGet())
                                 .year(year.incrementAndGet())
                                 .coverType(secondCoverType)
@@ -314,12 +313,12 @@ class ForestlandLandUsesDecisionsIT {
     }
 
 
-    private List<CoverTypesHistoricDetail> getCoverTypeHistories(
+    private List<LocationCoverTypesHistory> getCoverTypeHistories(
             CoverType firstCoverType,
             CoverType secondCoverType, int secondCoverTypesCount,
             CoverType thirdCoverType, int thirdCoverTypesCount) {
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = new ArrayList<>();
+        List<LocationCoverTypesHistory> coverTypeHistories = new ArrayList<>();
 
         AtomicLong step = new AtomicLong(-1L);
         AtomicInteger year = new AtomicInteger(1989);
@@ -328,7 +327,7 @@ class ForestlandLandUsesDecisionsIT {
         IntStream
                 .range(0, 1)
                 .mapToObj(i ->
-                        CoverTypesHistoricDetail.builder()
+                        LocationCoverTypesHistory.builder()
                                 .itemNumber(step.incrementAndGet())
                                 .year(year.incrementAndGet())
                                 .coverType(firstCoverType)
@@ -340,7 +339,7 @@ class ForestlandLandUsesDecisionsIT {
         IntStream
                 .range(0, secondCoverTypesCount)
                 .mapToObj(i ->
-                        CoverTypesHistoricDetail.builder()
+                        LocationCoverTypesHistory.builder()
                                 .itemNumber(step.incrementAndGet())
                                 .year(year.incrementAndGet())
                                 .coverType(secondCoverType)
@@ -351,7 +350,7 @@ class ForestlandLandUsesDecisionsIT {
         IntStream
                 .range(0, thirdCoverTypesCount)
                 .mapToObj(i ->
-                        CoverTypesHistoricDetail.builder()
+                        LocationCoverTypesHistory.builder()
                                 .itemNumber(step.incrementAndGet())
                                 .year(year.incrementAndGet())
                                 .coverType(thirdCoverType)
@@ -362,10 +361,10 @@ class ForestlandLandUsesDecisionsIT {
 
     }
 
-    private List<CoverTypesHistoricDetail> getInterchangingCoverTypeHistories(
+    private List<LocationCoverTypesHistory> getInterchangingCoverTypeHistories(
             CoverType firstCoverType, CoverType secondCoverType, int yearCount, long previousStep, int previousYear, int idx) {
 
-        List<CoverTypesHistoricDetail> coverTypeHistories = new ArrayList<>();
+        List<LocationCoverTypesHistory> coverTypeHistories = new ArrayList<>();
 
         AtomicLong step = new AtomicLong(previousStep);
         AtomicInteger year = new AtomicInteger(previousYear);
@@ -375,13 +374,13 @@ class ForestlandLandUsesDecisionsIT {
 
         do {
             if(status){
-                coverTypeHistories.add(CoverTypesHistoricDetail.builder()
+                coverTypeHistories.add(LocationCoverTypesHistory.builder()
                         .itemNumber(step.incrementAndGet())
                         .year(year.incrementAndGet())
                         .coverType(firstCoverType)
                         .build());
             } else {
-                coverTypeHistories.add(CoverTypesHistoricDetail.builder()
+                coverTypeHistories.add(LocationCoverTypesHistory.builder()
                         .itemNumber(step.incrementAndGet())
                         .year(year.incrementAndGet())
                         .coverType(secondCoverType)
@@ -398,10 +397,10 @@ class ForestlandLandUsesDecisionsIT {
     }
 
 
-    private List<LandUsesHistoricDetail> getLandUseHistories(
+    private List<LocationLandUsesHistory> getLandUseHistories(
             LandUseCategory landUse, int landUsesCount) {
 
-        List<LandUsesHistoricDetail> landUseHistories = new ArrayList<>();
+        List<LocationLandUsesHistory> landUseHistories = new ArrayList<>();
 
         AtomicLong step = new AtomicLong(-1L);
         AtomicInteger year = new AtomicInteger(1989);
@@ -410,7 +409,7 @@ class ForestlandLandUsesDecisionsIT {
         IntStream
                 .range(0, landUsesCount)
                 .mapToObj(i ->
-                        LandUsesHistoricDetail.builder()
+                        LocationLandUsesHistory.builder()
                                 .itemNumber(step.incrementAndGet())
                                 .year(year.incrementAndGet())
                                 .landUseCategory(landUse)
@@ -423,10 +422,10 @@ class ForestlandLandUsesDecisionsIT {
     }
 
 
-    private List<LandUsesHistoricDetail> getLandUseHistories(
+    private List<LocationLandUsesHistory> getLandUseHistories(
             LandUseCategory firstLandUse, LandUseCategory secondLandUse, int secondLandUsesCount) {
 
-        List<LandUsesHistoricDetail> landUseHistories = new ArrayList<>();
+        List<LocationLandUsesHistory> landUseHistories = new ArrayList<>();
 
         AtomicLong step = new AtomicLong(-1L);
         AtomicInteger year = new AtomicInteger(1989);
@@ -435,7 +434,7 @@ class ForestlandLandUsesDecisionsIT {
         IntStream
                 .range(0, 1)
                 .mapToObj(i ->
-                        LandUsesHistoricDetail.builder()
+                        LocationLandUsesHistory.builder()
                                 .itemNumber(step.incrementAndGet())
                                 .year(year.incrementAndGet())
                                 .landUseCategory(firstLandUse)
@@ -447,7 +446,7 @@ class ForestlandLandUsesDecisionsIT {
         IntStream
                 .range(0, secondLandUsesCount)
                 .mapToObj(i ->
-                        LandUsesHistoricDetail.builder()
+                        LocationLandUsesHistory.builder()
                                 .itemNumber(step.incrementAndGet())
                                 .year(year.incrementAndGet())
                                 .landUseCategory(secondLandUse)
