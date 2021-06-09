@@ -43,13 +43,17 @@ public class InsertQuantityObservationsQuery {
 
         String query =
                 "INSERT INTO quantity_observation(" +
-                        "task_id,party_id,database_id," +
+                        "observation_type_id," +
+                        "task_id," +
+                        "party_id," +
+                        "database_id," +
+                        "land_use_category_id," +
                         "reporting_table_id," +
                         "reporting_variable_id," +
                         "year," +
                         "amount," +
                         "unit_id) " +
-                        "VALUES(?,?,?,?,?,?,?,?)";
+                        "VALUES(?,?,?,?,?,?,?,?,?,?)";
 
         return
                 Flux.from(
@@ -67,9 +71,11 @@ public class InsertQuantityObservationsQuery {
 
         for (QuantityObservation quantityObservation : quantityObservations) {
             temp.add(Arrays.asList(
+                    quantityObservation.getObservationTypeId(),
                     quantityObservation.getTaskId(),
                     quantityObservation.getPartyId(),
                     quantityObservation.getDatabaseId(),
+                    quantityObservation.getLandUseCategoryId(),
                     quantityObservation.getReportingTableId(),
                     quantityObservation.getReportingVariableId(),
                     quantityObservation.getYear(),

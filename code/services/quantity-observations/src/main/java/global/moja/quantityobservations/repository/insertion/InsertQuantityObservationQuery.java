@@ -38,15 +38,17 @@ public class InsertQuantityObservationQuery {
 
         String query =
                 "INSERT INTO quantity_observation(" +
+                        "observation_type_id," +
                         "task_id," +
                         "party_id," +
                         "database_id," +
+                        "land_use_category_id," +
                         "reporting_table_id," +
                         "reporting_variable_id," +
                         "year," +
                         "amount," +
                         "unit_id) " +
-                        "VALUES(?,?,?,?,?,?,?,?)";
+                        "VALUES(?,?,?,?,?,?,?,?,?,?)";
 
         return
                 Mono.from(
@@ -54,9 +56,11 @@ public class InsertQuantityObservationQuery {
                                 .getDatabase()
                                 .update(query)
                                 .parameters(
+                                        quantityObservation.getObservationTypeId(),
                                         quantityObservation.getTaskId(),
                                         quantityObservation.getPartyId(),
                                         quantityObservation.getDatabaseId(),
+                                        quantityObservation.getLandUseCategoryId(),
                                         quantityObservation.getReportingTableId(),
                                         quantityObservation.getReportingVariableId(),
                                         quantityObservation.getYear(),

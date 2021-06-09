@@ -7,23 +7,23 @@
  */
 package global.moja.quantityobservations.daos;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * @since 0.0.1
  * @author Kwaje Anthony <tony@miles.co.ke>
  * @version 1.0
  */
-@Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class QueryParameters {
     private Long[] ids;
+    private Long observationTypeId;
     private Long taskId;
     private Long partyId;
     private Long databaseId;
+    private Long landUseCategoryId;
     private Long reportingTableId;
     private Long reportingVariableId;
     private Integer year;

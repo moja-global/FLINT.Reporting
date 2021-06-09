@@ -7,24 +7,25 @@
  */
 package global.moja.quantityobservations.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * @since 0.0.1
  * @author Kwaje Anthony <tony@miles.co.ke>
  * @version 1.0
  */
-@Data
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor
-@AllArgsConstructor
+@Data
+@Builder
 public class QuantityObservation implements Comparable<QuantityObservation> {
 
     private Long id;
+    private Long observationTypeId;
     private Long taskId;
     private Long partyId;
     private Long databaseId;
+    private Long landUseCategoryId;
     private Long reportingTableId;
     private Long reportingVariableId;
     private Integer year;

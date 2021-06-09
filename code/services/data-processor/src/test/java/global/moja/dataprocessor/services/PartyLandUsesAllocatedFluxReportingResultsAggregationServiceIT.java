@@ -81,7 +81,7 @@ class PartyLandUsesAllocatedFluxReportingResultsAggregationServiceIT {
     public void Given_PartyIdAndDatabaseIdAndLocationLandUsesAllocatedFluxReportingResultsAggregations_When_AggregateFluxReportingResultsAggregations_Then_QuantityObservationsWillBeReturned() {
 
         assertThat(partyLandUsesAllocatedFluxReportingResultsAggregationService
-                .aggregateFluxReportingResultsAggregations(1L,1L, locationLandUsesAllocatedFluxReportingResultsAggregations)
+                .aggregateFluxReportingResultsAggregations(1L,1L,1L, locationLandUsesAllocatedFluxReportingResultsAggregations)
                 .block())
                 .isEqualTo(expected);
 

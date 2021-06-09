@@ -20,9 +20,11 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 public class QueryParametersBuilder {
 
     private Long[] ids;
+    private Long observationTypeId;
     private Long taskId;
     private Long partyId;
     private Long databaseId;
+    private Long landUseCategoryId;
     private Long reportingTableId;
     private Long reportingVariableId;
     private Integer year;
@@ -47,6 +49,13 @@ public class QueryParametersBuilder {
         return this;
     }
 
+    public QueryParametersBuilder observationTypeId(ServerRequest request) {
+        this.observationTypeId =
+                request.queryParam("observationTypeId").isPresent() ?
+                        Long.parseLong(request.queryParam("observationTypeId").get()) : null;
+        return this;
+    }
+
     public QueryParametersBuilder partyId(ServerRequest request) {
         this.partyId =
                 request.queryParam("partyId").isPresent() ?
@@ -58,6 +67,13 @@ public class QueryParametersBuilder {
         this.databaseId =
                 request.queryParam("databaseId").isPresent() ?
                         Long.parseLong(request.queryParam("databaseId").get()) : null;
+        return this;
+    }
+
+    public QueryParametersBuilder landUseCategoryId(ServerRequest request) {
+        this.landUseCategoryId =
+                request.queryParam("landUseCategoryId").isPresent() ?
+                        Long.parseLong(request.queryParam("landUseCategoryId").get()) : null;
         return this;
     }
 
@@ -84,7 +100,7 @@ public class QueryParametersBuilder {
 
 
     public QueryParameters build() {
-        return new QueryParameters(ids, taskId, partyId,databaseId,reportingTableId,reportingVariableId, year);
+        return new QueryParameters(ids, observationTypeId, taskId, partyId,databaseId, landUseCategoryId, reportingTableId,reportingVariableId, year);
     }
 
 }

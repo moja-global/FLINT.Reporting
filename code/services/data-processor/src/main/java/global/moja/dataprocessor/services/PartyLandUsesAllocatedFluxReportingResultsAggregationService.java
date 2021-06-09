@@ -38,16 +38,28 @@ public class PartyLandUsesAllocatedFluxReportingResultsAggregationService {
     @Value("${kilotonnes.unit.id}")
     Long KILOTONNES_UNIT_ID;
 
+    @Value("${processed.observation.id}")
+    Long PROCESSED_OBSERVATION_ID;
+
     public Mono<List<QuantityObservation>> aggregateFluxReportingResultsAggregations(
+            Long taskId,
             Long partyId,
             Long databaseId,
             List<LocationLandUsesAllocatedFluxReportingResultsAggregation> locationLandUsesAllocatedFluxReportingResultsAggregations) {
 
         log.trace("Entering aggregateFluxReportingResultsAggregations()");
+        log.debug("Task id = {}", taskId);
         log.debug("Party id = {}", partyId);
         log.debug("Database id = {}", databaseId);
         log.debug("Location Land Uses Allocated Flux Reporting Results Aggregations = {}",
                 locationLandUsesAllocatedFluxReportingResultsAggregations);
+
+        // Validate the task id
+        log.trace("Validating the task id");
+        if (taskId == null) {
+            log.error("The task id should not be null");
+            return Mono.error(new ServerException("The task id should not be null"));
+        }
 
         // Validate the party id
         log.trace("Validating the party id");
@@ -119,6 +131,8 @@ public class PartyLandUsesAllocatedFluxReportingResultsAggregationService {
                                         observations.add(
                                                 QuantityObservation
                                                         .builder()
+                                                        .observationTypeId(PROCESSED_OBSERVATION_ID)
+                                                        .taskId(taskId)
                                                         .partyId(partyId)
                                                         .databaseId(databaseId)
                                                         .reportingTableId(aggregation.getReportingTableId())

@@ -9,7 +9,6 @@ package global.moja.quantityobservations.repository.selection;
 
 import global.moja.quantityobservations.configurations.DatabaseConfig;
 import global.moja.quantityobservations.daos.QueryParameters;
-import global.moja.quantityobservations.util.builders.QuantityObservationBuilder;
 import global.moja.quantityobservations.models.QuantityObservation;
 import global.moja.quantityobservations.util.builders.QueryWhereClauseBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -51,11 +50,13 @@ public class SelectQuantityObservationsQuery {
                                 .getDatabase()
                                 .select(query)
                                 .get(rs ->
-                                        new QuantityObservationBuilder()
+                                        QuantityObservation.builder()
                                                 .id(rs.getLong("id"))
+                                                .observationTypeId(rs.getLong("observation_type_id"))
                                                 .taskId(rs.getLong("task_id"))
                                                 .partyId(rs.getLong("party_id"))
                                                 .databaseId(rs.getLong("database_id"))
+                                                .landUseCategoryId(rs.getLong("land_use_category_id"))
                                                 .reportingTableId(rs.getLong("reporting_table_id"))
                                                 .reportingVariableId(rs.getLong("reporting_variable_id"))
                                                 .year(rs.getInt("year"))

@@ -139,6 +139,11 @@ public class RoutesConfig {
                                                         .implementation(Long.class))
                                         .parameter(
                                                 parameterBuilder()
+                                                        .name("observationTypeId").in(ParameterIn.QUERY)
+                                                        .description("The unique identifier of the Observation Type to filter the returned values by")
+                                                        .implementation(Long.class))
+                                        .parameter(
+                                                parameterBuilder()
                                                         .name("partyId").in(ParameterIn.QUERY)
                                                         .description("The unique identifier of the Party (Party being an organization or place e.g. County) to filter the returned values by")
                                                         .implementation(Long.class))
@@ -151,6 +156,11 @@ public class RoutesConfig {
                                                 parameterBuilder()
                                                         .name("reportingTableId").in(ParameterIn.QUERY)
                                                         .description("The unique identifier of the Reporting Table to filter the returned values by")
+                                                        .implementation(Long.class))
+                                        .parameter(
+                                                parameterBuilder()
+                                                        .name("landUseCategoryId").in(ParameterIn.QUERY)
+                                                        .description("The unique identifier of the Land Use Category to filter the returned values by")
                                                         .implementation(Long.class))
                                         .parameter(
                                                 parameterBuilder()
@@ -262,6 +272,11 @@ public class RoutesConfig {
                                                         .implementation(Long.class))
                                         .parameter(
                                                 parameterBuilder()
+                                                        .name("observationTypeId").in(ParameterIn.QUERY)
+                                                        .description("The unique identifier of the Observation Type to filter the deleted values by")
+                                                        .implementation(Long.class))
+                                        .parameter(
+                                                parameterBuilder()
                                                         .name("partyId").in(ParameterIn.QUERY)
                                                         .description("The unique identifier of the Party (Party being an organization or place e.g. County) to filter the deleted values by")
                                                         .implementation(Long.class))
@@ -274,6 +289,11 @@ public class RoutesConfig {
                                                 parameterBuilder()
                                                         .name("reportingTableId").in(ParameterIn.QUERY)
                                                         .description("The unique identifier of the Reporting Table to filter the deleted values by")
+                                                        .implementation(Long.class))
+                                        .parameter(
+                                                parameterBuilder()
+                                                        .name("landUseCategoryId").in(ParameterIn.QUERY)
+                                                        .description("The unique identifier of the Land Use Category to filter the deleted values by")
                                                         .implementation(Long.class))
                                         .parameter(
                                                 parameterBuilder()

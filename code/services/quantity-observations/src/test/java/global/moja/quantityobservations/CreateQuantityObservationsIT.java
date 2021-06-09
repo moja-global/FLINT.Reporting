@@ -8,7 +8,6 @@
 package global.moja.quantityobservations;
 
 import global.moja.quantityobservations.models.QuantityObservation;
-import global.moja.quantityobservations.util.builders.QuantityObservationBuilder;
 import org.assertj.core.api.Assertions;
 import org.junit.AfterClass;
 import org.junit.jupiter.api.Test;
@@ -59,11 +58,13 @@ public class CreateQuantityObservationsIT {
                 .start();
 
         quantityObservation4 =
-                new QuantityObservationBuilder()
+                QuantityObservation.builder()
                         .id(4L)
+                        .observationTypeId(4L)
                         .taskId(4L)
                         .partyId(4L)
                         .databaseId(4L)
+                        .landUseCategoryId(4L)
                         .reportingTableId(4L)
                         .reportingVariableId(4L)
                         .year(1994)
@@ -73,11 +74,13 @@ public class CreateQuantityObservationsIT {
                         .build();
 
         quantityObservation5 =
-                new QuantityObservationBuilder()
+                QuantityObservation.builder()
                         .id(5L)
+                        .observationTypeId(5L)
                         .taskId(5L)
                         .partyId(5L)
                         .databaseId(5L)
+                        .landUseCategoryId(5L)
                         .reportingTableId(5L)
                         .reportingVariableId(5L)
                         .year(1995)
@@ -124,9 +127,11 @@ public class CreateQuantityObservationsIT {
                     Collections.sort(response);
 
                     Assertions.assertThat(response.get(0).getId()).isEqualTo(quantityObservation4.getId());
+                    Assertions.assertThat(response.get(0).getObservationTypeId()).isEqualTo(quantityObservation4.getObservationTypeId());
                     Assertions.assertThat(response.get(0).getTaskId()).isEqualTo(quantityObservation4.getTaskId());
                     Assertions.assertThat(response.get(0).getPartyId()).isEqualTo(quantityObservation4.getPartyId());
                     Assertions.assertThat(response.get(0).getDatabaseId()).isEqualTo(quantityObservation4.getDatabaseId());
+                    Assertions.assertThat(response.get(0).getLandUseCategoryId()).isEqualTo(quantityObservation4.getLandUseCategoryId());
                     Assertions.assertThat(response.get(0).getReportingTableId()).isEqualTo(quantityObservation4.getReportingTableId());
                     Assertions.assertThat(response.get(0).getReportingVariableId()).isEqualTo(quantityObservation4.getReportingVariableId());
                     Assertions.assertThat(response.get(0).getYear()).isEqualTo(quantityObservation4.getYear());
@@ -135,9 +140,11 @@ public class CreateQuantityObservationsIT {
                     Assertions.assertThat(response.get(0).getVersion()).isEqualTo(quantityObservation4.getVersion());
 
                     Assertions.assertThat(response.get(1).getId()).isEqualTo(quantityObservation5.getId());
+                    Assertions.assertThat(response.get(1).getObservationTypeId()).isEqualTo(quantityObservation5.getObservationTypeId());
                     Assertions.assertThat(response.get(1).getTaskId()).isEqualTo(quantityObservation5.getTaskId());
                     Assertions.assertThat(response.get(1).getPartyId()).isEqualTo(quantityObservation5.getPartyId());
                     Assertions.assertThat(response.get(1).getDatabaseId()).isEqualTo(quantityObservation5.getDatabaseId());
+                    Assertions.assertThat(response.get(1).getLandUseCategoryId()).isEqualTo(quantityObservation5.getLandUseCategoryId());
                     Assertions.assertThat(response.get(1).getReportingTableId()).isEqualTo(quantityObservation5.getReportingTableId());
                     Assertions.assertThat(response.get(1).getReportingVariableId()).isEqualTo(quantityObservation5.getReportingVariableId());
                     Assertions.assertThat(response.get(1).getYear()).isEqualTo(quantityObservation5.getYear());

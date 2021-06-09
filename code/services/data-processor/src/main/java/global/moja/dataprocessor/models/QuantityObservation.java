@@ -20,13 +20,15 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Data
 @Builder
-public class QuantityObservation  {
+public class QuantityObservation {
 
     private Long id;
+    private Long observationTypeId;
+    private Long taskId;
     private Long partyId;
     private Long databaseId;
-    private Long reportingTableId;
     private Long landUseCategoryId;
+    private Long reportingTableId;
     private Long reportingVariableId;
     private Integer year;
     private BigDecimal amount;

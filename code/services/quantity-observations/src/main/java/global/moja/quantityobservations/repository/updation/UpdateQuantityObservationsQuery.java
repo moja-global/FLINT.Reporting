@@ -42,9 +42,11 @@ public class UpdateQuantityObservationsQuery {
         log.trace("Entering updateQuantityObservations()");
 
         String query = "UPDATE quantity_observation SET " +
+                "observation_type_id = ?, " +
                 "task_id = ?, " +
                 "party_id = ?, " +
                 "database_id = ?, " +
+                "land_use_category_id = ?, " +
                 "reporting_table_id = ?, " +
                 "reporting_variable_id = ?, " +
                 "year = ?, " +
@@ -67,9 +69,11 @@ public class UpdateQuantityObservationsQuery {
 
         for (QuantityObservation quantityObservation : quantityObservations) {
             temp.add(Arrays.asList(
+                    quantityObservation.getObservationTypeId(),
                     quantityObservation.getTaskId(),
                     quantityObservation.getPartyId(),
                     quantityObservation.getDatabaseId(),
+                    quantityObservation.getLandUseCategoryId(),
                     quantityObservation.getReportingTableId(),
                     quantityObservation.getReportingVariableId(),
                     quantityObservation.getYear(),

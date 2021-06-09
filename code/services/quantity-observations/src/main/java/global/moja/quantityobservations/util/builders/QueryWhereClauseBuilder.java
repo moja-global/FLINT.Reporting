@@ -47,6 +47,19 @@ public class QueryWhereClauseBuilder {
             }
         }
 
+        // Observation Type Id
+        if(queryParameters.getObservationTypeId() != null){
+
+            if(query != null){
+                query.append(" AND ");
+            } else {
+                query = new StringBuilder();
+            }
+
+            query.append("observation_type_id = ").append(queryParameters.getObservationTypeId());
+
+        }
+
         // Task Id
         if(queryParameters.getTaskId() != null){
 
@@ -83,6 +96,19 @@ public class QueryWhereClauseBuilder {
             }
 
             query.append("database_id = ").append(queryParameters.getDatabaseId());
+
+        }
+
+        // Land Use Category Id
+        if(queryParameters.getLandUseCategoryId() != null){
+
+            if(query != null){
+                query.append(" AND ");
+            } else {
+                query = new StringBuilder();
+            }
+
+            query.append("land_use_category_id = ").append(queryParameters.getLandUseCategoryId());
 
         }
 

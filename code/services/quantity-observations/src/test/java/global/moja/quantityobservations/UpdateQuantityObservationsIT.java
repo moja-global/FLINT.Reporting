@@ -7,7 +7,6 @@
  */
 package global.moja.quantityobservations;
 
-import global.moja.quantityobservations.util.builders.QuantityObservationBuilder;
 import global.moja.quantityobservations.models.QuantityObservation;
 import org.assertj.core.api.Assertions;
 import org.junit.AfterClass;
@@ -59,11 +58,13 @@ public class UpdateQuantityObservationsIT {
                 .start();
 
         quantityObservation1 =
-                new QuantityObservationBuilder()
+                QuantityObservation.builder()
                         .id(1L)
+                        .observationTypeId(10L)
                         .taskId(10L)
                         .partyId(10L)
                         .databaseId(10L)
+                        .landUseCategoryId(10L)
                         .reportingTableId(10L)
                         .reportingVariableId(10L)
                         .year(2001)
@@ -73,11 +74,13 @@ public class UpdateQuantityObservationsIT {
                         .build();
 
         quantityObservation2 =
-                new QuantityObservationBuilder()
+                QuantityObservation.builder()
                         .id(2L)
+                        .observationTypeId(20L)
                         .taskId(20L)
                         .partyId(20L)
                         .databaseId(20L)
+                        .landUseCategoryId(20L)
                         .reportingTableId(20L)
                         .reportingVariableId(20L)
                         .year(2002)
@@ -126,9 +129,11 @@ public class UpdateQuantityObservationsIT {
                             Collections.sort(response);
 
                             Assertions.assertThat(response.get(0).getId()).isEqualTo(quantityObservation1.getId());
+                            Assertions.assertThat(response.get(0).getObservationTypeId()).isEqualTo(quantityObservation1.getObservationTypeId());
                             Assertions.assertThat(response.get(0).getTaskId()).isEqualTo(quantityObservation1.getTaskId());
                             Assertions.assertThat(response.get(0).getPartyId()).isEqualTo(quantityObservation1.getPartyId());
                             Assertions.assertThat(response.get(0).getDatabaseId()).isEqualTo(quantityObservation1.getDatabaseId());
+                            Assertions.assertThat(response.get(0).getLandUseCategoryId()).isEqualTo(quantityObservation1.getLandUseCategoryId());
                             Assertions.assertThat(response.get(0).getReportingTableId()).isEqualTo(quantityObservation1.getReportingTableId());
                             Assertions.assertThat(response.get(0).getReportingVariableId()).isEqualTo(quantityObservation1.getReportingVariableId());
                             Assertions.assertThat(response.get(0).getYear()).isEqualTo(quantityObservation1.getYear());
@@ -137,9 +142,11 @@ public class UpdateQuantityObservationsIT {
                             Assertions.assertThat(response.get(0).getVersion()).isEqualTo(quantityObservation1.getVersion());
 
                             Assertions.assertThat(response.get(1).getId()).isEqualTo(quantityObservation2.getId());
+                            Assertions.assertThat(response.get(1).getObservationTypeId()).isEqualTo(quantityObservation2.getObservationTypeId());
                             Assertions.assertThat(response.get(1).getTaskId()).isEqualTo(quantityObservation2.getTaskId());
                             Assertions.assertThat(response.get(1).getPartyId()).isEqualTo(quantityObservation2.getPartyId());
                             Assertions.assertThat(response.get(1).getDatabaseId()).isEqualTo(quantityObservation2.getDatabaseId());
+                            Assertions.assertThat(response.get(1).getLandUseCategoryId()).isEqualTo(quantityObservation2.getLandUseCategoryId());
                             Assertions.assertThat(response.get(1).getReportingTableId()).isEqualTo(quantityObservation2.getReportingTableId());
                             Assertions.assertThat(response.get(1).getReportingVariableId()).isEqualTo(quantityObservation2.getReportingVariableId());
                             Assertions.assertThat(response.get(1).getYear()).isEqualTo(quantityObservation2.getYear());

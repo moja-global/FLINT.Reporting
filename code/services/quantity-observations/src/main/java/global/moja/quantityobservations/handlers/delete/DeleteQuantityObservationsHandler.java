@@ -56,9 +56,11 @@ public class DeleteQuantityObservationsHandler {
                         .deleteQuantityObservations(
                                 new QueryParametersBuilder()
                                         .ids(request)
+                                        .observationTypeId(request)
                                         .taskId(request)
                                         .partyId(request)
                                         .databaseId(request)
+                                        .landUseCategoryId(request)
                                         .reportingTableId(request)
                                         .reportingVariableId(request)
                                         .year(request)

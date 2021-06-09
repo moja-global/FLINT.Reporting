@@ -1,6 +1,8 @@
 [
     {
       "id": null,
+      "observationTypeId": 1,
+      "taskId": 1,
       "partyId": 1,
       "databaseId": 1,
       "reportingTableId" : 5,
@@ -13,6 +15,8 @@
     },
     {
       "id": null,
+      "observationTypeId": 1,
+      "taskId": 1,
       "partyId": 1,
       "databaseId": 1,
       "reportingTableId" : 5,
@@ -25,6 +29,8 @@
     },
     {
       "id": null,
+      "observationTypeId": 1,
+      "taskId": 1,
       "partyId": 1,
       "databaseId": 1,
       "reportingTableId" : 5,
@@ -37,6 +43,8 @@
     },
     {
       "id": null,
+      "observationTypeId": 1,
+      "taskId": 1,
       "partyId": 1,
       "databaseId": 1,
       "reportingTableId" : 5,
@@ -49,6 +57,8 @@
     },
     {
       "id": null,
+      "observationTypeId": 1,
+      "taskId": 1,
       "partyId": 1,
       "databaseId": 1,
       "reportingTableId" : 5,

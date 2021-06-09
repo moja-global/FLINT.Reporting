@@ -3,9 +3,11 @@
 -- ------------------------------------------------------------
 CREATE TABLE quantity_observation (
     id SERIAL UNIQUE PRIMARY KEY NOT NULL,
+    observation_type_id INTEGER NOT NULL,
     task_id INTEGER NOT NULL,
     party_id INTEGER NOT NULL,
     database_id INTEGER NOT NULL,
+    land_use_category_id INTEGER NOT NULL,
     reporting_table_id INTEGER NOT NULL,
     reporting_variable_id INTEGER NOT NULL,
     year  INTEGER NOT NULL,

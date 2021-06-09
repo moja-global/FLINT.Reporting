@@ -121,6 +121,7 @@ public class DataProcessingService {
                             .flatMap(locationLandUsesAllocatedFluxReportingResultsAggregations ->
                                     partyLandUsesAllocatedFluxReportingResultsAggregationService
                                             .aggregateFluxReportingResultsAggregations(
+                                                    request.getTaskId(),
                                                     request.getPartyId(),
                                                     request.getDatabaseId(),
                                                     locationLandUsesAllocatedFluxReportingResultsAggregations))
