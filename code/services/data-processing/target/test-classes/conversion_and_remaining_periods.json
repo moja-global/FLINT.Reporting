@@ -1,0 +1,194 @@
+[
+  {
+    "id": 1,
+    "previousLandCoverId": 1,
+    "currentLandCoverId": 2,
+    "conversionPeriod": 3,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 2,
+    "previousLandCoverId": 1,
+    "currentLandCoverId": 3,
+    "conversionPeriod": 3,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 3,
+    "previousLandCoverId": 1,
+    "currentLandCoverId": 4,
+    "conversionPeriod": 0,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 4,
+    "previousLandCoverId": 1,
+    "currentLandCoverId": 5,
+    "conversionPeriod": 0,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 5,
+    "previousLandCoverId": 2,
+    "currentLandCoverId": 1,
+    "conversionPeriod": 0,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 6,
+    "previousLandCoverId": 2,
+    "currentLandCoverId": 3,
+    "conversionPeriod": 10,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 7,
+    "previousLandCoverId": 2,
+    "currentLandCoverId": 4,
+    "conversionPeriod": 0,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 8,
+    "previousLandCoverId": 2,
+    "currentLandCoverId": 5,
+    "conversionPeriod": 0,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 9,
+    "previousLandCoverId": 3,
+    "currentLandCoverId": 1,
+    "conversionPeriod": 0,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 10,
+    "previousLandCoverId": 3,
+    "currentLandCoverId": 2,
+    "conversionPeriod": 0,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 11,
+    "previousLandCoverId": 3,
+    "currentLandCoverId": 4,
+    "conversionPeriod": 0,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 12,
+    "previousLandCoverId": 3,
+    "currentLandCoverId": 5,
+    "conversionPeriod": 0,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 13,
+    "previousLandCoverId": 4,
+    "currentLandCoverId": 1,
+    "conversionPeriod": 0,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 14,
+    "previousLandCoverId": 4,
+    "currentLandCoverId": 2,
+    "conversionPeriod": 0,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 15,
+    "previousLandCoverId": 4,
+    "currentLandCoverId": 3,
+    "conversionPeriod": 0,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 16,
+    "previousLandCoverId": 4,
+    "currentLandCoverId": 5,
+    "conversionPeriod": 0,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 17,
+    "previousLandCoverId": 5,
+    "currentLandCoverId": 1,
+    "conversionPeriod": 0,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 18,
+    "previousLandCoverId": 5,
+    "currentLandCoverId": 2,
+    "conversionPeriod": 0,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 19,
+    "previousLandCoverId": 5,
+    "currentLandCoverId": 3,
+    "conversionPeriod": 0,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 20,
+    "previousLandCoverId": 5,
+    "currentLandCoverId": 4,
+    "conversionPeriod": 0,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 21,
+    "previousLandCoverId": 6,
+    "currentLandCoverId": 1,
+    "conversionPeriod": 0,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 22,
+    "previousLandCoverId": 6,
+    "currentLandCoverId": 2,
+    "conversionPeriod": 0,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 23,
+    "previousLandCoverId": 6,
+    "currentLandCoverId": 3,
+    "conversionPeriod": 0,
+    "remainingPeriod": 20,
+    "version": 1
+  },
+  {
+    "id": 24,
+    "previousLandCoverId": 6,
+    "currentLandCoverId": 4,
+    "conversionPeriod": 0,
+    "remainingPeriod": 20,
+    "version": 1
+  }
+]

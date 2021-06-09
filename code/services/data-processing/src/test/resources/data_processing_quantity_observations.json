@@ -1,0 +1,62 @@
+[
+    {
+      "id": null,
+      "partyId": 1,
+      "databaseId": 1,
+      "reportingTableId" : 5,
+      "landUseCategoryId" : 18,
+      "reportingVariableId" : 1,
+      "year" : 2014,
+      "amount" : 39.329575,
+      "unitId": 3,
+      "version": null
+    },
+    {
+      "id": null,
+      "partyId": 1,
+      "databaseId": 1,
+      "reportingTableId" : 5,
+      "landUseCategoryId" : 18,
+      "reportingVariableId" : 2,
+      "year" : 2014,
+      "amount" : 0.000000,
+      "unitId": 6,
+      "version": null
+    },
+    {
+      "id": null,
+      "partyId": 1,
+      "databaseId": 1,
+      "reportingTableId" : 5,
+      "landUseCategoryId" : 18,
+      "reportingVariableId" : 3,
+      "year" : 2014,
+      "amount" : 0.000000,
+      "unitId": 6,
+      "version": null
+    },
+    {
+      "id": null,
+      "partyId": 1,
+      "databaseId": 1,
+      "reportingTableId" : 5,
+      "landUseCategoryId" : 18,
+      "reportingVariableId" : 4,
+      "year" : 2014,
+      "amount" : -4.104617,
+      "unitId": 6,
+      "version": null
+    },
+    {
+      "id": null,
+      "partyId": 1,
+      "databaseId": 1,
+      "reportingTableId" : 5,
+      "landUseCategoryId" : 18,
+      "reportingVariableId" : 6,
+      "year" : 2014,
+      "amount" : 15.050265,
+      "unitId": 6,
+      "version": null
+    }
+  ]

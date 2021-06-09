@@ -5,17 +5,18 @@
  * If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package global.moja.businessintelligence.util;
+package global.moja.dataprocessing.util;
 
-import global.moja.businessintelligence.configurations.ConfigurationDataProvider;
-import global.moja.businessintelligence.daos.AllocatedFluxReportingResult;
-import global.moja.businessintelligence.models.FluxReportingResult;
-import global.moja.businessintelligence.models.FluxToReportingVariable;
-import global.moja.businessintelligence.models.LandUseFluxTypeToReportingTable;
+import global.moja.dataprocessing.configurations.ConfigurationDataProvider;
+import global.moja.dataprocessing.daos.Allocation;
+import global.moja.dataprocessing.models.FluxReportingResult;
+import global.moja.dataprocessing.models.FluxToReportingVariable;
+import global.moja.dataprocessing.models.LandUseFluxTypeToReportingTable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,8 +58,8 @@ public class FluxReportingResultsAllocator {
     @Value("${net.carbon.stock.change.in.organic.soils.reporting.variable.id}")
     private Long NET_CARBON_STOCK_CHANGE_IN_ORGANIC_SOILS_REPORTING_VARIABLE;
 
-    @Value("${net.emissions.removals.reporting.variable.id}")
-    private Long NET_EMISSIONS_REMOVALS_REPORTING_VARIABLE;
+    @Value("${net.carbon.dioxide.emissions.removals.reporting.variable.id}")
+    private Long NET_CARBON_DIOXIDE_EMISSIONS_REMOVALS_REPORTING_VARIABLE;
 
     @Value("${methane.reporting.variable.id}")
     private Long METHANE_REPORTING_VARIABLE;
@@ -86,33 +87,33 @@ public class FluxReportingResultsAllocator {
 
 
     // TODO Find out how to best add error handling
-    public List<AllocatedFluxReportingResult> allocateFluxReportingResults(
+    public List<Allocation> allocateFluxReportingResults(
             Long landUseCategoryId,
             FluxReportingResult fluxReportingResult) {
 
         log.trace("Entering allocateFluxReportingResults()");
-        
+
         log.debug("Land Use Category Id = {}", landUseCategoryId);
         log.debug("Flux Reporting Result = {}", fluxReportingResult);
-        
-        List<LandUseFluxTypeToReportingTable> landUsesFluxTypesToReportingTables = 
+
+        List<LandUseFluxTypeToReportingTable> landUsesFluxTypesToReportingTables =
                 configurationDataProvider.getLandUsesFluxTypesToReportingTables(
-                landUseCategoryId,
-                fluxReportingResult.getFluxTypeId());
+                        landUseCategoryId,
+                        fluxReportingResult.getFluxTypeId());
 
         log.debug("Land Uses Flux Types To Reporting Tables = {}", landUsesFluxTypesToReportingTables);
-        
-        
-        List<FluxToReportingVariable> fluxesToReportingVariables = 
+
+
+        List<FluxToReportingVariable> fluxesToReportingVariables =
                 configurationDataProvider.getFluxesToReportingVariables(
-                fluxReportingResult.getSourcePoolId(),
-                fluxReportingResult.getSinkPoolId());
+                        fluxReportingResult.getSourcePoolId(),
+                        fluxReportingResult.getSinkPoolId());
 
         log.debug("Flux To Reporting Variables = {}", fluxesToReportingVariables);
 
         // Instantiate a container to host the Allocated Flux Reporting Results
         log.trace("Instantiating a container to host the Allocated Flux Reporting Results");
-        final List<AllocatedFluxReportingResult> allocatedFluxReportingResults = new ArrayList<>();
+        final List<Allocation> allocations = new ArrayList<>();
 
         // Collate the Land Use Flux Type Carbon Dioxide Emissions Reporting Tables
         log.trace("Collating the Land Use Flux Type Carbon Dioxide Emissions Reporting Tables");
@@ -120,7 +121,7 @@ public class FluxReportingResultsAllocator {
                 landUsesFluxTypesToReportingTables
                         .stream()
                         .filter(l -> l.getEmissionTypeId().equals(CARBON_DIOXIDE_EMISSION_TYPE))
-                        .map(l -> l.getReportingTableId())
+                        .map(LandUseFluxTypeToReportingTable::getReportingTableId)
                         .collect(Collectors.toList());
         log.debug("Carbon Dioxide Aggregation Tables = {}", carbonDioxideAggregationTables);
 
@@ -130,7 +131,7 @@ public class FluxReportingResultsAllocator {
                 landUsesFluxTypesToReportingTables
                         .stream()
                         .filter(l -> l.getEmissionTypeId().equals(METHANE_EMISSION_TYPE))
-                        .map(l -> l.getReportingTableId())
+                        .map(LandUseFluxTypeToReportingTable::getReportingTableId)
                         .collect(Collectors.toList());
         log.debug("Methane Aggregation Tables = {}", methaneAggregationTables);
 
@@ -140,7 +141,7 @@ public class FluxReportingResultsAllocator {
                 landUsesFluxTypesToReportingTables
                         .stream()
                         .filter(l -> l.getEmissionTypeId().equals(NITROUS_OXIDE_EMISSION_TYPE))
-                        .map(l -> l.getReportingTableId())
+                        .map(LandUseFluxTypeToReportingTable::getReportingTableId)
                         .collect(Collectors.toList());
         log.debug("Nitrous Oxide Aggregation Tables = {}", nitrousOxideAggregationTables);
 
@@ -155,25 +156,24 @@ public class FluxReportingResultsAllocator {
                 Stream<Long> tables =
                         Arrays.stream(CARBON_STOCK_CHANGE_POOLS_REPORTING_VARIABLES)
                                 .anyMatch(reportingVariableId -> f.getReportingVariableId().equals(reportingVariableId)) ?
-                                    carbonDioxideAggregationTables.stream() :
+                                carbonDioxideAggregationTables.stream() :
                                 f.getReportingVariableId().equals(METHANE_REPORTING_VARIABLE) ?
                                         methaneAggregationTables.stream() :
-                                            f.getReportingVariableId().equals(NITROUS_OXIDE_REPORTING_VARIABLE) ?
-                                                    nitrousOxideAggregationTables.stream() : Stream.empty();
+                                        f.getReportingVariableId().equals(NITROUS_OXIDE_REPORTING_VARIABLE) ?
+                                                nitrousOxideAggregationTables.stream() : Stream.empty();
 
                 // Stream and carry out the allocation
                 tables
                         .filter(id -> id >= 1L) // Valid table Ids start from 1 (0 is an API placeholder for nulls)
-                        .forEach(t -> {
-                    allocatedFluxReportingResults.add(
-                            AllocatedFluxReportingResult
-                                    .builder()
-                                    .fluxReportingResultId(fluxReportingResult.getId())
-                                    .reportingTableId(t)
-                                    .reportingVariableId(f.getReportingVariableId())
-                                    .flux(fluxReportingResult.getFlux() * ((f.getRule().equalsIgnoreCase("subtract")) ? -1.0 : 1.0))
-                                    .build());
-                });
+                        .forEach(t ->
+                                allocations.add(
+                                        Allocation
+                                                .builder()
+                                                .fluxReportingResultId(fluxReportingResult.getId())
+                                                .reportingTableId(t)
+                                                .reportingVariableId(f.getReportingVariableId())
+                                                .flux(fluxReportingResult.getFlux() == 0? 0.0 : fluxReportingResult.getFlux() * ((f.getRule().equalsIgnoreCase("subtract")) ? -1.0 : 1.0))
+                                                .build()));
 
             }
 
@@ -182,12 +182,13 @@ public class FluxReportingResultsAllocator {
 
         // Apply the Flux Allocation Rule
         log.trace("Applying the Flux Allocation Rule");
-        fluxesToReportingVariables.stream().forEach(rule);
+        fluxesToReportingVariables.forEach(rule);
 
         // Return the allocated fluxes
-        return allocatedFluxReportingResults;
+        return allocations;
 
 
     }
+
 
 }

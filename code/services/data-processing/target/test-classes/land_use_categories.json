@@ -1,0 +1,386 @@
+[
+  {
+    "id": 1,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 0,
+    "coverTypeId": 1,
+    "name": "Forest land",
+    "version": 1
+  },
+  {
+    "id": 2,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 1,
+    "coverTypeId": 1,
+    "name": "Forest land Remaining Forest land",
+    "version": 1
+  },
+  {
+    "id": 3,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 1,
+    "coverTypeId": 1,
+    "name": "Land Converted To Forest land",
+    "version": 1
+  },
+  {
+    "id": 4,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 3,
+    "coverTypeId": 1,
+    "name": "Cropland Converted To Forest land",
+    "version": 1
+  },
+  {
+    "id": 5,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 3,
+    "coverTypeId": 1,
+    "name": "Grassland Converted To Forest land",
+    "version": 1
+  },
+  {
+    "id": 6,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 3,
+    "coverTypeId": 1,
+    "name": "Wetlands Converted To Forest land",
+    "version": 1
+  },
+  {
+    "id": 7,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 3,
+    "coverTypeId": 1,
+    "name": "Settlements Converted To Forest land",
+    "version": 1
+  },
+  {
+    "id": 9,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 0,
+    "coverTypeId": 2,
+    "name": "Cropland",
+    "version": 1
+  },
+  {
+    "id": 10,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 9,
+    "coverTypeId": 2,
+    "name": "Cropland Remaining Cropland",
+    "version": 1
+  },
+  {
+    "id": 11,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 9,
+    "coverTypeId": 2,
+    "name": "Land Converted To Cropland",
+    "version": 1
+  },
+  {
+    "id": 12,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 11,
+    "coverTypeId": 2,
+    "name": "Forest land Converted To Cropland",
+    "version": 1
+  },
+  {
+    "id": 13,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 11,
+    "coverTypeId": 2,
+    "name": "Grassland Converted To Cropland",
+    "version": 1
+  },
+  {
+    "id": 14,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 11,
+    "coverTypeId": 2,
+    "name": "Wetlands Converted To Cropland",
+    "version": 1
+  },
+  {
+    "id": 15,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 11,
+    "coverTypeId": 2,
+    "name": "Settlements Converted To Cropland",
+    "version": 1
+  },
+  {
+    "id": 17,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 0,
+    "coverTypeId": 3,
+    "name": "Grassland ",
+    "version": 1
+  },
+  {
+    "id": 18,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 17,
+    "coverTypeId": 3,
+    "name": "Grassland Remaining Grassland",
+    "version": 1
+  },
+  {
+    "id": 19,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 17,
+    "coverTypeId": 3,
+    "name": "Land Converted To Grassland",
+    "version": 1
+  },
+  {
+    "id": 20,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 19,
+    "coverTypeId": 3,
+    "name": "Cropland Converted To Grassland",
+    "version": 1
+  },
+  {
+    "id": 21,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 19,
+    "coverTypeId": 3,
+    "name": "Forest land Converted To Grassland",
+    "version": 1
+  },
+  {
+    "id": 22,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 19,
+    "coverTypeId": 3,
+    "name": "Wetlands Converted To Grassland",
+    "version": 1
+  },
+  {
+    "id": 23,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 19,
+    "coverTypeId": 3,
+    "name": "Settlements Converted To Grassland",
+    "version": 1
+  },
+  {
+    "id": 25,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 0,
+    "coverTypeId": 4,
+    "name": "Wetlands",
+    "version": 1
+  },
+  {
+    "id": 26,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 25,
+    "coverTypeId": 4,
+    "name": "Wetlands Remaining Wetlands",
+    "version": 1
+  },
+  {
+    "id": 27,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 25,
+    "coverTypeId": 4,
+    "name": "Land Converted To Wetlands",
+    "version": 1
+  },
+  {
+    "id": 28,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 27,
+    "coverTypeId": 4,
+    "name": "Cropland Converted To Wetlands",
+    "version": 1
+  },
+  {
+    "id": 29,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 27,
+    "coverTypeId": 4,
+    "name": "Grassland Converted To Wetlands",
+    "version": 1
+  },
+  {
+    "id": 30,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 27,
+    "coverTypeId": 4,
+    "name": "Forest land Converted To Wetlands",
+    "version": 1
+  },
+  {
+    "id": 31,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 27,
+    "coverTypeId": 4,
+    "name": "Settlements Converted To Wetlands",
+    "version": 1
+  },
+  {
+    "id": 33,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 0,
+    "coverTypeId": 5,
+    "name": "Settlements",
+    "version": 1
+  },
+  {
+    "id": 34,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 33,
+    "coverTypeId": 5,
+    "name": "Settlements Remaining Settlements",
+    "version": 1
+  },
+  {
+    "id": 35,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 33,
+    "coverTypeId": 5,
+    "name": "Land Converted To Settlements",
+    "version": 1
+  },
+  {
+    "id": 36,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 35,
+    "coverTypeId": 5,
+    "name": "Cropland Converted To Settlements",
+    "version": 1
+  },
+  {
+    "id": 37,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 35,
+    "coverTypeId": 5,
+    "name": "Grassland Converted To Settlements",
+    "version": 1
+  },
+  {
+    "id": 38,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 35,
+    "coverTypeId": 5,
+    "name": "Wetlands Converted To Settlements",
+    "version": 1
+  },
+  {
+    "id": 39,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 35,
+    "coverTypeId": 5,
+    "name": "Forest land Converted To Settlements",
+    "version": 1
+  },
+  {
+    "id": 8,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 3,
+    "coverTypeId": 1,
+    "name": "Other land Converted To Forest land",
+    "version": 2
+  },
+  {
+    "id": 16,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 11,
+    "coverTypeId": 2,
+    "name": "Other land Converted To Cropland",
+    "version": 2
+  },
+  {
+    "id": 24,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 19,
+    "coverTypeId": 3,
+    "name": "Other land Converted To Grassland",
+    "version": 2
+  },
+  {
+    "id": 32,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 27,
+    "coverTypeId": 4,
+    "name": "Other land Converted To Wetlands",
+    "version": 2
+  },
+  {
+    "id": 40,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 35,
+    "coverTypeId": 5,
+    "name": "Other land Converted To Settlements",
+    "version": 2
+  },
+  {
+    "id": 41,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 0,
+    "coverTypeId": 6,
+    "name": "Other land",
+    "version": 2
+  },
+  {
+    "id": 42,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 41,
+    "coverTypeId": 6,
+    "name": "Other land Remaining Other land",
+    "version": 2
+  },
+  {
+    "id": 43,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 41,
+    "coverTypeId": 6,
+    "name": "Land Converted To Other land",
+    "version": 2
+  },
+  {
+    "id": 44,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 43,
+    "coverTypeId": 6,
+    "name": "Cropland Converted To Other land",
+    "version": 2
+  },
+  {
+    "id": 45,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 43,
+    "coverTypeId": 6,
+    "name": "Grassland Converted To Other land",
+    "version": 2
+  },
+  {
+    "id": 46,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 43,
+    "coverTypeId": 6,
+    "name": "Wetlands Converted To Other land",
+    "version": 2
+  },
+  {
+    "id": 48,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 43,
+    "coverTypeId": 6,
+    "name": "Forest land Converted To Other land",
+    "version": 2
+  },
+  {
+    "id": 47,
+    "reportingFrameworkId": 1,
+    "parentLandUseCategoryId": 43,
+    "coverTypeId": 6,
+    "name": "Settlements Converted To Other land",
+    "version": 2
+  }
+]
