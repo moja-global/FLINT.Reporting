@@ -1,0 +1,194 @@
+[
+  {
+    "id": 1,
+    "reportingFrameworkId": 1,
+    "number": "Table 4",
+    "name": "SECTORAL REPORT FOR LAND USE, LAND-USE CHANGE AND FORESTRY",
+    "description": "Sectoral/land use category level summary of CO2, CH4 and N2O emissions. This summary is taken from the individual tables for each land use category",
+    "version": 1
+  },
+  {
+    "id": 2,
+    "reportingFrameworkId": 1,
+    "number": "Table 4.1",
+    "name": "Land Transition Matrix",
+    "description": "This table captures the area in each land use category for the year and the area of change in land use from the previous year.",
+    "version": 1
+  },
+  {
+    "id": 3,
+    "reportingFrameworkId": 1,
+    "number": "Table 4.A",
+    "name": "SECTORAL BACKGROUND DATA FOR LAND USE, LAND-USE CHANGE AND FORESTRY – Forest Land",
+    "description": "Emissions and area data for the Forest land category including forest land remaining forest land and land converted to forest land.",
+    "version": 1
+  },
+  {
+    "id": 4,
+    "reportingFrameworkId": 1,
+    "number": "Table 4.B",
+    "name": "SECTORAL BACKGROUND DATA FOR LAND USE, LAND-USE CHANGE AND FORESTRY – Cropland",
+    "description": "Emissions and area data for the Cropland category including cropland remaining cropland and land converted to cropland.",
+    "version": 1
+  },
+  {
+    "id": 5,
+    "reportingFrameworkId": 1,
+    "number": "Table 4.C",
+    "name": "SECTORAL BACKGROUND DATA FOR LAND USE, LAND-USE CHANGE AND FORESTRY – Grassland",
+    "description": "Emissions and area data for the Grassland category including grassland remaining grassland and land converted to grassland.",
+    "version": 1
+  },
+  {
+    "id": 6,
+    "reportingFrameworkId": 1,
+    "number": "Table 4.D",
+    "name": "SECTORAL BACKGROUND DATA FOR LAND USE, LAND-USE CHANGE AND FORESTRY – Wetlands",
+    "description": "Emissions and area data for the Wetland category including wetlands remaining wetlands and land converted to wetlands.",
+    "version": 1
+  },
+  {
+    "id": 7,
+    "reportingFrameworkId": 1,
+    "number": "Table 4.E",
+    "name": "SECTORAL BACKGROUND DATA FOR LAND USE, LAND-USE CHANGE AND FORESTRY – Settlements",
+    "description": "Emissions and area data for the Settlements category including settlements remaining settlements and land converted to settlements.",
+    "version": 1
+  },
+  {
+    "id": 8,
+    "reportingFrameworkId": 1,
+    "number": "Table 4.F",
+    "name": "SECTORAL BACKGROUND DATA FOR LAND USE, LAND-USE CHANGE AND FORESTRY – Other land",
+    "description": "Emissions and area data for the Other land category. Only area data is reported for other land remaining other land and emissions and area are reported for land converted to other land.",
+    "version": 1
+  },
+  {
+    "id": 9,
+    "reportingFrameworkId": 1,
+    "number": "Table 4(I)",
+    "name": "SECTORAL BACKGROUND DATA FOR LAND USE, LAND-USE CHANGE AND FORESTRY – Direct nitrous oxide (N2O) emissions from nitrogen (N) inputs(1) to managed soils",
+    "description": "Direct N2O emissions from N fertiliser application on forest land, wetlands, settlements and other. N2O emission from N fertiliser application is reported in the Agriculture sector.",
+    "version": 1
+  },
+  {
+    "id": 10,
+    "reportingFrameworkId": 1,
+    "number": "Table 4(II)",
+    "name": "SECTORAL BACKGROUND DATA FOR LAND USE, LAND-USE CHANGE AND FORESTRY – Emissions and removals from drainage and rewetting and other management of organic and mineral soils",
+    "description": "This table captures the CO2 and CH4 emissions from the draining and rewetting of soils on all land use categories. N2O emissions are also captured for all land categories except for Cropland and Grassland which are reported under the Agriculture sector.",
+    "version": 1
+  },
+  {
+    "id": 11,
+    "reportingFrameworkId": 1,
+    "number": "Table 4(III)",
+    "name": "SECTORAL BACKGROUND DATA FOR LAND USE, LAND-USE CHANGE AND FORESTRY – Direct nitrous oxide (N2O) emissions from nitrogen (N) mineralization/immobilization associated with loss/gain of soil organic matter resulting from change of land use or management of mineral soils.",
+    "description": "Covers all land-use categories except for cropland remaining cropland which is included in the Agriculture sector.",
+    "version": 1
+  },
+  {
+    "id": 12,
+    "reportingFrameworkId": 1,
+    "number": "Table 4 (IV)",
+    "name": "SECTORAL BACKGROUND DATA FOR LAND USE, LAND-USE CHANGE AND FORESTRY – Indirect nitrous oxide (N2O) emissions from managed soils",
+    "description": "Atmospheric deposition and leaching and runoff of N from the following sources of N inputs: synthetic and organic N fertilizer from land use categories, other than cropland and grassland (these emissions are reported in the agriculture sector)",
+    "version": 1
+  },
+  {
+    "id": 13,
+    "reportingFrameworkId": 1,
+    "number": "Table 4 (V)",
+    "name": "SECTORAL BACKGROUND DATA FOR LAND USE, LAND-USE CHANGE AND FORESTRY – Biomass Burning",
+    "description": "This table captures emissions from Biomass Burning from Wildfires and Controlled burning. CO2 emissions from biomass burning should be reported here if they are not already included under the carbon stock change for the land use category. CH4 and N2O emissions associated with biomass burning on forest land and grassland classified as savannah should be reported in the Agriculture sector. ",
+    "version": 1
+  },
+  {
+    "id": 14,
+    "reportingFrameworkId": 1,
+    "number": "Table 4.G.s1",
+    "name": "SECTORAL BACKGROUND DATA FOR LAND USE, LAND-USE CHANGE AND FORESTRY – Harvested Wood Products",
+    "description": "This table captures the emissions from Harvested Wood Products and depends upon the method selected by the Party.",
+    "version": 1
+  },
+  {
+    "id": 15,
+    "reportingFrameworkId": 1,
+    "number": "Table 4.G.s2",
+    "name": "SECTORAL BACKGROUND DATA FOR LAND USE, LAND-USE CHANGE AND FORESTRY – Harvested Wood Products",
+    "description": "This table is for the historical activity data for Harvested Wood Products.",
+    "version": 1
+  },
+  {
+    "id": 16,
+    "reportingFrameworkId": 1,
+    "number": "Table 3s1 and 3s2",
+    "name": "SECTORAL REPORT AGRICULTURE",
+    "description": "Sectoral level summary for Agriculture. Summary information drawn from the sectoral background tables",
+    "version": 1
+  },
+  {
+    "id": 17,
+    "reportingFrameworkId": 1,
+    "number": "Table 3.A",
+    "name": "SECTORAL BACKGROUND DATA FOR AGRICULTURE – Enteric Fermentation",
+    "description": "Captures the emissions and activity data for enteric fermentation CH4",
+    "version": 1
+  },
+  {
+    "id": 18,
+    "reportingFrameworkId": 1,
+    "number": "Table 3.B(a)",
+    "name": "SECTORAL BACKGROUND DATA FOR AGRICULTURE – CH4 Emissions from Manure Management",
+    "description": "Captures the CH4 Emissions from Manure Management",
+    "version": 1
+  },
+  {
+    "id": 19,
+    "reportingFrameworkId": 1,
+    "number": "Table 3.B(b)",
+    "name": "SECTORAL BACKGROUND DATA FOR AGRICULTURE – N2O Emissions from Manure Management",
+    "description": "Captures the CH4 Emissions from Manure Management",
+    "version": 1
+  },
+  {
+    "id": 20,
+    "reportingFrameworkId": 1,
+    "number": "Table 3.C",
+    "name": "SECTORAL BACKGROUND DATA FOR AGRICULTURE – Rice Cultivation",
+    "description": "Captures the activity data and CH4 emissions from Rice Cultivation",
+    "version": 1
+  },
+  {
+    "id": 21,
+    "reportingFrameworkId": 1,
+    "number": "Table 3.D",
+    "name": "SECTORAL BACKGROUND DATA FOR AGRICULTURE – Direct and indirect N2O emissions from agricultural soils",
+    "description": "Captures the N2O emissions from agricultural soils including the application of fertilisers to cropland and grassland",
+    "version": 1
+  },
+  {
+    "id": 22,
+    "reportingFrameworkId": 1,
+    "number": "Table 3.E",
+    "name": "SECTORAL BACKGROUND DATA FOR AGRICULTURE – Prescribed burning of savannahs",
+    "description": "Captures the activity data and CH4 and N2O emissions from savannah burning on forest land and grassland defined as savannah",
+    "version": 1
+  },
+  {
+    "id": 23,
+    "reportingFrameworkId": 1,
+    "number": "Table 3.F",
+    "name": "SECTORAL BACKGROUND DATA FOR AGRICULTURE – Field burning of agricultural residues",
+    "description": "Captures the activity data, CH4 and N2O emissions associated with the burning of agricultural residues",
+    "version": 1
+  },
+  {
+    "id": 24,
+    "reportingFrameworkId": 1,
+    "number": "Table 3.G-I",
+    "name": "SECTORAL BACKGROUND DATA FOR AGRICULTURE – CO2 emissions from liming, urea application and other carbon-containing fertilizers",
+    "description": "CO2 emissions associated with fertiliser applications",
+    "version": 1
+  }
+]
