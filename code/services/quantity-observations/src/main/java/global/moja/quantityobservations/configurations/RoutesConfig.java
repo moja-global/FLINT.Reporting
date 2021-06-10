@@ -144,8 +144,8 @@ public class RoutesConfig {
                                                         .implementation(Long.class))
                                         .parameter(
                                                 parameterBuilder()
-                                                        .name("partyId").in(ParameterIn.QUERY)
-                                                        .description("The unique identifier of the Party (Party being an organization or place e.g. County) to filter the returned values by")
+                                                        .name("partiesIds").in(ParameterIn.QUERY)
+                                                        .description("The list of unique identifiers of the Parties (Party being an organization or place e.g. County) to filter the returned values by")
                                                         .implementation(Long.class))
                                         .parameter(
                                                 parameterBuilder()

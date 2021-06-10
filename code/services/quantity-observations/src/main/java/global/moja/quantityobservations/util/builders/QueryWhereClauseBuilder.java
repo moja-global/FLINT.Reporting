@@ -73,8 +73,8 @@ public class QueryWhereClauseBuilder {
 
         }
 
-        // Party Id
-        if(queryParameters.getPartyId() != null){
+        // Parties Ids
+        if(queryParameters.getPartiesIds() != null && queryParameters.getPartiesIds().length != 0) {
 
             if(query != null){
                 query.append(" AND ");
@@ -82,8 +82,25 @@ public class QueryWhereClauseBuilder {
                 query = new StringBuilder();
             }
 
-            query.append("party_id = ").append(queryParameters.getPartyId());
+            if(queryParameters.getPartiesIds().length == 1) {
 
+                query = new StringBuilder("party_id = " + queryParameters.getPartiesIds()[0]);
+
+            } else {
+
+                query = new StringBuilder("party_id IN (");
+
+                int i = 0;
+                while (i < queryParameters.getPartiesIds().length) {
+                    query.append(queryParameters.getPartiesIds()[i]);
+                    if(i < queryParameters.getPartiesIds().length - 1){
+                        query.append(",");
+                    }
+                    i++;
+                }
+
+                query.append(")");
+            }
         }
 
         // Database Id

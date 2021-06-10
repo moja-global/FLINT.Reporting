@@ -21,7 +21,7 @@ public class QueryParameters {
     private Long[] ids;
     private Long observationTypeId;
     private Long taskId;
-    private Long partyId;
+    private Long[] partiesIds;
     private Long databaseId;
     private Long landUseCategoryId;
     private Long reportingTableId;

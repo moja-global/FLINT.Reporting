@@ -22,7 +22,7 @@ public class QueryParametersBuilder {
     private Long[] ids;
     private Long observationTypeId;
     private Long taskId;
-    private Long partyId;
+    private Long[] partiesIds;
     private Long databaseId;
     private Long landUseCategoryId;
     private Long reportingTableId;
@@ -56,10 +56,15 @@ public class QueryParametersBuilder {
         return this;
     }
 
-    public QueryParametersBuilder partyId(ServerRequest request) {
-        this.partyId =
-                request.queryParam("partyId").isPresent() ?
-                        Long.parseLong(request.queryParam("partyId").get()) : null;
+    public QueryParametersBuilder partiesIds(ServerRequest request) {
+        this.partiesIds =
+                request.queryParams().get("partiesIds") == null ? null :
+                        request.queryParams()
+                                .get("partiesIds")
+                                .stream()
+                                .map(Long::parseLong)
+                                .sorted()
+                                .toArray(Long[]::new);
         return this;
     }
 
@@ -100,7 +105,7 @@ public class QueryParametersBuilder {
 
 
     public QueryParameters build() {
-        return new QueryParameters(ids, observationTypeId, taskId, partyId,databaseId, landUseCategoryId, reportingTableId,reportingVariableId, year);
+        return new QueryParameters(ids, observationTypeId, taskId, partiesIds,databaseId, landUseCategoryId, reportingTableId,reportingVariableId, year);
     }
 
 }

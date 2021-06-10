@@ -60,7 +60,7 @@ public class RetrieveQuantityObservationsHandler {
                                         .ids(request)
                                         .observationTypeId(request)
                                         .taskId(request)
-                                        .partyId(request)
+                                        .partiesIds(request)
                                         .databaseId(request)
                                         .landUseCategoryId(request)
                                         .reportingTableId(request)
