@@ -25,22 +25,20 @@ import java.util.List;
  */
 @Component
 @Slf4j
-public class QuantityObservationsCreationEndpointUtil {
+public class QuantityObservationsEndpointUtil {
 
     @Autowired
-    WebClientUtil webClientUtil;
+    QuantityObservationsCreationEndpointUtil quantityObservationsCreationEndpointUtil;
+
+    @Autowired
+    QuantityObservationsRetrievalEndpointUtil quantityObservationsRetrievalEndpointUtil;
 
     public Flux<Long> createQuantityObservations(QuantityObservation[] observations) {
+        return quantityObservationsCreationEndpointUtil.createQuantityObservations(observations);
+    }
 
-        log.trace("Entering createQuantityObservations()");
-
-        return webClientUtil
-                .getQuantityObservationsWebClient()
-                .post()
-                .uri("/all")
-                .body(Mono.just(observations), QuantityObservation[].class)
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToFlux(Long.class);
+    public Flux<QuantityObservation> retrieveQuantityObservations(Long observationTypeId, List<Long> partiesId, Long databaseId ) {
+        return quantityObservationsRetrievalEndpointUtil
+                .retrieveQuantityObservations(observationTypeId, partiesId, databaseId);
     }
 }

@@ -8,12 +8,17 @@
 package global.moja.dataaggregator.util.endpoints;
 
 import global.moja.dataaggregator.models.Accountability;
+import global.moja.dataaggregator.models.QuantityObservation;
 import global.moja.dataaggregator.util.webclient.impl.WebClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @since 0.0.1
@@ -22,26 +27,33 @@ import reactor.core.publisher.Flux;
  */
 @Component
 @Slf4j
-public class AccountabilitiesEndpointUtil {
+public class QuantityObservationsRetrievalEndpointUtil {
 
   @Autowired
   WebClientUtil webClientUtil;
 
-  public Flux<Accountability> retrieveAccountabilities(Long accountabilityTypeId, Long parentPartyId) {
+  public Flux<QuantityObservation> retrieveQuantityObservations(Long observationTypeId, List<Long> partiesId, Long databaseId ) {
 
-    log.trace("Entering retrieveAccountabilities()");
+    log.trace("Entering retrieveQuantityObservations()");
+    log.debug("Observation Type Id = {}", observationTypeId);
+    log.debug("Parties Ids = {}", partiesId);
+    log.debug("Database Id = {}", databaseId);
 
     return webClientUtil
-        .getAccountabilitiesWebClient()
+        .getQuantityObservationsWebClient()
         .get()
             .uri(uriBuilder ->
                     uriBuilder
                             .path("/all")
-                            .queryParam("accountabilityTypeId", "{id1}")
-                            .queryParam("parentPartyId", "{id2}")
-                            .build(accountabilityTypeId.toString(), parentPartyId.toString()))
+                            .queryParam("observationTypeId", "{id1}")
+                            .queryParam("partiesIds", "{id2}")
+                            .queryParam("databaseId", "{id3}")
+                            .build(
+                                    observationTypeId.toString(),
+                                    String.join(",",partiesId.stream().map(p -> p.toString()).collect(Collectors.toSet())),
+                                    databaseId.toString()))
         .accept(MediaType.APPLICATION_JSON)
         .retrieve()
-        .bodyToFlux(Accountability.class);
+        .bodyToFlux(QuantityObservation.class);
   }
 }

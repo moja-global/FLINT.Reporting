@@ -7,15 +7,13 @@
  */
 package global.moja.dataaggregator.util.endpoints;
 
-import global.moja.dataaggregator.models.QuantityObservation;
+import global.moja.dataaggregator.models.Accountability;
 import global.moja.dataaggregator.util.webclient.impl.WebClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 /**
  * @since 0.0.1
@@ -24,23 +22,26 @@ import java.util.List;
  */
 @Component
 @Slf4j
-public class QuantityObservationsEndpointUtil {
+public class AccountabilitiesEndpointUtil {
 
   @Autowired
   WebClientUtil webClientUtil;
 
-  public Mono<List<Long>> createQuantityObservations(QuantityObservation[] observations) {
+  public Flux<Accountability> retrieveAccountabilities(Long accountabilityTypeId, Long parentPartyId) {
 
-    log.trace("Calling createQuantityObservations()");
+    log.trace("Entering retrieveAccountabilities()");
 
     return webClientUtil
-        .getQuantityObservationsWebClient()
-        .post()
-		.uri("/all")
-        .body(Mono.just(observations), QuantityObservation[].class)
+        .getAccountabilitiesWebClient()
+        .get()
+            .uri(uriBuilder ->
+                    uriBuilder
+                            .path("/all")
+                            .queryParam("accountabilityTypeId", "{id1}")
+                            .queryParam("parentPartyId", "{id2}")
+                            .build(accountabilityTypeId.toString(), parentPartyId.toString()))
         .accept(MediaType.APPLICATION_JSON)
         .retrieve()
-        .bodyToFlux(Long.class)
-				.collectList();
+        .bodyToFlux(Accountability.class);
   }
 }

@@ -1,0 +1,11 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}Copyright (C) ${date?date?string("yyyy")} ${project.organization!user}
+${licensePrefix?replace(" +$", "", "r")}
+${licensePrefix}This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. 
+${licensePrefix}If a copy of the MPL was not distributed with this file,
+${licensePrefix}You can obtain one at http://mozilla.org/MPL/2.0/.
+<#if licenseLast??>
+${licenseLast}
+</#if>

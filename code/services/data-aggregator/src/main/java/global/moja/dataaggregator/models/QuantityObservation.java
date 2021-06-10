@@ -9,6 +9,8 @@ package global.moja.dataaggregator.models;
 
 import lombok.*;
 
+import java.math.BigDecimal;
+
 /**
  * @since 0.0.1
  * @author Kwaje Anthony <tony@miles.co.ke>
@@ -18,22 +20,23 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 @Builder
-public class Accountability implements Comparable<Accountability> {
+public class QuantityObservation implements Comparable<QuantityObservation>{
 
     private Long id;
-    private Long accountabilityTypeId;
-    private Long parentPartyId;
-    private Long subsidiaryPartyId;
+    private Long observationTypeId;
+    private Long taskId;
+    private Long partyId;
+    private Long databaseId;
+    private Long reportingTableId;
+    private Long landUseCategoryId;
+    private Long reportingVariableId;
+    private Integer year;
+    private BigDecimal amount;
+    private Long unitId;
     private Integer version;
 
     @Override
-    public int compareTo(Accountability accountability) {
-
-        if(this.id != null && accountability.getId() != null){
-            return this.id.compareTo(accountability.getId());
-        } else {
-            return 0;
-        }
-
+    public int compareTo(QuantityObservation o) {
+        return this.id.compareTo(o.getId());
     }
 }

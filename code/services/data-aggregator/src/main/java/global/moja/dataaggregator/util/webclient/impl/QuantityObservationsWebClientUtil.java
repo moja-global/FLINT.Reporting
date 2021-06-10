@@ -20,26 +20,26 @@ import org.springframework.web.reactive.function.client.WebClient;
  */
 @Component
 @Slf4j
-public class AccountabilitiesWebClientUtil {
+public class QuantityObservationsWebClientUtil {
 
   // See:
   // https://stackoverflow.com/questions/49095366/right-way-to-use-spring-webclient-in-multi-thread-environment
-  private static WebClient accountabilitiesWebClient;
+  private static WebClient quantityObservationsWebClient;
 
   @Autowired
   HostsConfig hosts;
 
-  public WebClient getAccountabilitiesWebClient() {
+  public WebClient getQuantityObservationsWebClient() {
 
-    if (accountabilitiesWebClient == null) {
-      accountabilitiesWebClient =
+    if (quantityObservationsWebClient == null) {
+      quantityObservationsWebClient =
               WebClient
                       .builder()
-                      .baseUrl("http://" + hosts.getAccountabilitiesServiceHost())
+                      .baseUrl("http://" + hosts.getQuantityObservationsServiceHost())
                       .build();
     }
 
-    return accountabilitiesWebClient;
+    return quantityObservationsWebClient;
   }
 
 }

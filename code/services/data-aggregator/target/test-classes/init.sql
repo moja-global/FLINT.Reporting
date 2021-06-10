@@ -1,7 +1,7 @@
 -- ------------------------------------------------------------
 -- Create Table
 -- ------------------------------------------------------------
-CREATE TABLE data_processor (
+CREATE TABLE data_aggregator (
     id SERIAL UNIQUE PRIMARY KEY NOT NULL,
     indicator_type_id INTEGER NOT NULL,
     indicator_data_source_id INTEGER NOT NULL,
@@ -26,7 +26,7 @@ LANGUAGE 'plpgsql' VOLATILE;
 
 CREATE TRIGGER BusinessIntelligenceVersionInitializationTrigger
 BEFORE INSERT
-ON data_processor
+ON data_aggregator
 FOR EACH ROW
 EXECUTE PROCEDURE BusinessIntelligenceVersionInitializationFunction();
 
@@ -47,7 +47,7 @@ LANGUAGE 'plpgsql' VOLATILE;
 
 CREATE TRIGGER BusinessIntelligenceVersionIncrementTrigger
 BEFORE UPDATE
-ON data_processor
+ON data_aggregator
 FOR EACH ROW
 EXECUTE PROCEDURE BusinessIntelligenceVersionIncrementFunction();
 
@@ -56,6 +56,6 @@ EXECUTE PROCEDURE BusinessIntelligenceVersionIncrementFunction();
 -- Add Some dummy data
 -- ------------------------------------------------------------
 
-INSERT INTO data_processor(indicator_type_id,indicator_data_source_id,unit_id,name,formulae) VALUES(1,1,1,'First BusinessIntelligence', null);
-INSERT INTO data_processor(indicator_type_id,indicator_data_source_id,unit_id,name,formulae) VALUES(2,2,2,'Second BusinessIntelligence',null);
-INSERT INTO data_processor(indicator_type_id,indicator_data_source_id,unit_id,name,formulae) VALUES(3,3,3,'Third BusinessIntelligence', 'Some Formulae');
+INSERT INTO data_aggregator(indicator_type_id,indicator_data_source_id,unit_id,name,formulae) VALUES(1,1,1,'First BusinessIntelligence', null);
+INSERT INTO data_aggregator(indicator_type_id,indicator_data_source_id,unit_id,name,formulae) VALUES(2,2,2,'Second BusinessIntelligence',null);
+INSERT INTO data_aggregator(indicator_type_id,indicator_data_source_id,unit_id,name,formulae) VALUES(3,3,3,'Third BusinessIntelligence', 'Some Formulae');
