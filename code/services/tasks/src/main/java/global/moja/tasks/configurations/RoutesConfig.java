@@ -23,6 +23,7 @@ import static org.springdoc.core.fn.builders.requestbody.Builder.requestBodyBuil
 import static org.springdoc.core.fn.builders.schema.Builder.schemaBuilder;
 import static org.springdoc.webflux.core.fn.SpringdocRouteBuilder.route;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.APPLICATION_NDJSON;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 import static org.springframework.web.reactive.function.server.RequestPredicates.contentType;
 
@@ -167,6 +168,11 @@ public class RoutesConfig {
                                         .beanClass(TasksHandler.class)
                                         .beanMethod("updateTask")
                                         .description("Updates a single Task Record in the database")
+                                        .requestBody(
+                                                requestBodyBuilder()
+                                                        .content(contentBuilder()
+                                                                .schema(schemaBuilder()
+                                                                        .implementation(Task.class))))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Task Record was successfully updated")
@@ -268,7 +274,28 @@ public class RoutesConfig {
                                                 responseBuilder()
                                                         .responseCode("500").description("An unexpected condition was encountered while deleting the Tasks Records")
                                                         .implementation(String.class)))
-                        .build()));                        
+                        .build())
+
+                                .and(route()
+                                        .GET("/api/v1/tasks/stream",
+                                                accept(APPLICATION_NDJSON),
+                                                handler::streamTasks,
+                                                ops -> ops
+                                                        .tag("Stream")
+                                                        .operationId("streamTasks")
+                                                        .beanClass(TasksHandler.class)
+                                                        .beanMethod("streamTasks")
+                                                        .description("Streams all, then, task updates only")
+                                                        .response(
+                                                                responseBuilder()
+                                                                        .responseCode("200").description("The Tasks Records are being successfully streamed")
+                                                                        .implementationArray(Task.class))
+                                                        .response(
+                                                                responseBuilder()
+                                                                        .responseCode("500").description("An unexpected condition was encountered while streaming the Tasks Records")
+                                                                        .implementation(String.class)))
+                                        .build())
+                );
     }
 
 }

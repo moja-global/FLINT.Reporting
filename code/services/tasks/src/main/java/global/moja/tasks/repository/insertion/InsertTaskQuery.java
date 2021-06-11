@@ -50,7 +50,7 @@ public class InsertTaskQuery {
 							task.getResolved(),
 							task.getRejected(),
 							task.getNote(),
-							task.getLastUpdated())
+							System.currentTimeMillis())
 					.returnGeneratedKeys()
 					.getAs(Long.class));
 	}

@@ -19,10 +19,11 @@ import org.springframework.web.reactive.function.server.ServerRequest;
  */
 public class QueryParametersBuilder {
 
-    private Long[] ids;
-    private Long taskTypeId;
-    private Long taskStatusId;
-    private Long databaseId;
+    private Long[] ids = null;
+    private Long taskTypeId = null;
+    private Long taskStatusId = null;
+    private Long databaseId = null;
+    private Long updatedAfter = null;
 
     public QueryParametersBuilder ids(ServerRequest request) {
 
@@ -58,8 +59,13 @@ public class QueryParametersBuilder {
         return this;
     }
 
+    public QueryParametersBuilder updatedAfter(Long updatedAfter) {
+        this.updatedAfter = updatedAfter;
+        return this;
+    }
+
     public QueryParameters build() {
-        return new QueryParameters(ids,taskTypeId,taskStatusId,databaseId);
+        return new QueryParameters(ids,taskTypeId,taskStatusId,databaseId,updatedAfter);
     }
 
 }

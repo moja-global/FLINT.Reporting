@@ -11,4 +11,4 @@ CREATE TABLE task (
     resolved INTEGER NOT NULL,
     rejected INTEGER NOT NULL,
     note VARCHAR(250) NULL,
-    last_updated INTEGER NOT NULL);
+    last_updated BIGINT NOT NULL);

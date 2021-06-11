@@ -1,0 +1,35 @@
+[
+  {
+    "id": null,
+    "taskTypeId": 1,
+    "taskStatusId": 1,
+    "databaseId": 1,
+    "issues": 1000,
+    "resolved": 100,
+    "rejected": 10,
+    "note": "note 1",
+    "lastUpdated": null
+  },
+  {
+    "id": null,
+    "taskTypeId": 2,
+    "taskStatusId": 2,
+    "databaseId": 2,
+    "issues": 2000,
+    "resolved": 200,
+    "rejected": 20,
+    "note": "note 2",
+    "lastUpdated": null
+  },
+  {
+    "id": null,
+    "taskTypeId": 3,
+    "taskStatusId": 3,
+    "databaseId": 3,
+    "issues": 3000,
+    "resolved": 300,
+    "rejected": 30,
+    "note": "note 3",
+    "lastUpdated": null
+  }
+]

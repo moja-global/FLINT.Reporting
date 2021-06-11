@@ -15,6 +15,7 @@ import global.moja.tasks.handlers.put.UpdateTasksHandler;
 import global.moja.tasks.handlers.post.CreateTasksHandler;
 import global.moja.tasks.handlers.get.RetrieveTaskHandler;
 import global.moja.tasks.handlers.post.CreateTaskHandler;
+import global.moja.tasks.handlers.stream.StreamTasksHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -61,6 +62,11 @@ public class TasksHandler {
 	@Autowired
 	DeleteTasksHandler deleteTasksHandler;
 
+
+	// STREAM HANDLERS
+	@Autowired
+	StreamTasksHandler streamTasksHandler;
+
 	
 	// <editor-fold desc="POST">
 	public Mono<ServerResponse> createTask(ServerRequest request) {
@@ -106,6 +112,14 @@ public class TasksHandler {
 		return this.deleteTasksHandler.deleteTasks(request);
 	}	
 
-	// </editor-fold>	
+	// </editor-fold>
+
+
+	// <editor-fold desc="STREAM">
+	public Mono<ServerResponse> streamTasks(ServerRequest request) {
+		return this.streamTasksHandler.streamTasks(request);
+	}
+
+	// </editor-fold>
 
 }

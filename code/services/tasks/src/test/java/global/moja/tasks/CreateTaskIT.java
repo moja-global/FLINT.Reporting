@@ -55,7 +55,7 @@ public class CreateTaskIT {
 
         task4 =
                 Task.builder()
-                        .id(4L)
+                        .id(null)
                         .taskTypeId(4L)
                         .taskStatusId(4L)
                         .databaseId(4L)
@@ -63,7 +63,7 @@ public class CreateTaskIT {
                         .resolved(400)
                         .rejected(40)
                         .note("Note 4")
-                        .lastUpdated(1623348874L)
+                        .lastUpdated(null)
                         .build();
     }
 
@@ -89,6 +89,8 @@ public class CreateTaskIT {
     @Test
     public void Given_TaskDetails_When_Post_Then_TaskRecordWillBeCreatedAndReturned() {
 
+        Long currentTime = System.currentTimeMillis();
+
         webTestClient
                 .post()
                 .uri("/api/v1/tasks")
@@ -98,7 +100,17 @@ public class CreateTaskIT {
                 .expectStatus().isCreated()
                 .expectBody(Task.class)
                 .value(response -> {
-                            Assertions.assertThat(response).isEqualTo(task4);
+
+                    Assertions.assertThat(response.getId()).isEqualTo(4L);
+                    Assertions.assertThat(response.getTaskTypeId()).isEqualTo(task4.getTaskTypeId());
+                    Assertions.assertThat(response.getTaskStatusId()).isEqualTo(task4.getTaskStatusId());
+                    Assertions.assertThat(response.getDatabaseId()).isEqualTo(task4.getDatabaseId());
+                    Assertions.assertThat(response.getIssues()).isEqualTo(task4.getIssues());
+                    Assertions.assertThat(response.getResolved()).isEqualTo(task4.getResolved());
+                    Assertions.assertThat(response.getRejected()).isEqualTo(task4.getRejected());
+                    Assertions.assertThat(response.getNote()).isEqualTo(task4.getNote());
+                    Assertions.assertThat(response.getLastUpdated()).isGreaterThan(currentTime);
+
                         }
                 );
     }

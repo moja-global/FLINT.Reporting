@@ -59,7 +59,7 @@ public class CreateTasksIT {
 
         task4 =
                 Task.builder()
-                        .id(4L)
+                        .id(null)
                         .taskTypeId(4L)
                         .taskStatusId(4L)
                         .databaseId(4L)
@@ -67,12 +67,12 @@ public class CreateTasksIT {
                         .resolved(400)
                         .rejected(40)
                         .note("Note 4")
-                        .lastUpdated(1623348874L)
+                        .lastUpdated(null)
                         .build();
 
         task5 =
                 Task.builder()
-                        .id(5L)
+                        .id(null)
                         .taskTypeId(5L)
                         .taskStatusId(5L)
                         .databaseId(5L)
@@ -80,7 +80,7 @@ public class CreateTasksIT {
                         .resolved(500)
                         .rejected(50)
                         .note("Note 5")
-                        .lastUpdated(1623348875L)
+                        .lastUpdated(null)
                         .build();
     }
 
@@ -108,6 +108,8 @@ public class CreateTasksIT {
 
         Task[] tasks= new Task[]{task4, task5};
 
+        Long currentTime = System.currentTimeMillis();
+
         webTestClient
                 .post()
                 .uri("/api/v1/tasks/all")
@@ -120,9 +122,25 @@ public class CreateTasksIT {
 
                     Collections.sort(response);
 
-                    Assertions.assertThat(response.get(0)).isEqualTo(task4);
-                    Assertions.assertThat(response.get(1)).isEqualTo(task5);
+                    Assertions.assertThat(response.get(0).getId()).isEqualTo(4L);
+                    Assertions.assertThat(response.get(0).getTaskTypeId()).isEqualTo(task4.getTaskTypeId());
+                    Assertions.assertThat(response.get(0).getTaskStatusId()).isEqualTo(task4.getTaskStatusId());
+                    Assertions.assertThat(response.get(0).getDatabaseId()).isEqualTo(task4.getDatabaseId());
+                    Assertions.assertThat(response.get(0).getIssues()).isEqualTo(task4.getIssues());
+                    Assertions.assertThat(response.get(0).getResolved()).isEqualTo(task4.getResolved());
+                    Assertions.assertThat(response.get(0).getRejected()).isEqualTo(task4.getRejected());
+                    Assertions.assertThat(response.get(0).getNote()).isEqualTo(task4.getNote());
+                    Assertions.assertThat(response.get(0).getLastUpdated()).isGreaterThan(currentTime);
 
+                    Assertions.assertThat(response.get(1).getId()).isEqualTo(5L);
+                    Assertions.assertThat(response.get(1).getTaskTypeId()).isEqualTo(task5.getTaskTypeId());
+                    Assertions.assertThat(response.get(1).getTaskStatusId()).isEqualTo(task5.getTaskStatusId());
+                    Assertions.assertThat(response.get(1).getDatabaseId()).isEqualTo(task5.getDatabaseId());
+                    Assertions.assertThat(response.get(1).getIssues()).isEqualTo(task5.getIssues());
+                    Assertions.assertThat(response.get(1).getResolved()).isEqualTo(task5.getResolved());
+                    Assertions.assertThat(response.get(1).getRejected()).isEqualTo(task5.getRejected());
+                    Assertions.assertThat(response.get(1).getNote()).isEqualTo(task5.getNote());
+                    Assertions.assertThat(response.get(1).getLastUpdated()).isGreaterThan(currentTime);
 
                 });
     }

@@ -66,7 +66,6 @@ public class RetrieveTasksIT {
                         .resolved(100)
                         .rejected(10)
                         .note("Note 1")
-                        .lastUpdated(1623348871L)
                         .build();
         task2 =
                 Task.builder()
@@ -78,7 +77,6 @@ public class RetrieveTasksIT {
                         .resolved(200)
                         .rejected(20)
                         .note("Note 2")
-                        .lastUpdated(1623348872L)
                         .build();
 
         task3 =
@@ -91,7 +89,6 @@ public class RetrieveTasksIT {
                         .resolved(300)
                         .rejected(30)
                         .note("Note 3")
-                        .lastUpdated(1623348873L)
                         .build();
     }
 
@@ -131,8 +128,25 @@ public class RetrieveTasksIT {
 
                             Collections.sort(response);
 
-                            Assertions.assertThat(response.get(0)).isEqualTo(task1);
-                            Assertions.assertThat(response.get(1)).isEqualTo(task3);
+                            Assertions.assertThat(response.get(0).getId()).isEqualTo(task1.getId());
+                            Assertions.assertThat(response.get(0).getTaskTypeId()).isEqualTo(task1.getTaskTypeId());
+                            Assertions.assertThat(response.get(0).getTaskStatusId()).isEqualTo(task1.getTaskStatusId());
+                            Assertions.assertThat(response.get(0).getDatabaseId()).isEqualTo(task1.getDatabaseId());
+                            Assertions.assertThat(response.get(0).getIssues()).isEqualTo(task1.getIssues());
+                            Assertions.assertThat(response.get(0).getResolved()).isEqualTo(task1.getResolved());
+                            Assertions.assertThat(response.get(0).getRejected()).isEqualTo(task1.getRejected());
+                            Assertions.assertThat(response.get(0).getNote()).isEqualTo(task1.getNote());
+                            Assertions.assertThat(response.get(0).getLastUpdated()).isNotNull();
+
+                            Assertions.assertThat(response.get(1).getId()).isEqualTo(task3.getId());
+                            Assertions.assertThat(response.get(1).getTaskTypeId()).isEqualTo(task3.getTaskTypeId());
+                            Assertions.assertThat(response.get(1).getTaskStatusId()).isEqualTo(task3.getTaskStatusId());
+                            Assertions.assertThat(response.get(1).getDatabaseId()).isEqualTo(task3.getDatabaseId());
+                            Assertions.assertThat(response.get(1).getIssues()).isEqualTo(task3.getIssues());
+                            Assertions.assertThat(response.get(1).getResolved()).isEqualTo(task3.getResolved());
+                            Assertions.assertThat(response.get(1).getRejected()).isEqualTo(task3.getRejected());
+                            Assertions.assertThat(response.get(1).getNote()).isEqualTo(task3.getNote());
+                            Assertions.assertThat(response.get(1).getLastUpdated()).isNotNull();
 
 
                         }
@@ -157,14 +171,19 @@ public class RetrieveTasksIT {
 
                             Collections.sort(response);
 
-                            Assertions.assertThat(response.get(0)).isEqualTo(task3);
+                            Assertions.assertThat(response.get(0).getId()).isEqualTo(task3.getId());
+                            Assertions.assertThat(response.get(0).getTaskTypeId()).isEqualTo(task3.getTaskTypeId());
+                            Assertions.assertThat(response.get(0).getTaskStatusId()).isEqualTo(task3.getTaskStatusId());
+                            Assertions.assertThat(response.get(0).getDatabaseId()).isEqualTo(task3.getDatabaseId());
+                            Assertions.assertThat(response.get(0).getIssues()).isEqualTo(task3.getIssues());
+                            Assertions.assertThat(response.get(0).getResolved()).isEqualTo(task3.getResolved());
+                            Assertions.assertThat(response.get(0).getRejected()).isEqualTo(task3.getRejected());
+                            Assertions.assertThat(response.get(0).getNote()).isEqualTo(task3.getNote());
+                            Assertions.assertThat(response.get(0).getLastUpdated()).isNotNull();
 
                         }
                 );
     }
-
-
-
 
 
     @Test
@@ -185,7 +204,15 @@ public class RetrieveTasksIT {
 
                             Collections.sort(response);
 
-                            Assertions.assertThat(response.get(0)).isEqualTo(task3);
+                            Assertions.assertThat(response.get(0).getId()).isEqualTo(task3.getId());
+                            Assertions.assertThat(response.get(0).getTaskTypeId()).isEqualTo(task3.getTaskTypeId());
+                            Assertions.assertThat(response.get(0).getTaskStatusId()).isEqualTo(task3.getTaskStatusId());
+                            Assertions.assertThat(response.get(0).getDatabaseId()).isEqualTo(task3.getDatabaseId());
+                            Assertions.assertThat(response.get(0).getIssues()).isEqualTo(task3.getIssues());
+                            Assertions.assertThat(response.get(0).getResolved()).isEqualTo(task3.getResolved());
+                            Assertions.assertThat(response.get(0).getRejected()).isEqualTo(task3.getRejected());
+                            Assertions.assertThat(response.get(0).getNote()).isEqualTo(task3.getNote());
+                            Assertions.assertThat(response.get(0).getLastUpdated()).isNotNull();
 
                         }
                 );
@@ -207,9 +234,35 @@ public class RetrieveTasksIT {
 
                             Collections.sort(response);
 
-                            Assertions.assertThat(response.get(0)).isEqualTo(task1);
-                            Assertions.assertThat(response.get(1)).isEqualTo(task2);
-                            Assertions.assertThat(response.get(2)).isEqualTo(task3);
+                            Assertions.assertThat(response.get(0).getId()).isEqualTo(task1.getId());
+                            Assertions.assertThat(response.get(0).getTaskTypeId()).isEqualTo(task1.getTaskTypeId());
+                            Assertions.assertThat(response.get(0).getTaskStatusId()).isEqualTo(task1.getTaskStatusId());
+                            Assertions.assertThat(response.get(0).getDatabaseId()).isEqualTo(task1.getDatabaseId());
+                            Assertions.assertThat(response.get(0).getIssues()).isEqualTo(task1.getIssues());
+                            Assertions.assertThat(response.get(0).getResolved()).isEqualTo(task1.getResolved());
+                            Assertions.assertThat(response.get(0).getRejected()).isEqualTo(task1.getRejected());
+                            Assertions.assertThat(response.get(0).getNote()).isEqualTo(task1.getNote());
+                            Assertions.assertThat(response.get(0).getLastUpdated()).isNotNull();
+
+                            Assertions.assertThat(response.get(1).getId()).isEqualTo(task2.getId());
+                            Assertions.assertThat(response.get(1).getTaskTypeId()).isEqualTo(task2.getTaskTypeId());
+                            Assertions.assertThat(response.get(1).getTaskStatusId()).isEqualTo(task2.getTaskStatusId());
+                            Assertions.assertThat(response.get(1).getDatabaseId()).isEqualTo(task2.getDatabaseId());
+                            Assertions.assertThat(response.get(1).getIssues()).isEqualTo(task2.getIssues());
+                            Assertions.assertThat(response.get(1).getResolved()).isEqualTo(task2.getResolved());
+                            Assertions.assertThat(response.get(1).getRejected()).isEqualTo(task2.getRejected());
+                            Assertions.assertThat(response.get(1).getNote()).isEqualTo(task2.getNote());
+                            Assertions.assertThat(response.get(1).getLastUpdated()).isNotNull();
+
+                            Assertions.assertThat(response.get(2).getId()).isEqualTo(task3.getId());
+                            Assertions.assertThat(response.get(2).getTaskTypeId()).isEqualTo(task3.getTaskTypeId());
+                            Assertions.assertThat(response.get(2).getTaskStatusId()).isEqualTo(task3.getTaskStatusId());
+                            Assertions.assertThat(response.get(2).getDatabaseId()).isEqualTo(task3.getDatabaseId());
+                            Assertions.assertThat(response.get(2).getIssues()).isEqualTo(task3.getIssues());
+                            Assertions.assertThat(response.get(2).getResolved()).isEqualTo(task3.getResolved());
+                            Assertions.assertThat(response.get(2).getRejected()).isEqualTo(task3.getRejected());
+                            Assertions.assertThat(response.get(2).getNote()).isEqualTo(task3.getNote());
+                            Assertions.assertThat(response.get(2).getLastUpdated()).isNotNull();
 
                         }
                 );

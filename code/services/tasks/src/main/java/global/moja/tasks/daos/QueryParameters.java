@@ -24,4 +24,5 @@ public class QueryParameters {
     private Long taskTypeId;
     private Long taskStatusId;
     private Long databaseId;
+    private Long updatedAfter;
 }

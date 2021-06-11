@@ -63,7 +63,6 @@ public class RetrieveTaskIT {
                         .resolved(100)
                         .rejected(10)
                         .note("Note 1")
-                        .lastUpdated(1623348871L)
                         .build();
     }
 
@@ -99,7 +98,15 @@ public class RetrieveTaskIT {
                 .expectStatus().isOk()
                 .expectBody(Task.class)
                 .value(response -> {
-                            Assertions.assertThat(response).isEqualTo(task1);
+                            Assertions.assertThat(response.getId()).isEqualTo(task1.getId());
+                            Assertions.assertThat(response.getTaskTypeId()).isEqualTo(task1.getTaskTypeId());
+                            Assertions.assertThat(response.getTaskStatusId()).isEqualTo(task1.getTaskStatusId());
+                            Assertions.assertThat(response.getDatabaseId()).isEqualTo(task1.getDatabaseId());
+                            Assertions.assertThat(response.getIssues()).isEqualTo(task1.getIssues());
+                            Assertions.assertThat(response.getResolved()).isEqualTo(task1.getResolved());
+                            Assertions.assertThat(response.getRejected()).isEqualTo(task1.getRejected());
+                            Assertions.assertThat(response.getNote()).isEqualTo(task1.getNote());
+                            Assertions.assertThat(response.getLastUpdated()).isNotNull();
                         }
                 );
     }

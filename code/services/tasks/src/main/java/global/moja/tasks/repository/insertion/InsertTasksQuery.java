@@ -66,7 +66,7 @@ public class InsertTasksQuery {
                     task.getResolved(),
                     task.getRejected(),
                     task.getNote(),
-                    task.getLastUpdated()));
+                    System.currentTimeMillis()));
         }
 
         return Flowable.fromIterable(temp);

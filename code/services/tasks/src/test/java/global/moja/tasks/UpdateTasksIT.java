@@ -67,7 +67,6 @@ public class UpdateTasksIT {
                         .resolved(1000)
                         .rejected(100)
                         .note("Note 10")
-                        .lastUpdated(1623348872L)
                         .build();
         task2 =
                 Task.builder()
@@ -79,7 +78,6 @@ public class UpdateTasksIT {
                         .resolved(2000)
                         .rejected(200)
                         .note("Note 20")
-                        .lastUpdated(1623348873L)
                         .build();
     }
 
@@ -108,6 +106,8 @@ public class UpdateTasksIT {
 
         Task[] tasks = new Task[]{task1, task2};
 
+        Long currentTime = System.currentTimeMillis();
+
         webTestClient
                 .put()
                 .uri("/api/v1/tasks/all")
@@ -121,9 +121,25 @@ public class UpdateTasksIT {
 
                             Collections.sort(response);
 
-                            Assertions.assertThat(response.get(0)).isEqualTo(task1);
-                            Assertions.assertThat(response.get(1)).isEqualTo(task2);
+                    Assertions.assertThat(response.get(0).getId()).isEqualTo(task1.getId());
+                    Assertions.assertThat(response.get(0).getTaskTypeId()).isEqualTo(task1.getTaskTypeId());
+                    Assertions.assertThat(response.get(0).getTaskStatusId()).isEqualTo(task1.getTaskStatusId());
+                    Assertions.assertThat(response.get(0).getDatabaseId()).isEqualTo(task1.getDatabaseId());
+                    Assertions.assertThat(response.get(0).getIssues()).isEqualTo(task1.getIssues());
+                    Assertions.assertThat(response.get(0).getResolved()).isEqualTo(task1.getResolved());
+                    Assertions.assertThat(response.get(0).getRejected()).isEqualTo(task1.getRejected());
+                    Assertions.assertThat(response.get(0).getNote()).isEqualTo(task1.getNote());
+                    Assertions.assertThat(response.get(0).getLastUpdated()).isGreaterThan(currentTime);
 
+                    Assertions.assertThat(response.get(1).getId()).isEqualTo(task2.getId());
+                    Assertions.assertThat(response.get(1).getTaskTypeId()).isEqualTo(task2.getTaskTypeId());
+                    Assertions.assertThat(response.get(1).getTaskStatusId()).isEqualTo(task2.getTaskStatusId());
+                    Assertions.assertThat(response.get(1).getDatabaseId()).isEqualTo(task2.getDatabaseId());
+                    Assertions.assertThat(response.get(1).getIssues()).isEqualTo(task2.getIssues());
+                    Assertions.assertThat(response.get(1).getResolved()).isEqualTo(task2.getResolved());
+                    Assertions.assertThat(response.get(1).getRejected()).isEqualTo(task2.getRejected());
+                    Assertions.assertThat(response.get(1).getNote()).isEqualTo(task2.getNote());
+                    Assertions.assertThat(response.get(1).getLastUpdated()).isGreaterThan(currentTime);
 
                         }
                 );

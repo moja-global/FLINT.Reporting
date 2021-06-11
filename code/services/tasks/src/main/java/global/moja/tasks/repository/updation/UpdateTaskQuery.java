@@ -44,7 +44,8 @@ public class UpdateTaskQuery {
 						"resolved = ?, " +
 						"rejected = ?, " +
 						"note = ?, " +
-						"last_updated = ? WHERE id = ?";
+						"last_updated = ? " +
+						"WHERE id = ?";
 
 		return
 			Mono.from(
@@ -59,7 +60,7 @@ public class UpdateTaskQuery {
 							task.getResolved(),
 							task.getRejected(),
 							task.getNote(),
-							task.getLastUpdated(),
+							System.currentTimeMillis(),
 							task.getId())
 					.counts());
 	}

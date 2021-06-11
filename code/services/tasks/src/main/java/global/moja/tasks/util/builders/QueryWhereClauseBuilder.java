@@ -88,6 +88,19 @@ public class QueryWhereClauseBuilder {
 
         }
 
+        // Last Updated After
+        if(queryParameters.getUpdatedAfter() != null){
+
+            if(query != null){
+                query.append(" AND ");
+            } else {
+                query = new StringBuilder();
+            }
+
+            query.append("last_updated > ").append(queryParameters.getUpdatedAfter());
+
+        }
+
         return query == null ? "" : " WHERE " + query.toString();
     }
 }

@@ -20,7 +20,7 @@
     
     <organization>
         <name>Moja Global</name>
-        <url>https://miles.co.ke//</url>
+        <url>https://moja.global</url>
     </organization>
      
     <parent>
@@ -32,7 +32,7 @@
     
     <properties>
         <spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
-        <docker.image.prefix>cloud.miles.co.ke:5043</docker.image.prefix>
+        <docker.image.prefix>reporter.miles.co.ke:5043</docker.image.prefix>
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
         <davidmoten-rxjava2-jdbc.version>0.2.4</davidmoten-rxjava2-jdbc.version>
         <davidmoten-guava-mini-version>0.1.2</davidmoten-guava-mini-version>

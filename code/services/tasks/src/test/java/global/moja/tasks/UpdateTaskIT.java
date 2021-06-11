@@ -64,7 +64,6 @@ public class UpdateTaskIT {
                         .resolved(1000)
                         .rejected(100)
                         .note("Note 10")
-                        .lastUpdated(1623348877L)
                         .build();
     }
 
@@ -90,6 +89,8 @@ public class UpdateTaskIT {
     @Test
     public void Given_ModifiedDetailsOfAnExistingRecord_When_Put_Then_TheRecordWillBeUpdatedAndReturnedWithItsVersionIncrementedByOne() {
 
+        Long currentTime = System.currentTimeMillis();
+
         webTestClient
                 .put()
                 .uri("/api/v1/tasks")
@@ -100,7 +101,17 @@ public class UpdateTaskIT {
                 .isOk()
                 .expectBody(Task.class)
                 .value(response -> {
-                            Assertions.assertThat(response).isEqualTo(task1);
+                    
+                    Assertions.assertThat(response.getId()).isEqualTo(task1.getId());
+                    Assertions.assertThat(response.getTaskTypeId()).isEqualTo(task1.getTaskTypeId());
+                    Assertions.assertThat(response.getTaskStatusId()).isEqualTo(task1.getTaskStatusId());
+                    Assertions.assertThat(response.getDatabaseId()).isEqualTo(task1.getDatabaseId());
+                    Assertions.assertThat(response.getIssues()).isEqualTo(task1.getIssues());
+                    Assertions.assertThat(response.getResolved()).isEqualTo(task1.getResolved());
+                    Assertions.assertThat(response.getRejected()).isEqualTo(task1.getRejected());
+                    Assertions.assertThat(response.getNote()).isEqualTo(task1.getNote());
+                    Assertions.assertThat(response.getLastUpdated()).isGreaterThan(currentTime);
+                    
                         }
                 );
     }

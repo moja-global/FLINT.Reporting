@@ -50,7 +50,8 @@ public class UpdateTasksQuery {
                         "resolved = ?, " +
                         "rejected = ?, " +
                         "note = ?, " +
-                        "last_updated = ? WHERE id = ?";
+                        "last_updated = ? " +
+                        "WHERE id = ?";
 
         return
                 Flux.from(
@@ -74,7 +75,7 @@ public class UpdateTasksQuery {
                     task.getResolved(),
                     task.getRejected(),
                     task.getNote(),
-                    task.getLastUpdated(),
+                    System.currentTimeMillis(),
                     task.getId()
             ));
         }
