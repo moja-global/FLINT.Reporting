@@ -140,7 +140,7 @@ public class RoutesConfig {
                                         .parameter(
                                                 parameterBuilder()
                                                         .name("parentPartyId").in(ParameterIn.QUERY)
-                                                        .description("The unique identifier of the Parent Party Record to filter the returned values by")
+                                                        .description("The unique identifier of the Parent Party Record to filter the returned values by. The API regards a parent id value of 0 as a null parent id value")
                                                         .implementation(Long.class))
                                         .parameter(
                                                 parameterBuilder()
@@ -252,7 +252,7 @@ public class RoutesConfig {
                                         .parameter(
                                                 parameterBuilder()
                                                         .name("parentPartyId").in(ParameterIn.QUERY)
-                                                        .description("The unique identifier of the Parent Party Record to filter the deleted values by")
+                                                        .description("The unique identifier of the Parent Party Record to filter the deleted values by. The API regards a parent id value of 0 as a null parent id value")
                                                         .implementation(Long.class))
                                         .parameter(
                                                 parameterBuilder()

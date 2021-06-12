@@ -57,3 +57,4 @@ EXECUTE PROCEDURE AccountabilityVersionIncrementFunction();
 INSERT INTO accountability(accountability_type_id,parent_party_id,subsidiary_party_id) VALUES(1,1,1);
 INSERT INTO accountability(accountability_type_id,parent_party_id,subsidiary_party_id) VALUES(2,2,2);
 INSERT INTO accountability(accountability_type_id,parent_party_id,subsidiary_party_id) VALUES(3,3,3);
+INSERT INTO accountability(accountability_type_id,subsidiary_party_id) VALUES(4,4);

@@ -7,11 +7,10 @@
  */
 package global.moja.accountabilities;
 
-import global.moja.accountabilities.models.Accountability;
-import global.moja.accountabilities.util.builders.AccountabilityBuilder;
-import org.assertj.core.api.Assertions;
 import org.junit.AfterClass;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,28 +18,28 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import reactor.core.publisher.Mono;
 
 /**
+ * @since 1.0
  * @author Kwaje Anthony <tony@miles.co.ke>
  * @version 1.0
- * @since 1.0
  */
 @Testcontainers
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
-@ContextConfiguration(initializers = CreateAccountabilityIT.Initializer.class)
-public class CreateAccountabilityIT {
+@ContextConfiguration(initializers = DeleteAllAccountabilitiesIT.Initializer.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+public class DeleteAllAccountabilitiesIT {
 
     @Autowired
     WebTestClient webTestClient;
+
+
     static final PostgreSQLContainer postgreSQLContainer;
-    static final Accountability accountability5;
 
     static {
 
@@ -53,15 +52,6 @@ public class CreateAccountabilityIT {
         postgreSQLContainer
                 .withInitScript("init.sql")
                 .start();
-
-        accountability5 =
-                new AccountabilityBuilder()
-                        .id(null)
-                        .accountabilityTypeId(5L)
-                        .parentPartyId(5L)
-                        .subsidiaryPartyId(5L)
-                        .version(null)
-                        .build();
     }
 
     public static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -84,23 +74,17 @@ public class CreateAccountabilityIT {
     }
 
     @Test
-    public void Given_AccountabilityDetails_When_Post_Then_AccountabilityRecordWillBeCreatedAndReturned() {
+    public void Given_AccountabilityRecordsExist_When_DeleteAllWithoutFilters_Then_AllAccountabilityRecordsWillBeDeletedAndATotalCountOfAffectedRecordsReturned() {
 
         webTestClient
-                .post()
-                .uri("/api/v1/accountabilities")
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(accountability5), Accountability.class)
+                .delete()
+                .uri("/api/v1/accountabilities/all")
                 .exchange()
-                .expectStatus().isCreated()
-                .expectBody(Accountability.class)
-                .value(response -> {
-                            Assertions.assertThat(response.getId()).isEqualTo(5L);
-                            Assertions.assertThat(response.getAccountabilityTypeId()).isEqualTo(accountability5.getAccountabilityTypeId());
-                            Assertions.assertThat(response.getParentPartyId()).isEqualTo(accountability5.getParentPartyId());
-                            Assertions.assertThat(response.getSubsidiaryPartyId()).isEqualTo(accountability5.getSubsidiaryPartyId());
-                            Assertions.assertThat(response.getVersion()).isEqualTo(1);
-                        }
-                );
+                .expectStatus().isOk()
+                .expectBody(Integer.class)
+                .isEqualTo(4);
     }
+
+
+
 }

@@ -71,7 +71,11 @@ public class QueryWhereClauseBuilder {
                 query = new StringBuilder();
             }
 
-            query.append("parent_party_id = ").append(queryParameters.getParentPartyId());
+            if(queryParameters.getParentPartyId().equals(0L)) {
+                query.append("parent_party_id IS NULL");
+            } else {
+                query.append("parent_party_id = ").append(queryParameters.getParentPartyId());
+            }
 
         }
 

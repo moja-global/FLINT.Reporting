@@ -9,7 +9,6 @@ package global.moja.accountabilities;
 
 import org.junit.AfterClass;
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +31,9 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Testcontainers
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
-@ContextConfiguration(initializers = DeleteAccountabilitiesIT.Initializer.class)
+@ContextConfiguration(initializers = DeleteSomeAccountabilitiesIT.Initializer.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class DeleteAccountabilitiesIT {
+public class DeleteSomeAccountabilitiesIT {
 
     @Autowired
     WebTestClient webTestClient;
@@ -76,7 +75,6 @@ public class DeleteAccountabilitiesIT {
 
 
     @Test
-    @Order(1)
     public void Given_AccountabilityRecordsExist_When_DeleteAllWithIdsFilter_Then_AccountabilityRecordsWithIdsWillBeDeletedAndATotalCountOfAffectedRecordsReturned() {
 
         long id1 = 1L;
@@ -95,20 +93,5 @@ public class DeleteAccountabilitiesIT {
                 .expectBody(Integer.class)
                 .isEqualTo(2);
     }
-
-    @Test
-    @Order(1)
-    public void Given_AccountabilityRecordsExist_When_DeleteAllWithoutFilters_Then_AllAccountabilityRecordsWillBeDeletedAndATotalCountOfAffectedRecordsReturned() {
-
-        webTestClient
-                .delete()
-                .uri("/api/v1/accountabilities/all")
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(Integer.class)
-                .isEqualTo(1);
-    }
-
-
 
 }

@@ -44,6 +44,7 @@ public class RetrieveAccountabilitiesIT {
     static final Accountability accountability1;
     static final Accountability accountability2;
     static final Accountability accountability3;
+    static final Accountability accountability4;
 
     static {
 
@@ -81,6 +82,15 @@ public class RetrieveAccountabilitiesIT {
                         .accountabilityTypeId(3L)
                         .parentPartyId(3L)
                         .subsidiaryPartyId(3L)
+                        .version(1)
+                        .build();
+
+        accountability4 =
+                new AccountabilityBuilder()
+                        .id(4L)
+                        .accountabilityTypeId(4L)
+                        .parentPartyId(0L)
+                        .subsidiaryPartyId(4L)
                         .version(1)
                         .build();
     }
@@ -194,6 +204,36 @@ public class RetrieveAccountabilitiesIT {
 
                         }
                 );
+
+    }
+
+
+    @Test
+    public void Given_AccountabilityRecordsExist_When_GetAllWithZeroAsTheParentPartyIdFilter_Then_OnlyAccountabilityRecordsWithNullParentPartyIdWillBeReturned() {
+
+        webTestClient
+                .get()
+                .uri(uriBuilder ->
+                        uriBuilder
+                                .path("/api/v1/accountabilities/all")
+                                .queryParam("parentPartyId", "0")
+                                .build())
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(Accountability.class)
+                .value(response -> {
+
+                            Collections.sort(response);
+
+                            Assertions.assertThat(response.get(0).getId()).isEqualTo(accountability4.getId());
+                            Assertions.assertThat(response.get(0).getAccountabilityTypeId()).isEqualTo(accountability4.getAccountabilityTypeId());
+                            Assertions.assertThat(response.get(0).getParentPartyId()).isEqualTo(accountability4.getParentPartyId());
+                            Assertions.assertThat(response.get(0).getSubsidiaryPartyId()).isEqualTo(accountability4.getSubsidiaryPartyId());
+                            Assertions.assertThat(response.get(0).getVersion()).isEqualTo(1);
+
+                        }
+                );
+
     }
 
 
