@@ -8,7 +8,6 @@
 package global.moja.accountabilityrules;
 
 import global.moja.accountabilityrules.models.AccountabilityRule;
-import global.moja.accountabilityrules.util.builders.AccountabilityRuleBuilder;
 import org.assertj.core.api.Assertions;
 import org.junit.AfterClass;
 import org.junit.jupiter.api.Test;
@@ -59,7 +58,7 @@ public class UpdateAccountabilityRulesIT {
                 .start();
 
         accountabilityRule1 =
-                new AccountabilityRuleBuilder()
+                AccountabilityRule.builder()
                         .id(1L)
                         .accountabilityTypeId(10L)
                         .parentPartyTypeId(10L)
@@ -68,7 +67,7 @@ public class UpdateAccountabilityRulesIT {
                         .build();
 
         accountabilityRule2 =
-                new AccountabilityRuleBuilder()
+                AccountabilityRule.builder()
                         .id(2L)
                         .accountabilityTypeId(20L)
                         .parentPartyTypeId(20L)

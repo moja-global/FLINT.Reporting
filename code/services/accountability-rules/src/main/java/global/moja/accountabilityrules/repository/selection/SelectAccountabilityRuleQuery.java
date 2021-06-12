@@ -9,7 +9,6 @@ package global.moja.accountabilityrules.repository.selection;
 
 import global.moja.accountabilityrules.configurations.DatabaseConfig;
 import global.moja.accountabilityrules.models.AccountabilityRule;
-import global.moja.accountabilityrules.util.builders.AccountabilityRuleBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -45,7 +44,7 @@ public class SelectAccountabilityRuleQuery {
 					.select(query)
 					.parameters(id)
 					.get(rs ->
-							new AccountabilityRuleBuilder()
+							AccountabilityRule.builder()
 									.id(rs.getLong("id"))
 									.accountabilityTypeId(rs.getLong("accountability_type_id"))
 									.parentPartyTypeId(rs.getLong("parent_party_type_id"))

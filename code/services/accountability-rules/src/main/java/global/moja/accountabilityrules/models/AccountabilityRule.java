@@ -7,18 +7,17 @@
  */
 package global.moja.accountabilityrules.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * @since 0.0.1
  * @author Kwaje Anthony <tony@miles.co.ke>
  * @version 1.0
  */
-@Data
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor
-@AllArgsConstructor
+@Data
+@Builder
 public class AccountabilityRule implements Comparable<AccountabilityRule> {
 
     private Long id;
@@ -28,12 +27,28 @@ public class AccountabilityRule implements Comparable<AccountabilityRule> {
     private Integer version;
 
     @Override
-    public int compareTo(AccountabilityRule accountabilityRule) {
+    public int compareTo(AccountabilityRule o) {
 
-        if(this.id != null && accountabilityRule.getId() != null){
-            return this.id.compareTo(accountabilityRule.getId());
+        if(!this.accountabilityTypeId.equals(o.getAccountabilityTypeId())) {
+            return this.accountabilityTypeId.compareTo(o.getAccountabilityTypeId());
         } else {
-            return 0;
+            if(this.parentPartyTypeId == null && o.getParentPartyTypeId() == null) {
+                return this.id.compareTo(o.getId());
+            } else if(this.parentPartyTypeId == null) {
+                return 1;
+            } else if(o.getParentPartyTypeId() == null) {
+                return -1;
+            } else {
+                if(this.parentPartyTypeId.equals(o.getId())) {
+                    return 1;
+                } else if(this.id.equals(o.getParentPartyTypeId())) {
+                    return -1;
+                } else if(!this.parentPartyTypeId.equals(o.getParentPartyTypeId())) {
+                    return this.parentPartyTypeId.compareTo(o.getParentPartyTypeId());
+                } else {
+                    return this.id.compareTo(o.getId());
+                }
+            }
         }
 
     }
