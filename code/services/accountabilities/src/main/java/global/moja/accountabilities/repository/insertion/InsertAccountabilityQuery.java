@@ -35,7 +35,7 @@ public class InsertAccountabilityQuery {
 		
 		log.trace("Entering insertAccountability()");
 
-		String query = "INSERT INTO accountability(accountability_type_id,parent_party_id,subsidiary_party_id) VALUES(?,?,?)";
+		String query = "INSERT INTO accountability(accountability_type_id,accountability_rule_id,parent_party_id,subsidiary_party_id) VALUES(?,?,?,?)";
 
 		return
 			Mono.from(
@@ -44,6 +44,7 @@ public class InsertAccountabilityQuery {
 					.update(query)
 					.parameters(
 							accountability.getAccountabilityTypeId(),
+							accountability.getAccountabilityRuleId(),
 							accountability.getParentPartyId(),
 							accountability.getSubsidiaryPartyId())
 					.returnGeneratedKeys()

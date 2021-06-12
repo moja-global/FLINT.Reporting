@@ -139,6 +139,11 @@ public class RoutesConfig {
                                                         .implementation(Long.class))
                                         .parameter(
                                                 parameterBuilder()
+                                                        .name("accountabilityRuleId").in(ParameterIn.QUERY)
+                                                        .description("The unique identifier of the Accountability rule to filter the returned values by")
+                                                        .implementation(Long.class))
+                                        .parameter(
+                                                parameterBuilder()
                                                         .name("parentPartyId").in(ParameterIn.QUERY)
                                                         .description("The unique identifier of the Parent Party Record to filter the returned values by. The API regards a parent id value of 0 as a null parent id value")
                                                         .implementation(Long.class))
@@ -167,6 +172,11 @@ public class RoutesConfig {
                                         .beanClass(AccountabilitiesHandler.class)
                                         .beanMethod("updateAccountability")
                                         .description("Updates a single Accountability Record in the database")
+                                        .requestBody(
+                                                requestBodyBuilder()
+                                                        .content(contentBuilder()
+                                                                .schema(schemaBuilder()
+                                                                        .implementation(Accountability.class))))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Accountability Record was successfully updated")
@@ -248,6 +258,11 @@ public class RoutesConfig {
                                                 parameterBuilder()
                                                         .name("accountabilityTypeId").in(ParameterIn.QUERY)
                                                         .description("The unique identifier of the Accountability type to filter the deleted values by")
+                                                        .implementation(Long.class))
+                                        .parameter(
+                                                parameterBuilder()
+                                                        .name("accountabilityRuleId").in(ParameterIn.QUERY)
+                                                        .description("The unique identifier of the Accountability rule to filter the deleted values by")
                                                         .implementation(Long.class))
                                         .parameter(
                                                 parameterBuilder()

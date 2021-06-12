@@ -41,7 +41,7 @@ public class UpdateAccountabilitiesQuery {
 
         log.trace("Entering updateAccountabilities()");
 
-        String query = "UPDATE accountability SET accountability_type_id = ?, parent_party_id  = ?, subsidiary_party_id = ? WHERE id = ?";
+        String query = "UPDATE accountability SET accountability_type_id = ?, accountability_rule_id = ?, parent_party_id  = ?, subsidiary_party_id = ? WHERE id = ?";
 
         return
                 Flux.from(
@@ -59,6 +59,7 @@ public class UpdateAccountabilitiesQuery {
         for (Accountability accountability : accountabilities) {
             temp.add(Arrays.asList(
                     accountability.getAccountabilityTypeId(),
+                    accountability.getAccountabilityRuleId(),
                     accountability.getParentPartyId(),
                     accountability.getSubsidiaryPartyId(),
                     accountability.getId()

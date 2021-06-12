@@ -8,7 +8,6 @@
 package global.moja.accountabilities;
 
 import global.moja.accountabilities.models.Accountability;
-import global.moja.accountabilities.util.builders.AccountabilityBuilder;
 import org.assertj.core.api.Assertions;
 import org.junit.AfterClass;
 import org.junit.jupiter.api.Test;
@@ -55,9 +54,10 @@ public class RetrieveAccountabilityIT {
                 .start();
 
         accountability1 =
-                new AccountabilityBuilder()
+                Accountability.builder()
                         .id(1L)
                         .accountabilityTypeId(1L)
+                        .accountabilityRuleId(1L)
                         .parentPartyId(1L)
                         .subsidiaryPartyId(1L)
                         .version(1)
@@ -98,6 +98,7 @@ public class RetrieveAccountabilityIT {
                 .value(response -> {
                             Assertions.assertThat(response.getId()).isEqualTo(accountability1.getId());
                             Assertions.assertThat(response.getAccountabilityTypeId()).isEqualTo(accountability1.getAccountabilityTypeId());
+                            Assertions.assertThat(response.getAccountabilityRuleId()).isEqualTo(accountability1.getAccountabilityRuleId());
                             Assertions.assertThat(response.getParentPartyId()).isEqualTo(accountability1.getParentPartyId());
                             Assertions.assertThat(response.getSubsidiaryPartyId()).isEqualTo(accountability1.getSubsidiaryPartyId());
                             Assertions.assertThat(response.getVersion()).isEqualTo(1);

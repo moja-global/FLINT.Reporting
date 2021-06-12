@@ -8,7 +8,6 @@
 package global.moja.accountabilities;
 
 import global.moja.accountabilities.models.Accountability;
-import global.moja.accountabilities.util.builders.AccountabilityBuilder;
 import org.assertj.core.api.Assertions;
 import org.junit.AfterClass;
 import org.junit.jupiter.api.Test;
@@ -59,18 +58,20 @@ public class UpdateAccountabilitiesIT {
                 .start();
 
         accountability1 =
-                new AccountabilityBuilder()
+                Accountability.builder()
                         .id(1L)
                         .accountabilityTypeId(10L)
+                        .accountabilityRuleId(10L)
                         .parentPartyId(10L)
                         .subsidiaryPartyId(10L)
                         .version(1)
                         .build();
 
         accountability2 =
-                new AccountabilityBuilder()
+                Accountability.builder()
                         .id(2L)
                         .accountabilityTypeId(20L)
+                        .accountabilityRuleId(20L)
                         .parentPartyId(20L)
                         .subsidiaryPartyId(20L)
                         .version(1)
@@ -118,12 +119,14 @@ public class UpdateAccountabilitiesIT {
 
                     Assertions.assertThat(response.get(0).getId()).isEqualTo(accountability1.getId());
                     Assertions.assertThat(response.get(0).getAccountabilityTypeId()).isEqualTo(accountability1.getAccountabilityTypeId());
+                    Assertions.assertThat(response.get(0).getAccountabilityRuleId()).isEqualTo(accountability1.getAccountabilityRuleId());
                     Assertions.assertThat(response.get(0).getParentPartyId()).isEqualTo(accountability1.getParentPartyId());
                     Assertions.assertThat(response.get(0).getSubsidiaryPartyId()).isEqualTo(accountability1.getSubsidiaryPartyId());
                     Assertions.assertThat(response.get(0).getVersion()).isEqualTo(accountability1.getVersion() + 1);
 
                     Assertions.assertThat(response.get(1).getId()).isEqualTo(accountability2.getId());
                     Assertions.assertThat(response.get(1).getAccountabilityTypeId()).isEqualTo(accountability2.getAccountabilityTypeId());
+                    Assertions.assertThat(response.get(1).getAccountabilityRuleId()).isEqualTo(accountability2.getAccountabilityRuleId());
                     Assertions.assertThat(response.get(1).getParentPartyId()).isEqualTo(accountability2.getParentPartyId());
                     Assertions.assertThat(response.get(1).getSubsidiaryPartyId()).isEqualTo(accountability2.getSubsidiaryPartyId());
                     Assertions.assertThat(response.get(1).getVersion()).isEqualTo(accountability2.getVersion() + 1);

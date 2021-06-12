@@ -41,7 +41,7 @@ public class InsertAccountabilitiesQuery {
 
         log.trace("Entering insertAccountabilities");
 
-        String query = "INSERT INTO accountability(accountability_type_id,parent_party_id,subsidiary_party_id) VALUES(?,?,?)";
+        String query = "INSERT INTO accountability(accountability_type_id,accountability_rule_id,parent_party_id,subsidiary_party_id) VALUES(?,?,?,?)";
 
         return
                 Flux.from(
@@ -60,6 +60,7 @@ public class InsertAccountabilitiesQuery {
         for (Accountability accountability : accountabilities) {
             temp.add(Arrays.asList(
                     accountability.getAccountabilityTypeId(),
+                    accountability.getAccountabilityRuleId(),
                     accountability.getParentPartyId(),
                     accountability.getSubsidiaryPartyId()
 

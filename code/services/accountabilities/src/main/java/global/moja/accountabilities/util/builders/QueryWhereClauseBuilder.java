@@ -61,6 +61,18 @@ public class QueryWhereClauseBuilder {
 
         }
 
+        // Accountability Rule Id
+        if(queryParameters.getAccountabilityRuleId() != null){
+
+            if(query != null){
+                query.append(" AND ");
+            } else {
+                query = new StringBuilder();
+            }
+
+            query.append("accountability_rule_id = ").append(queryParameters.getAccountabilityRuleId());
+
+        }
 
         // Parent Party Id
         if(queryParameters.getParentPartyId() != null){

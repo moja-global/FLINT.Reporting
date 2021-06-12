@@ -50,17 +50,6 @@ public class AccountabilityRule implements Comparable<AccountabilityRule> {
                 }
             }
         }
-    }
 
-    @Override
-    public String toString() {
-        return
-                String.format(
-                        "Id: %d, " +
-                        "Accountability Type: %d, " +
-                        "Parent Party Type: %d, " +
-                        "Subsidiary Party Type: %d, " +
-                        "Version: %d ",
-                        id, accountabilityTypeId, parentPartyTypeId, subsidiaryPartyTypeId, version);
     }
 }

@@ -35,7 +35,7 @@ public class UpdateAccountabilityQuery {
 		
 		log.trace("Entering updateAccountability()");
 
-		String query = "UPDATE accountability SET accountability_type_id = ?, parent_party_id  = ?, subsidiary_party_id = ? WHERE id = ?";
+		String query = "UPDATE accountability SET accountability_type_id = ?, accountability_rule_id = ?, parent_party_id  = ?, subsidiary_party_id = ? WHERE id = ?";
 
 		return
 			Mono.from(
@@ -44,6 +44,7 @@ public class UpdateAccountabilityQuery {
 					.update(query)
 					.parameters(
 							accountability.getAccountabilityTypeId(),
+							accountability.getAccountabilityRuleId(),
 							accountability.getParentPartyId(),
 							accountability.getSubsidiaryPartyId(),
 							accountability.getId())

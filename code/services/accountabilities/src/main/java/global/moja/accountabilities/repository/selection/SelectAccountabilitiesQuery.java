@@ -7,7 +7,6 @@
  */
 package global.moja.accountabilities.repository.selection;
 
-import global.moja.accountabilities.util.builders.AccountabilityBuilder;
 import global.moja.accountabilities.configurations.DatabaseConfig;
 import global.moja.accountabilities.daos.QueryParameters;
 import global.moja.accountabilities.models.Accountability;
@@ -51,9 +50,11 @@ public class SelectAccountabilitiesQuery {
                                 .getDatabase()
                                 .select(query)
                                 .get(rs ->
-                                        new AccountabilityBuilder()
+                                        Accountability
+                                                .builder()
                                                 .id(rs.getLong("id"))
                                                 .accountabilityTypeId(rs.getLong("accountability_type_id"))
+                                                .accountabilityRuleId(rs.getLong("accountability_rule_id"))
                                                 .parentPartyId(rs.getLong("parent_party_id"))
                                                 .subsidiaryPartyId(rs.getLong("subsidiary_party_id"))
                                                 .version(rs.getInt("version"))

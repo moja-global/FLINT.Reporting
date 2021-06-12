@@ -21,6 +21,7 @@ public class QueryParametersBuilder {
 
     private Long[] ids;
     private Long accountabilityTypeId;
+    private Long accountabilityRuleId;
     private Long parentPartyId;
     private Long subsidiaryPartyId;
     
@@ -47,6 +48,13 @@ public class QueryParametersBuilder {
         return this;
     }
 
+    public QueryParametersBuilder accountabilityRuleId(ServerRequest request) {
+        this.accountabilityRuleId =
+                request.queryParam("accountabilityRuleId").isPresent() ?
+                        Long.parseLong(request.queryParam("accountabilityRuleId").get()) : null;
+        return this;
+    }
+
     public QueryParametersBuilder parentPartyId(ServerRequest request) {
         this.parentPartyId =
                 request.queryParam("parentPartyId").isPresent() ?
@@ -64,7 +72,7 @@ public class QueryParametersBuilder {
 
 
     public QueryParameters build() {
-        return new QueryParameters(ids, accountabilityTypeId, parentPartyId, subsidiaryPartyId);
+        return new QueryParameters(ids, accountabilityTypeId, accountabilityRuleId, parentPartyId, subsidiaryPartyId);
     }
 
 }

@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 public class QueryParameters {
     private Long[] ids;
     private Long accountabilityTypeId;
+    private Long accountabilityRuleId;
     private Long parentPartyId;
     private Long subsidiaryPartyId;
 }

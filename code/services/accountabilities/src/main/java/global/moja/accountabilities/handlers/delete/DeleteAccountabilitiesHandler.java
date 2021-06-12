@@ -57,6 +57,7 @@ public class DeleteAccountabilitiesHandler {
                                 new QueryParametersBuilder()
                                         .ids(request)
                                         .accountabilityTypeId(request)
+                                        .accountabilityRuleId(request)
                                         .parentPartyId(request)
                                         .subsidiaryPartyId(request)
                                         .build());

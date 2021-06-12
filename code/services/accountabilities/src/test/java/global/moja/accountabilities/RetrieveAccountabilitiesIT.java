@@ -8,7 +8,6 @@
 package global.moja.accountabilities;
 
 import global.moja.accountabilities.models.Accountability;
-import global.moja.accountabilities.util.builders.AccountabilityBuilder;
 import org.assertj.core.api.Assertions;
 import org.junit.AfterClass;
 import org.junit.jupiter.api.Test;
@@ -59,36 +58,40 @@ public class RetrieveAccountabilitiesIT {
                 .start();
 
         accountability1 =
-                new AccountabilityBuilder()
+                Accountability.builder()
                         .id(1L)
                         .accountabilityTypeId(1L)
+                        .accountabilityRuleId(1L)
                         .parentPartyId(1L)
                         .subsidiaryPartyId(1L)
                         .version(1)
                         .build();
 
         accountability2 =
-                new AccountabilityBuilder()
+                Accountability.builder()
                         .id(2L)
                         .accountabilityTypeId(2L)
+                        .accountabilityRuleId(2L)
                         .parentPartyId(2L)
                         .subsidiaryPartyId(2L)
                         .version(1)
                         .build();
 
         accountability3 =
-                new AccountabilityBuilder()
+                Accountability.builder()
                         .id(3L)
                         .accountabilityTypeId(3L)
+                        .accountabilityRuleId(3L)
                         .parentPartyId(3L)
                         .subsidiaryPartyId(3L)
                         .version(1)
                         .build();
 
         accountability4 =
-                new AccountabilityBuilder()
+                Accountability.builder()
                         .id(4L)
                         .accountabilityTypeId(4L)
+                        .accountabilityRuleId(4L)
                         .parentPartyId(0L)
                         .subsidiaryPartyId(4L)
                         .version(1)
@@ -133,17 +136,17 @@ public class RetrieveAccountabilitiesIT {
 
                             Assertions.assertThat(response.get(0).getId()).isEqualTo(accountability1.getId());
                             Assertions.assertThat(response.get(0).getAccountabilityTypeId()).isEqualTo(accountability1.getAccountabilityTypeId());
+                            Assertions.assertThat(response.get(0).getAccountabilityRuleId()).isEqualTo(accountability1.getAccountabilityRuleId());
                             Assertions.assertThat(response.get(0).getParentPartyId()).isEqualTo(accountability1.getParentPartyId());
                             Assertions.assertThat(response.get(0).getSubsidiaryPartyId()).isEqualTo(accountability1.getSubsidiaryPartyId());
                             Assertions.assertThat(response.get(0).getVersion()).isEqualTo(1);
 
                             Assertions.assertThat(response.get(1).getId()).isEqualTo(accountability3.getId());
                             Assertions.assertThat(response.get(1).getAccountabilityTypeId()).isEqualTo(accountability3.getAccountabilityTypeId());
+                            Assertions.assertThat(response.get(1).getAccountabilityRuleId()).isEqualTo(accountability3.getAccountabilityRuleId());
                             Assertions.assertThat(response.get(1).getParentPartyId()).isEqualTo(accountability3.getParentPartyId());
                             Assertions.assertThat(response.get(1).getSubsidiaryPartyId()).isEqualTo(accountability3.getSubsidiaryPartyId());
                             Assertions.assertThat(response.get(1).getVersion()).isEqualTo(1);
-
-
 
 
                         }
@@ -170,6 +173,36 @@ public class RetrieveAccountabilitiesIT {
 
                             Assertions.assertThat(response.get(0).getId()).isEqualTo(accountability3.getId());
                             Assertions.assertThat(response.get(0).getAccountabilityTypeId()).isEqualTo(accountability3.getAccountabilityTypeId());
+                            Assertions.assertThat(response.get(0).getAccountabilityRuleId()).isEqualTo(accountability3.getAccountabilityRuleId());
+                            Assertions.assertThat(response.get(0).getParentPartyId()).isEqualTo(accountability3.getParentPartyId());
+                            Assertions.assertThat(response.get(0).getSubsidiaryPartyId()).isEqualTo(accountability3.getSubsidiaryPartyId());
+                            Assertions.assertThat(response.get(0).getVersion()).isEqualTo(1);
+
+                        }
+                );
+    }
+
+
+    @Test
+    public void Given_AccountabilityRecordsExist_When_GetAllWithAccountabilityRuleIdFilter_Then_OnlyAccountabilityRecordsWithTheSpecifiedAccountabilityRuleIdWillBeReturned() {
+
+        webTestClient
+                .get()
+                .uri(uriBuilder ->
+                        uriBuilder
+                                .path("/api/v1/accountabilities/all")
+                                .queryParam("accountabilityRuleId", "{id1}")
+                                .build(accountability3.getAccountabilityRuleId().toString()))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(Accountability.class)
+                .value(response -> {
+
+                            Collections.sort(response);
+
+                            Assertions.assertThat(response.get(0).getId()).isEqualTo(accountability3.getId());
+                            Assertions.assertThat(response.get(0).getAccountabilityTypeId()).isEqualTo(accountability3.getAccountabilityTypeId());
+                            Assertions.assertThat(response.get(0).getAccountabilityRuleId()).isEqualTo(accountability3.getAccountabilityRuleId());
                             Assertions.assertThat(response.get(0).getParentPartyId()).isEqualTo(accountability3.getParentPartyId());
                             Assertions.assertThat(response.get(0).getSubsidiaryPartyId()).isEqualTo(accountability3.getSubsidiaryPartyId());
                             Assertions.assertThat(response.get(0).getVersion()).isEqualTo(1);
@@ -198,6 +231,7 @@ public class RetrieveAccountabilitiesIT {
 
                             Assertions.assertThat(response.get(0).getId()).isEqualTo(accountability3.getId());
                             Assertions.assertThat(response.get(0).getAccountabilityTypeId()).isEqualTo(accountability3.getAccountabilityTypeId());
+                            Assertions.assertThat(response.get(0).getAccountabilityRuleId()).isEqualTo(accountability3.getAccountabilityRuleId());
                             Assertions.assertThat(response.get(0).getParentPartyId()).isEqualTo(accountability3.getParentPartyId());
                             Assertions.assertThat(response.get(0).getSubsidiaryPartyId()).isEqualTo(accountability3.getSubsidiaryPartyId());
                             Assertions.assertThat(response.get(0).getVersion()).isEqualTo(1);
@@ -227,6 +261,7 @@ public class RetrieveAccountabilitiesIT {
 
                             Assertions.assertThat(response.get(0).getId()).isEqualTo(accountability4.getId());
                             Assertions.assertThat(response.get(0).getAccountabilityTypeId()).isEqualTo(accountability4.getAccountabilityTypeId());
+                            Assertions.assertThat(response.get(0).getAccountabilityRuleId()).isEqualTo(accountability4.getAccountabilityRuleId());
                             Assertions.assertThat(response.get(0).getParentPartyId()).isEqualTo(accountability4.getParentPartyId());
                             Assertions.assertThat(response.get(0).getSubsidiaryPartyId()).isEqualTo(accountability4.getSubsidiaryPartyId());
                             Assertions.assertThat(response.get(0).getVersion()).isEqualTo(1);
@@ -257,6 +292,7 @@ public class RetrieveAccountabilitiesIT {
 
                             Assertions.assertThat(response.get(0).getId()).isEqualTo(accountability3.getId());
                             Assertions.assertThat(response.get(0).getAccountabilityTypeId()).isEqualTo(accountability3.getAccountabilityTypeId());
+                            Assertions.assertThat(response.get(0).getAccountabilityRuleId()).isEqualTo(accountability3.getAccountabilityRuleId());
                             Assertions.assertThat(response.get(0).getParentPartyId()).isEqualTo(accountability3.getParentPartyId());
                             Assertions.assertThat(response.get(0).getSubsidiaryPartyId()).isEqualTo(accountability3.getSubsidiaryPartyId());
                             Assertions.assertThat(response.get(0).getVersion()).isEqualTo(1);
@@ -264,7 +300,6 @@ public class RetrieveAccountabilitiesIT {
                         }
                 );
     }
-
 
 
 }
