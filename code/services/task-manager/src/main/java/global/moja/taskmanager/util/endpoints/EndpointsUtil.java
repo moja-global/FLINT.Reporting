@@ -39,8 +39,8 @@ public class EndpointsUtil {
         return quantityObservationsEndpointUtil.deleteQuantityObservations(databaseId);
     }
 
-    public Flux<Accountability> retrieveAccountabilities(Long accountabilityTypeId, Long parentPartyId) {
-        return accountabilitiesEndpointUtil.retrieveAccountabilities(accountabilityTypeId, parentPartyId);
+    public Flux<Accountability> retrieveAccountabilities(Long accountabilityRuleId){
+        return accountabilitiesEndpointUtil.retrieveAccountabilities(accountabilityRuleId);
     }
 
     public Flux<AccountabilityRule> retrieveAccountabilityRules(Long accountabilityTypeId) {

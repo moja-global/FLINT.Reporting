@@ -27,7 +27,7 @@ public class AccountabilitiesEndpointUtil {
   @Autowired
   WebClientUtil webClientUtil;
 
-  public Flux<Accountability> retrieveAccountabilities(Long accountabilityTypeId, Long parentPartyId) {
+  public Flux<Accountability> retrieveAccountabilities(Long accountabilityRuleId) {
 
     log.trace("Entering retrieveAccountabilities()");
 
@@ -37,9 +37,8 @@ public class AccountabilitiesEndpointUtil {
             .uri(uriBuilder ->
                     uriBuilder
                             .path("/all")
-                            .queryParam("accountabilityTypeId", "{id1}")
-                            .queryParam("parentPartyId", "{id2}")
-                            .build(accountabilityTypeId.toString(), parentPartyId.toString()))
+                            .queryParam("accountabilityRuleId", "{id1}")
+                            .build(accountabilityRuleId.toString()))
         .accept(MediaType.APPLICATION_JSON)
         .retrieve()
         .bodyToFlux(Accountability.class);

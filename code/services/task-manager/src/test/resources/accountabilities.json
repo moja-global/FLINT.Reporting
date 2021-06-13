@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "accountabilityTypeId": 1,
+    "accountabilityRuleId": 1,
+    "parentPartyId": 0,
+    "subsidiaryPartyId": 1,
+    "version": 1
+  },
+  {
+    "id": 2,
+    "accountabilityTypeId": 1,
+    "accountabilityRuleId": 2,
+    "parentPartyId": 1,
+    "subsidiaryPartyId": 2,
+    "version": 1
+  },
+  {
+    "id": 3,
+    "accountabilityTypeId": 1,
+    "accountabilityRuleId": 2,
+    "parentPartyId": 1,
+    "subsidiaryPartyId": 3,
+    "version": 1
+  },
+  {
+    "id": 4,
+    "accountabilityTypeId": 1,
+    "accountabilityRuleId": 3,
+    "parentPartyId": 2,
+    "subsidiaryPartyId": 4,
+    "version": 1
+  },
+  {
+    "id": 5,
+    "accountabilityTypeId": 1,
+    "accountabilityRuleId": 3,
+    "parentPartyId": 3,
+    "subsidiaryPartyId": 5,
+    "version": 1
+  },
+  {
+    "id": 6,
+    "accountabilityTypeId": 1,
+    "accountabilityRuleId": 3,
+    "parentPartyId": 2,
+    "subsidiaryPartyId": 6,
+    "version": 1
+  },
+  {
+    "id": 7,
+    "accountabilityTypeId": 1,
+    "accountabilityRuleId": 4,
+    "parentPartyId": 4,
+    "subsidiaryPartyId": 7,
+    "version": 1
+  },
+  {
+    "id": 8,
+    "accountabilityTypeId": 1,
+    "accountabilityRuleId": 4,
+    "parentPartyId": 5,
+    "subsidiaryPartyId": 8,
+    "version": 1
+  },
+  {
+    "id": 9,
+    "accountabilityTypeId": 1,
+    "accountabilityRuleId": 4,
+    "parentPartyId": 6,
+    "subsidiaryPartyId": 9,
+    "version": 1
+  },
+  {
+    "id": 10,
+    "accountabilityTypeId": 1,
+    "accountabilityRuleId": 4,
+    "parentPartyId": 4,
+    "subsidiaryPartyId": 10,
+    "version": 1
+  },
+  {
+    "id": 11,
+    "accountabilityTypeId": 1,
+    "accountabilityRuleId": 5,
+    "parentPartyId": 7,
+    "subsidiaryPartyId": 11,
+    "version": 1
+  },
+  {
+    "id": 12,
+    "accountabilityTypeId": 1,
+    "accountabilityRuleId": 5,
+    "parentPartyId": 8,
+    "subsidiaryPartyId": 12,
+    "version": 1
+  },
+  {
+    "id": 13,
+    "accountabilityTypeId": 1,
+    "accountabilityRuleId": 5,
+    "parentPartyId": 9,
+    "subsidiaryPartyId": 13,
+    "version": 1
+  },
+  {
+    "id": 14,
+    "accountabilityTypeId": 1,
+    "accountabilityRuleId": 5,
+    "parentPartyId": 10,
+    "subsidiaryPartyId": 14,
+    "version": 1
+  },
+  {
+    "id": 15,
+    "accountabilityTypeId": 1,
+    "accountabilityRuleId": 5,
+    "parentPartyId": 7,
+    "subsidiaryPartyId": 15,
+    "version": 1
+  }
+]

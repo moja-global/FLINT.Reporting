@@ -27,7 +27,6 @@ public class AccountabilityRule implements Comparable<AccountabilityRule> {
     private Long subsidiaryPartyTypeId;
     private Integer version;
 
-
     @Override
     public int compareTo(AccountabilityRule o) {
 
@@ -52,7 +51,6 @@ public class AccountabilityRule implements Comparable<AccountabilityRule> {
                 }
             }
         }
-
     }
 
     @Override
@@ -66,5 +64,4 @@ public class AccountabilityRule implements Comparable<AccountabilityRule> {
                         "Version: %d ",
                         id, accountabilityTypeId, parentPartyTypeId, subsidiaryPartyTypeId, version);
     }
-
 }

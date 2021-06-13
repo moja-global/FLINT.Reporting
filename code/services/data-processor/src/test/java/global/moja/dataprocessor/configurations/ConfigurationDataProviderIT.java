@@ -2,6 +2,7 @@ package global.moja.dataprocessor.configurations;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import global.moja.dataprocessor.Application;
 import global.moja.dataprocessor.models.*;
 import global.moja.dataprocessor.util.LandUseChangeAction;
 import org.junit.jupiter.api.AfterAll;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.nio.file.FileSystems;
