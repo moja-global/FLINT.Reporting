@@ -7,10 +7,14 @@
  */
 package global.moja.taskmanager.util.endpoints;
 
+import global.moja.taskmanager.models.QuantityObservation;
+import global.moja.taskmanager.util.webclient.impl.WebClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -24,17 +28,24 @@ import java.util.List;
 public class QuantityObservationsEndpointUtil {
 
     @Autowired
-    QuantityObservationsCreationEndpointUtil quantityObservationsCreationEndpointUtil;
+    WebClientUtil webClientUtil;
 
-    @Autowired
-    QuantityObservationsRetrievalEndpointUtil quantityObservationsRetrievalEndpointUtil;
+    public Mono<Integer> deleteQuantityObservations(Long databaseId) {
 
-    public Flux<Long> createQuantityObservations(QuantityObservation[] observations) {
-        return quantityObservationsCreationEndpointUtil.createQuantityObservations(observations);
+        log.trace("Entering deleteQuantityObservations()");
+        log.debug("Database Id = {}", databaseId);
+
+        return webClientUtil
+                .getQuantityObservationsWebClient()
+                .delete()
+                .uri(uriBuilder ->
+                        uriBuilder
+                                .path("/all")
+                                .queryParam("databaseId", "{id1}")
+                                .build(databaseId.toString()))
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(Integer.class);
     }
 
-    public Flux<QuantityObservation> retrieveQuantityObservations(Long observationTypeId, List<Long> partiesId, Long databaseId ) {
-        return quantityObservationsRetrievalEndpointUtil
-                .retrieveQuantityObservations(observationTypeId, partiesId, databaseId);
-    }
 }

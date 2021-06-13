@@ -1,4 +1,4 @@
-package global.moja.dataprocessor.daos;
+package global.moja.taskmanager.daos;
 
 import lombok.*;
 import lombok.extern.jackson.Jacksonized;

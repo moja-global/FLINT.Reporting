@@ -117,7 +117,7 @@ if [ $ACCOUNTABILITIES -eq 1 ]; then
   psql -d "accountabilities" -1 -f "$PROJECT_DIR/services/accountabilities/src/main/resources/accountabilities.sql"
 
   # Load the accountability's database data
-  psql -d "accountabilities" -1 -c "\copy accountability(accountability_type_id,parent_party_id,subsidiary_party_id,version) from \
+  psql -d "accountabilities" -1 -c "\copy accountability(accountability_type_id,accountability_rule_id,parent_party_id,subsidiary_party_id,version) from \
           '$PROJECT_DIR/data/accountabilities.csv' DELIMITER ',' CSV HEADER"
 
 fi

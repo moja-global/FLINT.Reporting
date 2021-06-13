@@ -13,8 +13,11 @@ import lombok.extern.jackson.Jacksonized;
 @NoArgsConstructor
 @Data
 @Builder
-public class DataProcessingRequest {
+public class DataAggregationRequest {
+
     private Long taskId;
     private Long databaseId;
-    private Long partyId;
+    private Long parentPartyId;
+    private Long accountabilityTypeId;
+
 }

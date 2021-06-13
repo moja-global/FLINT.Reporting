@@ -8,7 +8,6 @@
 package global.moja.taskmanager.util.endpoints;
 
 import global.moja.taskmanager.models.Accountability;
-import global.moja.taskmanager.models.AccountabilityRule;
 import global.moja.taskmanager.util.webclient.impl.WebClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,25 +22,26 @@ import reactor.core.publisher.Flux;
  */
 @Component
 @Slf4j
-public class AccountabilityRulesEndpointUtil {
+public class AccountabilitiesEndpointUtil {
 
   @Autowired
   WebClientUtil webClientUtil;
 
-  public Flux<AccountabilityRule> retrieveAccountabilityRules(Long accountabilityTypeId) {
+  public Flux<Accountability> retrieveAccountabilities(Long accountabilityTypeId, Long parentPartyId) {
 
-    log.trace("Entering retrieveAccountabilityRules()");
+    log.trace("Entering retrieveAccountabilities()");
 
     return webClientUtil
-        .getAccountabilityRulesWebClient()
+        .getAccountabilitiesWebClient()
         .get()
             .uri(uriBuilder ->
                     uriBuilder
                             .path("/all")
                             .queryParam("accountabilityTypeId", "{id1}")
-                            .build(accountabilityTypeId.toString()))
+                            .queryParam("parentPartyId", "{id2}")
+                            .build(accountabilityTypeId.toString(), parentPartyId.toString()))
         .accept(MediaType.APPLICATION_JSON)
         .retrieve()
-        .bodyToFlux(AccountabilityRule.class);
+        .bodyToFlux(Accountability.class);
   }
 }

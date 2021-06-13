@@ -5,7 +5,7 @@
  * If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package global.moja.accountabilityrules.models;
+package global.moja.taskmanager.models;
 
 import lombok.*;
 
@@ -18,6 +18,7 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 @Builder
+@EqualsAndHashCode
 public class AccountabilityRule implements Comparable<AccountabilityRule> {
 
     private Long id;
@@ -25,6 +26,7 @@ public class AccountabilityRule implements Comparable<AccountabilityRule> {
     private Long parentPartyTypeId;
     private Long subsidiaryPartyTypeId;
     private Integer version;
+
 
     @Override
     public int compareTo(AccountabilityRule o) {
@@ -52,4 +54,17 @@ public class AccountabilityRule implements Comparable<AccountabilityRule> {
         }
 
     }
+
+    @Override
+    public String toString() {
+        return
+                String.format(
+                        "Id: %d, " +
+                        "Accountability Type: %d, " +
+                        "Parent Party Type: %d, " +
+                        "Subsidiary Party Type: %d, " +
+                        "Version: %d ",
+                        id, accountabilityTypeId, parentPartyTypeId, subsidiaryPartyTypeId, version);
+    }
+
 }
