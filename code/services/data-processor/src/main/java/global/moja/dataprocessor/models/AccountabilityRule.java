@@ -27,13 +27,40 @@ public class AccountabilityRule implements Comparable<AccountabilityRule> {
     private Integer version;
 
     @Override
-    public int compareTo(AccountabilityRule accountabilityRule) {
+    public int compareTo(AccountabilityRule o) {
 
-        if(this.id != null && accountabilityRule.getId() != null){
-            return this.id.compareTo(accountabilityRule.getId());
+        if(!this.accountabilityTypeId.equals(o.getAccountabilityTypeId())) {
+            return this.accountabilityTypeId.compareTo(o.getAccountabilityTypeId());
         } else {
-            return 0;
+            if(this.parentPartyTypeId == null && o.getParentPartyTypeId() == null) {
+                return this.id.compareTo(o.getId());
+            } else if(this.parentPartyTypeId == null) {
+                return 1;
+            } else if(o.getParentPartyTypeId() == null) {
+                return -1;
+            } else {
+                if(this.parentPartyTypeId.equals(o.getId())) {
+                    return 1;
+                } else if(this.id.equals(o.getParentPartyTypeId())) {
+                    return -1;
+                } else if(!this.parentPartyTypeId.equals(o.getParentPartyTypeId())) {
+                    return this.parentPartyTypeId.compareTo(o.getParentPartyTypeId());
+                } else {
+                    return this.id.compareTo(o.getId());
+                }
+            }
         }
+    }
 
+    @Override
+    public String toString() {
+        return
+                String.format(
+                        "Id: %d, " +
+                        "Accountability Type: %d, " +
+                        "Parent Party Type: %d, " +
+                        "Subsidiary Party Type: %d, " +
+                        "Version: %d ",
+                        id, accountabilityTypeId, parentPartyTypeId, subsidiaryPartyTypeId, version);
     }
 }
