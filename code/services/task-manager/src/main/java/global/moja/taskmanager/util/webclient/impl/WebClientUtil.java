@@ -29,18 +29,37 @@ WebClientUtil {
     AccountabilityRulesWebClientUtil accountabilityRulesWebClientUtil;
 
     @Autowired
+    DatabasesWebClientUtil databasesWebClientUtil;
+
+    @Autowired
     QuantityObservationsWebClientUtil quantityObservationsWebClientUtil;
 
+    @Autowired
+    TasksWebClientUtil tasksWebClientUtil;
+
+    // Accountabilities
     public WebClient getAccountabilitiesWebClient() {
         return accountabilitiesWebClientUtil.getAccountabilitiesWebClient();
     }
 
+    // Accountability Rules
     public WebClient getAccountabilityRulesWebClient() {
         return accountabilityRulesWebClientUtil.getAccountabilityRulesWebClient();
     }
 
+    // Databases
+    public WebClient getDatabasesWebClient() {
+        return databasesWebClientUtil.getDatabasesWebClient();
+    }
+
+    // Quantity Observations
     public WebClient getQuantityObservationsWebClient() {
         return quantityObservationsWebClientUtil.getQuantityObservationsWebClient();
+    }
+
+    // Taks
+    public WebClient getTasksWebClient() {
+        return tasksWebClientUtil.getTasksWebClient();
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 The Second Mile
+ * Copyright (C) 2021 Moja Global
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * If a copy of the MPL was not distributed with this file,
@@ -45,12 +45,15 @@ public class RabbitConfig {
   @Value("${spring.rabbitmq.password}")
   private String password;
 
+  public static final String RAW_DATA_PROCESSING_EXCHANGE_NAME = "Raw-Data-Processing";
+  public static final String RAW_DATA_PROCESSING_QUEUE = "Raw-Data-Processing-Queue";
+  public static final String RAW_DATA_PROCESSING_RESULTS_QUEUE = "Raw-Data-Processing-Results-Queue";
+  public static final String RAW_DATA_PROCESSING_ROUTING_KEY = "Raw-Data-Processing";
 
   public static final String PROCESSED_DATA_AGGREGATION_EXCHANGE_NAME = "Processed-Data-Aggregation";
   public static final String PROCESSED_DATA_AGGREGATION_QUEUE = "Processed-Data-Aggregation-Queue";
   public static final String PROCESSED_DATA_AGGREGATION_RESULTS_QUEUE = "Processed-Data-Aggregation-Results-Queue";
   public static final String PROCESSED_DATA_AGGREGATION_ROUTING_KEY = "Processed-Data-Aggregation";
-
 
   @Bean
   public ConnectionFactory connectionFactory() {
@@ -66,6 +69,11 @@ public class RabbitConfig {
   // <editor-fold defaultstate="collapsed" desc="Topic Exchanges">
 
   @Bean
+  public TopicExchange rawDataProcessingExchange() {
+    return new TopicExchange(RAW_DATA_PROCESSING_EXCHANGE_NAME);
+  }
+
+  @Bean
   public TopicExchange processedDataAggregationExchange() {
     return new TopicExchange(PROCESSED_DATA_AGGREGATION_EXCHANGE_NAME);
   }
@@ -73,6 +81,16 @@ public class RabbitConfig {
   // </editor-fold>
 
   // <editor-fold defaultstate="collapsed" desc="Queues">
+
+  @Bean
+  public Queue rawDataProcessingQueue() {
+    return new Queue(RAW_DATA_PROCESSING_QUEUE);
+  }
+
+  @Bean
+  public Queue rawDataProcessingResultsQueue() {
+    return new Queue(RAW_DATA_PROCESSING_RESULTS_QUEUE);
+  }
 
   @Bean
   public Queue processedDataAggregationQueue() {
@@ -87,6 +105,21 @@ public class RabbitConfig {
   // </editor-fold>
 
   // <editor-fold defaultstate="collapsed" desc="Topic Exchanges / Queues Bindings">
+
+  @Bean
+  public Binding rawDataProcessingBinding() {
+    return BindingBuilder.bind(rawDataProcessingQueue())
+            .to(rawDataProcessingExchange())
+            .with(RAW_DATA_PROCESSING_ROUTING_KEY);
+  }
+
+
+  @Bean
+  public Binding rawDataProcessingResultsBinding() {
+    return BindingBuilder.bind(rawDataProcessingResultsQueue())
+            .to(rawDataProcessingExchange())
+            .with(RAW_DATA_PROCESSING_ROUTING_KEY);
+  }
 
   @Bean
   public Binding processedDataAggregationBinding() {

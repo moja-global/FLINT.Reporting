@@ -7,16 +7,12 @@
  */
 package global.moja.taskmanager.util.endpoints;
 
-import global.moja.taskmanager.models.QuantityObservation;
 import global.moja.taskmanager.util.webclient.impl.WebClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 /**
  * @author Kwaje Anthony <tony@miles.co.ke>
@@ -25,18 +21,18 @@ import java.util.List;
  */
 @Component
 @Slf4j
-public class QuantityObservationsEndpointUtil {
+public class TasksDeletionEndpointUtil {
 
     @Autowired
     WebClientUtil webClientUtil;
 
-    public Mono<Integer> deleteQuantityObservations(Long databaseId) {
+    public Mono<Integer> deleteTasks(Long databaseId) {
 
-        log.trace("Calling deleteQuantityObservations()");
+        log.trace("Calling deleteTasks()");
         log.debug("Database Id = {}", databaseId);
 
         return webClientUtil
-                .getQuantityObservationsWebClient()
+                .getTasksWebClient()
                 .delete()
                 .uri(uriBuilder ->
                         uriBuilder

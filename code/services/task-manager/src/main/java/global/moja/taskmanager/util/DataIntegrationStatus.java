@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 The Second Mile
+ * Copyright (C) 2021 Moja Global
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
  * If a copy of the MPL was not distributed with this file,
@@ -14,12 +14,12 @@ package global.moja.taskmanager.util;
  * @author Kwaje Anthony <tony@miles.co.ke>
  * @version 1.0
  */
-public enum DataAggregationStatus {
+public enum DataIntegrationStatus {
 
 	SUCCEEDED(1),
 	FAILED(0);
 
-	private DataAggregationStatus(int id) {
+	private DataIntegrationStatus(int id) {
 		this.id = id;
 	}
 

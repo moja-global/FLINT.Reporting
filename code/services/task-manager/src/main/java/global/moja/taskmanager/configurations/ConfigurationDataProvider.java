@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-
 import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -42,7 +41,7 @@ public class ConfigurationDataProvider {
 
     private List<Long> dataProcessingLevelPartiesIds;
     private Map<Integer, LinkedList<Long>> dataAggregationLevelsPartiesIds;
-    
+
     @Autowired
     public ConfigurationDataProvider(EndpointsUtil endpointsUtil){
         this.endpointsUtil = endpointsUtil;

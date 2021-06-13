@@ -7,16 +7,14 @@
  */
 package global.moja.taskmanager.util.endpoints;
 
-import global.moja.taskmanager.models.QuantityObservation;
+
+import global.moja.taskmanager.models.Database;
 import global.moja.taskmanager.util.webclient.impl.WebClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 /**
  * @author Kwaje Anthony <tony@miles.co.ke>
@@ -25,27 +23,22 @@ import java.util.List;
  */
 @Component
 @Slf4j
-public class QuantityObservationsEndpointUtil {
+public class DatabasesUpdationEndpointUtil {
 
     @Autowired
     WebClientUtil webClientUtil;
 
-    public Mono<Integer> deleteQuantityObservations(Long databaseId) {
+    public Mono<Database> updateDatabase(Database database) {
 
-        log.trace("Calling deleteQuantityObservations()");
-        log.debug("Database Id = {}", databaseId);
+        log.trace("Calling updateDatabases()");
 
         return webClientUtil
-                .getQuantityObservationsWebClient()
-                .delete()
-                .uri(uriBuilder ->
-                        uriBuilder
-                                .path("/all")
-                                .queryParam("databaseId", "{id1}")
-                                .build(databaseId.toString()))
+                .getDatabasesWebClient()
+                .put()
+                .body(Mono.just(database), Database.class)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(Integer.class);
+                .bodyToMono(Database.class);
     }
 
 }

@@ -7,13 +7,14 @@
  */
 package global.moja.taskmanager.util.endpoints;
 
-import global.moja.taskmanager.models.Accountability;
+import global.moja.taskmanager.models.Database;
 import global.moja.taskmanager.util.webclient.impl.WebClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * @since 0.0.1
@@ -22,25 +23,24 @@ import reactor.core.publisher.Flux;
  */
 @Component
 @Slf4j
-public class AccountabilitiesEndpointUtil {
+public class DatabasesRetrievalEndpointUtil {
 
   @Autowired
   WebClientUtil webClientUtil;
 
-  public Flux<Accountability> retrieveAccountabilities(Long accountabilityRuleId) {
+  public Mono<Database> retrieveDatabase(Long databaseId) {
 
-    log.trace("Entering retrieveAccountabilities()");
+    log.trace("Entering retrieveDatabases()");
 
     return webClientUtil
-        .getAccountabilitiesWebClient()
+        .getDatabasesWebClient()
         .get()
             .uri(uriBuilder ->
                     uriBuilder
-                            .path("/all")
-                            .queryParam("accountabilityRuleId", "{id1}")
-                            .build(accountabilityRuleId.toString()))
+                            .path("/api/v1/databases/ids/{id}")
+                            .build(databaseId.toString()))
         .accept(MediaType.APPLICATION_JSON)
         .retrieve()
-        .bodyToFlux(Accountability.class);
+        .bodyToMono(Database.class);
   }
 }

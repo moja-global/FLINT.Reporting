@@ -8,9 +8,7 @@
 
 package global.moja.taskmanager.util.endpoints;
 
-import global.moja.taskmanager.models.Accountability;
-import global.moja.taskmanager.models.AccountabilityRule;
-import global.moja.taskmanager.models.QuantityObservation;
+import global.moja.taskmanager.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
@@ -33,11 +31,16 @@ public class EndpointsUtil {
     AccountabilityRulesEndpointUtil accountabilityRulesEndpointUtil;
 
     @Autowired
+    DatabasesEndpointUtil databasesEndpointUtil;
+
+    @Autowired
     QuantityObservationsEndpointUtil quantityObservationsEndpointUtil;
 
-    public Mono<Integer> deleteQuantityObservations(Long databaseId) {
-        return quantityObservationsEndpointUtil.deleteQuantityObservations(databaseId);
-    }
+    @Autowired
+    TasksEndpointUtil tasksEndpointUtil;
+
+
+    // Accountabilities
 
     public Flux<Accountability> retrieveAccountabilities(Long accountabilityRuleId){
         return accountabilitiesEndpointUtil.retrieveAccountabilities(accountabilityRuleId);
@@ -45,6 +48,37 @@ public class EndpointsUtil {
 
     public Flux<AccountabilityRule> retrieveAccountabilityRules(Long accountabilityTypeId) {
         return accountabilityRulesEndpointUtil.retrieveAccountabilityRules(accountabilityTypeId);
+    }
+
+    // Databases
+
+    public Mono<Database> retrieveDatabase(Long databaseId) {
+        return databasesEndpointUtil.retrieveDatabase(databaseId);
+    }
+
+    public Mono<Database> updateDatabase(Database database) {
+        return databasesEndpointUtil.updateDatabase(database);
+    }
+
+
+    // Quantity Observations
+
+    public Mono<Integer> deleteQuantityObservations(Long databaseId) {
+        return quantityObservationsEndpointUtil.deleteQuantityObservations(databaseId);
+    }
+
+
+    // Tasks
+    public Mono<Task> createTask(Task task) {
+        return tasksEndpointUtil.createTasks(task);
+    }
+
+    public Mono<Integer> deleteTasks(Long databaseId) {
+        return tasksEndpointUtil.deleteTasks(databaseId);
+    }
+
+    public Mono<Task> updateTask(Task task) {
+        return tasksEndpointUtil.updateTask(task);
     }
 
 }

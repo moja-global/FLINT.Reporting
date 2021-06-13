@@ -29,7 +29,13 @@ public class HostsConfig {
     @Value("${accountability.rules.service.host}/api/v1/accountability_rules")
     private String accountabilityRulesServiceHost;
 
+    @Value("${databases.service.host}/api/v1/databases")
+    private String databasesServiceHost;
+
     @Value("${quantity.observations.service.host}/api/v1/quantity_observations")
     private String quantityObservationsServiceHost;
+
+    @Value("${tasks.service.host}/api/v1/tasks")
+    private String tasksServiceHost;
 
 }
