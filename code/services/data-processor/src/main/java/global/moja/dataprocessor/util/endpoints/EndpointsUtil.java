@@ -69,7 +69,7 @@ public class EndpointsUtil {
     @Autowired
     VegetationTypesEndpointsUtil vegetationTypesEndpointsUtil;
 
-    public Mono<List<Long>> createQuantityObservations(QuantityObservation[] observations) {
+    public Flux<QuantityObservation> createQuantityObservations(QuantityObservation[] observations) {
         return quantityObservationsEndpointUtil
                 .createQuantityObservations(observations);
     }

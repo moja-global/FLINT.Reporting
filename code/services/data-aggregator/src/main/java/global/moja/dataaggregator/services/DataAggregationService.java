@@ -104,7 +104,7 @@ public class DataAggregationService {
                             endpointsUtil.createQuantityObservations(
                                     aggregatedQuantityObservations.toArray(QuantityObservation[]::new))
                                     .collectList())
-                    .map(ids -> DataAggregationStatus.SUCCEEDED)
+                    .map(observations -> DataAggregationStatus.SUCCEEDED)
                     .onErrorReturn(DataAggregationStatus.FAILED)
                     .block();
 

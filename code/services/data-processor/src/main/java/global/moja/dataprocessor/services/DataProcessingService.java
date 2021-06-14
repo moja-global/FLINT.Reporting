@@ -125,8 +125,11 @@ public class DataProcessingService {
                                                     request.getPartyId(),
                                                     request.getDatabaseId(),
                                                     locationLandUsesAllocatedFluxReportingResultsAggregations))
-                            .flatMap(quantityObservations -> endpointsUtil.createQuantityObservations(quantityObservations.toArray(QuantityObservation[]::new)))
-                            .map(ids -> DataProcessingStatus.SUCCEEDED)
+                            .flatMap(quantityObservations ->
+                                    endpointsUtil
+                                            .createQuantityObservations(quantityObservations.toArray(QuantityObservation[]::new))
+                                            .collectList())
+                            .map(observations -> DataProcessingStatus.SUCCEEDED)
                             .onErrorReturn(DataProcessingStatus.FAILED)
                             .block();
 

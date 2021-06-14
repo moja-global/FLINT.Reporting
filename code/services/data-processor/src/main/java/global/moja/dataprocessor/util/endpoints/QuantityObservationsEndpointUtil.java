@@ -13,34 +13,34 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 /**
- * @since 0.0.1
  * @author Kwaje Anthony <tony@miles.co.ke>
  * @version 1.0
+ * @since 0.0.1
  */
 @Component
 @Slf4j
 public class QuantityObservationsEndpointUtil {
 
-  @Autowired
-  WebClientUtil webClientUtil;
+    @Autowired
+    WebClientUtil webClientUtil;
 
-  public Mono<List<Long>> createQuantityObservations(QuantityObservation[] observations) {
+    public Flux<QuantityObservation> createQuantityObservations(QuantityObservation[] observations) {
 
-    log.trace("Calling createQuantityObservations()");
+        log.trace("Calling createQuantityObservations()");
 
-    return webClientUtil
-        .getQuantityObservationsWebClient()
-        .post()
-		.uri("/all")
-        .body(Mono.just(observations), QuantityObservation[].class)
-        .accept(MediaType.APPLICATION_JSON)
-        .retrieve()
-        .bodyToFlux(Long.class)
-				.collectList();
-  }
+        return webClientUtil
+                .getQuantityObservationsWebClient()
+                .post()
+                .uri("/all")
+                .body(Mono.just(observations), QuantityObservation[].class)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(QuantityObservation.class);
+    }
 }
