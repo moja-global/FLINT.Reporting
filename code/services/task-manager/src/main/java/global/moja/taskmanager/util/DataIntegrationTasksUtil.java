@@ -43,8 +43,8 @@ public class DataIntegrationTasksUtil {
         tasks.remove(task);
     }
 
-    public void insertTaskLevel(Long taskId, Integer level) {
-        tasksLevels.put(taskId, level);
+    public void initializeTaskLevel(Long taskId) {
+        tasksLevels.put(taskId, 1);
     }
 
 

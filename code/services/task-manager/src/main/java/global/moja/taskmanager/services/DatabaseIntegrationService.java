@@ -66,7 +66,7 @@ public class DatabaseIntegrationService {
     public void integrateDatabase(Long databaseId) {
         endpointsUtil
                 .deleteQuantityObservations(databaseId)
-                .then(endpointsUtil.deleteTasks(databaseId))
+                .flatMap(count -> endpointsUtil.deleteTasks(databaseId))
                 .subscribe(new BaseSubscriber<>() {
                     @Override
                     protected void hookOnComplete() {
@@ -80,6 +80,7 @@ public class DatabaseIntegrationService {
         log.trace("Entering startDataProcessing()");
         log.debug("Database Id = {}", databaseId);
 
+        log.trace("Creating a Data Processing Task record)");
         endpointsUtil
                 .createTask(
                         Task.builder()
@@ -90,17 +91,21 @@ public class DatabaseIntegrationService {
                                 .issues(configurationDataProvider.getTotalDataProcessingIssues())
                                 .resolved(0)
                                 .rejected(0)
-                                .note("Initialized Data Processing Task")
+                                .note("Processing Database")
                                 .build())
                 .subscribe(new BaseSubscriber<>() {
 
                     @Override
                     protected void hookOnNext(Task task) {
 
-                        // Keep a local copy of the task for management purpose
+                        log.debug("Data Processing Task = {}", task);
+
+                        // Keep a local copy of the Data Processing Task record for management purpose
+                        log.trace("Keeping a local copy of the Data Processing Task record for management purpose");
                         dataIntegrationTasksUtil.insertTask(task);
 
-                        // Queue the data processing tasks
+                        // Queue Data Processing requests
+                        log.trace("Queueing Data Processing requests");
                         configurationDataProvider
                                 .getDataProcessingLevelPartiesIds()
                                 .forEach(id -> {
@@ -120,21 +125,25 @@ public class DatabaseIntegrationService {
 
 
     @RabbitListener(queues = RabbitConfig.RAW_DATA_PROCESSING_RESULTS_QUEUE)
-    void manageDataProcessing(final DataProcessingResponse response) {
+    private void manageDataProcessing(final DataProcessingResponse response) {
 
         log.trace("Entering manageDataProcessing()");
         log.debug("Data Processing Response = {}", response);
 
         // Retrieve the parent task details from the local tasks utility
+        log.trace("Retrieving the parent task details from the local tasks utility");
         Task task = dataIntegrationTasksUtil.retrieveTask(response.getTaskId());
+        log.debug("Task = {}", task);
 
         // Fail early if the task details were not found
         if (task == null) {
-            log.error("Could not retrieve the parent task details from the local tasks utility");
+            log.error("Could not find the parent task details in the local tasks utility");
             return;
         }
 
-        // Update the task properties in the local utility
+        // Update the task details
+        log.trace("Updating the task details");
+
         if (response.getStatusCode() == DataIntegrationStatus.SUCCEEDED.getId()) {
             task.setResolved(task.getResolved() + 1);
         } else {
@@ -143,30 +152,49 @@ public class DatabaseIntegrationService {
 
         if (task.getIssues() == task.getResolved() + task.getRejected()) {
             task.setTaskStatusId(CLOSED_TASK_STATUS_ID);
+            task.setNote("Done Processing Database");
         }
 
-            // Update the task properties in the backend
+        log.debug("Updated Task = {}", task);
+
+        // Save the updated task in the local utility
+        log.trace("Saving the updated task in the local utility");
+        dataIntegrationTasksUtil.updateTask(task);
+
+        // Save the updated task in the database
+        log.trace("Saving the updated task in the database");
         endpointsUtil.updateTask(task).subscribe();
 
         // Check whether the data processing is complete
+        log.trace("Checking whether the data processing is complete");
         if (task.getTaskStatusId().equals(CLOSED_TASK_STATUS_ID)) {
 
-            // Start the data aggregation task
-            startDataAggregation(task.getDatabaseId());
+            // The data processing is complete
+            log.trace("The data processing is complete");
 
-            // Remove the task details from the local tasks utility
+            // Clear all local data processing details
+            log.trace("Clearing all local data processing details");
             dataIntegrationTasksUtil.removeTask(task);
+
+            // Start the data aggregation task
+            log.trace("Starting the data aggregation task");
+            startDataAggregation(task.getDatabaseId());
 
         } else {
 
-            // Update the task details in the local tasks utility
-            dataIntegrationTasksUtil.updateTask(task);
+            // The data processing is not complete
+            log.trace("The data processing is not complete");
+
         }
 
     }
 
     private void startDataAggregation(Long databaseId) {
 
+        log.trace("Entering startDataAggregation()");
+        log.debug("Database Id = {}", databaseId);
+
+        log.trace("Creating a Data Aggregation Task record)");
         endpointsUtil
                 .createTask(
                         Task.builder()
@@ -177,23 +205,29 @@ public class DatabaseIntegrationService {
                                 .issues(configurationDataProvider.getTotalDataAggregationIssues())
                                 .resolved(0)
                                 .rejected(0)
-                                .note("Initialized Data Aggregation Task")
+                                .note("Aggregating Database")
                                 .build())
                 .subscribe(new BaseSubscriber<>() {
 
                     @Override
                     protected void hookOnNext(Task task) {
 
-                        // Keep a local copy of the task for management purpose
+                        log.debug("Data Aggregation Task = {}", task);
+
+                        // Keep a local copy of the Data Aggregation Task record for management purpose
+                        log.trace("Keeping a local copy of the Data Aggregation Task record for management purpose");
                         dataIntegrationTasksUtil.insertTask(task);
 
                         // Keep a local copy of the initial data aggregation level for management purpose
-                        dataIntegrationTasksUtil.insertTaskLevel(task.getId(), 1);
+                        log.trace("Keeping a local copy of the initial data aggregation level for management purpose");
+                        dataIntegrationTasksUtil.initializeTaskLevel(task.getId());
 
-                        // Keep a local copy of the level's handed issues for management purpose
+                        // Keep a local copy of the data aggregation level's handled issues for management purpose
+                        log.trace("Keeping a local copy of the data aggregation level's handled issues for management purpose");
                         dataIntegrationTasksUtil.initializeTaskLevelHandledIssuesCount(task.getId());
 
-                        // Queue the data aggregation tasks
+                        // Queue the initial data aggregation tasks
+                        log.trace("Queueing the initial data aggregation tasks");
                         configurationDataProvider
                                 .getDataAggregationLevelsPartiesIds()
                                 .get(1)
@@ -212,12 +246,13 @@ public class DatabaseIntegrationService {
 
 
     @RabbitListener(queues = RabbitConfig.PROCESSED_DATA_AGGREGATION_RESULTS_QUEUE)
-    void manageDataAggregation(final DataAggregationResponse response) {
+    private void manageDataAggregation(final DataAggregationResponse response) {
 
         log.trace("Entering manageDataAggregation()");
         log.debug("Data Aggregation Response = {}", response);
 
         // Retrieve the parent task details from the local tasks utility
+        log.trace("Retrieving the parent task details from the local tasks utility");
         Task task = dataIntegrationTasksUtil.retrieveTask(response.getTaskId());
 
         // Fail early if the task details were not found
@@ -226,7 +261,9 @@ public class DatabaseIntegrationService {
             return;
         }
 
-        // Update the task properties in local tasks utility
+        // Update the task details
+        log.trace("Updating the task details");
+
         if (response.getStatusCode() == DataIntegrationStatus.SUCCEEDED.getId()) {
             task.setResolved(task.getResolved() + 1);
         } else {
@@ -235,18 +272,26 @@ public class DatabaseIntegrationService {
 
         if (task.getIssues() == task.getResolved() + task.getRejected()) {
             task.setTaskStatusId(CLOSED_TASK_STATUS_ID);
+            task.setNote("Done Aggregating Database");
         }
 
+        log.debug("Updated Task = {}", task);
+
+        // Save the updated task in the local utility
+        log.trace("Saving the updated task in the local utility");
         dataIntegrationTasksUtil.updateTask(task);
         dataIntegrationTasksUtil.incrementTaskLevelHandledIssuesCount(task.getId());
 
-        // Update the task properties in the backend
+        // Save the updated task in the database
+        log.trace("Saving the updated task in the database");
         endpointsUtil.updateTask(task).subscribe();
 
-        // Check whether the data processing is complete
+        // Check whether the data aggregation is complete
+        log.trace("Checking whether the data aggregation is complete");
         if (task.getTaskStatusId().equals(CLOSED_TASK_STATUS_ID)) {
 
             // Retrieve and update the target database's details
+            log.trace("Retrieving and updating the target database's 'processed' status");
             endpointsUtil
                     .retrieveDatabase(task.getDatabaseId())
                     .map(database -> {
@@ -256,7 +301,8 @@ public class DatabaseIntegrationService {
                     .flatMap(endpointsUtil::updateDatabase)
                     .subscribe();
 
-            // Remove the task details from the local tasks utility
+            // Clear all local data aggregation details
+            log.trace("Clearing all local data aggregation details");
             dataIntegrationTasksUtil.removeTask(task);
             dataIntegrationTasksUtil.removeTaskLevel(task.getId());
             dataIntegrationTasksUtil.removeTaskLevelHandledIssuesCount(task.getId());
@@ -264,24 +310,33 @@ public class DatabaseIntegrationService {
         } else {
 
             // Get the current data aggregation level
+            log.trace("Getting the current data aggregation level");
             Integer level = dataIntegrationTasksUtil.retrieveTaskLevel(task.getId());
 
-            // Get the total number of issues handled at that aggregation level
+            // Get the total number of issues handled at that current aggregation level
+            log.trace("Get the total number of issues handled at that current aggregation level");
             Integer handledIssues = dataIntegrationTasksUtil.retrieveTaskLevelHandledIssuesCount(task.getId());
 
-            // Check whether the data aggregation at the current level is complete
-            if(handledIssues == configurationDataProvider.getDataAggregationLevelsPartiesIds().get(level).size()) {
+            // Check whether the level's data aggregation is complete
+            log.trace("Checking whether the level's data aggregation is complete");
+            if (handledIssues == configurationDataProvider.getDataAggregationLevelsPartiesIds().get(level).size()) {
 
-                // Increment the aggregation level
+                // The level's data aggregation is complete
+                log.trace("The level's data aggregation is complete");
+
+                // Move to the next aggregation level
+                log.trace("Moving to the next aggregation level");
                 dataIntegrationTasksUtil.incrementTaskLevel(task.getId());
 
-                // Reset the handled issues
+                // Reset the total number of handled issues
+                log.trace("Resetting the total number of handled issues");
                 dataIntegrationTasksUtil.initializeTaskLevelHandledIssuesCount(task.getId());
 
-                // Queue the next data aggregation tasks
+                // Queue the next set of Data Aggregation requests
+                log.trace("Queueing the next set of Data Aggregation requests");
                 configurationDataProvider
                         .getDataAggregationLevelsPartiesIds()
-                        .get(level + 1)
+                        .get(dataIntegrationTasksUtil.retrieveTaskLevel(task.getId()))
                         .forEach(id -> rabbitTemplate.convertAndSend(
                                 RabbitConfig.PROCESSED_DATA_AGGREGATION_QUEUE,
                                 DataProcessingRequest
@@ -292,12 +347,15 @@ public class DatabaseIntegrationService {
                                         .build()));
 
 
+            } else {
+
+                // The level's data aggregation is not complete
+                log.trace("The level's data aggregation is not complete");
             }
 
         }
 
     }
-
 
 
 }
