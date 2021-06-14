@@ -145,7 +145,7 @@ public class RoutesConfig {
                                         .parameter(
                                                 parameterBuilder()
                                                         .name("partiesIds").in(ParameterIn.QUERY)
-                                                        .description("The list of unique identifiers of the Parties (Party being an organization or place e.g. County) to filter the returned values by")
+                                                        .description("The list of unique identifiers of the Parties (Party being an organization or place e.g. County) to filter the returned values by. The parameters must be passed using array parameters format i.e \"partiesIds=1,2\"")
                                                         .implementation(Long.class))
                                         .parameter(
                                                 parameterBuilder()
@@ -188,6 +188,11 @@ public class RoutesConfig {
                                         .beanClass(QuantityObservationsHandler.class)
                                         .beanMethod("updateQuantityObservation")
                                         .description("Updates a single Quantity Observation Record in the database")
+                                        .requestBody(
+                                                requestBodyBuilder()
+                                                        .content(contentBuilder()
+                                                                .schema(schemaBuilder()
+                                                                        .implementation(QuantityObservation.class))))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Quantity Observation Record was successfully updated")
@@ -277,8 +282,8 @@ public class RoutesConfig {
                                                         .implementation(Long.class))
                                         .parameter(
                                                 parameterBuilder()
-                                                        .name("partyId").in(ParameterIn.QUERY)
-                                                        .description("The unique identifier of the Party (Party being an organization or place e.g. County) to filter the deleted values by")
+                                                        .name("partiesIds").in(ParameterIn.QUERY)
+                                                        .description("The list of unique identifiers of the Parties (Party being an organization or place e.g. County) to filter the deleted values by. The parameters must be passed using array parameters format i.e \"partiesIds=1,2\"")
                                                         .implementation(Long.class))
                                         .parameter(
                                                 parameterBuilder()

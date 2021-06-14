@@ -132,7 +132,7 @@ public class RetrieveQuantityObservationsIT {
                 .uri(uriBuilder ->
                         uriBuilder
                                 .path("/api/v1/quantity_observations/all")
-                                .queryParam("ids", "{id1}", "{id2}")
+                                .queryParam("ids", "{id1}","{id2}")
                                 .build(quantityObservation1.getId().toString(), quantityObservation3.getId().toString()))
                 .exchange()
                 .expectStatus().isOk()
@@ -217,7 +217,7 @@ public class RetrieveQuantityObservationsIT {
                 .uri(uriBuilder ->
                         uriBuilder
                                 .path("/api/v1/quantity_observations/all")
-                                .queryParam("partiesIds", "{id1}","{id2}")
+                                .queryParam("partiesIds", "{id1},{id2}")
                                 .build(quantityObservation1.getPartyId().toString(), quantityObservation2.getPartyId().toString()))
                 .exchange()
                 .expectStatus().isOk()

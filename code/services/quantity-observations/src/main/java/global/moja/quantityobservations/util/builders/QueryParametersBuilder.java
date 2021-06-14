@@ -10,6 +10,9 @@ package global.moja.quantityobservations.util.builders;
 import global.moja.quantityobservations.daos.QueryParameters;
 import org.springframework.web.reactive.function.server.ServerRequest;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 // TODO Exception Checks
 
 /**
@@ -57,15 +60,17 @@ public class QueryParametersBuilder {
     }
 
     public QueryParametersBuilder partiesIds(ServerRequest request) {
+
         this.partiesIds =
-                request.queryParams().get("partiesIds") == null ? null :
-                        request.queryParams()
-                                .get("partiesIds")
-                                .stream()
+                request.queryParam("partiesIds").isPresent() ?
+                        Arrays.stream(
+                                request.queryParam("partiesIds").get().split(","))
                                 .map(Long::parseLong)
                                 .sorted()
-                                .toArray(Long[]::new);
+                                .toArray(Long[]::new)
+                        : null;
         return this;
+
     }
 
     public QueryParametersBuilder databaseId(ServerRequest request) {
@@ -105,7 +110,7 @@ public class QueryParametersBuilder {
 
 
     public QueryParameters build() {
-        return new QueryParameters(ids, observationTypeId, taskId, partiesIds,databaseId, landUseCategoryId, reportingTableId,reportingVariableId, year);
+        return new QueryParameters(ids, observationTypeId, taskId, partiesIds, databaseId, landUseCategoryId, reportingTableId, reportingVariableId, year);
     }
 
 }
