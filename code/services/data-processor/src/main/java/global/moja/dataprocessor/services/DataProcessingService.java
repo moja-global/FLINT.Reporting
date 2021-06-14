@@ -129,7 +129,7 @@ public class DataProcessingService {
                                     endpointsUtil
                                             .createQuantityObservations(quantityObservations.toArray(QuantityObservation[]::new))
                                             .collectList())
-                            .map(observations -> DataProcessingStatus.SUCCEEDED)
+                            .map(ids -> DataProcessingStatus.SUCCEEDED)
                             .onErrorReturn(DataProcessingStatus.FAILED)
                             .block();
 

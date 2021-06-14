@@ -30,7 +30,7 @@ public class QuantityObservationsEndpointUtil {
     @Autowired
     WebClientUtil webClientUtil;
 
-    public Flux<QuantityObservation> createQuantityObservations(QuantityObservation[] observations) {
+    public Flux<Long> createQuantityObservations(QuantityObservation[] observations) {
 
         log.trace("Calling createQuantityObservations()");
 
@@ -41,6 +41,7 @@ public class QuantityObservationsEndpointUtil {
                 .body(Mono.just(observations), QuantityObservation[].class)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToFlux(QuantityObservation.class);
+                .bodyToFlux(QuantityObservation.class)
+                .map(quantityObservation -> quantityObservation.getId());
     }
 }

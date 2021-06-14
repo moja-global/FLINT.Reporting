@@ -33,7 +33,7 @@ public class QuantityObservationsEndpointUtil {
     @Autowired
     QuantityObservationsRetrievalEndpointUtil quantityObservationsRetrievalEndpointUtil;
 
-    public Flux<QuantityObservation> createQuantityObservations(QuantityObservation[] observations) {
+    public Flux<Long> createQuantityObservations(QuantityObservation[] observations) {
         return quantityObservationsCreationEndpointUtil.createQuantityObservations(observations);
     }
 

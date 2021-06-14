@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -48,7 +49,7 @@ class DataProcessingServiceIT {
     @Test
     public void Given_PartyIdAndDatabaseIdAndLocationLandUsesAllocatedFluxReportingResultsAggregations_When_AggregateFluxReportingResultsAggregations_Then_QuantityObservationsWillBeReturned() {
 
-        Mockito.doReturn(Mono.just(Arrays.asList(1L,2L,3L,4L,5L))).when(endpointsUtil).createQuantityObservations(any(QuantityObservation[].class));
+        Mockito.doReturn(Flux.just(Arrays.asList(1L,2L,3L,4L,5L))).when(endpointsUtil).createQuantityObservations(any(QuantityObservation[].class));
 
         dataProcessingServiceService.processData(
                 DataProcessingRequest
