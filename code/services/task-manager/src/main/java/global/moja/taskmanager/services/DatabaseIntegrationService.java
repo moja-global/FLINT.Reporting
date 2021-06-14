@@ -10,6 +10,7 @@ package global.moja.taskmanager.services;
 
 import global.moja.taskmanager.configurations.ConfigurationDataProvider;
 import global.moja.taskmanager.configurations.RabbitConfig;
+import global.moja.taskmanager.daos.DataAggregationRequest;
 import global.moja.taskmanager.daos.DataAggregationResponse;
 import global.moja.taskmanager.daos.DataProcessingRequest;
 import global.moja.taskmanager.daos.DataProcessingResponse;
@@ -45,6 +46,9 @@ public class DatabaseIntegrationService {
 
     @Value("${closed.task.status.id}")
     Long CLOSED_TASK_STATUS_ID;
+
+    @Value("${administrative.hierarchy.accountability.type.id}")
+    Long ADMINISTRATIVE_HIERARCHY_ACCOUNTABILITY_TYPE_ID;
 
     final EndpointsUtil endpointsUtil;
     final ConfigurationDataProvider configurationDataProvider;
@@ -233,11 +237,12 @@ public class DatabaseIntegrationService {
                                 .get(1)
                                 .forEach(id -> rabbitTemplate.convertAndSend(
                                         RabbitConfig.PROCESSED_DATA_AGGREGATION_QUEUE,
-                                        DataProcessingRequest
+                                        DataAggregationRequest
                                                 .builder()
                                                 .taskId(task.getId())
                                                 .databaseId(databaseId)
-                                                .partyId(id)
+                                                .parentPartyId(id)
+                                                .accountabilityTypeId(ADMINISTRATIVE_HIERARCHY_ACCOUNTABILITY_TYPE_ID)
                                                 .build()));
                     }
 
@@ -339,11 +344,12 @@ public class DatabaseIntegrationService {
                         .get(dataIntegrationTasksUtil.retrieveTaskLevel(task.getId()))
                         .forEach(id -> rabbitTemplate.convertAndSend(
                                 RabbitConfig.PROCESSED_DATA_AGGREGATION_QUEUE,
-                                DataProcessingRequest
+                                DataAggregationRequest
                                         .builder()
                                         .taskId(task.getId())
                                         .databaseId(task.getDatabaseId())
-                                        .partyId(id)
+                                        .parentPartyId(id)
+                                        .accountabilityTypeId(ADMINISTRATIVE_HIERARCHY_ACCOUNTABILITY_TYPE_ID)
                                         .build()));
 
 
