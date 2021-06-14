@@ -37,7 +37,7 @@ public class DatabasesRetrievalEndpointUtil {
         .get()
             .uri(uriBuilder ->
                     uriBuilder
-                            .path("/api/v1/databases/ids/{id}")
+                            .path("/ids/{id}")
                             .build(databaseId.toString()))
         .accept(MediaType.APPLICATION_JSON)
         .retrieve()
