@@ -84,6 +84,7 @@ QUANTITY_OBSERVATIONS=1
 REPORTING_FRAMEWORKS=1
 REPORTING_TABLES=1
 REPORTING_VARIABLES=1
+TASKS=1
 UNIT_CATEGORIES=1
 UNITS=1
 
@@ -575,6 +576,27 @@ if [ $REPORTING_VARIABLES -eq 1 ]; then
   # Load the reporting variables database data
   psql -d "reporting_variables" -1 -c "\copy reporting_variable(reporting_framework_id, name, description, version) from \
           '$PROJECT_DIR/data/reporting_variables.csv' DELIMITER ',' CSV HEADER"
+
+fi
+
+
+# tasks
+# -------------------------------------------------------------------------------------
+if [ $TASKS -eq 1 ]; then
+
+  echo
+  echo "Setting up tasks database"
+  echo
+
+  # drop the tasks database if it exists
+  psql -c "DROP DATABASE IF EXISTS tasks"
+
+  # create a new tasks database
+  psql -c "CREATE DATABASE tasks"
+
+  # Create the task's database objects
+  psql -d "tasks" -1 -f "$PROJECT_DIR/services/tasks/src/main/resources/tasks.sql"
+
 
 fi
 
