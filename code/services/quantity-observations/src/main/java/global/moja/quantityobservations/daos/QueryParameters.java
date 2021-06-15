@@ -27,4 +27,6 @@ public class QueryParameters {
     private Long reportingTableId;
     private Long reportingVariableId;
     private Integer year;
+    private Integer minYear;
+    private Integer maxYear;
 }

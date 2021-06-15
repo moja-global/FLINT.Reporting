@@ -170,7 +170,17 @@ public class RoutesConfig {
                                         .parameter(
                                                 parameterBuilder()
                                                         .name("year").in(ParameterIn.QUERY)
-                                                        .description("The Year to filter the returned values by ")
+                                                        .description("The Actual Year to filter the returned values by ")
+                                                        .implementation(Integer.class))
+                                        .parameter(
+                                                parameterBuilder()
+                                                        .name("minYear").in(ParameterIn.QUERY)
+                                                        .description("The Minimum Year to cap the returned values by ")
+                                                        .implementation(Integer.class))
+                                        .parameter(
+                                                parameterBuilder()
+                                                        .name("maxYear").in(ParameterIn.QUERY)
+                                                        .description("The Maximum Year to cap the returned values by ")
                                                         .implementation(Integer.class))
                                         .response(
                                                 responseBuilder()
@@ -308,7 +318,17 @@ public class RoutesConfig {
                                         .parameter(
                                                 parameterBuilder()
                                                         .name("year").in(ParameterIn.QUERY)
-                                                        .description("The Year to filter the deleted values by ")
+                                                        .description("The Actual Year to filter the deleted values by ")
+                                                        .implementation(Integer.class))
+                                        .parameter(
+                                                parameterBuilder()
+                                                        .name("minYear").in(ParameterIn.QUERY)
+                                                        .description("The Minimum Year to cap the deleted values by ")
+                                                        .implementation(Integer.class))
+                                        .parameter(
+                                                parameterBuilder()
+                                                        .name("maxYear").in(ParameterIn.QUERY)
+                                                        .description("The Maximum Year to cap the deleted values by ")
                                                         .implementation(Integer.class))
                                         .response(
                                                 responseBuilder()

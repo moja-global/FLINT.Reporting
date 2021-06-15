@@ -168,6 +168,33 @@ public class QueryWhereClauseBuilder {
 
         }
 
+        //  Min Year
+        if(queryParameters.getMinYear() != null){
+
+            if(query != null){
+                query.append(" AND ");
+            } else {
+                query = new StringBuilder();
+            }
+
+            query.append("year >= ").append(queryParameters.getMinYear());
+
+        }
+
+
+        //  Max Year
+        if(queryParameters.getMaxYear() != null){
+
+            if(query != null){
+                query.append(" AND ");
+            } else {
+                query = new StringBuilder();
+            }
+
+            query.append("year <= ").append(queryParameters.getMaxYear());
+
+        }
+
         return query == null ? "" : " WHERE " + query.toString();
     }
 }

@@ -64,6 +64,8 @@ public class DeleteQuantityObservationsHandler {
                                         .reportingTableId(request)
                                         .reportingVariableId(request)
                                         .year(request)
+                                        .minYear(request)
+                                        .maxYear(request)
                                         .build());
     }
 

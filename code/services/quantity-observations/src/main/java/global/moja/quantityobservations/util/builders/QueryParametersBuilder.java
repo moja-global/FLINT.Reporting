@@ -31,6 +31,8 @@ public class QueryParametersBuilder {
     private Long reportingTableId;
     private Long reportingVariableId;
     private Integer year;
+    private Integer minYear;
+    private Integer maxYear;
 
     public QueryParametersBuilder ids(ServerRequest request) {
 
@@ -108,9 +110,34 @@ public class QueryParametersBuilder {
         return this;
     }
 
+    public QueryParametersBuilder minYear(ServerRequest request) {
+        this.minYear =
+                request.queryParam("minYear").isPresent() ?
+                        Integer.parseInt(request.queryParam("minYear").get()) : null;
+        return this;
+    }
+
+    public QueryParametersBuilder maxYear(ServerRequest request) {
+        this.maxYear =
+                request.queryParam("maxYear").isPresent() ?
+                        Integer.parseInt(request.queryParam("maxYear").get()) : null;
+        return this;
+    }
+
 
     public QueryParameters build() {
-        return new QueryParameters(ids, observationTypeId, taskId, partiesIds, databaseId, landUseCategoryId, reportingTableId, reportingVariableId, year);
+        return new QueryParameters(
+                ids,
+                observationTypeId,
+                taskId,
+                partiesIds,
+                databaseId,
+                landUseCategoryId,
+                reportingTableId,
+                reportingVariableId,
+                year,
+                minYear,
+                maxYear);
     }
 
 }

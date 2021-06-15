@@ -330,6 +330,57 @@ public class RetrieveQuantityObservationsIT {
 
 
     @Test
+    public void Given_QuantityObservationRecordsExist_When_GetAllWithMinAndMaxYearsFilters_Then_AllQuantityObservationRecordsThatFallBetweenTheMinAndMaxYearsInclusiveWillBeReturned() {
+
+        webTestClient
+                .get()
+                .uri(uriBuilder ->
+                        uriBuilder
+                                .path("/api/v1/quantity_observations/all")
+                                .queryParam("minYear", "{id1}")
+                                .queryParam("maxYear", "{id2}")
+                                .build(quantityObservation1.getYear().toString(),quantityObservation2.getYear().toString()))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(QuantityObservation.class)
+                .value(response -> {
+
+                            Collections.sort(response);
+
+                            Assertions.assertThat(response.size()).isEqualTo(2);
+
+                            Assertions.assertThat(response.get(0).getId()).isEqualTo(quantityObservation1.getId());
+                            Assertions.assertThat(response.get(0).getObservationTypeId()).isEqualTo(quantityObservation1.getObservationTypeId());
+                            Assertions.assertThat(response.get(0).getTaskId()).isEqualTo(quantityObservation1.getTaskId());
+                            Assertions.assertThat(response.get(0).getPartyId()).isEqualTo(quantityObservation1.getPartyId());
+                            Assertions.assertThat(response.get(0).getDatabaseId()).isEqualTo(quantityObservation1.getDatabaseId());
+                            Assertions.assertThat(response.get(0).getLandUseCategoryId()).isEqualTo(quantityObservation1.getLandUseCategoryId());
+                            Assertions.assertThat(response.get(0).getReportingTableId()).isEqualTo(quantityObservation1.getReportingTableId());
+                            Assertions.assertThat(response.get(0).getReportingVariableId()).isEqualTo(quantityObservation1.getReportingVariableId());
+                            Assertions.assertThat(response.get(0).getYear()).isEqualTo(quantityObservation1.getYear());
+                            Assertions.assertThat(response.get(0).getAmount()).isEqualTo(quantityObservation1.getAmount());
+                            Assertions.assertThat(response.get(0).getUnitId()).isEqualTo(quantityObservation1.getUnitId());
+                            Assertions.assertThat(response.get(0).getVersion()).isEqualTo(1);
+
+                            Assertions.assertThat(response.get(1).getId()).isEqualTo(quantityObservation2.getId());
+                            Assertions.assertThat(response.get(1).getObservationTypeId()).isEqualTo(quantityObservation2.getObservationTypeId());
+                            Assertions.assertThat(response.get(1).getTaskId()).isEqualTo(quantityObservation2.getTaskId());
+                            Assertions.assertThat(response.get(1).getPartyId()).isEqualTo(quantityObservation2.getPartyId());
+                            Assertions.assertThat(response.get(1).getDatabaseId()).isEqualTo(quantityObservation2.getDatabaseId());
+                            Assertions.assertThat(response.get(1).getLandUseCategoryId()).isEqualTo(quantityObservation2.getLandUseCategoryId());
+                            Assertions.assertThat(response.get(1).getReportingTableId()).isEqualTo(quantityObservation2.getReportingTableId());
+                            Assertions.assertThat(response.get(1).getReportingVariableId()).isEqualTo(quantityObservation2.getReportingVariableId());
+                            Assertions.assertThat(response.get(1).getYear()).isEqualTo(quantityObservation2.getYear());
+                            Assertions.assertThat(response.get(1).getAmount()).isEqualTo(quantityObservation2.getAmount());
+                            Assertions.assertThat(response.get(1).getUnitId()).isEqualTo(quantityObservation2.getUnitId());
+                            Assertions.assertThat(response.get(1).getVersion()).isEqualTo(1);
+
+                        }
+                );
+    }
+
+
+    @Test
     public void Given_QuantityObservationRecordsExist_When_GetAllWithoutFilters_Then_AllQuantityObservationRecordsWillBeReturned() {
 
         webTestClient
@@ -386,5 +437,8 @@ public class RetrieveQuantityObservationsIT {
                         }
                 );
     }
+
+
+
 
 }
