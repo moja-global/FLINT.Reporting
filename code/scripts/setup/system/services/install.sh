@@ -37,8 +37,11 @@ ACCOUNTABILITY_RULES=1
 ACCOUNTABILITY_TYPES=1
 CONVERSION_AND_REMAINING_PERIODS=1
 COVER_TYPES=1
+CRF_TABLES=1
 DATABASES=1
 DATES=1
+DATA_AGGREGATOR=1
+DATA_PROCESSOR=1
 EMISSION_TYPES=1
 FLUXES_TO_REPORTING_VARIABLES=1
 FLUX_REPORTING_RESULTS=1
@@ -54,10 +57,18 @@ QUANTITY_OBSERVATIONS=1
 REPORTING_FRAMEWORKS=1
 REPORTING_TABLES=1
 REPORTING_VARIABLES=1
+TASK=1
+TASK_MANAGER=1
 UNIT_CATEGORIES=1
 UNITS=1
 VEGETATION_HISTORY_VEGETATION_TYPES=1
 VEGETATION_TYPES=1
+
+
+
+# -------------------------------------------------------------------------------------
+# Independent Microservices
+# -------------------------------------------------------------------------------------
 
 
 # accountabilities
@@ -94,12 +105,6 @@ if [ $COVER_TYPES -eq 1 ]; then
 	bash $PROJECT_DIR/services/cover-types/install.sh
 fi
 
-
-# databases
-# -------------------------------------------------------------------------------------
-if [ $DATABASES -eq 1 ]; then
-	bash $PROJECT_DIR/services/databases/install.sh
-fi
 
 
 # dates
@@ -239,6 +244,54 @@ fi
 # -------------------------------------------------------------------------------------
 if [ $VEGETATION_TYPES -eq 1 ]; then
 	bash $PROJECT_DIR/services/vegetation-types/install.sh
+fi
+
+
+# -------------------------------------------------------------------------------------
+# Dependent Microservices
+# -------------------------------------------------------------------------------------
+
+
+# task
+# -------------------------------------------------------------------------------------
+if [ $TASK -eq 1 ]; then
+	bash $PROJECT_DIR/services/task/install.sh
+fi
+
+
+# task-manager
+# -------------------------------------------------------------------------------------
+if [ $TASK_MANAGER -eq 1 ]; then
+	bash $PROJECT_DIR/services/task-manager/install.sh
+fi
+
+
+# databases
+# -------------------------------------------------------------------------------------
+if [ $DATABASES -eq 1 ]; then
+	bash $PROJECT_DIR/services/databases/install.sh
+fi
+
+
+# data-processor
+# -------------------------------------------------------------------------------------
+if [ $DATA_PROCESSOR -eq 1 ]; then
+	bash $PROJECT_DIR/services/data-processor/install.sh
+fi
+
+
+# data-aggregator
+# -------------------------------------------------------------------------------------
+if [ $DATA_AGGREGATOR -eq 1 ]; then
+	bash $PROJECT_DIR/services/data-aggregator/install.sh
+fi
+
+
+
+# crf-tables
+# -------------------------------------------------------------------------------------
+if [ $CRF_TABLES -eq 1 ]; then
+	bash $PROJECT_DIR/services/crf-tables/install.sh
 fi
 
 
