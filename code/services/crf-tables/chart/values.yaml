@@ -1,9 +1,7 @@
-# Default values for CRF Tables Microservice Helm Chart.
+# Default values for the Helm Chart.
 # This is a YAML-formatted file.
 
-# CRF Tables Microservice
-# ----------------------------------------------------------------------------------------
-crfTables:
+microservice:
 
   # Ingress
   ingress:
@@ -12,15 +10,15 @@ crfTables:
     rules:
       host: reporter.miles.co.ke
       http:
-        path: /crf_tables
+        path: /api/v1/crf_tables
         backend:
           service:
             name: crf-tables
-            port: http
+            port: 80
 
   # Service
   service:
-    name: crf-tables 
+    name: crf-tables
     port:
       default: 80
       target: 8080
@@ -35,11 +33,16 @@ crfTables:
     version: 0.0.1
     image: 
       id: reporter.miles.co.ke:5043/crf-tables
-      tag: latest
+      tag: 0.0.1
       pull:
         policy: Always
-        secret: regcred      
+        secret: regcred
+    environment: 
+      postgres:
+        host: bitnami-postgres-postgresql
     replicas: 1
+
+ 
 
 
 
