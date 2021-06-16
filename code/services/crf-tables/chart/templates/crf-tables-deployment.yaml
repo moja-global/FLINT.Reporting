@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.crfTables.deployment.name }}
+  labels:
+    app: {{ .Values.crfTables.application.name }}
+spec:
+  replicas: {{ .Values.crfTables.application.replicas}}
+  selector:
+    matchLabels:
+      app: {{ .Values.crfTables.application.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.crfTables.application.name }}
+        version: {{ .Values.crfTables.application.version }}
+    spec:
+      containers:
+        -
+          name: {{ .Values.crfTables.application.name }}
+          image: "{{ .Values.crfTables.application.image.id }}:{{ .Values.crfTables.application.image.tag }}"
+          imagePullPolicy: {{ default "" .Values.crfTables.application.image.pull.policy | quote }}               
+      imagePullSecrets:
+        -
+          name: {{.Values.crfTables.application.image.pull.secret}}
+

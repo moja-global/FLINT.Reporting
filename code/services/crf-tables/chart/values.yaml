@@ -1,0 +1,45 @@
+# Default values for CRF Tables Microservice Helm Chart.
+# This is a YAML-formatted file.
+
+# CRF Tables Microservice
+# ----------------------------------------------------------------------------------------
+crfTables:
+
+  # Ingress
+  ingress:
+    name: crf-tables
+    class: traefik 
+    rules:
+      host: reporter.miles.co.ke
+      http:
+        path: /crf_tables
+        backend:
+          service:
+            name: crf-tables
+            port: http
+
+  # Service
+  service:
+    name: crf-tables 
+    port:
+      default: 80
+      target: 8080
+
+  # Deployment
+  deployment:
+    name: crf-tables
+
+  # Application / Application Replicas
+  application:
+    name: crf-tables
+    version: 0.0.1
+    image: 
+      id: reporter.miles.co.ke:5043/crf-tables
+      tag: latest
+      pull:
+        policy: Always
+        secret: regcred      
+    replicas: 1
+
+
+

@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Values.crfTables.ingress.name }}
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.crfTables.ingress.class }}
+spec:
+  rules:
+  - host: {{ .Values.crfTables.ingress.rules.host}}
+    http:
+      paths:
+      - path: {{ .Values.crfTables.ingress.rules.http.path}}
+        backend:
+          serviceName: {{ .Values.crfTables.ingress.rules.http.backend.service.name}}
+          servicePort: {{ .Values.crfTables.ingress.rules.http.backend.service.port}}
+

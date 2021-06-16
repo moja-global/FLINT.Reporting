@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# Temp files removal script
+# https://www.adminschoice.com/crontab-quick-reference
+# https://stackoverflow.com/questions/20346811/how-to-set-crontab-every-10-minutes-delete-content-of-log-file-on-linux
+
+# delete files older than 30 minutes from /home/someuser/tmp/
+*/30     *     *     *     *         /usr/bin/find $HOME/tmp -maxdepth 1 -mmin -30 -type f -exec rm {} +
+
