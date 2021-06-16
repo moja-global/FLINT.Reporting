@@ -57,7 +57,7 @@ QUANTITY_OBSERVATIONS=1
 REPORTING_FRAMEWORKS=1
 REPORTING_TABLES=1
 REPORTING_VARIABLES=1
-TASK=1
+TASKS=1
 TASK_MANAGER=1
 UNIT_CATEGORIES=1
 UNITS=1
@@ -252,10 +252,10 @@ fi
 # -------------------------------------------------------------------------------------
 
 
-# task
+# tasks
 # -------------------------------------------------------------------------------------
-if [ $TASK -eq 1 ]; then
-	bash $PROJECT_DIR/services/task/install.sh
+if [ $TASKS -eq 1 ]; then
+	bash $PROJECT_DIR/services/tasks/install.sh
 fi
 
 

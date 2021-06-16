@@ -26,7 +26,7 @@ SCRIPTS_DIR="$(dirname "$SETUP_DIR")"
 PROJECT_DIR="$(dirname "$SCRIPTS_DIR")"
 
 echo
-echo "Uninstalling Microservices"
+echo "uninstalling microservices"
 echo
 
 # Use the flags 1 and 0 below to configure the services that you want to uninstall
@@ -57,7 +57,7 @@ QUANTITY_OBSERVATIONS=1
 REPORTING_FRAMEWORKS=1
 REPORTING_TABLES=1
 REPORTING_VARIABLES=1
-TASK=1
+TASKS=1
 TASK_MANAGER=1
 UNIT_CATEGORIES=1
 UNITS=1
@@ -252,10 +252,10 @@ fi
 # -------------------------------------------------------------------------------------
 
 
-# task
+# tasks
 # -------------------------------------------------------------------------------------
-if [ $TASK -eq 1 ]; then
-	bash $PROJECT_DIR/services/task/uninstall.sh
+if [ $TASKS -eq 1 ]; then
+	bash $PROJECT_DIR/services/tasks/uninstall.sh
 fi
 
 
