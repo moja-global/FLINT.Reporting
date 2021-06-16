@@ -107,12 +107,12 @@ public class CreatePartiesIT {
 
                     Collections.sort(response);
 
-                    Assertions.assertThat(response.get(0).getId()).isEqualTo(3L);
+                    Assertions.assertThat(response.get(0).getId()).isEqualTo(4L);
                     Assertions.assertThat(response.get(0).getPartyTypeId()).isEqualTo(party4.getPartyTypeId());
                     Assertions.assertThat(response.get(0).getName()).isEqualTo(party4.getName());
                     Assertions.assertThat(response.get(0).getVersion()).isEqualTo(1);
 
-                    Assertions.assertThat(response.get(1).getId()).isEqualTo(4L);
+                    Assertions.assertThat(response.get(1).getId()).isEqualTo(5L);
                     Assertions.assertThat(response.get(1).getPartyTypeId()).isEqualTo(party5.getPartyTypeId());
                     Assertions.assertThat(response.get(1).getName()).isEqualTo(party5.getName());
                     Assertions.assertThat(response.get(1).getVersion()).isEqualTo(1);

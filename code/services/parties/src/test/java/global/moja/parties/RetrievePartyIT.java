@@ -56,7 +56,7 @@ public class RetrievePartyIT {
 
         party1 =
                 new PartyBuilder()
-                        .id(0L)
+                        .id(1L)
                         .partyTypeId(1L)
                         .name("First Party")
                         .version(1)

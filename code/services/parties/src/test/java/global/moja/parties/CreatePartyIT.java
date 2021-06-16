@@ -94,7 +94,7 @@ public class CreatePartyIT {
                 .expectStatus().isCreated()
                 .expectBody(Party.class)
                 .value(response -> {
-                            Assertions.assertThat(response.getId()).isEqualTo(3L);
+                            Assertions.assertThat(response.getId()).isEqualTo(4L);
                             Assertions.assertThat(response.getPartyTypeId()).isEqualTo(party4.getPartyTypeId());
                             Assertions.assertThat(response.getName()).isEqualTo(party4.getName());
                             Assertions.assertThat(response.getVersion()).isEqualTo(1);

@@ -47,13 +47,3 @@ BEFORE UPDATE
 ON party
 FOR EACH ROW
 EXECUTE PROCEDURE PartyVersionIncrementFunction();
-
-
--- ------------------------------------------------------------
--- Set the id to start at 0
--- ------------------------------------------------------------
-
-ALTER SEQUENCE party_id_seq
-MINVALUE 0
-START 0
-RESTART 0;

@@ -60,7 +60,7 @@ public class UpdatePartiesIT {
 
         party1 =
                 new PartyBuilder()
-                        .id(0L)
+                        .id(1L)
                         .partyTypeId(10L)
                         .name("FIRST INDICATOR")
                         .version(1)
@@ -68,7 +68,7 @@ public class UpdatePartiesIT {
 
         party2 =
                 new PartyBuilder()
-                        .id(1L)
+                        .id(2L)
                         .partyTypeId(20L)
                         .name("SECOND INDICATOR")
                         .version(1)

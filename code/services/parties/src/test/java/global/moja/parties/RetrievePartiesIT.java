@@ -59,7 +59,7 @@ public class RetrievePartiesIT {
 
         party1 =
                 new PartyBuilder()
-                        .id(0L)
+                        .id(1L)
                         .partyTypeId(1L)
                         .name("First Party")
                         .version(1)
@@ -67,7 +67,7 @@ public class RetrievePartiesIT {
 
         party2 =
                 new PartyBuilder()
-                        .id(1L)
+                        .id(2L)
                         .partyTypeId(2L)
                         .name("Second Party")
                         .version(1)
@@ -75,7 +75,7 @@ public class RetrievePartiesIT {
 
         party3 =
                 new PartyBuilder()
-                        .id(2L)
+                        .id(3L)
                         .partyTypeId(3L)
                         .name("Third Party")
                         .version(1)

@@ -44,8 +44,7 @@ public class RetrievePartyHandler {
 			ServerResponse
 				.ok()
 				.contentType(MediaType.APPLICATION_JSON)
-				.body(retrievePartyById(Long.parseLong(request.pathVariable("id"))),
-                        Party.class)
+				.body(retrievePartyById(Long.parseLong(request.pathVariable("id"))),Party.class)
 				.onErrorMap(e -> new ServerException("Party retrieval failed", e));
 	}
 

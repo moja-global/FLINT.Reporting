@@ -64,6 +64,7 @@ public class RoutesConfig {
                                                         .implementation(String.class)))
                         .build()
 
+
                 .and(route()
                         .POST("/api/v1/parties/all",
                                 accept(APPLICATION_JSON).and(contentType(APPLICATION_JSON)),

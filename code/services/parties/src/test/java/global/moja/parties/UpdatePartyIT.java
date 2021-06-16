@@ -57,7 +57,7 @@ public class UpdatePartyIT {
 
         party1 =
                 new PartyBuilder()
-                        .id(0L)
+                        .id(1L)
                         .partyTypeId(10L)
                         .name("FIRST PARTY")
                         .version(1)
