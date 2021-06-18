@@ -1,9 +1,7 @@
-
-#See: https://spring.io/guides/gs/spring-boot-docker/
+# See: https://github.com/spotify/dockerfile-maven
 FROM openjdk:17-jdk-alpine
-VOLUME /tmp
-ARG DEPENDENCY
-COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY ${DEPENDENCY}/META-INF /app/META-INF
-COPY ${DEPENDENCY}/BOOT-INF/classes /app
-ENTRYPOINT ["java","-cp","app:app/lib/*","-Dspring.datasource.url=jdbc:postgresql://${POSTGRES_HOST}:5432/accountabilities","global.moja.accountabilities.Application"]
+MAINTAINER Anthony Kwaje <kwajeanthony@gmail.com>
+
+ENTRYPOINT ["/usr/bin/java", "-jar","-Dspring.datasource.url=jdbc:postgresql://${POSTGRES_HOST}:5432/accountabilities","/usr/share/service/service.jar"]
+ARG JAR_FILE
+ADD target/${JAR_FILE} /usr/share/service/service.jar

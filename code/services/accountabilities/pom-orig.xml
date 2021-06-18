@@ -31,66 +31,14 @@
     </parent>
 
     <properties>
+        <spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
         <docker.image.prefix>reporter.miles.co.ke:5043</docker.image.prefix>
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
-        <davidmoten-guava-mini-version>0.1.2</davidmoten-guava-mini-version>
         <davidmoten-rxjava2-jdbc.version>0.2.4</davidmoten-rxjava2-jdbc.version>
+        <davidmoten-guava-mini-version>0.1.2</davidmoten-guava-mini-version>
         <java.version>11</java.version>
-        <spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
         <testcontainers.version>1.15.1</testcontainers.version>
-        <skip.unit.tests>false</skip.unit.tests>
-        <skip.integration.tests>true</skip.integration.tests>
     </properties>
-
-
-    <profiles>
-
-        <!-- Development Profile -->
-        <profile>
-            <id>dev</id>
-            <activation>
-                <property>
-                    <name>env</name>
-                    <value>dev</value>
-                </property>
-            </activation>
-            <properties>
-                <skip.unit.tests>false</skip.unit.tests>
-                <skip.integration.tests>true</skip.integration.tests>
-            </properties>
-        </profile>
-
-        <!-- Test Profile -->
-        <profile>
-            <id>test</id>
-            <activation>
-                <property>
-                    <name>env</name>
-                    <value>test</value>
-                </property>
-            </activation>
-            <properties>
-                <skip.unit.tests>true</skip.unit.tests>
-                <skip.integration.tests>false</skip.integration.tests>
-            </properties>
-        </profile>
-
-        <!-- Production Profile -->
-        <profile>
-            <id>prod</id>
-            <activation>
-                <property>
-                    <name>env</name>
-                    <value>prod</value>
-                </property>
-            </activation>
-            <properties>
-                <skip.unit.tests>true</skip.unit.tests>
-                <skip.integration.tests>true</skip.integration.tests>
-            </properties>
-        </profile>
-    </profiles>
-
 
     <dependencies>
 
@@ -123,6 +71,7 @@
             <artifactId>springdoc-openapi-webflux-ui</artifactId>
             <version>1.5.4</version>
         </dependency>
+
 
         <!-- tests -->
         <dependency>
@@ -189,55 +138,48 @@
         </dependencies>
     </dependencyManagement>
 
-
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>pre-integration-test</id>
-                        <goals>
-                            <goal>start</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${skip.integration.tests}</skip>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>post-integration-test</id>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${skip.integration.tests}</skip>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.1.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version>
                 <configuration>
-                    <skipTests>${skip.unit.tests}</skipTests>
+                    <skipTests>true</skipTests>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>indicator-tests</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <skipTests>false</skipTests>
+                            <includes>
+                                <include>**/*Test.java</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>integration-tests</id>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <skipTests>false</skipTests>
+                            <includes>
+                                <include>**/*IT.*</include>
+                                <include>**/*Tests.*</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.0.0-M5</version>
-                <configuration>
-                    <skipTests>${skip.integration.tests}</skipTests>
-                </configuration>
-            </plugin>
-
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>dockerfile-maven-plugin</artifactId>
@@ -245,7 +187,7 @@
                 <configuration>
                     <repository>${docker.image.prefix}/${project.artifactId}</repository>
                     <buildArgs>
-                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                        <DEPENDENCY>target/dependency</DEPENDENCY>
                     </buildArgs>
                 </configuration>
                 <executions>
@@ -271,6 +213,28 @@
                         </goals>
                         <configuration>
                             <tag>${project.version}</tag>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>${project.artifactId}</artifactId>
+                                    <version>${project.version}</version>
+                                </artifactItem>
+                            </artifactItems>
                         </configuration>
                     </execution>
                 </executions>

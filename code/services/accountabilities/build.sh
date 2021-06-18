@@ -29,6 +29,22 @@ ROOT_DIR="$(dirname "$LIB_DIR")"
 # INITIALIZE / VALIDATE SERVER VARIABLES
 # -------------------------------------------------------------------------------------
 
+ENVIRONMENT=$(jq -r '.environment' $ROOT_DIR/configurations/configurations.json)
+if [[ $ENVIRONMENT == null ]]
+then
+     echo
+     echo -e "${RED_COLOR}Build Environment Specification is missing${NO_COLOR}"
+     echo
+     echo "---------------------------------"
+     echo "Halting Build"
+     echo "---------------------------------"
+     exit 1
+else
+     echo
+     echo -e "${GREEN_COLOR}Build Environment Specification Found${NO_COLOR}"
+fi
+
+
 API_SERVER=$(jq -r '.domains.api' $ROOT_DIR/configurations/configurations.json)
 if [[ $API_SERVER == null ]]
 then
@@ -99,7 +115,7 @@ sed -i 's/cloud\.miles\.co\.ke/'${REGISTRY_SERVER}'/g' $BASEDIR/pom.xml
 echo
 echo "Building & installing components into the Maven repository"
 echo
-bash mvnw install
+bash mvnw clean package spring-boot:repackage -P ${ENVIRONMENT}
 
 
 
