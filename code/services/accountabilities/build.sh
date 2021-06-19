@@ -1,9 +1,8 @@
 #!/bin/bash
 
-
 echo
 echo "---------------------------------------------------------------------------------"
-echo "Building component"
+echo "Entering Artifact Build Script"
 echo "---------------------------------------------------------------------------------"
 
 
@@ -29,8 +28,8 @@ ROOT_DIR="$(dirname "$LIB_DIR")"
 # INITIALIZE / VALIDATE SERVER VARIABLES
 # -------------------------------------------------------------------------------------
 
-ENVIRONMENT=$(jq -r '.environment' $ROOT_DIR/configurations/configurations.json)
-if [[ $ENVIRONMENT == null ]]
+PROFILE=$(jq -r '.profile' $ROOT_DIR/configurations/configurations.json)
+if [[ $PROFILE == null ]]
 then
      echo
      echo -e "${RED_COLOR}Build Environment Specification is missing${NO_COLOR}"
@@ -77,7 +76,6 @@ else
 fi
 
 
-
 # -------------------------------------------------------------------------------------
 # SET WORKING DIRECTORY
 # -------------------------------------------------------------------------------------
@@ -85,7 +83,6 @@ fi
 echo
 echo "Changing working directory"
 cd $BASEDIR
-
 
 
 # -------------------------------------------------------------------------------------
@@ -97,7 +94,6 @@ echo "Updating API Server host value"
 sed -i 's/cloud\.miles\.co\.ke/'${API_SERVER}'/g' $BASEDIR/chart/values.yaml
 
 
-
 # -------------------------------------------------------------------------------------
 # UPDATE DOCKER HOST
 # -------------------------------------------------------------------------------------
@@ -107,7 +103,6 @@ echo "Updating Docker Registry host value"
 sed -i 's/cloud\.miles\.co\.ke/'${REGISTRY_SERVER}'/g' $BASEDIR/pom.xml
 
 
-
 # -------------------------------------------------------------------------------------
 # BUILD & INSTALL COMPONENT IN MAVEN REPOSITORY
 # -------------------------------------------------------------------------------------
@@ -115,11 +110,9 @@ sed -i 's/cloud\.miles\.co\.ke/'${REGISTRY_SERVER}'/g' $BASEDIR/pom.xml
 echo
 echo "Building & installing components into the Maven repository"
 echo
-bash mvnw clean package spring-boot:repackage -P ${ENVIRONMENT}
-
-
+bash mvnw clean package spring-boot:repackage -P ${PROFILE}
 
 echo
 echo "---------------------------------------------------------------------------------"
-echo "Done building component"
+echo "Leaving Artifact Build Script"
 echo "---------------------------------------------------------------------------------"

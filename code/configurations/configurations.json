@@ -1,5 +1,5 @@
 {
-  "environment": "prod",
+  "profile": "prod",
   "domains": {
     "default": "reporter.miles.co.ke",
     "api": "reporter.miles.co.ke",
