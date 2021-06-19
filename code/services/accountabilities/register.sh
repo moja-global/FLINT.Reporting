@@ -49,7 +49,7 @@ echo "VERSION = ${VERSION}"
 echo
 echo "Building Docker Image"
 echo
-docker image build .
+docker image build -t ${REPOSITORY}/${ARTIFACT}:${VERSION} .
 
 
 # -------------------------------------------------------------------------------------
