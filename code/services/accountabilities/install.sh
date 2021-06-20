@@ -56,7 +56,7 @@ echo "[INSTALLATION] Installing artifact"
 echo "[INSTALLATION]"
 echo "[INSTALLATION] ------------------------------------------------------------------------"
 echo "[INSTALLATION]"
-helm install ARTIFACT $BASEDIR/chart
+helm install $ARTIFACT $BASEDIR/chart
 echo "[INSTALLATION]"
 echo "[INSTALLATION] ------------------------------------------------------------------------"
 

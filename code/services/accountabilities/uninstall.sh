@@ -56,7 +56,7 @@ echo "[UNINSTALLATION] Uninstalling artifact"
 echo "[UNINSTALLATION]"
 echo "[UNINSTALLATION] ------------------------------------------------------------------------"
 echo "[UNINSTALLATION]"
-helm uninstall ARTIFACT
+helm uninstall $ARTIFACT
 echo "[UNINSTALLATION]"
 echo "[UNINSTALLATION] ------------------------------------------------------------------------"
 
