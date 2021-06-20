@@ -33,9 +33,9 @@
     <properties>
         <davidmoten.guava.mini.version>0.1.2</davidmoten.guava.mini.version>
         <davidmoten.rxjava2.jdbc.version>0.2.4</davidmoten.rxjava2.jdbc.version>
-        <docker.image.prefix>reporter.miles.co.ke:5043</docker.image.prefix>
         <java.version>11</java.version>
         <spring.cloud.version>Greenwich.RELEASE</spring.cloud.version>
+        <springdoc.openapi.webflux.ui.version>1.5.4</springdoc.openapi.webflux.ui.version>
         <testcontainers.version>1.15.1</testcontainers.version>
         <skip.unit.tests>false</skip.unit.tests>
         <skip.integration.tests>true</skip.integration.tests>
@@ -120,7 +120,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-webflux-ui</artifactId>
-            <version>1.5.4</version>
+            <version>${springdoc.openapi.webflux.ui.version}</version>
         </dependency>
 
         <!-- tests -->
@@ -224,12 +224,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.1.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version>
                 <configuration>
                     <skipTests>${skip.unit.tests}</skipTests>
                 </configuration>
@@ -237,7 +235,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.0.0-M5</version>
                 <configuration>
                     <skipTests>${skip.integration.tests}</skipTests>
                 </configuration>
@@ -245,7 +242,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-help-plugin</artifactId>
-                <version>3.2.0</version>
             </plugin>
         </plugins>
     </build>

@@ -1,55 +1,67 @@
 #!/bin/bash
 
+echo "[INSTALLATION]"
+echo "[INSTALLATION] ========================================================================"
+echo "[INSTALLATION] Entering Artifact Installation Script"
+echo "[INSTALLATION] ========================================================================"
 
-echo
-echo "---------------------------------------------------------------------------------"
-echo "Installing component"
-echo "---------------------------------------------------------------------------------"
+# ------------------------------------------------------------------------
+# INITIALIZE SHELL COLOR VARIABLES
+# ------------------------------------------------------------------------
 
+RED_COLOR='\033[0;31m'
+GREEN_COLOR='\033[0;32m'
+NO_COLOR='\033[0m'
 
+# ------------------------------------------------------------------------
+# INITIALIZE PATH VARIABLES
+# ------------------------------------------------------------------------
 
-# -------------------------------------------------------------------------------------
-# INITIALIZE VARIABLES
-# -------------------------------------------------------------------------------------
-
-echo
-echo "Initializing variables"
 BASEDIR="$( cd "$( dirname "$0" )" && pwd )"
+LIB_DIR="$(dirname "$BASEDIR")"
+ROOT_DIR="$(dirname "$LIB_DIR")"
 
+# ------------------------------------------------------------------------
+# INITIALIZE SERVER / ARTIFACTS VARIABLES
+# ------------------------------------------------------------------------
 
+echo "[INSTALLATION]"
+ARTIFACT="$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
+if [[ $ARTIFACT == null ]]
+then
+     echo "[INSTALLATION]"
+     echo -n "[INSTALLATION] ";  echo -e "${RED_COLOR}Artifact's Configuration is Missing${NO_COLOR}"
+     echo "[INSTALLATION]"
+     echo "[INSTALLATION] ------------------------------------------------------------------------"
+     echo "[INSTALLATION] Aborting Artifact Install"
+     echo "[INSTALLATION] ------------------------------------------------------------------------"echo "[INSTALLATION]"
+     echo "[INSTALLATION]"
+     exit 1
+else
+     echo -n "[INSTALLATION] ";  echo -e "${GREEN_COLOR}ARTIFACT = ${ARTIFACT} ${NO_COLOR}"
+fi
 
-# -------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------
 # SET WORKING DIRECTORY
-# -------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------
 
-echo
-echo "Changing working directory"
 cd $BASEDIR
 
+# ------------------------------------------------------------------------
+# INSTALL ARTIFACT
+# ------------------------------------------------------------------------
 
+echo "[INSTALLATION]"
+echo "[INSTALLATION] Installing artifact"
+echo "[INSTALLATION]"
+echo "[INSTALLATION] ------------------------------------------------------------------------"
+echo "[INSTALLATION]"
+helm install ARTIFACT $BASEDIR/chart
+echo "[INSTALLATION]"
+echo "[INSTALLATION] ------------------------------------------------------------------------"
 
-# -------------------------------------------------------------------------------------
-# GET THE NAME OF THE APPLICATION
-# -------------------------------------------------------------------------------------
-
-echo
-echo "Taking ${PWD##*/} as the name of the application"
-APPLICATION=${PWD##*/}
-
-
-
-# -------------------------------------------------------------------------------------
-# INSTALL THE APPLICATION
-# -------------------------------------------------------------------------------------
-
-echo
-echo "Installing application"
-echo
-helm install $APPLICATION $BASEDIR/chart
-
-
-
-echo
-echo "---------------------------------------------------------------------------------"
-echo "Done installing component"
-echo "---------------------------------------------------------------------------------"
+echo "[INSTALLATION]"
+echo "[INSTALLATION] ========================================================================"
+echo "[INSTALLATION] Leaving Artifact Installation Script"
+echo "[INSTALLATION] ========================================================================"
+echo "[INSTALLATION]"
