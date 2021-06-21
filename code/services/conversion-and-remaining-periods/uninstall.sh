@@ -1,9 +1,9 @@
 #!/bin/bash
 
-echo "[UNINSTALLATION]"
-echo "[UNINSTALLATION] ========================================================================"
-echo "[UNINSTALLATION] Entering Artifact Uninstallation Script"
-echo "[UNINSTALLATION] ========================================================================"
+echo 
+echo "========================================================================"
+echo "Entering Artifact Uninstallation Script"
+echo "========================================================================"
 
 # ------------------------------------------------------------------------
 # INITIALIZE SHELL COLOR VARIABLES
@@ -33,37 +33,37 @@ cd $BASEDIR
 # INITIALIZE SERVER / ARTIFACTS VARIABLES
 # ------------------------------------------------------------------------
 
-echo "[UNINSTALLATION]"
+echo 
 ARTIFACT="$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
 if [[ $ARTIFACT == null ]]
 then
-     echo "[UNINSTALLATION]"
-     echo -n "[UNINSTALLATION] ";  echo -e "${RED_COLOR}Artifact's Configuration is Missing${NO_COLOR}"
-     echo "[UNINSTALLATION]"
-     echo "[UNINSTALLATION] ------------------------------------------------------------------------"
-     echo "[UNINSTALLATION] Aborting Artifact Uninstallation"
-     echo "[UNINSTALLATION] ------------------------------------------------------------------------"echo "[UNINSTALLATION]"
-     echo "[UNINSTALLATION]"
+     echo 
+     echo -e "${RED_COLOR}Artifact's Configuration is Missing${NO_COLOR}"
+     echo 
+     echo "------------------------------------------------------------------------"
+     echo "Aborting Artifact Uninstallation"
+     echo "------------------------------------------------------------------------"echo 
+     echo 
      exit 1
 else
-     echo -n "[UNINSTALLATION] ";  echo -e "${GREEN_COLOR}ARTIFACT = ${ARTIFACT} ${NO_COLOR}"
+     echo -e "${GREEN_COLOR}ARTIFACT = ${ARTIFACT} ${NO_COLOR}"
 fi
 
 # ------------------------------------------------------------------------
 # UNINSTALL ARTIFACT
 # ------------------------------------------------------------------------
 
-echo "[UNINSTALLATION]"
-echo "[UNINSTALLATION] Uninstalling artifact"
-echo "[UNINSTALLATION]"
-echo "[UNINSTALLATION] ------------------------------------------------------------------------"
-echo "[UNINSTALLATION]"
+echo 
+echo "Uninstalling artifact"
+echo 
+echo "------------------------------------------------------------------------"
+echo 
 helm uninstall $ARTIFACT
-echo "[UNINSTALLATION]"
-echo "[UNINSTALLATION] ------------------------------------------------------------------------"
+echo 
+echo "------------------------------------------------------------------------"
 
-echo "[UNINSTALLATION]"
-echo "[UNINSTALLATION] ========================================================================"
-echo "[UNINSTALLATION] Leaving Artifact Uninstallation Script"
-echo "[UNINSTALLATION] ========================================================================"
-echo "[UNINSTALLATION]"
+echo 
+echo "========================================================================"
+echo "Leaving Artifact Uninstallation Script"
+echo "========================================================================"
+echo 

@@ -1,9 +1,9 @@
 #!/bin/bash
 
-echo "[BUILD]"
-echo "[BUILD] ========================================================================"
-echo "[BUILD] Entering Artifact Build Script"
-echo "[BUILD] ========================================================================"
+echo 
+echo "========================================================================"
+echo "Entering Artifact Build Script"
+echo "========================================================================"
 
 # ------------------------------------------------------------------------
 # INITIALIZE SHELL COLOR VARIABLES
@@ -33,53 +33,53 @@ cd $BASEDIR
 # INITIALIZE SERVER / ARTIFACTS VARIABLES
 # ------------------------------------------------------------------------
 
-echo "[BUILD]"
+echo 
 PROFILE=$(jq -r '.profile' $ROOT_DIR/configurations/configurations.json)
 if [[ $PROFILE == null ]]
 then
-     echo "[BUILD]"
-     echo -n "[BUILD] ";  echo -e "${RED_COLOR}Build Profile Specification is missing${NO_COLOR}"
-     echo "[BUILD]"
-     echo "[BUILD] ------------------------------------------------------------------------"
-     echo "[BUILD] Aborting Artifact Build"
-     echo "[BUILD] ------------------------------------------------------------------------"
-     echo "[BUILD]"
+     echo 
+     echo -e "${RED_COLOR}Build Profile Specification is missing${NO_COLOR}"
+     echo 
+     echo "------------------------------------------------------------------------"
+     echo "Aborting Artifact Build"
+     echo "------------------------------------------------------------------------"
+     echo 
      exit 1
 else
-     echo -n "[BUILD] ";  echo -e "${GREEN_COLOR}PROFILE = ${PROFILE}${NO_COLOR}"
+     echo -e "${GREEN_COLOR}PROFILE = ${PROFILE}${NO_COLOR}"
 fi
 
-echo "[BUILD]"
+echo 
 API_SERVER=$(jq -r '.domains.api' $ROOT_DIR/configurations/configurations.json)
 if [[ $API_SERVER == null ]]
 then
-     echo "[BUILD]"
-     echo -n "[BUILD] ";  echo -e "${RED_COLOR}API Server Configuration is Missing${NO_COLOR}"
-     echo "[BUILD]"
-     echo "[BUILD] ------------------------------------------------------------------------"
-     echo "[BUILD] Aborting Artifact Build"
-     echo "[BUILD] ------------------------------------------------------------------------"
-     echo "[BUILD]"
+     echo 
+     echo -e "${RED_COLOR}API Server Configuration is Missing${NO_COLOR}"
+     echo 
+     echo "------------------------------------------------------------------------"
+     echo "Aborting Artifact Build"
+     echo "------------------------------------------------------------------------"
+     echo 
      exit 1
 else
-     echo -n "[BUILD] ";  echo -e "${GREEN_COLOR}API SERVER = ${API_SERVER} ${NO_COLOR}"
+     echo -e "${GREEN_COLOR}API SERVER = ${API_SERVER} ${NO_COLOR}"
 fi
 
-echo "[BUILD]"
+echo 
 cd $BASEDIR
 ARTIFACT="$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
 if [[ $ARTIFACT == null ]]
 then
-     echo "[BUILD]"
-     echo -n "[BUILD] ";  echo -e "${RED_COLOR}Artifact's Configuration is Missing${NO_COLOR}"
-     echo "[BUILD]"
-     echo "[BUILD] ------------------------------------------------------------------------"
-     echo "[BUILD] Aborting Artifact Build"
-     echo "[BUILD] ------------------------------------------------------------------------"echo "[BUILD]"
-     echo "[BUILD]"
+     echo 
+     echo -e "${RED_COLOR}Artifact's Configuration is Missing${NO_COLOR}"
+     echo 
+     echo "------------------------------------------------------------------------"
+     echo "Aborting Artifact Build"
+     echo "------------------------------------------------------------------------"echo 
+     echo 
      exit 1
 else
-     echo -n "[BUILD] ";  echo -e "${GREEN_COLOR}ARTIFACT = ${ARTIFACT} ${NO_COLOR}"
+     echo -e "${GREEN_COLOR}ARTIFACT = ${ARTIFACT} ${NO_COLOR}"
 fi
 
 
@@ -87,8 +87,8 @@ fi
 # UPDATE API HOST
 # ------------------------------------------------------------------------
 
-echo "[BUILD]"
-echo "[BUILD] Updating API Server Host value"
+echo 
+echo "Updating API Server Host value"
 sed -i 's/cloud\.miles\.co\.ke/'${API_SERVER}'/g' $BASEDIR/chart/values.yaml
 
 
@@ -96,17 +96,17 @@ sed -i 's/cloud\.miles\.co\.ke/'${API_SERVER}'/g' $BASEDIR/chart/values.yaml
 # BUILD ARTIFACT
 # ------------------------------------------------------------------------
 
-echo "[BUILD]"
-echo "[BUILD] Building artifact"
-echo "[BUILD]"
-echo "[BUILD] ------------------------------------------------------------------------"
-echo "[BUILD]"
+echo 
+echo "Building artifact"
+echo 
+echo "------------------------------------------------------------------------"
+echo 
 bash mvnw clean package spring-boot:repackage -P ${PROFILE}
-echo "[BUILD]"
-echo "[BUILD] ------------------------------------------------------------------------"
+echo 
+echo "------------------------------------------------------------------------"
 
-echo "[BUILD]"
-echo "[BUILD] ========================================================================"
-echo "[BUILD] Leaving Artifact Build Script"
-echo "[BUILD] ========================================================================"
-echo "[BUILD]"
+echo 
+echo "========================================================================"
+echo "Leaving Artifact Build Script"
+echo "========================================================================"
+echo 

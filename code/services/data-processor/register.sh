@@ -1,9 +1,9 @@
 #!/bin/bash
 
-echo "[REGISTRATION]"
-echo "[REGISTRATION] ========================================================================"
-echo "[REGISTRATION] Entering Artifact Registration Script"
-echo "[REGISTRATION] ========================================================================"
+echo 
+echo "========================================================================"
+echo "Entering Artifact Registration Script"
+echo "========================================================================"
 
 # ------------------------------------------------------------------------
 # INITIALIZE SHELL COLOR VARIABLES
@@ -32,53 +32,53 @@ cd $BASEDIR
 # INITIALIZE SERVER / ARTIFACTS VARIABLES
 # ------------------------------------------------------------------------
 
-echo "[REGISTRATION]"
+echo 
 REGISTRY_SERVER=$(jq -r '.domains.registry' $ROOT_DIR/configurations/configurations.json)
 if [[ $REGISTRY_SERVER == null ]]
 then
-     echo "[REGISTRATION]"
-     echo -n "[REGISTRATION] "; echo -e "${RED_COLOR}Registry Server's Configuration is Missing${NO_COLOR}"
-     echo "[REGISTRATION]"
-     echo "[REGISTRATION] ------------------------------------------------------------------------"
-     echo "[REGISTRATION] Aborting Artifact Registration"
-     echo "[REGISTRATION] ------------------------------------------------------------------------"
-     echo "[REGISTRATION]"
+     echo 
+     echo -e "${RED_COLOR}Registry Server's Configuration is Missing${NO_COLOR}"
+     echo 
+     echo "------------------------------------------------------------------------"
+     echo "Aborting Artifact Registration"
+     echo "------------------------------------------------------------------------"
+     echo 
      
      exit 1
 else
-     echo -n "[REGISTRATION] "; echo -e "${GREEN_COLOR}REGISTRY = ${REGISTRY_SERVER} ${NO_COLOR}"
+     echo -e "${GREEN_COLOR}REGISTRY = ${REGISTRY_SERVER} ${NO_COLOR}"
 fi
 
-echo "[REGISTRATION]"
+echo 
 ARTIFACT="$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
 if [[ $ARTIFACT == null ]]
 then
-     echo "[REGISTRATION]"
-     echo -n "[REGISTRATION] "; echo -e "${RED_COLOR}Artifact's Configuration is Missing${NO_COLOR}"
-     echo "[REGISTRATION]"
-     echo "[REGISTRATION] ------------------------------------------------------------------------"
-     echo "[REGISTRATION] Aborting Artifact Registration"
-     echo "[REGISTRATION] ------------------------------------------------------------------------"
-     echo "[REGISTRATION]"
+     echo 
+     echo -e "${RED_COLOR}Artifact's Configuration is Missing${NO_COLOR}"
+     echo 
+     echo "------------------------------------------------------------------------"
+     echo "Aborting Artifact Registration"
+     echo "------------------------------------------------------------------------"
+     echo 
      exit 1
 else
-     echo -n "[REGISTRATION] "; echo -e "${GREEN_COLOR}ARTIFACT = ${ARTIFACT} ${NO_COLOR}"
+     echo -e "${GREEN_COLOR}ARTIFACT = ${ARTIFACT} ${NO_COLOR}"
 fi
 
-echo "[REGISTRATION]"
+echo 
 VERSION="$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
 if [[ $VERSION == null ]]
 then
-     echo "[REGISTRATION]"
-     echo -n "[REGISTRATION] "; echo -e "${RED_COLOR}Version's Configuration is Missing${NO_COLOR}"
-     echo "[REGISTRATION]"
-     echo "[REGISTRATION] ---------------------------------"
-     echo "[REGISTRATION] Aborting Artifact Registration"
-     echo "[REGISTRATION] ---------------------------------"
-     echo "[REGISTRATION]"
+     echo 
+     echo -e "${RED_COLOR}Version's Configuration is Missing${NO_COLOR}"
+     echo 
+     echo "---------------------------------"
+     echo "Aborting Artifact Registration"
+     echo "---------------------------------"
+     echo 
      exit 1
 else
-     echo -n "[REGISTRATION] "; echo -e "${GREEN_COLOR}VERSION = ${VERSION} ${NO_COLOR}"
+     echo -e "${GREEN_COLOR}VERSION = ${VERSION} ${NO_COLOR}"
 fi
 
 
@@ -86,31 +86,31 @@ fi
 # BUILD DOCKER IMAGE
 # ------------------------------------------------------------------------
 
-echo "[REGISTRATION]"
-echo "[REGISTRATION] Building Docker Image"
-echo "[REGISTRATION]"
-echo "[REGISTRATION] ------------------------------------------------------------------------"
-echo "[REGISTRATION]"
+echo 
+echo "Building Docker Image"
+echo 
+echo "------------------------------------------------------------------------"
+echo 
 # See: https://stackoverflow.com/questions/51115856/docker-failed-to-export-image-failed-to-create-image-failed-to-get-layer
 DOCKER_BUILDKIT=1 docker build -t ${REGISTRY_SERVER}:5043/${ARTIFACT}:${VERSION} .
-echo "[REGISTRATION]"
-echo "[REGISTRATION] ------------------------------------------------------------------------"
+echo 
+echo "------------------------------------------------------------------------"
 
 # ------------------------------------------------------------------------
 # PUSH DOCKER IMAGE
 # ------------------------------------------------------------------------
 
-echo "[REGISTRATION]"
-echo "[REGISTRATION] Registering Docker Image"
-echo "[REGISTRATION]"
-echo "[REGISTRATION] ------------------------------------------------------------------------"
-echo "[REGISTRATION]"
+echo 
+echo "Registering Docker Image"
+echo 
+echo "------------------------------------------------------------------------"
+echo 
 docker image push ${REGISTRY_SERVER}:5043/${ARTIFACT}:${VERSION}
-echo "[REGISTRATION]"
-echo "[REGISTRATION] ------------------------------------------------------------------------"
+echo 
+echo "------------------------------------------------------------------------"
 
-echo "[REGISTRATION]"
-echo "[REGISTRATION] ========================================================================"
-echo "[REGISTRATION] Leaving Artifact Registration Script"
-echo "[REGISTRATION] ========================================================================"
-echo "[REGISTRATION]"
+echo 
+echo "========================================================================"
+echo "Leaving Artifact Registration Script"
+echo "========================================================================"
+echo 
