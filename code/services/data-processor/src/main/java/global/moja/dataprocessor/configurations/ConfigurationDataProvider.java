@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
  * @since 0.0.1
  */
 @Configuration
-@PropertySource(value = {"classpath:hosts.properties"})
 @Slf4j
 public class ConfigurationDataProvider {
 
