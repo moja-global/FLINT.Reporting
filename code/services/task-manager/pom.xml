@@ -99,7 +99,6 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
 
-
         <!-- data -->
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -113,6 +112,12 @@
             <groupId>com.github.davidmoten</groupId>
             <artifactId>rxjava2-jdbc</artifactId>
             <version>${davidmoten.rxjava2.jdbc.version}</version>
+        </dependency>
+
+        <!-- rabbitmq -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
 
         <!-- api -->
