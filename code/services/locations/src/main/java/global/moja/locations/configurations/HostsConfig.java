@@ -19,7 +19,6 @@ import org.springframework.context.annotation.PropertySource;
  * @version 1.0
  */
 @Configuration
-@PropertySource(value = {"classpath:hosts.properties"})
 @Getter
 public class HostsConfig {
 

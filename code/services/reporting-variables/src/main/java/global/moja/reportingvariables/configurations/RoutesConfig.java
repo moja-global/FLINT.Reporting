@@ -162,6 +162,11 @@ public class RoutesConfig {
                                         .beanClass(ReportingVariablesHandler.class)
                                         .beanMethod("updateReportingVariable")
                                         .description("Updates a single Reporting Variable Record in the database")
+                                        .requestBody(
+                                                requestBodyBuilder()
+                                                        .content(contentBuilder()
+                                                                .schema(schemaBuilder()
+                                                                        .implementation(ReportingVariable.class))))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Reporting Variable Record was successfully updated")

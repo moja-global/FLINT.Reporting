@@ -6,7 +6,7 @@ microservice:
   # Ingress
   ingress:
     name: parties
-    class: traefik 
+    class: traefik
     rules:
       host: reporter.miles.co.ke
       http:

@@ -172,6 +172,11 @@ public class RoutesConfig {
                                         .beanClass(FluxesToReportingVariablesHandler.class)
                                         .beanMethod("updateFluxToReportingVariable")
                                         .description("Updates a single Flux To Reporting Variable Assignment Rule Record in the database")
+                                        .requestBody(
+                                                requestBodyBuilder()
+                                                        .content(contentBuilder()
+                                                                .schema(schemaBuilder()
+                                                                        .implementation(FluxToReportingVariable.class))))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Flux To Reporting Variable Assignment Rule Record was successfully updated")

@@ -8,6 +8,7 @@
 package global.moja.crftables.models;
 
 import lombok.*;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @since 0.0.1
@@ -32,7 +33,7 @@ public class Database implements Comparable<Database> {
     private Integer version;
 
     @Override
-    public int compareTo(Database database) {
+    public int compareTo(@NotNull Database database) {
 
         if(this.id != null && database.getId() != null){
             return this.id.compareTo(database.getId());

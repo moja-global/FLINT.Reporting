@@ -24,7 +24,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,135 +40,135 @@ import java.util.Objects;
 public class ReportSectoralPagesPreparationService {
 
     @Value("${sectoral.report.template.index}")
-    private Integer SECTORAL_REPORT_TEMPLATE_INDEX;
+    Integer SECTORAL_REPORT_TEMPLATE_INDEX;
 
     // Forest Land
 
     @Value("${forest.land.lu.id}")
-    private Long FOREST_LAND_LU_ID;
+    Long FOREST_LAND_LU_ID;
 
     @Value("${forest.land.id.remaining.forest.land.lu.id}")
-    private Long FOREST_LAND_REMAINING_FOREST_LAND_LU_ID;
+    Long FOREST_LAND_REMAINING_FOREST_LAND_LU_ID;
 
     @Value("${land.converted.to.forest.land.lu.id}")
-    private Long LAND_CONVERTED_TO_FOREST_LAND_LU_ID;
+    Long LAND_CONVERTED_TO_FOREST_LAND_LU_ID;
 
     @Value("${cropland.converted.to.forest.land.lu.id}")
-    private Long CROPLAND_CONVERTED_TO_FOREST_LAND_LU_ID;
+    Long CROPLAND_CONVERTED_TO_FOREST_LAND_LU_ID;
 
     @Value("${grassland.converted.to.forest.land.lu.id}")
-    private Long GRASSLAND_CONVERTED_TO_FOREST_LAND_LU_ID;
+    Long GRASSLAND_CONVERTED_TO_FOREST_LAND_LU_ID;
 
     @Value("${wetlands.converted.to.forest.land.lu.id}")
-    private Long WETLANDS_CONVERTED_TO_FOREST_LAND_LU_ID;
+    Long WETLANDS_CONVERTED_TO_FOREST_LAND_LU_ID;
 
     @Value("${settlements.converted.to.forest.land.lu.id}")
-    private Long SETTLEMENTS_CONVERTED_TO_FOREST_LAND_LU_ID;
+    Long SETTLEMENTS_CONVERTED_TO_FOREST_LAND_LU_ID;
 
     @Value("${other.land.converted.to.forest.land.lu.id}")
-    private Long OTHER_LAND_CONVERTED_TO_FOREST_LAND_LU_ID;
+    Long OTHER_LAND_CONVERTED_TO_FOREST_LAND_LU_ID;
 
     // Cropland
 
     @Value("${cropland.lu.id}")
-    private Long CROPLAND_LU_ID;
+    Long CROPLAND_LU_ID;
 
     @Value("${cropland.remaining.cropland.lu.id}")
-    private Long CROPLAND_REMAINING_CROPLAND_LU_ID;
+    Long CROPLAND_REMAINING_CROPLAND_LU_ID;
 
     @Value("${land.converted.to.cropland.lu.id}")
-    private Long LAND_CONVERTED_TO_CROPLAND_LU_ID;
+    Long LAND_CONVERTED_TO_CROPLAND_LU_ID;
 
     @Value("${forest.land.id.converted.to.cropland.lu.id}")
-    private Long FOREST_LAND_CONVERTED_TO_CROPLAND_LU_ID;
+    Long FOREST_LAND_CONVERTED_TO_CROPLAND_LU_ID;
 
     @Value("${grassland.converted.to.cropland.lu.id}")
-    private Long GRASSLAND_CONVERTED_TO_CROPLAND_LU_ID;
+    Long GRASSLAND_CONVERTED_TO_CROPLAND_LU_ID;
 
     @Value("${wetlands.converted.to.cropland.lu.id}")
-    private Long WETLANDS_CONVERTED_TO_CROPLAND_LU_ID;
+    Long WETLANDS_CONVERTED_TO_CROPLAND_LU_ID;
 
     @Value("${settlements.converted.to.cropland.lu.id}")
-    private Long SETTLEMENTS_CONVERTED_TO_CROPLAND_LU_ID;
+    Long SETTLEMENTS_CONVERTED_TO_CROPLAND_LU_ID;
 
     @Value("${other.land.converted.to.cropland.lu.id}")
-    private Long OTHER_LAND_CONVERTED_TO_CROPLAND_LU_ID;
+    Long OTHER_LAND_CONVERTED_TO_CROPLAND_LU_ID;
 
     // Grassland
 
     @Value("${grassland.lu.id}")
-    private Long GRASSLAND_LU_ID;
+    Long GRASSLAND_LU_ID;
 
     @Value("${grassland.remaining.grassland.lu.id}")
-    private Long GRASSLAND_REMAINING_GRASSLAND_LU_ID;
+    Long GRASSLAND_REMAINING_GRASSLAND_LU_ID;
 
     @Value("${land.converted.to.grassland.lu.id}")
-    private Long LAND_CONVERTED_TO_GRASSLAND_LU_ID;
+    Long LAND_CONVERTED_TO_GRASSLAND_LU_ID;
 
     @Value("${cropland.converted.to.grassland.lu.id}")
-    private Long CROPLAND_CONVERTED_TO_GRASSLAND_LU_ID;
+    Long CROPLAND_CONVERTED_TO_GRASSLAND_LU_ID;
 
     @Value("${forest.land.id.converted.to.grassland.lu.id}")
-    private Long FOREST_LAND_CONVERTED_TO_GRASSLAND_LU_ID;
+    Long FOREST_LAND_CONVERTED_TO_GRASSLAND_LU_ID;
 
     @Value("${wetlands.converted.to.grassland.lu.id}")
-    private Long WETLANDS_CONVERTED_TO_GRASSLAND_LU_ID;
+    Long WETLANDS_CONVERTED_TO_GRASSLAND_LU_ID;
 
     @Value("${settlements.converted.to.grassland.lu.id}")
-    private Long SETTLEMENTS_CONVERTED_TO_GRASSLAND_LU_ID;
+    Long SETTLEMENTS_CONVERTED_TO_GRASSLAND_LU_ID;
 
     @Value("${other.land.converted.to.grassland.lu.id}")
-    private Long OTHER_LAND_CONVERTED_TO_GRASSLAND_LU_ID;
+    Long OTHER_LAND_CONVERTED_TO_GRASSLAND_LU_ID;
 
     // Wetlands
 
     @Value("${wetlands.lu.id}")
-    private Long WETLANDS_LU_ID;
+    Long WETLANDS_LU_ID;
 
     @Value("${wetlands.remaining.wetlands.lu.id}")
-    private Long WETLANDS_REMAINING_WETLANDS_LU_ID;
+    Long WETLANDS_REMAINING_WETLANDS_LU_ID;
 
     @Value("${land.converted.to.wetlands.lu.id}")
-    private Long LAND_CONVERTED_TO_WETLANDS_LU_ID;
+    Long LAND_CONVERTED_TO_WETLANDS_LU_ID;
 
     @Value("${cropland.converted.to.wetlands.lu.id}")
-    private Long CROPLAND_CONVERTED_TO_WETLANDS_LU_ID;
+    Long CROPLAND_CONVERTED_TO_WETLANDS_LU_ID;
 
     @Value("${grassland.converted.to.wetlands.lu.id}")
-    private Long GRASSLAND_CONVERTED_TO_WETLANDS_LU_ID;
+    Long GRASSLAND_CONVERTED_TO_WETLANDS_LU_ID;
 
     @Value("${forest.land.id.converted.to.wetlands.lu.id}")
-    private Long FOREST_LAND_CONVERTED_TO_WETLANDS_LU_ID;
+    Long FOREST_LAND_CONVERTED_TO_WETLANDS_LU_ID;
 
     @Value("${settlements.converted.to.wetlands.lu.id}")
-    private Long SETTLEMENTS_CONVERTED_TO_WETLANDS_LU_ID;
+    Long SETTLEMENTS_CONVERTED_TO_WETLANDS_LU_ID;
 
     @Value("${other.land.converted.to.wetlands.lu.id}")
-    private Long OTHER_LAND_CONVERTED_TO_WETLANDS_LU_ID;
+    Long OTHER_LAND_CONVERTED_TO_WETLANDS_LU_ID;
 
     @Value("${area.reporting.variable.id}")
-    private Long AREA_REPORTING_VARIABLE_ID;
+    Long AREA_REPORTING_VARIABLE_ID;
 
     @Value("${net.carbon.stock.change.in.living.biomass.reporting.variable.id}")
-    private Long NET_CARBON_STOCK_CHANGE_IN_LIVING_BIOMASS_REPORTING_VARIABLE;
+    Long NET_CARBON_STOCK_CHANGE_IN_LIVING_BIOMASS_REPORTING_VARIABLE;
 
     @Value("${net.carbon.stock.change.in.dead.organic.matter.reporting.variable.id}")
-    private Long NET_CARBON_STOCK_CHANGE_IN_DEAD_ORGANIC_MATTER_REPORTING_VARIABLE;
+    Long NET_CARBON_STOCK_CHANGE_IN_DEAD_ORGANIC_MATTER_REPORTING_VARIABLE;
 
     @Value("${net.carbon.stock.change.in.mineral.soils.reporting.variable.id}")
-    private Long NET_CARBON_STOCK_CHANGE_IN_MINERAL_SOILS_REPORTING_VARIABLE;
+    Long NET_CARBON_STOCK_CHANGE_IN_MINERAL_SOILS_REPORTING_VARIABLE;
 
     @Value("${net.carbon.stock.change.in.organic.soils.reporting.variable.id}")
-    private Long NET_CARBON_STOCK_CHANGE_IN_ORGANIC_SOILS_REPORTING_VARIABLE;
+    Long NET_CARBON_STOCK_CHANGE_IN_ORGANIC_SOILS_REPORTING_VARIABLE;
 
     @Value("${net.carbon.dioxide.emissions.removals.reporting.variable.id}")
-    private Long NET_CARBON_DIOXIDE_EMISSIONS_REMOVALS_REPORTING_VARIABLE;
+    Long NET_CARBON_DIOXIDE_EMISSIONS_REMOVALS_REPORTING_VARIABLE;
 
     @Autowired
-    private SectoralReportFormattingRules sectoralReportFormattingRules;
+    SectoralReportFormattingRules sectoralReportFormattingRules;
 
     @Autowired
-    private CellStyleUtil cellStyleUtil;
+    CellStyleUtil cellStyleUtil;
 
     public Mono<Report> prepareSectoralReports(Report report) {
 
@@ -912,8 +911,7 @@ public class ReportSectoralPagesPreparationService {
                                 .reduce(BigDecimal.ZERO, BigDecimal::add)
                                 .doubleValue());
             } catch (Exception e) {
-                log.warn("Write attempt for Sectoral Report, Total Land, Reporting Variable {}, " +
-                        "Year {} Data failed", report, year);
+                log.warn("Write attempt for Summary Report, Total Land, Reporting Variable {}, Year {} Data failed", reportingVariableId, year);
                 data.setCellValue(BigDecimal.ZERO.doubleValue());
             }
 
@@ -989,9 +987,7 @@ public class ReportSectoralPagesPreparationService {
                                 .doubleValue());
             } catch (Exception e) {
 
-                log.warn("Write attempt for Sectoral Report, Land Remaining Land, " +
-                                "Land Use Category {}, Reporting Variable {}, Year {} Data failed",
-                        landUseCategoryId, report, year);
+                log.warn("Write attempt for Summary Report, Land Remaining Land, Reporting Variable {}, Year {} Data failed", reportingVariableId, year);
                 data.setCellValue(BigDecimal.ZERO.doubleValue());
             }
 
@@ -1066,9 +1062,7 @@ public class ReportSectoralPagesPreparationService {
                                 .doubleValue());
             } catch (Exception e) {
 
-                log.warn("Write attempt for Sectoral Report, Total Land Converted To Land, " +
-                                "Land Use Category {}, Reporting Variable {}, Year {} Data failed",
-                        landUseCategoryId, report, year);
+                log.warn("Write attempt for Summary Report, Total Land Converted To Land, Reporting Variable {}, Year {} Data failed", reportingVariableId, year);
                 data.setCellValue(BigDecimal.ZERO.doubleValue());
             }
 
@@ -1144,9 +1138,7 @@ public class ReportSectoralPagesPreparationService {
                                 .doubleValue());
             } catch (Exception e) {
 
-                log.warn("Write attempt for Sectoral Report, Land Remaining Land, " +
-                                "Land Use Category {}, Reporting Variable {}, Year {} Data failed",
-                        landUseCategoryId, report, year);
+                log.warn("Write attempt for Summary Report, Land Converted To Land, Reporting Variable {}, Year {} Data failed", reportingVariableId, year);
                 data.setCellValue(BigDecimal.ZERO.doubleValue());
             }
 
@@ -1157,7 +1149,7 @@ public class ReportSectoralPagesPreparationService {
 
     }
 
-    private void autoSizeSheetColumns(Report report, Long landUseCategoryId) throws IOException {
+    private void autoSizeSheetColumns(Report report, Long landUseCategoryId) {
 
         // Read in the summary report worksheet
         log.trace("Reading in the summary report worksheet");

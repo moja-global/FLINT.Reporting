@@ -162,6 +162,11 @@ public class RoutesConfig {
                                         .beanClass(EmissionTypesHandler.class)
                                         .beanMethod("updateEmissionType")
                                         .description("Updates a single Emission Type Record in the database")
+                                        .requestBody(
+                                                requestBodyBuilder()
+                                                        .content(contentBuilder()
+                                                                .schema(schemaBuilder()
+                                                                        .implementation(EmissionType.class))))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Emission Type Record was successfully updated")

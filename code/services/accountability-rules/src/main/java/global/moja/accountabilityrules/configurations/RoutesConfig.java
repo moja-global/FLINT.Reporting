@@ -167,6 +167,11 @@ public class RoutesConfig {
                                         .beanClass(AccountabilityRulesHandler.class)
                                         .beanMethod("updateAccountabilityRule")
                                         .description("Updates a single Accountability Rule Record in the database")
+                                        .requestBody(
+                                                requestBodyBuilder()
+                                                        .content(contentBuilder()
+                                                                .schema(schemaBuilder()
+                                                                        .implementation(AccountabilityRule.class))))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Accountability Rule Record was successfully updated")

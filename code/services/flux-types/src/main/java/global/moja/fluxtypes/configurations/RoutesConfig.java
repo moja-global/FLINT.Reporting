@@ -157,6 +157,11 @@ public class RoutesConfig {
                                         .beanClass(FluxTypesHandler.class)
                                         .beanMethod("updateFluxType")
                                         .description("Updates a single Flux Type Record in the database")
+                                        .requestBody(
+                                                requestBodyBuilder()
+                                                        .content(contentBuilder()
+                                                                .schema(schemaBuilder()
+                                                                        .implementation(FluxType.class))))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Flux Type Record was successfully updated")

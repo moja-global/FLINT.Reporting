@@ -13,8 +13,6 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-
 /**
  * @author Kwaje Anthony <tony@miles.co.ke>
  * @version 1.0
@@ -24,7 +22,7 @@ import java.io.IOException;
 @Slf4j
 public class CellStyleUtil {
 
-    public CellStyle getCellStyle(Workbook workbook, FormattingRule rule) throws IOException {
+    public CellStyle getCellStyle(Workbook workbook, FormattingRule rule) {
 
         log.debug("Rule palette index = {}", rule.getFormattingRulePaletteIndex());
         log.debug("Rule column index = {}", rule.getFormattingRuleColumn());

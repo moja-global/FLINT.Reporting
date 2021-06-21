@@ -18,9 +18,7 @@ import org.springframework.web.reactive.function.client.WebClient;
  * @version 1.0
  */
 @Component
-public class
-
-WebClientUtil {
+public class WebClientUtil {
 
     @Autowired
     DatabasesWebClientUtil databasesWebClientUtil;

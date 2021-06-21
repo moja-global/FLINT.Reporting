@@ -172,6 +172,11 @@ public class RoutesConfig {
                                         .beanClass(LandUsesFluxTypesToReportingTablesHandler.class)
                                         .beanMethod("updateLandUseFluxTypeToReportingTable")
                                         .description("Updates a single Land Use Flux Type To Reporting Table Record in the database")
+                                        .requestBody(
+                                                requestBodyBuilder()
+                                                        .content(contentBuilder()
+                                                                .schema(schemaBuilder()
+                                                                        .implementation(LandUseFluxTypeToReportingTable.class))))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Land Use Flux Type To Reporting Table Record was successfully updated")

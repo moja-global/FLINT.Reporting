@@ -21,6 +21,14 @@ BASEDIR="$( cd "$( dirname "$0" )" && pwd )"
 LIB_DIR="$(dirname "$BASEDIR")"
 ROOT_DIR="$(dirname "$LIB_DIR")"
 
+
+# ------------------------------------------------------------------------
+# SET DEFAULT WORKING DIRECTORY
+# ------------------------------------------------------------------------
+
+cd $BASEDIR
+
+
 # ------------------------------------------------------------------------
 # INITIALIZE SERVER / ARTIFACTS VARIABLES
 # ------------------------------------------------------------------------
@@ -58,6 +66,7 @@ else
 fi
 
 echo "[BUILD]"
+cd $BASEDIR
 ARTIFACT="$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
 if [[ $ARTIFACT == null ]]
 then
@@ -73,11 +82,6 @@ else
      echo -n "[BUILD] ";  echo -e "${GREEN_COLOR}ARTIFACT = ${ARTIFACT} ${NO_COLOR}"
 fi
 
-# ------------------------------------------------------------------------
-# SET WORKING DIRECTORY
-# ------------------------------------------------------------------------
-
-cd $BASEDIR
 
 # ------------------------------------------------------------------------
 # UPDATE API HOST
@@ -86,6 +90,7 @@ cd $BASEDIR
 echo "[BUILD]"
 echo "[BUILD] Updating API Server Host value"
 sed -i 's/cloud\.miles\.co\.ke/'${API_SERVER}'/g' $BASEDIR/chart/values.yaml
+
 
 # ------------------------------------------------------------------------
 # BUILD ARTIFACT

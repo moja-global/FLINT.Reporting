@@ -152,6 +152,11 @@ public class RoutesConfig {
                                         .beanClass(UnitCategoriesHandler.class)
                                         .beanMethod("updateUnitCategory")
                                         .description("Updates a single Unit Category Record in the database")
+                                        .requestBody(
+                                                requestBodyBuilder()
+                                                        .content(contentBuilder()
+                                                                .schema(schemaBuilder()
+                                                                        .implementation(UnitCategory.class))))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Unit Category Record was successfully updated")

@@ -26,7 +26,7 @@ import reactor.core.publisher.Mono;
 public class ReportPreamblePagePreparationService {
 
     @Value("${preamble.template.index}")
-    private Integer PREAMBLE_TEMPLATE_INDEX;
+    Integer PREAMBLE_TEMPLATE_INDEX;
 
     public Mono<Report> enterPreambleData(Report report) {
 

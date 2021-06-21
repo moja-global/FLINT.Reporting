@@ -172,6 +172,11 @@ public class RoutesConfig {
                                         .beanClass(PoolsHandler.class)
                                         .beanMethod("updatePool")
                                         .description("Updates a single Pool Record in the database")
+                                        .requestBody(
+                                                requestBodyBuilder()
+                                                        .content(contentBuilder()
+                                                                .schema(schemaBuilder()
+                                                                        .implementation(Pool.class))))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Pool Record was successfully updated")

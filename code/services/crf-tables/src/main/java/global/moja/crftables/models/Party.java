@@ -7,18 +7,18 @@
  */
 package global.moja.crftables.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @since 0.0.1
  * @author Kwaje Anthony <tony@miles.co.ke>
  * @version 1.0
  */
-@Data
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor
-@AllArgsConstructor
+@Data
+@Builder
 public class Party implements Comparable<Party> {
 
     private Long id;
@@ -27,7 +27,7 @@ public class Party implements Comparable<Party> {
     private Integer version;
 
     @Override
-    public int compareTo(Party party) {
+    public int compareTo(@NotNull Party party) {
 
         if(this.id != null && party.getId() != null){
             return this.id.compareTo(party.getId());

@@ -162,6 +162,11 @@ public class RoutesConfig {
                                         .beanClass(ReportingTablesHandler.class)
                                         .beanMethod("updateReportingTable")
                                         .description("Updates a single Reporting Table Record in the database")
+                                        .requestBody(
+                                                requestBodyBuilder()
+                                                        .content(contentBuilder()
+                                                                .schema(schemaBuilder()
+                                                                        .implementation(ReportingTable.class))))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Reporting Table Record was successfully updated")

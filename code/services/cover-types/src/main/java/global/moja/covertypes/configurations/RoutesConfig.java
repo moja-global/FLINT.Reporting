@@ -157,6 +157,11 @@ public class RoutesConfig {
                                         .beanClass(CoverTypesHandler.class)
                                         .beanMethod("updateCoverType")
                                         .description("Updates a single Cover Type Record in the database")
+                                        .requestBody(
+                                                requestBodyBuilder()
+                                                        .content(contentBuilder()
+                                                                .schema(schemaBuilder()
+                                                                        .implementation(CoverType.class))))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Cover Type Record was successfully updated")

@@ -157,6 +157,11 @@ public class RoutesConfig {
                                         .beanClass(AccountabilityTypesHandler.class)
                                         .beanMethod("updateAccountabilityType")
                                         .description("Updates a single Accountability Type Record in the database")
+                                        .requestBody(
+                                                requestBodyBuilder()
+                                                        .content(contentBuilder()
+                                                                .schema(schemaBuilder()
+                                                                        .implementation(AccountabilityType.class))))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Accountability Type Record was successfully updated")

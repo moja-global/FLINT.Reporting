@@ -162,6 +162,11 @@ public class RoutesConfig {
                                         .beanClass(LandUsesFluxTypesHandler.class)
                                         .beanMethod("updateLandUseFluxType")
                                         .description("Updates a single Land Use Flux Type Record in the database")
+                                        .requestBody(
+                                                requestBodyBuilder()
+                                                        .content(contentBuilder()
+                                                                .schema(schemaBuilder()
+                                                                        .implementation(LandUseFluxType.class))))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Land Use Flux Type Record was successfully updated")

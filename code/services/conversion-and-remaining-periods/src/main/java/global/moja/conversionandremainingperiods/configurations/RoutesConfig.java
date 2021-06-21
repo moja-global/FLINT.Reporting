@@ -162,6 +162,11 @@ public class RoutesConfig {
                                         .beanClass(ConversionAndRemainingPeriodsHandler.class)
                                         .beanMethod("updateConversionAndRemainingPeriod")
                                         .description("Updates a single Conversion and Remaining Period Record in the database")
+                                        .requestBody(
+                                                requestBodyBuilder()
+                                                        .content(contentBuilder()
+                                                                .schema(schemaBuilder()
+                                                                        .implementation(ConversionAndRemainingPeriod.class))))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Conversion and Remaining Period Record was successfully updated")

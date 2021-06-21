@@ -24,16 +24,16 @@ import reactor.core.publisher.Mono;
 public class ReportCleanupService {
 
     @Value("${summary.report.template.index}")
-    private Integer SUMMARY_REPORT_TEMPLATE_INDEX;
+    Integer SUMMARY_REPORT_TEMPLATE_INDEX;
 
     @Value("${summary.report.palette.index}")
-    private Integer SUMMARY_REPORT_PALETTE_INDEX;
+    Integer SUMMARY_REPORT_PALETTE_INDEX;
 
     @Value("${sectoral.report.template.index}")
-    private Integer SECTORAL_REPORT_TEMPLATE_INDEX;
+    Integer SECTORAL_REPORT_TEMPLATE_INDEX;
 
     @Value("${sectoral.report.palette.index}")
-    private Integer SECTORAL_REPORT_PALETTE_INDEX;
+    Integer SECTORAL_REPORT_PALETTE_INDEX;
 
     public Mono<Report> cleanupReport(Report report) {
 

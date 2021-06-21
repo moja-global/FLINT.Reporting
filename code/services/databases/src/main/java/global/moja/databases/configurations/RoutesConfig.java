@@ -182,6 +182,11 @@ public class RoutesConfig {
                                         .beanClass(DatabasesHandler.class)
                                         .beanMethod("updateDatabase")
                                         .description("Updates a single Database Record in the database")
+                                        .requestBody(
+                                                requestBodyBuilder()
+                                                        .content(contentBuilder()
+                                                                .schema(schemaBuilder()
+                                                                        .implementation(Database.class))))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Database Record was successfully updated")

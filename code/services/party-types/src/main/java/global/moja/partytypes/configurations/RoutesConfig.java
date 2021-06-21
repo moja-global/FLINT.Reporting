@@ -162,6 +162,11 @@ public class RoutesConfig {
                                         .beanClass(PartyTypesHandler.class)
                                         .beanMethod("updatePartyType")
                                         .description("Updates a single Party Type Record in the database")
+                                        .requestBody(
+                                                requestBodyBuilder()
+                                                        .content(contentBuilder()
+                                                                .schema(schemaBuilder()
+                                                                        .implementation(PartyType.class))))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Party Type Record was successfully updated")

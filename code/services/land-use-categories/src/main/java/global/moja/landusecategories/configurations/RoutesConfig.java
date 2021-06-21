@@ -172,6 +172,11 @@ public class RoutesConfig {
                                         .beanClass(LandUseCategoriesHandler.class)
                                         .beanMethod("updateLandUseCategory")
                                         .description("Updates a single Land Use Category Record in the database")
+                                        .requestBody(
+                                                requestBodyBuilder()
+                                                        .content(contentBuilder()
+                                                                .schema(schemaBuilder()
+                                                                        .implementation(LandUseCategory.class))))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Land Use Category Record was successfully updated")

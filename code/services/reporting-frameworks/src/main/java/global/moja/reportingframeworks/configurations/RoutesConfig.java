@@ -157,6 +157,11 @@ public class RoutesConfig {
                                         .beanClass(ReportingFrameworksHandler.class)
                                         .beanMethod("updateReportingFramework")
                                         .description("Updates a single Reporting Framework Record in the database")
+                                        .requestBody(
+                                                requestBodyBuilder()
+                                                        .content(contentBuilder()
+                                                                .schema(schemaBuilder()
+                                                                        .implementation(ReportingFramework.class))))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Reporting Framework Record was successfully updated")

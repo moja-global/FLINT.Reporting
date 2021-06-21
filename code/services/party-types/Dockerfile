@@ -1,9 +1,13 @@
+# See: https://www.baeldung.com/spring-boot-docker-images
+FROM adoptopenjdk:11-jre-hotspot as builder
+MAINTAINER Anthony Kwaje <kwajeanthony@gmail.com>
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} application.jar
+RUN java -Djarmode=layertools -jar application.jar extract
 
-#See: https://spring.io/guides/gs/spring-boot-docker/
-FROM openjdk:17-jdk-alpine
-VOLUME /tmp
-ARG DEPENDENCY
-COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY ${DEPENDENCY}/META-INF /app/META-INF
-COPY ${DEPENDENCY}/BOOT-INF/classes /app
-ENTRYPOINT ["java","-cp","app:app/lib/*","-Dspring.datasource.url=jdbc:postgresql://${POSTGRES_HOST}:5432/party_types","global.moja.partytypes.Application"]
+FROM adoptopenjdk:11-jre-hotspot
+COPY --from=builder dependencies/ ./
+COPY --from=builder snapshot-dependencies/ ./
+COPY --from=builder spring-boot-loader/ ./
+COPY --from=builder application/ ./
+ENTRYPOINT ["java", "-Dspring.datasource.url=jdbc:postgresql://${POSTGRES_HOST}:5432/accountabilities", "org.springframework.boot.loader.JarLauncher"]

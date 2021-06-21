@@ -163,6 +163,11 @@ public class RoutesConfig {
                                         .beanClass(PartiesHandler.class)
                                         .beanMethod("updateParty")
                                         .description("Updates a single Party Record in the database")
+                                        .requestBody(
+                                                requestBodyBuilder()
+                                                        .content(contentBuilder()
+                                                                .schema(schemaBuilder()
+                                                                        .implementation(Party.class))))
                                         .response(
                                                 responseBuilder()
                                                         .responseCode("200").description("The Party Record was successfully updated")

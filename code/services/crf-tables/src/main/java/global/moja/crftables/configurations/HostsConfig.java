@@ -17,16 +17,15 @@ import org.springframework.context.annotation.PropertySource;
  * @author Kwaje Anthony <kwajeanthony@gmail.com>
  */
 @Configuration
-@PropertySource(value = {"classpath:hosts.properties"})
 @Getter
 public class HostsConfig {
 
     @Value("${databases.service.host}/api/v1/databases")
-    private String databasesServiceHost;
+    String databasesServiceHost;
 
-    @Value("${databases.service.host}/api/v1/parties")
-    private String partiesServiceHost;
+    @Value("${parties.service.host}/api/v1/parties")
+    String partiesServiceHost;
 
     @Value("${quantity.observations.service.host}/api/v1/quantity_observations")
-    private String quantityObservationsServiceHost;
+    String quantityObservationsServiceHost;
 }
