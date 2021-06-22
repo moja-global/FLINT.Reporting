@@ -7,7 +7,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 package global.moja.taskmanager.configurations;
-
 import global.moja.taskmanager.exceptions.ServerException;
 import global.moja.taskmanager.models.Accountability;
 import global.moja.taskmanager.models.AccountabilityRule;
@@ -16,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+
 import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;

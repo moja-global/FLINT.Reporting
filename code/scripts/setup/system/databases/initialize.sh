@@ -268,30 +268,6 @@ if [ $EMISSION_TYPES -eq 1 ]; then
 fi
 
 
-# flux types
-# -------------------------------------------------------------------------------------
-if [ $FLUX_TYPES -eq 1 ]; then
-
-  echo
-  echo "Setting up flux types database"
-  echo
-
-  # drop the flux types database if it exists
-  psql -c "DROP DATABASE IF EXISTS flux_types"
-
-  # create a new flux types database
-  psql -c "CREATE DATABASE flux_types"
-
-  # Create the flux types database objects
-  psql -d "flux_types" -1 -f "$PROJECT_DIR/services/flux-types/src/main/resources/flux_types.sql"
-
-  # Load the flux types database data
-  psql -d "flux_types" -1 -c "\copy flux_type(name,description,version) from \
-          '$PROJECT_DIR/data/flux_types.csv' DELIMITER ',' CSV HEADER"
-
-fi
-
-
 # fluxes to reporting variables
 # ----------------------------------------------------------------------------------
 if [ $FLUXES_TO_REPORTING_VARIABLES -eq 1 ]; then
@@ -342,6 +318,33 @@ if [ $FLUXES_TO_REPORTING_VARIABLES -eq 1 ]; then
   done <$PROJECT_DIR/data/fluxes_to_reporting_variables.csv
 
 fi
+
+
+
+# flux types
+# -------------------------------------------------------------------------------------
+if [ $FLUX_TYPES -eq 1 ]; then
+
+  echo
+  echo "Setting up flux types database"
+  echo
+
+  # drop the flux types database if it exists
+  psql -c "DROP DATABASE IF EXISTS flux_types"
+
+  # create a new flux types database
+  psql -c "CREATE DATABASE flux_types"
+
+  # Create the flux types database objects
+  psql -d "flux_types" -1 -f "$PROJECT_DIR/services/flux-types/src/main/resources/flux_types.sql"
+
+  # Load the flux types database data
+  psql -d "flux_types" -1 -c "\copy flux_type(name,description,version) from \
+          '$PROJECT_DIR/data/flux_types.csv' DELIMITER ',' CSV HEADER"
+
+fi
+
+
 
 
 # land use categories
