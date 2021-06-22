@@ -99,11 +99,8 @@ sed -i 's/cloud\.miles\.co\.ke/'${API_SERVER}'/g' $BASEDIR/chart/values.yaml
 echo 
 echo "Building artifact"
 echo 
-echo "------------------------------------------------------------------------"
-echo 
 bash mvnw clean package spring-boot:repackage -P ${PROFILE}
-echo 
-echo "------------------------------------------------------------------------"
+echo
 
 echo 
 echo "========================================================================"

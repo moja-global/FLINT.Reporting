@@ -39,29 +39,23 @@ if [[ $ARTIFACT == null ]]
 then
      echo 
      echo -e "${RED_COLOR}Artifact's Configuration is Missing${NO_COLOR}"
+     
      echo 
      echo "------------------------------------------------------------------------"
-     echo "Aborting Artifact Install"
-     echo "------------------------------------------------------------------------"echo 
+     echo "Aborting Artifact Installation"
+     echo "------------------------------------------------------------------------"
      echo 
      exit 1
 else
      echo -e "${GREEN_COLOR}ARTIFACT = ${ARTIFACT} ${NO_COLOR}"
 fi
 
-
 # ------------------------------------------------------------------------
-# INSTALL ARTIFACT
+# UNINSTALL ARTIFACT
 # ------------------------------------------------------------------------
 
-echo 
-echo "Installing artifact"
-echo 
-echo "------------------------------------------------------------------------"
 echo 
 helm install $ARTIFACT $BASEDIR/chart
-echo 
-echo "------------------------------------------------------------------------"
 
 echo 
 echo "========================================================================"

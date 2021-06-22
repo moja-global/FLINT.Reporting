@@ -2,7 +2,7 @@
 
 echo 
 echo "************************************************************************"
-echo " Entering Service Tier Construction Script"
+echo " Entering Services Boostraping Script"
 echo "************************************************************************"
 echo 
 
@@ -90,6 +90,6 @@ done
 
 echo 
 echo "************************************************************************"
-echo " Leaving Service Tier Construction Script"
+echo " Leaving Services Boostraping Script"
 echo "************************************************************************"
 echo 

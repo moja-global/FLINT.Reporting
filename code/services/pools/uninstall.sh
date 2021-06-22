@@ -39,11 +39,12 @@ if [[ $ARTIFACT == null ]]
 then
      echo 
      echo -e "${RED_COLOR}Artifact's Configuration is Missing${NO_COLOR}"
-     echo 
+
+     echo
      echo "------------------------------------------------------------------------"
      echo "Aborting Artifact Uninstallation"
-     echo "------------------------------------------------------------------------"echo 
-     echo 
+     echo "------------------------------------------------------------------------"
+     echo
      exit 1
 else
      echo -e "${GREEN_COLOR}ARTIFACT = ${ARTIFACT} ${NO_COLOR}"
@@ -54,13 +55,7 @@ fi
 # ------------------------------------------------------------------------
 
 echo 
-echo "Uninstalling artifact"
-echo 
-echo "------------------------------------------------------------------------"
-echo 
 helm uninstall $ARTIFACT
-echo 
-echo "------------------------------------------------------------------------"
 
 echo 
 echo "========================================================================"

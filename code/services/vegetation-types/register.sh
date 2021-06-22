@@ -88,13 +88,9 @@ fi
 
 echo 
 echo "Building Docker Image"
-echo 
-echo "------------------------------------------------------------------------"
-echo 
+echo
 # See: https://stackoverflow.com/questions/51115856/docker-failed-to-export-image-failed-to-create-image-failed-to-get-layer
 DOCKER_BUILDKIT=1 docker build -t ${REGISTRY_SERVER}:5043/${ARTIFACT}:${VERSION} .
-echo 
-echo "------------------------------------------------------------------------"
 
 # ------------------------------------------------------------------------
 # PUSH DOCKER IMAGE
@@ -102,12 +98,8 @@ echo "------------------------------------------------------------------------"
 
 echo 
 echo "Registering Docker Image"
-echo 
-echo "------------------------------------------------------------------------"
-echo 
+echo
 docker image push ${REGISTRY_SERVER}:5043/${ARTIFACT}:${VERSION}
-echo 
-echo "------------------------------------------------------------------------"
 
 echo 
 echo "========================================================================"
