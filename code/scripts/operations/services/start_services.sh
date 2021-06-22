@@ -19,20 +19,17 @@ NO_COLOR='\033[0m'
 # ------------------------------------------------------------------------
 
 
-# root/project/scripts/setup/system/services
+# root/code/scripts/operations/services
 SERVICES_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-# root/project/scripts/setup/system
-SYSTEM_DIR="$(dirname "$SERVICES_DIR")"
+# root/code/scripts/operations
+OPERATIONS_DIR="$(dirname "$SERVICES_DIR")"
 
-# root/project/scripts/setup
-SETUP_DIR="$(dirname "$SYSTEM_DIR")"
+# root/code/scripts
+SCRIPTS_DIR="$(dirname "$OPERATIONS_DIR")"
 
-# root/project/scripts
-SCRIPTS_DIR="$(dirname "$SETUP_DIR")"
-
-# root/project
-PROJECT_DIR="$(dirname "$SCRIPTS_DIR")"
+# root/code/
+CODE_DIR="$(dirname "$SCRIPTS_DIR")"
 
 
 # ------------------------------------------------------------------------
@@ -80,7 +77,7 @@ MICROSERVICES=(
 
 for MICROSERVICE in "${MICROSERVICES[@]}"; do
 
-	bash $PROJECT_DIR/services/$MICROSERVICE/install.sh
+	bash $CODE_DIR/services/$MICROSERVICE/install.sh
 
 done
 
