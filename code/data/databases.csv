@@ -1,3 +1,3 @@
 "Label","Description","URL","Start Year","End Year","Processed","Published","Archived","Version"
-"SLEEK FSR TESTRUN 1",,"jdbc:postgresql://reporter.miles.co.ke:31392/sleek_fsr_testrun_1",1984,2014,"FALSE","FALSE","FALSE",1
-"SLEEK FSR TESTRUN 2",,"jdbc:postgresql://reporter.miles.co.ke:31392/sleek_fsr_testrun_2",1984,2005,"FALSE","FALSE","FALSE",1
+"TEST DATABASE 1",,"jdbc:postgresql://reporter.miles.co.ke:31392/test_db_1",1984,2014,"FALSE","FALSE","FALSE",1
+"TEST DATABASE 2",,"jdbc:postgresql://reporter.miles.co.ke:31392/test_db_2",1984,2005,"FALSE","FALSE","FALSE",1
