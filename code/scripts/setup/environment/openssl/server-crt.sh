@@ -28,7 +28,7 @@ SERVER_NAME=$(jq '.domains.default' $ROOT_DIR/configurations/configurations.json
 if [[ $SERVER_NAME == null ]]
 then
      echo
-     echo -e "${RED_COLOR}Default Server Domain Configuration is Missing${NO_COLOR}"
+     echo -e "${RED_COLOR}Default Server Name Configuration is Missing${NO_COLOR}"
      echo
      echo "-------------------------------------"
      echo "Leaving - Generate Server Certificate"
@@ -36,11 +36,11 @@ then
      exit 1
 else
      echo
-     echo -e "${GREEN_COLOR}Default Server Domain Configuration Found${NO_COLOR}"
+     echo -e "${GREEN_COLOR}Default Server Name Configuration Found${NO_COLOR}"
 fi
 
 
-# Default Server IP
+# Default Server IP (Required)
 DEFAULT_SERVER_IP=$(jq '.ips.default' $ROOT_DIR/configurations/configurations.json)
 if [[ $DEFAULT_SERVER_IP == null ]]
 then
@@ -57,8 +57,16 @@ else
 fi
 
 
-# Local Server IP
+# Local Server IP (Optional)
 LOCAL_SERVER_IP=$(jq '.ips.local' $ROOT_DIR/configurations/configurations.json)
+if [[ $LOCAL_SERVER_IP == null ]]
+then
+     echo
+     echo -e "${RED_COLOR}Local Server IP Configuration is Missing${NO_COLOR}"
+else
+     echo
+     echo -e "${GREEN_COLOR}Local Server IP Configuration Found${NO_COLOR}"
+fi
 
 
 echo
@@ -81,15 +89,15 @@ echo "&"
 echo "Setting the key’s extended usage attributes to be used only for server authentication"
 if [[ $LOCAL_SERVER_IP == null ]]
 then
-	sudo bash -c 'cat > extfile.cnf' << EOF1
-	subjectAltName = DNS:$SERVER_NAME,IP:$DEFAULT_SERVER_IP,IP:127.0.0.1
-	extendedKeyUsage = serverAuth
-	EOF1
+sudo bash -c 'cat > extfile.cnf' << EOF1
+subjectAltName = DNS:$SERVER_NAME,IP:$DEFAULT_SERVER_IP,IP:127.0.0.1
+extendedKeyUsage = serverAuth
+EOF1
 else
-	sudo bash -c 'cat > extfile.cnf' << EOF1
-	subjectAltName = DNS:$SERVER_NAME,IP:$DEFAULT_SERVER_IP,IP:$LOCAL_SERVER_IP,IP:127.0.0.1
-	extendedKeyUsage = serverAuth
-	EOF1
+sudo bash -c 'cat > extfile.cnf' << EOF1
+subjectAltName = DNS:$SERVER_NAME,IP:$DEFAULT_SERVER_IP,IP:$LOCAL_SERVER_IP,IP:127.0.0.1
+extendedKeyUsage = serverAuth
+EOF1
 fi
 
 
