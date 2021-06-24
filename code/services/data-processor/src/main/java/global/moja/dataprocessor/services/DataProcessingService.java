@@ -21,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+
 import static global.moja.dataprocessor.util.DataProcessingStatus.SUCCEEDED;
 
 /**
@@ -197,6 +199,8 @@ public class DataProcessingService {
 
                             // Collect the aggregated Flux Reporting Results
                             .collectList()
+
+                            .defaultIfEmpty(new ArrayList<>())
 
                             // Log for debugging purpose
                             .doOnNext(location -> {
