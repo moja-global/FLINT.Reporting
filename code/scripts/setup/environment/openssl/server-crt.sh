@@ -40,9 +40,9 @@ else
 fi
 
 
-# Server IP
-SERVER_IP=$(jq '.ips.local' $ROOT_DIR/configurations/configurations.json)
-if [[ $SERVER_IP == null ]]
+# Default Server IP
+DEFAULT_SERVER_IP=$(jq '.ips.default' $ROOT_DIR/configurations/configurations.json)
+if [[ $DEFAULT_SERVER_IP == null ]]
 then
      echo
      echo -e "${RED_COLOR}Default Server IP Configuration is Missing${NO_COLOR}"
@@ -55,6 +55,10 @@ else
      echo
      echo -e "${GREEN_COLOR}Default Server IP Configuration Found${NO_COLOR}"
 fi
+
+
+# Local Server IP
+LOCAL_SERVER_IP=$(jq '.ips.local' $ROOT_DIR/configurations/configurations.json)
 
 
 echo
@@ -75,10 +79,19 @@ sudo openssl req -subj "/CN=$SERVER_NAME" -new -key server.key -out server.csr
 echo "Specifying the IP addresses since TLS connections can be made via IP address as well as DNS name"
 echo "&"
 echo "Setting the key’s extended usage attributes to be used only for server authentication"
-sudo bash -c 'cat > extfile.cnf' << EOF1
-subjectAltName = DNS:$SERVER_NAME,IP:$SERVER_IP,IP:127.0.0.1
-extendedKeyUsage = serverAuth
-EOF1
+if [[ $LOCAL_SERVER_IP == null ]]
+then
+	sudo bash -c 'cat > extfile.cnf' << EOF1
+	subjectAltName = DNS:$SERVER_NAME,IP:$DEFAULT_SERVER_IP,IP:127.0.0.1
+	extendedKeyUsage = serverAuth
+	EOF1
+else
+	sudo bash -c 'cat > extfile.cnf' << EOF1
+	subjectAltName = DNS:$SERVER_NAME,IP:$DEFAULT_SERVER_IP,IP:$LOCAL_SERVER_IP,IP:127.0.0.1
+	extendedKeyUsage = serverAuth
+	EOF1
+fi
+
 
 echo "Generating CA signed certificate for the Server"
 sudo openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days 10000 -extfile extfile.cnf
