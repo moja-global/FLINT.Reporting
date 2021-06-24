@@ -1,6 +1,7 @@
 #!/bin/sh
 # See: https://stackoverflow.com/questions/6405127/how-do-i-specify-a-password-to-psql-non-interactively#6405296
 # See: https://stackoverflow.com/questions/14549270/check-if-database-exists-in-postgresql-using-shell
+# See: https://stackoverflow.com/questions/60514629/unrecognized-configuration-parameter-default-table-access-method-google-cloud
 
 echo
 echo "---------------------------------------------------------------------------------"

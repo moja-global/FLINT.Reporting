@@ -103,7 +103,7 @@ public class ConfigurationDataProvider {
                         endpointsUtil
                                 .retrieveVegetationTypes(database.getId())
                                 .collect(Collectors.toList())
-                                .block(Duration.ofMillis(5000))
+                                .block()
                 );
             } catch (Exception e) {
                 log.error("{} Database Vegetation Types retrieval failed", database.getLabel());
@@ -116,7 +116,7 @@ public class ConfigurationDataProvider {
                         endpointsUtil
                                 .retrieveDates(database.getId())
                                 .collect(Collectors.toList())
-                                .block(Duration.ofMillis(5000))
+                                .block()
                 );
             } catch (Exception e) {
                 log.error("{} Database Dates retrieval failed", database.getLabel());

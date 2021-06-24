@@ -9,8 +9,8 @@
 package global.moja.dataprocessor.services;
 
 import global.moja.dataprocessor.configurations.RabbitConfig;
-import global.moja.dataprocessor.daos.DataProcessingRequest;
-import global.moja.dataprocessor.daos.DataProcessingResponse;
+import global.moja.dataprocessor.daos.*;
+import global.moja.dataprocessor.models.Location;
 import global.moja.dataprocessor.models.QuantityObservation;
 import global.moja.dataprocessor.util.DataProcessingStatus;
 import global.moja.dataprocessor.util.endpoints.EndpointsUtil;
@@ -111,10 +111,12 @@ public class DataProcessingService {
 
                             // Retrieve the Locations associated with the Party
                             .retrieveLocations(request.getDatabaseId(), request.getPartyId())
+
                             .onErrorResume(e -> {
                                 log.error("[Locations Retrieval Endpoint] - Locations Retrieval Failed", e);
-                                return Mono.empty();
-                            })
+                                return Mono.just(new Location());})
+
+                            .filter(l -> l.getId() != null)
 
                             // Log out the location for debugging purposes
                             .doOnNext(location -> {
@@ -128,30 +130,36 @@ public class DataProcessingService {
                             .flatMap(location ->
                                     locationVegetationTypesService
                                             .getLocationVegetationTypesHistories(request.getDatabaseId(), location))
+
                             .onErrorResume(e -> {
                                 log.error(e.getMessage(), e);
-                                return Mono.empty();
-                            })
+                                return Mono.just(new LocationVegetationTypesHistories());})
+
+                            .filter(l -> l.getLocationId() != null)
 
                             // Convert the Vegetation Types Histories to Cover Types Histories
                             .flatMap(locationVegetationTypesHistories ->
                                     locationCoverTypesService
                                             .getLocationCoverTypesHistories(
                                                     locationVegetationTypesHistories))
+
                             .onErrorResume(e -> {
                                 log.error(e.getMessage(), e);
-                                return Mono.empty();
-                            })
+                                return Mono.just(new LocationCoverTypesHistories());})
+
+                            .filter(l -> l.getLocationId() != null)
 
                             // Convert Cover Types Histories to Land Use Histories
                             .flatMap(locationCoverTypesHistories ->
                                     locationLandUsesCategoriesService
                                             .getLocationLandUsesCategoriesHistories(
                                                     locationCoverTypesHistories))
+
                             .onErrorResume(e -> {
                                 log.error(e.getMessage(), e);
-                                return Mono.empty();
-                            })
+                                return Mono.just(new LocationLandUsesHistories()); })
+
+                            .filter(l -> l.getLocationId() != null)
 
                             // Append the Location's Flux Reporting Results
                             .flatMap(locationLandUsesHistories ->
@@ -160,8 +168,10 @@ public class DataProcessingService {
                                                     request.getDatabaseId(), locationLandUsesHistories))
                             .onErrorResume(e -> {
                                 log.error(e.getMessage(), e);
-                                return Mono.empty();
+                                return Mono.just(new LocationLandUsesFluxReportingResultsHistories());
                             })
+
+                            .filter(l -> l.getLocationId() != null)
 
                             // Allocate the Location's Flux Reporting Results
                             .flatMap(locationLandUsesFluxReportingResultsHistories ->
@@ -170,8 +180,9 @@ public class DataProcessingService {
                                                     locationLandUsesFluxReportingResultsHistories))
                             .onErrorResume(e -> {
                                 log.error(e.getMessage(), e);
-                                return Mono.empty();
-                            })
+                                return Mono.just(new LocationLandUsesAllocatedFluxReportingResults());})
+
+                            .filter(l -> l.getLocationId() != null)
 
                             // Aggregated the allocated the Location's Flux Reporting Results
                             .flatMap(allocatedFluxReportingResults ->
@@ -180,8 +191,9 @@ public class DataProcessingService {
                                                     allocatedFluxReportingResults))
                             .onErrorResume(e -> {
                                 log.error(e.getMessage(), e);
-                                return Mono.empty();
-                            })
+                                return Mono.just(new LocationLandUsesAllocatedFluxReportingResultsAggregation());})
+
+                            .filter(l -> l.getLocationId() != null)
 
                             // Collect the aggregated Flux Reporting Results
                             .collectList()
