@@ -113,10 +113,8 @@ public class DataProcessingService {
 
                             // Retrieve the Locations associated with the Party
                             .retrieveLocations(request.getDatabaseId(), request.getPartyId())
-
-                            .onErrorResume(e -> {
-                                log.error("[Locations Retrieval Endpoint] - Locations Retrieval Failed", e);
-                                return Mono.just(new Location());})
+                            .doOnError(e -> log.error("[Locations Retrieval Endpoint] - Locations Retrieval Failed", e))
+                            .onErrorReturn(new Location())
 
                             .filter(l -> l.getId() != null)
 
@@ -132,10 +130,8 @@ public class DataProcessingService {
                             .flatMap(location ->
                                     locationVegetationTypesService
                                             .getLocationVegetationTypesHistories(request.getDatabaseId(), location))
-
-                            .onErrorResume(e -> {
-                                log.error(e.getMessage(), e);
-                                return Mono.just(new LocationVegetationTypesHistories());})
+                            .doOnError(e -> log.error(e.getMessage(), e))
+                            .onErrorReturn(new LocationVegetationTypesHistories())
 
                             .filter(l -> l.getLocationId() != null)
 
@@ -144,10 +140,8 @@ public class DataProcessingService {
                                     locationCoverTypesService
                                             .getLocationCoverTypesHistories(
                                                     locationVegetationTypesHistories))
-
-                            .onErrorResume(e -> {
-                                log.error(e.getMessage(), e);
-                                return Mono.just(new LocationCoverTypesHistories());})
+                            .doOnError(e -> log.error(e.getMessage(), e))
+                            .onErrorReturn(new LocationCoverTypesHistories())
 
                             .filter(l -> l.getLocationId() != null)
 
@@ -156,10 +150,8 @@ public class DataProcessingService {
                                     locationLandUsesCategoriesService
                                             .getLocationLandUsesCategoriesHistories(
                                                     locationCoverTypesHistories))
-
-                            .onErrorResume(e -> {
-                                log.error(e.getMessage(), e);
-                                return Mono.just(new LocationLandUsesHistories()); })
+                            .doOnError(e -> log.error(e.getMessage(), e))
+                            .onErrorReturn(new LocationLandUsesHistories())
 
                             .filter(l -> l.getLocationId() != null)
 
@@ -168,10 +160,8 @@ public class DataProcessingService {
                                     locationLandUsesFluxReportingResultsService
                                             .getLocationLandUsesFluxReportingResultsHistories(
                                                     request.getDatabaseId(), locationLandUsesHistories))
-                            .onErrorResume(e -> {
-                                log.error(e.getMessage(), e);
-                                return Mono.just(new LocationLandUsesFluxReportingResultsHistories());
-                            })
+                            .doOnError(e -> log.error(e.getMessage(), e))
+                            .onErrorReturn(new LocationLandUsesFluxReportingResultsHistories())
 
                             .filter(l -> l.getLocationId() != null)
 
@@ -180,9 +170,8 @@ public class DataProcessingService {
                                     locationLandUsesFluxReportingResultsAllocationService
                                             .allocateLocationLandUsesFluxReportingResults(
                                                     locationLandUsesFluxReportingResultsHistories))
-                            .onErrorResume(e -> {
-                                log.error(e.getMessage(), e);
-                                return Mono.just(new LocationLandUsesAllocatedFluxReportingResults());})
+                            .doOnError(e -> log.error(e.getMessage(), e))
+                            .onErrorReturn(new LocationLandUsesAllocatedFluxReportingResults())
 
                             .filter(l -> l.getLocationId() != null)
 
@@ -191,9 +180,8 @@ public class DataProcessingService {
                                     locationLandUsesAllocatedFluxReportingResultsAggregationService
                                             .aggregateLocationLandUsesAllocatedFluxReportingResults(
                                                     allocatedFluxReportingResults))
-                            .onErrorResume(e -> {
-                                log.error(e.getMessage(), e);
-                                return Mono.just(new LocationLandUsesAllocatedFluxReportingResultsAggregation());})
+                            .doOnError(e -> log.error(e.getMessage(), e))
+                            .onErrorReturn(new LocationLandUsesAllocatedFluxReportingResultsAggregation())
 
                             .filter(l -> l.getLocationId() != null)
 
