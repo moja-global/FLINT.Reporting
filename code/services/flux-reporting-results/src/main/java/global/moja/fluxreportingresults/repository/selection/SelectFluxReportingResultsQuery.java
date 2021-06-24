@@ -49,7 +49,7 @@ public class SelectFluxReportingResultsQuery {
                         "sink_poolinfo_dimension_id_fk, " +
                         "round( flux::numeric, 12 ) flux, " +
                         "itemcount " +
-                        "FROM flux_reporting_results " +
+                        "FROM materialized_flux_reporting_results " +
                         new QueryWhereClauseBuilder()
                                 .queryParameters(parameters)
                                 .build();
