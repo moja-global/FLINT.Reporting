@@ -160,9 +160,10 @@ public class ConfigurationDataProvider {
         log.debug("Cover Type Id = {}", coverTypeId);
 
         CoverType c =
-                coverTypes.stream()
-                        .filter(coverType ->
-                                coverTypeId.equals(coverType.getId()))
+                coverTypes
+                        .stream()
+                        .filter(coverType -> coverType.getId() != null)
+                        .filter(coverType -> coverTypeId.equals(coverType.getId()))
                         .findAny()
                         .orElse(null);
 
@@ -385,7 +386,7 @@ public class ConfigurationDataProvider {
     public VegetationType getVegetationType(Long databaseId, Long vegetationTypeId) {
 
         log.trace("Entering getVegetationType()");
-        log.debug("Database Id = {}", vegetationTypeId);
+        log.debug("Database Id = {}", databaseId);
         log.debug("Vegetation Type Id = {}", vegetationTypeId);
 
         VegetationType v = null;
@@ -395,8 +396,8 @@ public class ConfigurationDataProvider {
                     databasesVegetationTypes
                             .get(databaseId)
                             .stream()
-                            .filter(vegetationType ->
-                                    vegetationTypeId.equals(vegetationType.getId()))
+                            .filter(vegetationType -> vegetationType.getId() != null)
+                            .filter(vegetationType -> vegetationTypeId.equals(vegetationType.getId()))
                             .findAny()
                             .orElse(null);
         }

@@ -19,10 +19,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-class LocationLandUsesServiceIT {
+class LocationLandUsesCategoriesServiceIT {
 
     @Autowired
-    LocationLandUsesService locationLandUsesService;
+    LocationLandUsesCategoriesService locationLandUsesCategoriesService;
 
     static Path resourceDirectory = Paths.get("src", "test", "resources");
     static String absolutePath = resourceDirectory.toFile().getAbsolutePath();
@@ -71,8 +71,8 @@ class LocationLandUsesServiceIT {
     @Test
     public void Given_DatabaseIdAndLocation_When_Process_Then_TheCorrespondingLocationCoverTypesHistoryWillBeReturned() {
 
-        assertThat(locationLandUsesService
-                .getLocationLandUsesHistories(locationCoverTypesHistories)
+        assertThat(locationLandUsesCategoriesService
+                .getLocationLandUsesCategoriesHistories(locationCoverTypesHistories)
                 .block())
                 .isEqualTo(expected);
 

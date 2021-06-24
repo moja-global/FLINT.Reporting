@@ -22,6 +22,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Kwaje Anthony <tony@miles.co.ke>
@@ -38,32 +42,30 @@ public class LocationLandUsesFluxReportingResultsService {
     @Autowired
     ConfigurationDataProvider configurationDataProvider;
 
+    private final String logMessagePrefix = "[Location Land Uses Flux Reporting Results Service]";
+
     public Mono<LocationLandUsesFluxReportingResultsHistories> getLocationLandUsesFluxReportingResultsHistories
             (Long databaseId, LocationLandUsesHistories locationLandUsesHistories) {
 
-        log.trace("Entering generateLocationLandUsesFluxesHistory()");
-        log.debug("Database id = {}", databaseId);
-        log.debug("Location Land Uses History = {}", locationLandUsesHistories);
 
-        // Validate the database id
-        log.trace("Validating the database id");
-        if (databaseId == null) {
-            log.error("The database id should not be null");
-            return Mono.error(new ServerException("The database id should not be null"));
-        }
+        log.trace("{} - Entering getLocationLandUsesFluxReportingResultsHistories()", logMessagePrefix);
+        log.debug("{} - Database Id = {}", logMessagePrefix, databaseId);
+        log.debug("{} - Location Land Uses Histories = {}", logMessagePrefix, locationLandUsesHistories);
 
-        // Validate the Location Land Uses Histories
-        log.trace("Validating the Location Land Uses Histories");
-        if (locationLandUsesHistories == null) {
-            log.error("The Location Land Uses Histories should not be null");
-            return Mono.error(new ServerException("The Location Land Uses Histories should not be null"));
-        }
+        // Validate the passed-in arguments
+        log.trace("{} - Validating passed-in arguments", logMessagePrefix);
 
-        // Validate the Location Land Uses Histories' histories
-        log.trace("Validating the Location Land Uses Histories' histories");
-        if (locationLandUsesHistories.getHistories() == null) {
-            log.error("The Location Land Uses Histories' histories should not be null");
-            return Mono.error(new ServerException("The Location Land Uses Histories' histories should not be null"));
+        if (databaseId == null || locationLandUsesHistories == null || locationLandUsesHistories.getHistories() == null) {
+
+            // Create the error message
+            String error =
+                    databaseId == null ? "Database Id should not be null" :
+                            locationLandUsesHistories == null ? "Location Land Uses Histories should not be null" :
+                                    "Location Land Uses Histories' histories should not be null";
+
+            // Throw the error
+            return Mono.error(new ServerException(logMessagePrefix + " - " + error));
+
         }
 
 
@@ -77,10 +79,10 @@ public class LocationLandUsesFluxReportingResultsService {
                                 databaseId,
                                 locationLandUsesHistories.getLocationId())
 
+                        .onErrorMap(e -> new ServerException(logMessagePrefix + " - Flux Reporting Results retrieval failed", e))
 
                         // 2. Collect and map the Flux Reporting Results by their Date Dimension Id
                         .collectMultimap(FluxReportingResult::getDateId, result -> result)
-
 
                         // 3. Convert each Land Uses History record to the corresponding
                         // Land Use Fluxes History record
@@ -88,6 +90,7 @@ public class LocationLandUsesFluxReportingResultsService {
 
                                 Flux.fromIterable(locationLandUsesHistories.getHistories())
                                         .map(landUsesHistoricDetail ->
+
                                                 LocationLandUsesFluxReportingResultsHistory
                                                         .builder()
                                                         .itemNumber(landUsesHistoricDetail.getItemNumber())
@@ -95,17 +98,29 @@ public class LocationLandUsesFluxReportingResultsService {
                                                         .landUseCategory(landUsesHistoricDetail.getLandUseCategory())
                                                         .confirmed(landUsesHistoricDetail.getConfirmed())
                                                         .fluxReportingResults(
-                                                                new ArrayList<>(
-                                                                        dateMappedFluxReportingResults.get(
-                                                                                configurationDataProvider
-                                                                                        .getDateDimensionId(
-                                                                                                databaseId,
-                                                                                                landUsesHistoricDetail
-                                                                                                        .getYear()))))
+                                                                dateMappedFluxReportingResults
+                                                                        .keySet()
+                                                                        .stream()
+                                                                        .filter(dateDimensionId ->
+                                                                                dateDimensionId ==
+                                                                                        configurationDataProvider
+                                                                                                .getDateDimensionId(
+                                                                                                        databaseId,
+                                                                                                        landUsesHistoricDetail
+                                                                                                                .getYear()))
+                                                                        .findAny()
+                                                                        .map(dateDimensionId ->
+                                                                                dateMappedFluxReportingResults
+                                                                                        .get(dateDimensionId) == null ?
+                                                                                        new ArrayList<FluxReportingResult>() :
+                                                                                        new ArrayList<>(
+                                                                                                dateMappedFluxReportingResults
+                                                                                                        .get(dateDimensionId)))
+                                                                        .orElse(new ArrayList<>()))
                                                         .build())
+
                                         .collectList()
                         )
-
 
                         // 4. Build and return the Location Vegetation Types Histories record
                         .map(records ->
@@ -120,6 +135,5 @@ public class LocationLandUsesFluxReportingResultsService {
                                         .histories(records)
                                         .build());
     }
-
 
 }

@@ -30,9 +30,13 @@ public class LocationsEndpointsUtil {
 
     public Flux<Location> retrieveLocations(Long databaseId, Long partyId) {
 
-        log.trace("Entering retrieveLocations()");
-        log.debug("Database Id = {}", databaseId);
-        log.debug("Party Id = {}", partyId);
+        String prefix = "[Database: " + databaseId + ", Party: " + partyId + "]";
+
+        log.trace("{}",prefix);
+        log.trace("------------------------------------------------------------------------");
+        log.trace("{} Retrieving Locations", prefix);
+        log.trace("------------------------------------------------------------------------");
+        log.trace("{}",prefix);
 
         return webClientUtil
                 .getLocationsWebClient()

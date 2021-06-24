@@ -29,29 +29,24 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-public class LocationLandUsesService {
+public class LocationLandUsesCategoriesService {
 
     @Autowired
     LandUsesCategoriesAllocator decisionTree;
 
-    public Mono<LocationLandUsesHistories> getLocationLandUsesHistories(
+    private final String logMessagePrefix = "[Location Land Uses Categories Service]";
+
+    public Mono<LocationLandUsesHistories> getLocationLandUsesCategoriesHistories(
             LocationCoverTypesHistories locationCoverTypesHistories) {
 
-        log.trace("Entering getLocationLandUsesHistories()");
-        log.debug("Location Cover Types Histories = {}", locationCoverTypesHistories);
+        log.trace("{} - Entering getLocationLandUsesCategoriesHistories()", logMessagePrefix);
+        log.debug("{} - Location Cover Types Histories = {}", logMessagePrefix, locationCoverTypesHistories);
+
 
         // Validate the Location Cover Types Histories
         log.trace("Validating the Location Cover Types Histories");
         if (locationCoverTypesHistories == null) {
-            log.error("The Location Cover Types Histories should not be null");
-            return Mono.error(new ServerException("The Location Cover Types Histories should not be null"));
-        }
-
-        // Validate the Location Cover Types Histories' histories
-        log.trace("Validating the Location Cover Types Histories' histories");
-        if (locationCoverTypesHistories.getHistories() == null) {
-            log.error("The Location Cover Types Histories' histories should not be null");
-            return Mono.error(new ServerException("The Location Cover Types Histories' histories should not be null"));
+            return Mono.error(new ServerException(logMessagePrefix + " - The Location Cover Types Histories should not be null"));
         }
 
         // Instantiate a list to temporarily hold Location Land Uses Histories as they are being processed.
@@ -67,10 +62,9 @@ public class LocationLandUsesService {
                         .filter(coverTypesHistoricDetail -> coverTypesHistoricDetail.getCoverType() != null)
 
                         // 3. Convert each Location Cover Types History to the corresponding Location Land Uses History.
-                        // Keep a reference of this record in the Land Uses Historic Detail for the benefit of the
+                        // Keep a reference to this record in the Land Uses Historic Detail for the benefit of the
                         // next processing step
-                        .map(coverTypesHistoricDetail ->
-                        {
+                        .map(coverTypesHistoricDetail -> {
                             LocationLandUsesHistory l = decisionTree.allocateLandUseCategory(
                                     coverTypesHistoricDetail.getItemNumber(),
                                     locationCoverTypesHistories.getHistories(),
@@ -81,6 +75,8 @@ public class LocationLandUsesService {
 
                             return l;
                         })
+
+                        .onErrorMap(e -> new ServerException(logMessagePrefix + " - Land Use Category Assignment failed", e))
 
                         // 4. Collect the Land Uses Histories records.
                         .collect(Collectors.toList())

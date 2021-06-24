@@ -34,16 +34,6 @@ import java.util.*;
 @Slf4j
 public class LocationLandUsesAllocatedFluxReportingResultsAggregationService {
 
-
-    @Value("${carbon.dioxide.emission.type.id}")
-    Long CARBON_DIOXIDE_EMISSION_TYPE;
-
-    @Value("${methane.emission.type.id}")
-    Long METHANE_EMISSION_TYPE;
-
-    @Value("${nitrous.oxide.emission.type.id}")
-    Long NITROUS_OXIDE_EMISSION_TYPE;
-
     @Value("${area.reporting.variable.id}")
     Long AREA_REPORTING_VARIABLE;
 
@@ -70,11 +60,7 @@ public class LocationLandUsesAllocatedFluxReportingResultsAggregationService {
 
     private Set<Long> CARBON_STOCK_CHANGE_POOLS_REPORTING_VARIABLES;
 
-    @Autowired
-    ConfigurationDataProvider configurationDataProvider;
-
-    @Autowired
-    FluxReportingResultsAllocator fluxReportingResultsAllocator;
+    private final String logMessagePrefix = "[Location Land Uses Allocated Flux Reporting Results Aggregation Service]";
 
     @PostConstruct
     private void init() {
@@ -90,28 +76,27 @@ public class LocationLandUsesAllocatedFluxReportingResultsAggregationService {
     public Mono<LocationLandUsesAllocatedFluxReportingResultsAggregation> aggregateLocationLandUsesAllocatedFluxReportingResults
             (LocationLandUsesAllocatedFluxReportingResults locationLandUsesAllocatedFluxReportingResults) {
 
-        log.trace("Entering aggregateLocationLandUsesAllocatedFluxReportingResults()");
-        log.debug("Location Land Uses Allocated Flux Reporting Results = {}",
-                locationLandUsesAllocatedFluxReportingResults);
+        log.trace("{} - Entering aggregateLocationLandUsesAllocatedFluxReportingResults()", logMessagePrefix);
+        log.debug("Location Land Uses Allocated Flux Reporting Results = {}", locationLandUsesAllocatedFluxReportingResults);
 
-        // Validate the Location Land Uses Allocated Flux Reporting Results Results
-        log.trace("Validating the Location Land Uses Allocated Flux Reporting Results Results");
-        if (locationLandUsesAllocatedFluxReportingResults == null) {
-            log.error("The Location Land Uses Allocated Flux Reporting Results should not be null");
-            return Mono.error(
-                    new ServerException("The Location Land Uses Allocated Flux Reporting Results should not be null"));
+        // Validate the passed-in arguments
+        log.trace("{} - Validating passed-in arguments", logMessagePrefix);
+
+        if (locationLandUsesAllocatedFluxReportingResults == null ||
+                locationLandUsesAllocatedFluxReportingResults.getAllocations()  == null) {
+
+            // Create the error message
+            String error =
+                    locationLandUsesAllocatedFluxReportingResults == null ?
+                            "Location Land Uses Allocated Flux Reporting Results should not be null" :
+                            "Location Land Uses Allocated Flux Reporting Results' results should not be null";
+
+            // Throw the error
+            return Mono.error(new ServerException(logMessagePrefix + " - " + error));
+
         }
 
-        // Validate the Location Land Uses Allocated Flux Reporting Results' results
-        log.trace("Validating the Location Land Uses Allocated Flux Reporting Results' results");
-        if (locationLandUsesAllocatedFluxReportingResults.getAllocations() == null) {
-            log.error("The Location Land Uses Allocated Flux Reporting Results' results should not be null");
-            return Mono.error(
-                    new ServerException("The Location Land Uses Allocated Flux Reporting Results' results should not be null"));
-        }
-
-        // Aggregate the Location Land Uses Allocated Flux Reporting Results' results
-        log.trace("Aggregating the Location Land Uses Allocated Flux Reporting Results' results");
+        // Instantiate a list to hold the aggregation results
         final List<Aggregation> aggregations = new ArrayList<>();
 
         // Aggregate Area Allocations

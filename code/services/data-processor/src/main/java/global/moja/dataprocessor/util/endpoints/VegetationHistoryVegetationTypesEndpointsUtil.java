@@ -32,7 +32,7 @@ public class VegetationHistoryVegetationTypesEndpointsUtil {
             Long databaseId, Long vegetationHistoryId) {
 
         log.trace("Entering retrieveVegetationHistoryVegetationTypes()");
-        log.debug("Database Id = {}",databaseId);
+        log.debug("Database Id = {}", databaseId);
         log.debug("Vegetation History Id = {}", vegetationHistoryId);
 
         return webClientUtil

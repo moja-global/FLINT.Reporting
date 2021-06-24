@@ -33,24 +33,19 @@ public class LocationCoverTypesService {
     @Autowired
     ConfigurationDataProvider configurationDataProvider;
 
+    private final String logMessagePrefix = "[Location Cover Types Service]";
+
     public Mono<LocationCoverTypesHistories> getLocationCoverTypesHistories(
             LocationVegetationTypesHistories locationVegetationTypesHistories) {
 
-        log.trace("Entering getLocationCoverTypesHistories()");
-        log.debug("Location Vegetation Types Histories = {}", locationVegetationTypesHistories);
+        log.trace("{} - Entering getLocationCoverTypesHistories()", logMessagePrefix);
+        log.debug("{} - Location Vegetation Types Histories = {}", logMessagePrefix, locationVegetationTypesHistories);
+
 
         // Validate the Location Vegetation Types Histories
         log.trace("Validating the Location Vegetation Types Histories");
         if (locationVegetationTypesHistories == null) {
-            log.error("The Location Vegetation Types Histories should not be null");
-            return Mono.error(new ServerException("The Location Vegetation Types Histories should not be null"));
-        }
-
-        // Validate the Location Vegetation Types Histories' histories
-        log.trace("Validating the Location Vegetation Types Histories' histories");
-        if (locationVegetationTypesHistories.getHistories() == null) {
-            log.error("The Location Vegetation Types Histories' histories should not be null");
-            return Mono.error(new ServerException("The Location Vegetation Types Histories' histories should not be null"));
+            return Mono.error(new ServerException(logMessagePrefix + " - The Location Vegetation Types Histories should not be null"));
         }
 
         return

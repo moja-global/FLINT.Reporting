@@ -19,6 +19,9 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
+
+import static global.moja.dataprocessor.util.DataProcessingStatus.SUCCEEDED;
 
 /**
  * @author Kwaje Anthony <tony@miles.co.ke>
@@ -28,6 +31,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class DataProcessingService {
+
 
     @Autowired
     RabbitTemplate rabbitTemplate;
@@ -39,7 +43,7 @@ public class DataProcessingService {
     LocationCoverTypesService locationCoverTypesService;
 
     @Autowired
-    LocationLandUsesService locationLandUsesService;
+    LocationLandUsesCategoriesService locationLandUsesCategoriesService;
 
     @Autowired
     LocationLandUsesFluxReportingResultsService locationLandUsesFluxReportingResultsService;
@@ -59,24 +63,21 @@ public class DataProcessingService {
     @RabbitListener(queues = RabbitConfig.RAW_DATA_PROCESSING_QUEUE)
     public void processData(final DataProcessingRequest request) {
 
-        log.info("[Database: {}, Party: {}] - Data Processing Commencement",
-                request.getDatabaseId(), request.getPartyId());
+        String prefix = "[Database: " + request.getDatabaseId() + ", Party: " + request.getPartyId() + "]";
+
+        // Log entry message
+        log.info("");
+        log.info("========================================================================");
+        log.info("{} - Entering  Data Processing Service", prefix);
+        log.info("========================================================================");
+        log.info("");
 
 
-        // Ascertain that all the required fields have been passed in
+        // Validate the passed-in arguments
+        log.trace("Validating passed-in arguments");
         if (request.getTaskId() == null || request.getDatabaseId() == null || request.getPartyId() == null) {
 
-            log.info("[Database: {}, Party: {}] - Data Processing Failed",
-                    request.getDatabaseId(), request.getPartyId());
-
-            log.error(
-                    request.getTaskId() == null ?
-                            "[Database: {}, Party: {}] - Task Id should not be null" :
-                            request.getDatabaseId() == null ?
-                                    "[Database: {}, Party: {}] - Database Id should not be null" :
-                                    "[Database: {}, Party: {}] - Party Id should not be null",
-                    request.getDatabaseId(), request.getPartyId());
-
+            // Publish an error status
             rabbitTemplate.convertAndSend(
                     RabbitConfig.RAW_DATA_PROCESSING_RESULTS_QUEUE,
                     DataProcessingResponse
@@ -87,37 +88,113 @@ public class DataProcessingService {
                             .statusCode(DataProcessingStatus.FAILED.getId())
                             .build());
 
+
+            // Log an error message and exit
+            String error =
+                    request.getTaskId() == null ? "Task Id should not be null" :
+                            request.getDatabaseId() == null ? "Database Id should not be null" :
+                                    "Party Id should not be null";
+
+            log.info("");
+            log.info("------------------------------------------------------------------------");
+            log.error("{}", error);
+
         } else {
 
-            // Process and get the processing status code
-            DataProcessingStatus dataProcessingStatus =
+            // All the required inputs have been passed in
+            log.trace("All the required inputs have been passed in");
+
+            // Submit task for processing and get the resultant status code
+            log.trace("Submitting task for processing and getting the resultant status code");
+            DataProcessingStatus status =
                     endpointsUtil
+
+                            // Retrieve the Locations associated with the Party
                             .retrieveLocations(request.getDatabaseId(), request.getPartyId())
+                            .onErrorResume(e -> {
+                                log.error("[Locations Retrieval Endpoint] - Locations Retrieval Failed", e);
+                                return Mono.empty();
+                            })
+
+                            // Log out the location for debugging purposes
+                            .doOnNext(location -> {
+                                log.info("");
+                                log.info("Database: {}, Party: {}, Location: {}", request.getDatabaseId(), request.getPartyId(), location.getId());
+                                log.info("------------------------------------------------------------------------");
+                                log.info("");
+                            })
+
+                            // Retrieve the Vegetation History Vegetation Types records for each location
                             .flatMap(location ->
                                     locationVegetationTypesService
-                                            .getLocationVegetationTypesHistories(
-                                                    request.getDatabaseId(), location))
+                                            .getLocationVegetationTypesHistories(request.getDatabaseId(), location))
+                            .onErrorResume(e -> {
+                                log.error(e.getMessage(), e);
+                                return Mono.empty();
+                            })
+
+                            // Convert the Vegetation Types Histories to Cover Types Histories
                             .flatMap(locationVegetationTypesHistories ->
                                     locationCoverTypesService
                                             .getLocationCoverTypesHistories(
                                                     locationVegetationTypesHistories))
+                            .onErrorResume(e -> {
+                                log.error(e.getMessage(), e);
+                                return Mono.empty();
+                            })
+
+                            // Convert Cover Types Histories to Land Use Histories
                             .flatMap(locationCoverTypesHistories ->
-                                    locationLandUsesService
-                                            .getLocationLandUsesHistories(
+                                    locationLandUsesCategoriesService
+                                            .getLocationLandUsesCategoriesHistories(
                                                     locationCoverTypesHistories))
+                            .onErrorResume(e -> {
+                                log.error(e.getMessage(), e);
+                                return Mono.empty();
+                            })
+
+                            // Append the Location's Flux Reporting Results
                             .flatMap(locationLandUsesHistories ->
                                     locationLandUsesFluxReportingResultsService
                                             .getLocationLandUsesFluxReportingResultsHistories(
                                                     request.getDatabaseId(), locationLandUsesHistories))
+                            .onErrorResume(e -> {
+                                log.error(e.getMessage(), e);
+                                return Mono.empty();
+                            })
+
+                            // Allocate the Location's Flux Reporting Results
                             .flatMap(locationLandUsesFluxReportingResultsHistories ->
                                     locationLandUsesFluxReportingResultsAllocationService
                                             .allocateLocationLandUsesFluxReportingResults(
                                                     locationLandUsesFluxReportingResultsHistories))
+                            .onErrorResume(e -> {
+                                log.error(e.getMessage(), e);
+                                return Mono.empty();
+                            })
+
+                            // Aggregated the allocated the Location's Flux Reporting Results
                             .flatMap(allocatedFluxReportingResults ->
                                     locationLandUsesAllocatedFluxReportingResultsAggregationService
                                             .aggregateLocationLandUsesAllocatedFluxReportingResults(
                                                     allocatedFluxReportingResults))
+                            .onErrorResume(e -> {
+                                log.error(e.getMessage(), e);
+                                return Mono.empty();
+                            })
+
+                            // Collect the aggregated Flux Reporting Results
                             .collectList()
+
+                            // Log for debugging purpose
+                            .doOnNext(location -> {
+                                log.info("");
+                                log.info("Database: {}, Party: {}, Location: All", request.getDatabaseId(), request.getPartyId());
+                                log.info("------------------------------------------------------------------------");
+                                log.info("");
+                            })
+
+                            // Aggregate the location results
                             .flatMap(locationLandUsesAllocatedFluxReportingResultsAggregations ->
                                     partyLandUsesAllocatedFluxReportingResultsAggregationService
                                             .aggregateFluxReportingResultsAggregations(
@@ -125,23 +202,28 @@ public class DataProcessingService {
                                                     request.getPartyId(),
                                                     request.getDatabaseId(),
                                                     locationLandUsesAllocatedFluxReportingResultsAggregations))
+                            .doOnError(e -> {
+                                log.error(e.getMessage(), e);
+                            })
+
+                            // Save the aggregated results
                             .flatMap(quantityObservations ->
                                     endpointsUtil
                                             .createQuantityObservations(quantityObservations.toArray(QuantityObservation[]::new))
                                             .collectList())
-                            .map(ids -> DataProcessingStatus.SUCCEEDED)
+                            .doOnError(e -> {
+                                log.error("[Quantity Observations Endpoint] - Aggregated Quantity Observations Saving Failed", e);
+                                log.error(e.getMessage(), e);
+                            })
+
+                            .map(ids -> SUCCEEDED)
                             .onErrorReturn(DataProcessingStatus.FAILED)
                             .block();
 
-
-            log.info(
-                    dataProcessingStatus == DataProcessingStatus.SUCCEEDED ?
-                            "[Database: {}, Party: {}] - Data Processing Succeeded" :
-                            "[Database: {}, Party: {}] - Data Processing Failed",
-                    request.getDatabaseId(), request.getPartyId());
-
+            log.info("Processing Status Code = {}", status.getId());
 
             // Publish the processing status
+            log.trace("Publishing the processing status");
             rabbitTemplate.convertAndSend(
                     RabbitConfig.RAW_DATA_PROCESSING_RESULTS_QUEUE,
                     DataProcessingResponse
@@ -149,11 +231,28 @@ public class DataProcessingService {
                             .taskId(request.getTaskId())
                             .databaseId(request.getDatabaseId())
                             .partyId(request.getPartyId())
-                            .statusCode(dataProcessingStatus.getId())
+                            .statusCode(status.getId())
                             .build());
 
 
+            // Log Exit Message
+            log.info("");
+            log.info("------------------------------------------------------------------------");
+            if(status == SUCCEEDED) {
+                log.info("Data Processing Succeeded");
+            } else {
+                log.error("Data Processing Failed");
+            }
+
+
         }
+
+        log.info("------------------------------------------------------------------------");
+        log.info("");
+        log.info("========================================================================");
+        log.info("{} - Leaving  Data Processing Service", prefix);
+        log.info("========================================================================");
+        log.info("");
 
 
     }

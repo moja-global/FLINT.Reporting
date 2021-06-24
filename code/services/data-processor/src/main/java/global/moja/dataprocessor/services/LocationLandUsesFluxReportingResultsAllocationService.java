@@ -33,29 +33,31 @@ import java.util.stream.Collectors;
 public class LocationLandUsesFluxReportingResultsAllocationService {
 
     @Autowired
-    ConfigurationDataProvider configurationDataProvider;
-
-    @Autowired
     FluxReportingResultsAllocator fluxReportingResultsAllocator;
+
+    private final String logMessagePrefix = "[Location Land Uses Flux Reporting Results Allocation Service]";
 
     public Mono<LocationLandUsesAllocatedFluxReportingResults> allocateLocationLandUsesFluxReportingResults
             (LocationLandUsesFluxReportingResultsHistories locationLandUsesFluxReportingResultsHistories) {
 
-        log.trace("Entering allocateLocationLandUsesFluxReportingResults()");
+        log.trace("{} - Entering allocateLocationLandUsesFluxReportingResults()", logMessagePrefix);
         log.debug("Location Land Uses Flux Reporting Results Histories = {}", locationLandUsesFluxReportingResultsHistories);
 
-        // Validate the Location Land Uses Flux Reporting Results Histories
-        log.trace("Validating the Location Land Uses Flux Reporting Results Histories");
-        if (locationLandUsesFluxReportingResultsHistories == null) {
-            log.error("The Location Land Uses Flux Reporting Results Histories should not be null");
-            return Mono.error(new ServerException("The Location Land Uses Flux Reporting Results Histories should not be null"));
-        }
+        // Validate the passed-in arguments
+        log.trace("{} - Validating passed-in arguments", logMessagePrefix);
 
-        // Validate the Location Land Uses Flux Reporting Results Histories' histories
-        log.trace("Validating the Location Land Uses Flux Reporting Results Histories' histories");
-        if (locationLandUsesFluxReportingResultsHistories.getHistories() == null) {
-            log.error("The Location Land Uses Flux Reporting Results Histories' histories should not be null");
-            return Mono.error(new ServerException("The Location Land Uses Flux Reporting Results Histories' histories should not be null"));
+        if (locationLandUsesFluxReportingResultsHistories == null ||
+                locationLandUsesFluxReportingResultsHistories.getHistories() == null) {
+
+            // Create the error message
+            String error =
+                    locationLandUsesFluxReportingResultsHistories == null ?
+                            "Location Land Uses Flux Reporting Results Histories should not be null" :
+                            "Location Land Uses Flux Reporting Results Histories' histories should not be null";
+
+            // Throw the error
+            return Mono.error(new ServerException(logMessagePrefix + " - " + error));
+
         }
 
         return
@@ -64,25 +66,36 @@ public class LocationLandUsesFluxReportingResultsAllocationService {
                 Flux.fromIterable(locationLandUsesFluxReportingResultsHistories.getHistories())
 
                         // 2. Filter out records with a null Land Use Category
-                        .filter(locationLandUsesFluxReportingResultsHistory -> locationLandUsesFluxReportingResultsHistory.getLandUseCategory() != null)
+                        .filter(locationLandUsesFluxReportingResultsHistory ->
+                                locationLandUsesFluxReportingResultsHistory.getLandUseCategory() != null &&
+                                        locationLandUsesFluxReportingResultsHistory.getLandUseCategory().getId() != null)
 
                         // 3. Filter out records with a null or empty flux reporting results
                         .filter(locationLandUsesFluxReportingResultsHistory ->
                                 locationLandUsesFluxReportingResultsHistory.getFluxReportingResults() != null &&
                                         !locationLandUsesFluxReportingResultsHistory.getFluxReportingResults().isEmpty())
 
-                        // 5. Sort the records by item number
+                        // 4. Sort the records by item number
                         .sort()
 
-                        // 6. Allocate the Flux Reporting Results
+                        // 5. Allocate the Flux Reporting Results
                         .flatMap(locationLandUsesFluxReportingResultsHistory ->
 
                                 Flux.fromIterable(locationLandUsesFluxReportingResultsHistory.getFluxReportingResults())
 
-                                        // 6.1 Sort the records by item number
+                                        // 5.1. Filter out records without a Flux Type Id
+                                        .filter(fluxReportingResult -> fluxReportingResult.getFluxTypeId() != null)
+
+                                        // 5.2. Filter out records without a Source Pool Id
+                                        .filter(fluxReportingResult -> fluxReportingResult.getSourcePoolId() != null)
+
+                                        // 5.3. Filter out records without a Sink Pool Id
+                                        .filter(fluxReportingResult -> fluxReportingResult.getSinkPoolId() != null)
+
+                                        // 5.4. Sort the records by item number
                                         .sort()
 
-                                        // 6.2. Allocate the Flux Reporting Results
+                                        // 5.5. Allocate the Flux Reporting Results
                                         .map(fluxReportingResult ->
                                                 fluxReportingResultsAllocator
                                                         .allocateFluxReportingResults(
@@ -91,10 +104,10 @@ public class LocationLandUsesFluxReportingResultsAllocationService {
                                                                         .getId(),
                                                                 fluxReportingResult))
 
-                                        // 6.3. Collate the allocated Flux Reporting Results
+                                        // 5.6. Collate the allocated Flux Reporting Results
                                         .collectList()
 
-                                        // 6.4. Build the Location Land Uses Allocated Flux Reporting Result record
+                                        // 5.7. Build the Location Land Uses Allocated Flux Reporting Result record
                                         .map(allocatedFluxReportingResults ->
                                                 LocationLandUsesAllocatedFluxReportingResult
                                                         .builder()
@@ -107,13 +120,12 @@ public class LocationLandUsesFluxReportingResultsAllocationService {
                                                                         .stream()
                                                                         .flatMap(Collection::stream)
                                                                         .collect(Collectors.toList()))
-                                                        .build())
-                        )
+                                                        .build()))
 
-                        // 4. Collate the Location Land Uses Allocated Flux Reporting Result records
+                        // 6. Collate the Location Land Uses Allocated Flux Reporting Result records
                         .collect(Collectors.toList())
 
-                        // 5. Build and return the Location Land Uses Allocated Flux Reporting Results records
+                        // 7. Build and return the Location Land Uses Allocated Flux Reporting Results records
                         .map(records ->
                                 LocationLandUsesAllocatedFluxReportingResults
                                         .builder()

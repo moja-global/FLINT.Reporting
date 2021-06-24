@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+
 import java.util.stream.Collectors;
 
 /**
@@ -35,39 +36,31 @@ public class LocationVegetationTypesService {
     @Autowired
     ConfigurationDataProvider configurationDataProvider;
 
+    private final String logMessagePrefix = "[Location Vegetation Types Service]";
+
     public Mono<LocationVegetationTypesHistories> getLocationVegetationTypesHistories
             (Long databaseId, Location location) {
 
-        log.trace("Entering generateLocationVegetationTypesHistory()");
-        log.debug("Database id = {}", databaseId);
-        log.debug("Location = {}", location);
+        log.trace("{} - Entering getLocationVegetationTypesHistories()", logMessagePrefix);
+        log.debug("{} - Database Id = {}", logMessagePrefix, databaseId);
+        log.debug("{} - Location = {}", logMessagePrefix, location);
 
-        // Validate the database id
-        log.trace("Validating the database id");
-        if (databaseId == null) {
-            log.error("The database id should not be null");
-            return Mono.error(new ServerException("The database id should not be null"));
-        }
+        // Validate the passed-in arguments
+        log.trace("{} - Validating passed-in arguments", logMessagePrefix);
 
-        // Validate the location
-        log.trace("Validating the location");
-        if (location == null) {
-            log.error("The location should not be null");
-            return Mono.error(new ServerException("The location should not be null"));
-        }
+        if (databaseId == null || location == null || location.getId() == null
+                || location.getVegetationHistoryId() == null) {
 
-        // Validate the location's id
-        log.trace("Validating the location's id");
-        if (location.getId() == null) {
-            log.error("The location's id should not be null");
-            return Mono.error(new ServerException("The location's id should not be null"));
-        }
+            // Create the error message
+            String error =
+                    databaseId == null ? "Database Id should not be null" :
+                                    location == null ? "Location should not be null" :
+                                            location.getId() == null ? "Location Id should not be null" :
+                                                    "Vegetation History Id should not be null";
 
-        // Validate the location's vegetation history id
-        log.trace("Validating the location's vegetation history id");
-        if (location.getVegetationHistoryId() == null) {
-            log.error("The location's vegetation history id should not be null");
-            return Mono.error(new ServerException("The location's vegetation history id should not be null"));
+            // Throw the error
+            return Mono.error(new ServerException(logMessagePrefix + " - " + error));
+
         }
 
         return
@@ -76,8 +69,9 @@ public class LocationVegetationTypesService {
                         // 1. Retrieve the Vegetation History Vegetation Types records corresponding to the provided
                         // Database and Location Vegetation History Ids
                         .retrieveVegetationHistoryVegetationTypes(
-                                databaseId,
-                                location.getVegetationHistoryId())
+                                databaseId, location.getVegetationHistoryId())
+
+                        .onErrorMap(e -> new ServerException(logMessagePrefix + " - Vegetation Histories retrieval failed", e))
 
                         // 2. Convert each Vegetation History Vegetation Type record to the corresponding
                         // Vegetation Types History record

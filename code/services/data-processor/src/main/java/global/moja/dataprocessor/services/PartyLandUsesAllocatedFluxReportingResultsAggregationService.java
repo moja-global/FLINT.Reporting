@@ -41,48 +41,39 @@ public class PartyLandUsesAllocatedFluxReportingResultsAggregationService {
     @Value("${processed.observation.id}")
     Long PROCESSED_OBSERVATION_ID;
 
+    private final String logMessagePrefix = "[Party Land Uses Allocated Flux Reporting Results Aggregation Service]";
+
     public Mono<List<QuantityObservation>> aggregateFluxReportingResultsAggregations(
             Long taskId,
             Long partyId,
             Long databaseId,
             List<LocationLandUsesAllocatedFluxReportingResultsAggregation> locationLandUsesAllocatedFluxReportingResultsAggregations) {
 
-        log.trace("Entering aggregateFluxReportingResultsAggregations()");
-        log.debug("Task id = {}", taskId);
-        log.debug("Party id = {}", partyId);
-        log.debug("Database id = {}", databaseId);
-        log.debug("Location Land Uses Allocated Flux Reporting Results Aggregations = {}",
+        log.trace("{} - Entering aggregateFluxReportingResultsAggregations()", logMessagePrefix);
+        log.debug("{} - Task id = {}", logMessagePrefix, taskId);
+        log.debug("{} - Party id = {}", logMessagePrefix, partyId);
+        log.debug("{} - Database id = {}", logMessagePrefix, databaseId);
+        log.debug("{} - Location Land Uses Allocated Flux Reporting Results Aggregations = {}", logMessagePrefix ,
                 locationLandUsesAllocatedFluxReportingResultsAggregations);
 
-        // Validate the task id
-        log.trace("Validating the task id");
-        if (taskId == null) {
-            log.error("The task id should not be null");
-            return Mono.error(new ServerException("The task id should not be null"));
-        }
+        // Validate the passed-in arguments
+        log.trace("{} - Validating passed-in arguments", logMessagePrefix);
 
-        // Validate the party id
-        log.trace("Validating the party id");
-        if (partyId == null) {
-            log.error("The party id should not be null");
-            return Mono.error(new ServerException("The party id should not be null"));
-        }
+        if (taskId == null || partyId == null || databaseId == null ||
+                locationLandUsesAllocatedFluxReportingResultsAggregations == null) {
 
-        // Validate the database id
-        log.trace("Validating the database id");
-        if (databaseId == null) {
-            log.error("The database id should not be null");
-            return Mono.error(new ServerException("The database id should not be null"));
-        }
+            // Create the error message
+            String error =
+                    taskId == null ?
+                            "Task Id should not be null" :
+                            partyId == null ? "Party Id should not be null" :
+                                    databaseId == null? "Database Id should not be null" :
+                            "Location Land Uses Allocated Flux Reporting Results Aggregations Aggregations should not be null";
 
-        // Validate the Location Land Uses Allocated Flux Reporting Results Aggregations
-        log.trace("Validating the Location Land Uses Allocated Flux Reporting Results Aggregations");
-        if (locationLandUsesAllocatedFluxReportingResultsAggregations == null) {
-            log.error("The Location Land Uses Allocated Flux Reporting Results Aggregations Aggregations should not be null");
-            return Mono.error(
-                    new ServerException("The Location Land Uses Allocated Flux Reporting Results Aggregations Aggregations should not be null"));
-        }
+            // Throw the error
+            return Mono.error(new ServerException(logMessagePrefix + " - " + error));
 
+        }
 
         // Aggregate the Location Land Uses Allocated Flux Reporting Results Aggregations
         log.trace("Aggregating the Location Land Uses Allocated Flux Reporting Results Aggregations");
