@@ -643,7 +643,7 @@ public class LandUsesCategoriesAllocator {
             return
                     locationLandUsesHistories
                             .stream()
-                            .filter(c -> c.getLandUseCategory() == null)
+                            .filter(l -> l.getLandUseCategory() != null)
                             .filter(c ->
                                     c.getItemNumber() < currentLocationCoverTypesHistory.getItemNumber() &&
                                             !c.getLandUseCategory().getCoverTypeId()
@@ -706,7 +706,7 @@ public class LandUsesCategoriesAllocator {
             return
                     locationCoverTypesHistories
                             .stream()
-                            .filter(c -> c.getCoverType() == null)
+                            .filter(c -> c.getCoverType() != null)
                             .filter(c ->
                                     c.getItemNumber() > currentLocationCoverTypesHistory.getItemNumber() &&
                                             !c.getCoverType().getId().equals(
@@ -1000,6 +1000,7 @@ public class LandUsesCategoriesAllocator {
         boolean result =
                 locationLandUsesHistories
                         .stream()
+                        .filter(l -> l.getLandUseCategory() != null)
                         .anyMatch(l ->
                                 l.getItemNumber() < currentLocationCoverTypesHistory.getItemNumber() &&
                                         !l.getLandUseCategory().getCoverTypeId().equals(currentLocationCoverTypesHistory
@@ -1243,6 +1244,7 @@ public class LandUsesCategoriesAllocator {
         boolean excludesAllOtherCoverTypesSinceTheInitialTimestep =
                 locationLandUsesHistories
                         .stream()
+                        .filter(l -> l.getLandUseCategory() != null)
                         .filter(l -> l.getItemNumber() < currentLocationCoverTypesHistory.getItemNumber())
                         .noneMatch(l ->
                                 !l.getLandUseCategory().getCoverTypeId().equals(croplandCoverType.getId()) &&
@@ -1392,6 +1394,7 @@ public class LandUsesCategoriesAllocator {
         Set<Long> previousNonCurrentCoverTypesIds =
                 locationLandUsesHistories
                         .stream()
+                        .filter(l -> l.getLandUseCategory() != null)
                         .filter(c ->
                                 c.getItemNumber() < currentLocationCoverTypesHistory.getItemNumber() &&
                                         !c.getLandUseCategory().getCoverTypeId().equals(
@@ -1406,6 +1409,7 @@ public class LandUsesCategoriesAllocator {
         Set<LocationCoverTypesHistory> nextNonCurrentCoverTypesHistories =
                 locationCoverTypesHistories
                         .stream()
+                        
                         .filter(c ->
                                 c.getItemNumber() > currentLocationCoverTypesHistory.getItemNumber() &&
                                         !c.getCoverType().getId().equals(
