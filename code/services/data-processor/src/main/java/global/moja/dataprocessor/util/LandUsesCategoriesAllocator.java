@@ -200,11 +200,6 @@ public class LandUsesCategoriesAllocator {
             conversionAndRemainingPeriod = differentPreviousLocationLandUsesHistory == null ? null :
                     getConversionAndRemainingPeriod(differentPreviousLocationLandUsesHistory, currentLocationCoverTypesHistory);
 
-            if(conversionAndRemainingPeriod == null) {
-                log.info("Previous Land Use History = {}", differentPreviousLocationLandUsesHistory);
-                log.info("Current Cover Type History = {}", currentLocationCoverTypesHistory);
-            }
-
             log.trace("The Conversion & Remaining Period = {}", conversionAndRemainingPeriod);
 
 
@@ -218,6 +213,13 @@ public class LandUsesCategoriesAllocator {
                 // Previous Land Use
                 log.trace("{}{}Checking if the Cover Type remained the same for longer than the Land " +
                         "Conversion Period of the previous Land Use{}", lineSeparator, lineSeparator, lineSeparator);
+
+                if(conversionAndRemainingPeriod == null) {
+                    log.info("Claims Cover Type has changed since initial timestep but conversion period is null");
+                    log.info("Different Previous Land Use History = {}", differentPreviousLocationLandUsesHistory);
+                    log.info("Current Cover Type History = {}", currentLocationCoverTypesHistory);
+                }
+
 
                 if (hasTheCoverTypeRemainedTheSameForLongerThanTheLandConversionPeriodOfThePreviousLandUse(
                         differentPreviousLocationLandUsesHistory,
@@ -1020,16 +1022,8 @@ public class LandUsesCategoriesAllocator {
 
         // Check if the number of years is greater than the Land Conversion Period
         log.trace("Checking if the number of years is greater than the Land Conversion Period");
-        boolean result;
-        try{
-            result = (years > conversionAndRemainingPeriod.getConversionPeriod());
-        }catch(Exception e) {
-            log.info("Previous Location LandUses History = {}", previousLocationLandUsesHistory);
-            log.info("Next Location LandUses History = {}", nextLocationCoverTypesHistory);
-            log.info("Last Location LandUses History = {}", lastLocationCoverTypesHistory);
-            log.info("Conversion And Remaining Period = {}", conversionAndRemainingPeriod);
-            throw e;
-        }
+        boolean result = (years > conversionAndRemainingPeriod.getConversionPeriod());
+
         log.trace(result ?
                 "The current Cover Type remained the same for longer than the Land Conversion Period of the " +
                         "Previous Land Use" :
