@@ -23,6 +23,6 @@ public class QueryParameters {
     private Long[] ids;
     private Long vegetationHistoryId;
     private Long vegetationTypeId;
-    private Long itemNumber;
     private Integer year;
+    private Long partyId;
 }

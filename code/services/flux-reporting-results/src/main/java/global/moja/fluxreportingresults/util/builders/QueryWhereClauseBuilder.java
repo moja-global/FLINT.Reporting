@@ -107,8 +107,8 @@ public class QueryWhereClauseBuilder {
         }
 
 
-        //  Item Count
-        if(queryParameters.getItemCount() != null){
+        //  Party Id
+        if(queryParameters.getPartyId() != null){
 
             if(query != null){
                 query.append(" AND ");
@@ -116,7 +116,9 @@ public class QueryWhereClauseBuilder {
                 query = new StringBuilder();
             }
 
-            query.append("itemcount = ").append(queryParameters.getItemCount());
+            query.append("location_dimension_id_fk IN (SELECT location_dimension_id_pk FROM location_dimension WHERE countyinfo_dimension_id_fk = ")
+                    .append(queryParameters.getPartyId())
+                    .append(")");
 
         }
 

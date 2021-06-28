@@ -64,7 +64,7 @@ public class RetrieveFluxReportingResultsHandler {
                                         .fluxTypeId(request)
                                         .sourcePoolId(request)
                                         .sinkPoolId(request)
-                                        .itemCount(request)
+                                        .partyId(request)
                                         .build());
     }
 

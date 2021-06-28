@@ -22,7 +22,7 @@ public class QueryParametersBuilder {
     private Long[] ids;
     private Long vegetationHistoryId;
     private Long vegetationTypeId;
-    private Long itemNumber;
+    private Long partyId;
     private Integer year;
 
     public QueryParametersBuilder ids(ServerRequest request) {
@@ -52,10 +52,10 @@ public class QueryParametersBuilder {
         return this;
     }
 
-    public QueryParametersBuilder itemNumber(ServerRequest request) {
-        this.itemNumber =
-                request.queryParam("itemNumber").isPresent() ?
-                        Long.parseLong(request.queryParam("itemNumber").get()) : null;
+    public QueryParametersBuilder partyId(ServerRequest request) {
+        this.partyId =
+                request.queryParam("partyId").isPresent() ?
+                        Long.parseLong(request.queryParam("partyId").get()) : null;
         return this;
     }
 
@@ -68,7 +68,7 @@ public class QueryParametersBuilder {
 
 
     public QueryParameters build() {
-        return new QueryParameters(ids, vegetationHistoryId, vegetationTypeId, itemNumber,year);
+        return new QueryParameters(ids, vegetationHistoryId, vegetationTypeId,year,partyId);
     }
 
 }

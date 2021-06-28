@@ -25,7 +25,7 @@ public class QueryParametersBuilder {
     private Long fluxTypeId;
     private Long sourcePoolId;
     private Long sinkPoolId;
-    private Long itemCount;
+    private Long partyId;
 
     public QueryParametersBuilder id(ServerRequest request) {
         this.id =
@@ -69,15 +69,15 @@ public class QueryParametersBuilder {
         return this;
     }
 
-    public QueryParametersBuilder itemCount(ServerRequest request) {
-        this.itemCount =
-                request.queryParam("itemCount").isPresent() ?
-                        Long.parseLong(request.queryParam("itemCount").get()) : null;
+    public QueryParametersBuilder partyId(ServerRequest request) {
+        this.partyId =
+                request.queryParam("partyId").isPresent() ?
+                        Long.parseLong(request.queryParam("partyId").get()) : null;
         return this;
     }
 
     public QueryParameters build() {
-        return new QueryParameters(id, dateId, locationId, fluxTypeId, sourcePoolId, sinkPoolId, itemCount);
+        return new QueryParameters(id, dateId, locationId, fluxTypeId, sourcePoolId, sinkPoolId, partyId);
     }
 
 }

@@ -20,12 +20,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QueryParameters {
-
     private Long id;
+    private Long partyId;
     private Long dateId;
     private Long locationId;
     private Long fluxTypeId;
     private Long sourcePoolId;
     private Long sinkPoolId;
-    private Long itemCount;
 }

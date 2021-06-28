@@ -61,8 +61,8 @@ public class RetrieveVegetationHistoryVegetationTypesHandler {
                                         .ids(request)
                                         .vegetationHistoryId(request)
                                         .vegetationTypeId(request)
-                                        .itemNumber(request)
                                         .year(request)
+                                        .partyId(request)
                                         .build());
     }
 

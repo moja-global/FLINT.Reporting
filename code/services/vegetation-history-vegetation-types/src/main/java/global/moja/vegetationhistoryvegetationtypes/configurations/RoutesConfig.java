@@ -101,8 +101,8 @@ public class RoutesConfig {
                                                         .implementation(Long.class))
                                         .parameter(
                                                 parameterBuilder()
-                                                        .name("itemNumber").in(ParameterIn.QUERY)
-                                                        .description("The item number i.e. 0 onwards, to filter the returned values by")
+                                                        .name("partyId").in(ParameterIn.QUERY)
+                                                        .description("The Party Id (e.g County Id) to filter the returned values by")
                                                         .implementation(Long.class))
                                         .response(
                                                 responseBuilder()

@@ -75,19 +75,6 @@ public class QueryWhereClauseBuilder {
 
         }
 
-        //  Item Number
-        if(queryParameters.getItemNumber() != null){
-
-            if(query != null){
-                query.append(" AND ");
-            } else {
-                query = new StringBuilder();
-            }
-
-            query.append("itemnumber = ").append(queryParameters.getItemNumber());
-
-        }
-
         //  Year
         if(queryParameters.getYear() != null){
 
@@ -98,6 +85,21 @@ public class QueryWhereClauseBuilder {
             }
 
             query.append("year = ").append(queryParameters.getYear());
+
+        }
+
+        //  Party Id
+        if(queryParameters.getPartyId() != null){
+
+            if(query != null){
+                query.append(" AND ");
+            } else {
+                query = new StringBuilder();
+            }
+
+            query.append("veghistory_dimension_id_fk IN (SELECT veghistory_dimension_id_fk FROM location_dimension WHERE countyinfo_dimension_id_fk = ")
+                    .append(queryParameters.getPartyId())
+                    .append(")");
 
         }
 
