@@ -219,10 +219,8 @@ public class PartyBasedDataProcessingService {
                                             // Collect the aggregated Flux Reporting Results
                                             .collectList()
 
-                                            .defaultIfEmpty(new ArrayList<>())
-
                                             // Log for debugging purpose
-                                            .doOnNext(location -> {
+                                            .doOnNext(locationLandUsesAllocatedFluxReportingResultsAggregations -> {
                                                 log.info("");
                                                 log.info("Database: {}, Party: {}, Location: All", request.getDatabaseId(), request.getPartyId());
                                                 log.info("------------------------------------------------------------------------");

@@ -26,6 +26,7 @@ public class LandUsesCategoriesAllocator {
 
     private final CoverType croplandCoverType;
     private final CoverType grasslandCoverType;
+    private final CoverType otherLandCoverType;
     private final ConfigurationDataProvider configurationDataProvider;
     private final String lineSeparator;
 
@@ -34,6 +35,7 @@ public class LandUsesCategoriesAllocator {
         this.configurationDataProvider = configurationDataProvider;
         this.croplandCoverType = configurationDataProvider.getCoverType("Cropland");
         this.grasslandCoverType = configurationDataProvider.getCoverType("Grassland");
+        this.otherLandCoverType = configurationDataProvider.getCoverType("Other land");
         this.lineSeparator = System.getProperty("line.separator");
     }
 
@@ -215,9 +217,18 @@ public class LandUsesCategoriesAllocator {
                         "Conversion Period of the previous Land Use{}", lineSeparator, lineSeparator, lineSeparator);
 
                 if(conversionAndRemainingPeriod == null) {
-                    log.info("Claims Cover Type has changed since initial timestep but conversion period is null");
+                    log.warn("Cover Type has changed since initial timestep but Conversion / Remaining Periods are null");
                     log.info("Different Previous Land Use History = {}", differentPreviousLocationLandUsesHistory);
                     log.info("Current Cover Type History = {}", currentLocationCoverTypesHistory);
+
+                    // Todo Confirm with rdl
+                    return
+                            LocationLandUsesHistory.builder()
+                                    .itemNumber(currentLocationCoverTypesHistory.getItemNumber())
+                                    .year(currentLocationCoverTypesHistory.getYear())
+                                    .landUseCategory(null)
+                                    .confirmed(true)
+                                    .build();
                 }
 
 
@@ -632,6 +643,7 @@ public class LandUsesCategoriesAllocator {
             return
                     locationLandUsesHistories
                             .stream()
+                            .filter(c -> c.getLandUseCategory() == null)
                             .filter(c ->
                                     c.getItemNumber() < currentLocationCoverTypesHistory.getItemNumber() &&
                                             !c.getLandUseCategory().getCoverTypeId()
@@ -687,14 +699,14 @@ public class LandUsesCategoriesAllocator {
             return
                     locationCoverTypesHistories
                             .stream()
-                            .filter(c ->
-                                    c.getItemNumber() == (currentLocationCoverTypesHistory.getItemNumber() + 1))
+                            .filter(c -> c.getItemNumber() == (currentLocationCoverTypesHistory.getItemNumber() + 1))
                             .reduce((first, second) -> first)
                             .orElse(null);
         } else {
             return
                     locationCoverTypesHistories
                             .stream()
+                            .filter(c -> c.getCoverType() == null)
                             .filter(c ->
                                     c.getItemNumber() > currentLocationCoverTypesHistory.getItemNumber() &&
                                             !c.getCoverType().getId().equals(

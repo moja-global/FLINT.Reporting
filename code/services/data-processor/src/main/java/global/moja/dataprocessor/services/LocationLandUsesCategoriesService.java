@@ -8,9 +8,11 @@
  */
 package global.moja.dataprocessor.services;
 
+import global.moja.dataprocessor.configurations.ConfigurationDataProvider;
 import global.moja.dataprocessor.daos.*;
 import global.moja.dataprocessor.daos.LocationCoverTypesHistories;
 import global.moja.dataprocessor.exceptions.ServerException;
+import global.moja.dataprocessor.models.CoverType;
 import global.moja.dataprocessor.util.LandUsesCategoriesAllocator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +60,7 @@ public class LocationLandUsesCategoriesService {
                 // 1. Create a Flux from the Cover Types Historic Details.
                 Flux.fromIterable(locationCoverTypesHistories.getHistories())
 
-                        // 2. Filter out records with a null cover type
+                        // 2. Filter out records that can't be processed
                         .filter(coverTypesHistoricDetail -> coverTypesHistoricDetail.getCoverType() != null)
 
                         // 3. Convert each Location Cover Types History to the corresponding Location Land Uses History.
