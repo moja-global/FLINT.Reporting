@@ -200,6 +200,11 @@ public class LandUsesCategoriesAllocator {
             conversionAndRemainingPeriod = differentPreviousLocationLandUsesHistory == null ? null :
                     getConversionAndRemainingPeriod(differentPreviousLocationLandUsesHistory, currentLocationCoverTypesHistory);
 
+            if(conversionAndRemainingPeriod == null) {
+                log.info("Previous Land Use History = {}", differentPreviousLocationLandUsesHistory);
+                log.info("Current Cover Type History = {}", currentLocationCoverTypesHistory);
+            }
+
             log.trace("The Conversion & Remaining Period = {}", conversionAndRemainingPeriod);
 
 
