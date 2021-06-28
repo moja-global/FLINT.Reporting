@@ -1015,7 +1015,16 @@ public class LandUsesCategoriesAllocator {
 
         // Check if the number of years is greater than the Land Conversion Period
         log.trace("Checking if the number of years is greater than the Land Conversion Period");
-        boolean result = (years > conversionAndRemainingPeriod.getConversionPeriod());
+        boolean result;
+        try{
+            result = (years > conversionAndRemainingPeriod.getConversionPeriod());
+        }catch(Exception e) {
+            log.info("Previous Location LandUses History = {}", previousLocationLandUsesHistory);
+            log.info("Next Location LandUses History = {}", nextLocationCoverTypesHistory);
+            log.info("Last Location LandUses History = {}", lastLocationCoverTypesHistory);
+            log.info("Conversion And Remaining Period = {}", conversionAndRemainingPeriod);
+            throw e;
+        }
         log.trace(result ?
                 "The current Cover Type remained the same for longer than the Land Conversion Period of the " +
                         "Previous Land Use" :
