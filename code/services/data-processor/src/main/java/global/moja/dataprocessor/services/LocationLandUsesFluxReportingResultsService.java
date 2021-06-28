@@ -23,7 +23,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -75,7 +74,7 @@ public class LocationLandUsesFluxReportingResultsService {
 
                         // 1. Retrieve the Flux Reporting Results records corresponding to the provided
                         // Database and Location ids
-                        .retrieveFluxReportingResults(
+                        .retrieveFluxReportingResultsByLocation(
                                 databaseId,
                                 locationLandUsesHistories.getLocationId())
 
@@ -135,5 +134,71 @@ public class LocationLandUsesFluxReportingResultsService {
                                         .histories(records)
                                         .build());
     }
+
+
+    Mono<LocationLandUsesFluxReportingResultsHistories> getLocationLandUsesFluxReportingResultsHistories(
+            Long databaseId,
+            LocationLandUsesHistories locationLandUsesHistories,
+            Map<Long, Collection<FluxReportingResult>> fluxReportingResultMap) {
+
+        return
+                // 1. Retrieve the Flux Reporting Results records corresponding to the provided Database and Location id
+                Flux.fromIterable(fluxReportingResultMap.getOrDefault(locationLandUsesHistories.getLocationId(), new ArrayList<>()))
+
+                        // 2. Collect and map the Flux Reporting Results by their Date Dimension Id
+                        .collectMultimap(FluxReportingResult::getDateId, result -> result)
+
+                        // 3. Convert each Land Uses History record to the corresponding
+                        // Land Use Fluxes History record
+                        .flatMap(dateMappedFluxReportingResults ->
+
+                                Flux.fromIterable(locationLandUsesHistories.getHistories())
+                                        .map(landUsesHistoricDetail ->
+
+                                                LocationLandUsesFluxReportingResultsHistory
+                                                        .builder()
+                                                        .itemNumber(landUsesHistoricDetail.getItemNumber())
+                                                        .year(landUsesHistoricDetail.getYear())
+                                                        .landUseCategory(landUsesHistoricDetail.getLandUseCategory())
+                                                        .confirmed(landUsesHistoricDetail.getConfirmed())
+                                                        .fluxReportingResults(
+                                                                dateMappedFluxReportingResults
+                                                                        .keySet()
+                                                                        .stream()
+                                                                        .filter(dateDimensionId ->
+                                                                                dateDimensionId ==
+                                                                                        configurationDataProvider
+                                                                                                .getDateDimensionId(
+                                                                                                        databaseId,
+                                                                                                        landUsesHistoricDetail
+                                                                                                                .getYear()))
+                                                                        .findAny()
+                                                                        .map(dateDimensionId ->
+                                                                                dateMappedFluxReportingResults
+                                                                                        .get(dateDimensionId) == null ?
+                                                                                        new ArrayList<FluxReportingResult>() :
+                                                                                        new ArrayList<>(
+                                                                                                dateMappedFluxReportingResults
+                                                                                                        .get(dateDimensionId)))
+                                                                        .orElse(new ArrayList<>()))
+                                                        .build())
+
+                                        .collectList()
+                        )
+
+                        // 4. Build and return the Location Vegetation Types Histories record
+                        .map(records ->
+                                LocationLandUsesFluxReportingResultsHistories
+                                        .builder()
+                                        .locationId(locationLandUsesHistories.getLocationId())
+                                        .partyId(locationLandUsesHistories.getPartyId())
+                                        .tileId(locationLandUsesHistories.getTileId())
+                                        .vegetationHistoryId(locationLandUsesHistories.getVegetationHistoryId())
+                                        .unitCount(locationLandUsesHistories.getUnitCount())
+                                        .unitAreaSum(locationLandUsesHistories.getUnitAreaSum())
+                                        .histories(records)
+                                        .build());
+    }
+
 
 }

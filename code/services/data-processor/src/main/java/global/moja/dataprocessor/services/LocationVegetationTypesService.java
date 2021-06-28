@@ -13,12 +13,16 @@ import global.moja.dataprocessor.daos.LocationVegetationTypesHistories;
 import global.moja.dataprocessor.daos.LocationVegetationTypesHistory;
 import global.moja.dataprocessor.exceptions.ServerException;
 import global.moja.dataprocessor.models.Location;
+import global.moja.dataprocessor.models.VegetationHistoryVegetationType;
 import global.moja.dataprocessor.util.endpoints.EndpointsUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -104,4 +108,39 @@ public class LocationVegetationTypesService {
                                         .build());
     }
 
+
+    Mono<LocationVegetationTypesHistories> getLocationVegetationTypesHistories(
+            Long databaseId,
+            Location location,
+            Map<Long, Collection<VegetationHistoryVegetationType>> vegetationHistoryVegetationTypeMap) {
+
+        return Mono.just(
+                LocationVegetationTypesHistories
+                        .builder()
+                        .locationId(location.getId())
+                        .partyId(location.getPartyId())
+                        .tileId(location.getTileId())
+                        .vegetationHistoryId(location.getVegetationHistoryId())
+                        .unitCount(location.getUnitCount())
+                        .unitAreaSum(location.getUnitAreaSum())
+                        .histories(
+                                vegetationHistoryVegetationTypeMap
+                                        .getOrDefault(
+                                                location.getVegetationHistoryId(),
+                                                new ArrayList<>())
+                                        .stream()
+                                        .map(v ->
+                                                LocationVegetationTypesHistory
+                                                        .builder()
+                                                        .itemNumber(v.getItemNumber())
+                                                        .year(v.getYear())
+                                                        .vegetationType(
+                                                                configurationDataProvider
+                                                                        .getVegetationType(
+                                                                                databaseId,
+                                                                                v.getVegetationTypeId()))
+                                                        .build())
+                                        .collect(Collectors.toList()))
+                        .build());
+    }
 }

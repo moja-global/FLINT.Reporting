@@ -31,7 +31,7 @@ public class FluxReportingResultsEndpointsUtil {
     @Autowired
     WebClientUtil webClientUtil;
 
-    public Flux<FluxReportingResult> retrieveFluxReportingResults(
+    public Flux<FluxReportingResult> retrieveFluxReportingResultsByLocation(
             Long databaseId, Long locationId) {
 
         log.trace("Entering retrieveFluxReportingResults()");
@@ -56,4 +56,35 @@ public class FluxReportingResultsEndpointsUtil {
                     return f;
                 });
     }
+
+
+
+    public Flux<FluxReportingResult> retrieveFluxReportingResultsByParty(
+            Long databaseId, Long partyId) {
+
+        log.trace("Entering retrieveFluxReportingResults()");
+        log.debug("Database Id = {}",databaseId);
+        log.debug("Party Id = {}", partyId);
+
+        return webClientUtil
+                .getFluxReportingResultsWebClient()
+                .get()
+                .uri(uriBuilder ->
+                        uriBuilder
+                                .path("/databases/{param1}/all")
+                                .queryParam("partyId", "{param2}")
+                                .build(Long.toString(databaseId),Long.toString(partyId)))
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(FluxReportingResult.class)
+                .map(f -> {
+
+                    // Format value to 6 decimal places
+                    f.setFlux(f.getFlux() == null ? null: new BigDecimal(f.getFlux()).setScale(6, RoundingMode.HALF_UP).doubleValue());
+                    return f;
+                });
+    }
+
+
+
 }

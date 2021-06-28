@@ -19,5 +19,5 @@ public class DataProcessingResponse {
     private Long partyId;
 
     @EqualsAndHashCode.Exclude
-    private int statusCode;
+    private Integer statusCode;
 }

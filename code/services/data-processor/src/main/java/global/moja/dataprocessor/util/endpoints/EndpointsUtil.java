@@ -12,9 +12,6 @@ import global.moja.dataprocessor.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 /**
  * @author Kwaje Anthony <tony@miles.co.ke>
@@ -99,9 +96,14 @@ public class EndpointsUtil {
                 .retrieveEmissionTypes();
     }
 
-    public Flux<FluxReportingResult> retrieveFluxReportingResults(Long databaseId, Long locationId) {
+    public Flux<FluxReportingResult> retrieveFluxReportingResultsByLocation(Long databaseId, Long locationId) {
         return fluxReportingResultsEndpointsUtil
-                .retrieveFluxReportingResults(databaseId, locationId);
+                .retrieveFluxReportingResultsByLocation(databaseId, locationId);
+    }
+
+    public Flux<FluxReportingResult> retrieveFluxReportingResultsByParty(Long databaseId, Long partyId) {
+        return fluxReportingResultsEndpointsUtil
+                .retrieveFluxReportingResultsByParty(databaseId, partyId);
     }
 
     public Flux<FluxToReportingVariable> retrieveFluxesToReportingVariables() {
@@ -138,6 +140,12 @@ public class EndpointsUtil {
             Long databaseId, Long vegetationHistoryId) {
         return vegetationHistoryVegetationTypesEndpointsUtil
                 .retrieveVegetationHistoryVegetationTypes(databaseId, vegetationHistoryId);
+    }
+
+    public Flux<VegetationHistoryVegetationType> retrieveVegetationHistoryVegetationTypesByPartyId(
+            Long databaseId, Long partyId) {
+        return vegetationHistoryVegetationTypesEndpointsUtil
+                .retrieveVegetationHistoryVegetationTypesByPartyId(databaseId, partyId);
     }
 
     public Flux<VegetationType> retrieveVegetationTypes(Long databaseId) {

@@ -19,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 
@@ -28,7 +27,7 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-class DataProcessingServiceIT {
+class LocationBasedDataProcessingServiceIT {
 
     @Spy
     @Autowired
@@ -39,7 +38,7 @@ class DataProcessingServiceIT {
 
     @InjectMocks
     @Autowired
-    DataProcessingService dataProcessingServiceService;
+    LocationBasedDataProcessingService locationBasedDataProcessingService;
 
     @BeforeEach
     public void setup() {
@@ -51,7 +50,7 @@ class DataProcessingServiceIT {
 
         Mockito.doReturn(Flux.just(Arrays.asList(1L,2L,3L,4L,5L))).when(endpointsUtil).createQuantityObservations(any(QuantityObservation[].class));
 
-        dataProcessingServiceService.processData(
+        locationBasedDataProcessingService.processData(
                 DataProcessingRequest
                         .builder()
                         .taskId(1L)

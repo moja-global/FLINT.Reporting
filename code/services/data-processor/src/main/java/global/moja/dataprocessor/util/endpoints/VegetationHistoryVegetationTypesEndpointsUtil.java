@@ -47,4 +47,25 @@ public class VegetationHistoryVegetationTypesEndpointsUtil {
                 .retrieve()
                 .bodyToFlux(VegetationHistoryVegetationType.class);
     }
+
+
+    public Flux<VegetationHistoryVegetationType> retrieveVegetationHistoryVegetationTypesByPartyId(
+            Long databaseId, Long partyId) {
+
+        log.trace("Entering retrieveVegetationHistoryVegetationTypesByPartyId()");
+        log.debug("Database Id = {}", databaseId);
+        log.debug("Party Id = {}", partyId);
+
+        return webClientUtil
+                .getVegetationHistoryVegetationTypesWebClient()
+                .get()
+                .uri(uriBuilder ->
+                        uriBuilder
+                                .path("/databases/{param1}/all")
+                                .queryParam("partyId", "{param2}")
+                                .build(Long.toString(databaseId),Long.toString(partyId)))
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(VegetationHistoryVegetationType.class);
+    }
 }

@@ -15,11 +15,9 @@ import global.moja.dataprocessor.models.QuantityObservation;
 import global.moja.dataprocessor.util.DataProcessingStatus;
 import global.moja.dataprocessor.util.endpoints.EndpointsUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 
@@ -32,7 +30,7 @@ import static global.moja.dataprocessor.util.DataProcessingStatus.SUCCEEDED;
  */
 @Service
 @Slf4j
-public class DataProcessingService {
+public class LocationBasedDataProcessingService {
 
 
     @Autowired
@@ -62,7 +60,8 @@ public class DataProcessingService {
     @Autowired
     EndpointsUtil endpointsUtil;
 
-    @RabbitListener(queues = RabbitConfig.RAW_DATA_PROCESSING_QUEUE)
+    // If you enable this, disable it in PartyBasedDataProcessingService
+    //@RabbitListener(queues = RabbitConfig.RAW_DATA_PROCESSING_QUEUE)
     public void processData(final DataProcessingRequest request) {
 
         String prefix = "[Database: " + request.getDatabaseId() + ", Party: " + request.getPartyId() + "]";
@@ -206,9 +205,7 @@ public class DataProcessingService {
                                                     request.getPartyId(),
                                                     request.getDatabaseId(),
                                                     locationLandUsesAllocatedFluxReportingResultsAggregations))
-                            .doOnError(e -> {
-                                log.error(e.getMessage(), e);
-                            })
+                            .doOnError(e -> log.error(e.getMessage(), e))
 
                             // Save the aggregated results
                             .flatMap(quantityObservations ->
