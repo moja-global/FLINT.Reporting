@@ -149,11 +149,20 @@ public class LocationLandUsesFluxReportingResultsService {
                         // 2. Collect and map the Flux Reporting Results by their Date Dimension Id
                         .collectMultimap(FluxReportingResult::getDateId, result -> result)
 
+                        .doOnNext(map -> {
+                            log.info("Mapped Flux Reporting Results = {}", map);
+                        })
+
                         // 3. Convert each Land Uses History record to the corresponding
                         // Land Use Fluxes History record
                         .flatMap(dateMappedFluxReportingResults ->
 
                                 Flux.fromIterable(locationLandUsesHistories.getHistories())
+                                        .doOnNext(l -> {
+                                            log.info("Land Use Historic Detail Year = {}", l.getYear());
+                                            log.info("Land Use Historic Detail Year Date Dimension = {}", configurationDataProvider
+                                                    .getDateDimensionId(databaseId, l.getYear()));
+                                        })
                                         .map(landUsesHistoricDetail ->
 
                                                 LocationLandUsesFluxReportingResultsHistory
