@@ -141,9 +141,13 @@ public class LocationLandUsesFluxReportingResultsService {
             LocationLandUsesHistories locationLandUsesHistories,
             Map<Long, Collection<FluxReportingResult>> fluxReportingResultMap) {
 
+            log.info("Location Id = {}", locationLandUsesHistories.getLocationId());
+            log.info("Location Flux Reporting Results = {}", fluxReportingResultMap.getOrDefault(locationLandUsesHistories.getLocationId(), new ArrayList<>()));
+
         return
                 // 1. Retrieve the Flux Reporting Results records corresponding to the provided Database and Location id
                 Flux.fromIterable(fluxReportingResultMap.getOrDefault(locationLandUsesHistories.getLocationId(), new ArrayList<>()))
+
 
                         // 2. Collect and map the Flux Reporting Results by their Date Dimension Id
                         .collectMultimap(FluxReportingResult::getDateId, result -> result)
