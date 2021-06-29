@@ -218,18 +218,19 @@ public class LandUsesCategoriesAllocator {
 
                 if(conversionAndRemainingPeriod == null) {
                     log.info("");
-                    log.warn("CONVERSION / REMAINING PERIOD NOT FOUND");
+                    log.warn("Conversion & Remaining Period Not Found: Using Defaults");
                     log.info("Previous Land Use History = {}", differentPreviousLocationLandUsesHistory);
                     log.info("Current Cover Type History = {}", currentLocationCoverTypesHistory);
                     log.info("");
 
                     // Todo Confirm with rdl
-                    return
-                            LocationLandUsesHistory.builder()
-                                    .itemNumber(currentLocationCoverTypesHistory.getItemNumber())
-                                    .year(currentLocationCoverTypesHistory.getYear())
-                                    .landUseCategory(null)
-                                    .confirmed(true)
+                    conversionAndRemainingPeriod =
+                            ConversionAndRemainingPeriod
+                                    .builder()
+                                    .previousLandCoverId(differentPreviousLocationLandUsesHistory.getLandUseCategory().getCoverTypeId())
+                                    .currentLandCoverId(currentLocationCoverTypesHistory.getCoverType().getId())
+                                    .conversionPeriod(0)
+                                    .remainingPeriod(20)
                                     .build();
                 }
 

@@ -141,11 +141,6 @@ public class LocationLandUsesFluxReportingResultsAllocationService {
                         .collect(Collectors.toList())
 
 
-                        .doOnNext(results -> {
-                            log.info("");
-                            log.info("Collated Flux Reporting Results = {}", results);
-                        })
-
                         // 7. Build and return the Location Land Uses Allocated Flux Reporting Results records
                         .map(records ->
                                 LocationLandUsesAllocatedFluxReportingResults
