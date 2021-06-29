@@ -69,7 +69,6 @@ public class LocationLandUsesFluxReportingResultsAllocationService {
                             log.info("");
                             log.info("Land Use Category = {}", locationLandUsesFluxReportingResultsHistory.getLandUseCategory());
                             log.info("Flux Reporting Results = {}", locationLandUsesFluxReportingResultsHistory.getFluxReportingResults());
-                            log.info("");
                         })
 
                         // 2. Filter out records with a null Land Use Category
@@ -102,6 +101,11 @@ public class LocationLandUsesFluxReportingResultsAllocationService {
                                         // 5.4. Sort the records by item number
                                         .sort()
 
+                                        .doOnNext(fluxReportingResult -> {
+                                            log.info("");
+                                            log.info("Flux Reporting Result = {}", fluxReportingResult);
+                                        })
+
                                         // 5.5. Allocate the Flux Reporting Results
                                         .map(fluxReportingResult ->
                                                 fluxReportingResultsAllocator
@@ -110,6 +114,10 @@ public class LocationLandUsesFluxReportingResultsAllocationService {
                                                                         .getLandUseCategory()
                                                                         .getId(),
                                                                 fluxReportingResult))
+
+                                        .doOnNext(allocatedFluxReportingResults -> {
+                                            log.info("Allocated Flux Reporting Results = {}", allocatedFluxReportingResults);
+                                        })
 
                                         // 5.6. Collate the allocated Flux Reporting Results
                                         .collectList()
@@ -131,6 +139,12 @@ public class LocationLandUsesFluxReportingResultsAllocationService {
 
                         // 6. Collate the Location Land Uses Allocated Flux Reporting Result records
                         .collect(Collectors.toList())
+
+
+                        .doOnNext(results -> {
+                            log.info("");
+                            log.info("Collated Flux Reporting Results = {}", results);
+                        })
 
                         // 7. Build and return the Location Land Uses Allocated Flux Reporting Results records
                         .map(records ->
