@@ -125,9 +125,7 @@ public class LocationVegetationTypesService {
                         .unitAreaSum(location.getUnitAreaSum())
                         .histories(
                                 vegetationHistoryVegetationTypeMap
-                                        .getOrDefault(
-                                                location.getVegetationHistoryId(),
-                                                new ArrayList<>())
+                                        .getOrDefault(location.getVegetationHistoryId(),new ArrayList<>())
                                         .stream()
                                         .map(v ->
                                                 LocationVegetationTypesHistory

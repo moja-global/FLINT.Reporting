@@ -20,17 +20,25 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 public class QueryParametersBuilder {
 
     private Long id;
+    private Long partyId;
     private Long dateId;
     private Long locationId;
     private Long fluxTypeId;
     private Long sourcePoolId;
     private Long sinkPoolId;
-    private Long partyId;
+
 
     public QueryParametersBuilder id(ServerRequest request) {
         this.id =
                 request.queryParam("id").isPresent() ?
                         Long.parseLong(request.queryParam("id").get()) : null;
+        return this;
+    }
+
+    public QueryParametersBuilder partyId(ServerRequest request) {
+        this.partyId =
+                request.queryParam("partyId").isPresent() ?
+                        Long.parseLong(request.queryParam("partyId").get()) : null;
         return this;
     }
 
@@ -69,15 +77,8 @@ public class QueryParametersBuilder {
         return this;
     }
 
-    public QueryParametersBuilder partyId(ServerRequest request) {
-        this.partyId =
-                request.queryParam("partyId").isPresent() ?
-                        Long.parseLong(request.queryParam("partyId").get()) : null;
-        return this;
-    }
-
     public QueryParameters build() {
-        return new QueryParameters(id, dateId, locationId, fluxTypeId, sourcePoolId, sinkPoolId, partyId);
+        return new QueryParameters(id,partyId,dateId,locationId,fluxTypeId,sourcePoolId,sinkPoolId);
     }
 
 }
