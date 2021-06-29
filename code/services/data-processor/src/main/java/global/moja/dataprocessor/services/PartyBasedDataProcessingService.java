@@ -177,6 +177,7 @@ public class PartyBasedDataProcessingService {
                                             .doOnError(e -> log.error(e.getMessage(), e))
                                             .onErrorReturn(new LocationCoverTypesHistories())
                                             .filter(l -> l.getLocationId() != null)
+                                            .filter(l -> !l.getHistories().isEmpty())
 
                                             // Convert Cover Types Histories to Land Use Histories
                                             .flatMap(locationCoverTypesHistories ->
@@ -186,6 +187,7 @@ public class PartyBasedDataProcessingService {
                                             .doOnError(e -> log.error(e.getMessage(), e))
                                             .onErrorReturn(new LocationLandUsesHistories())
                                             .filter(l -> l.getLocationId() != null)
+                                            .filter(l -> !l.getHistories().isEmpty())
 
                                             // Append the Location's Flux Reporting Results
                                             .flatMap(locationLandUsesHistories ->
@@ -197,6 +199,7 @@ public class PartyBasedDataProcessingService {
                                             .doOnError(e -> log.error(e.getMessage(), e))
                                             .onErrorReturn(new LocationLandUsesFluxReportingResultsHistories())
                                             .filter(l -> l.getLocationId() != null)
+                                            .filter(l -> !l.getHistories().isEmpty())
 
                                             // Allocate the Location's Flux Reporting Results
                                             .flatMap(locationLandUsesFluxReportingResultsHistories ->
@@ -206,6 +209,7 @@ public class PartyBasedDataProcessingService {
                                             .doOnError(e -> log.error(e.getMessage(), e))
                                             .onErrorReturn(new LocationLandUsesAllocatedFluxReportingResults())
                                             .filter(l -> l.getLocationId() != null)
+                                            .filter(l -> !l.getAllocations().isEmpty())
 
                                             // Aggregated the allocated the Location's Flux Reporting Results
                                             .flatMap(allocatedFluxReportingResults ->
@@ -215,6 +219,8 @@ public class PartyBasedDataProcessingService {
                                             .doOnError(e -> log.error(e.getMessage(), e))
                                             .onErrorReturn(new LocationLandUsesAllocatedFluxReportingResultsAggregation())
                                             .filter(l -> l.getLocationId() != null)
+                                            .filter(l -> !l.getAggregations().isEmpty())
+
 
                                             // Collect the aggregated Flux Reporting Results
                                             .collectList()
@@ -236,6 +242,8 @@ public class PartyBasedDataProcessingService {
                                                                     request.getDatabaseId(),
                                                                     locationLandUsesAllocatedFluxReportingResultsAggregations))
                                             .doOnError(e -> log.error(e.getMessage(), e))
+                                            .onErrorReturn(new ArrayList<>())
+                                            .filter(quantityObservations -> !quantityObservations.isEmpty())
 
                                             // Save the aggregated results
                                             .flatMap(quantityObservations ->
