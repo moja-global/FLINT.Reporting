@@ -141,9 +141,6 @@ public class LocationLandUsesFluxReportingResultsService {
             LocationLandUsesHistories locationLandUsesHistories,
             Map<Long, Collection<FluxReportingResult>> fluxReportingResultMap) {
 
-            log.info("Location Id = {}", locationLandUsesHistories.getLocationId());
-            log.info("Location Flux Reporting Results = {}", fluxReportingResultMap.getOrDefault(locationLandUsesHistories.getLocationId(), new ArrayList<>()));
-
         return
                 // 1. Retrieve the Flux Reporting Results records corresponding to the provided Database and Location id
                 Flux.fromIterable(fluxReportingResultMap.getOrDefault(locationLandUsesHistories.getLocationId(), new ArrayList<>()))
@@ -166,25 +163,24 @@ public class LocationLandUsesFluxReportingResultsService {
                                                         .landUseCategory(landUsesHistoricDetail.getLandUseCategory())
                                                         .confirmed(landUsesHistoricDetail.getConfirmed())
                                                         .fluxReportingResults(
-                                                                dateMappedFluxReportingResults
-                                                                        .keySet()
-                                                                        .stream()
-                                                                        .filter(dateDimensionId ->
-                                                                                dateDimensionId ==
-                                                                                        configurationDataProvider
-                                                                                                .getDateDimensionId(
-                                                                                                        databaseId,
-                                                                                                        landUsesHistoricDetail
-                                                                                                                .getYear()))
-                                                                        .findAny()
-                                                                        .map(dateDimensionId ->
-                                                                                dateMappedFluxReportingResults
-                                                                                        .get(dateDimensionId) == null ?
-                                                                                        new ArrayList<FluxReportingResult>() :
-                                                                                        new ArrayList<>(
-                                                                                                dateMappedFluxReportingResults
-                                                                                                        .get(dateDimensionId)))
-                                                                        .orElse(new ArrayList<>()))
+                                                               new ArrayList<>(
+                                                                       dateMappedFluxReportingResults.getOrDefault(
+                                                                               dateMappedFluxReportingResults
+                                                                                       .keySet()
+                                                                                       .stream()
+                                                                                       .filter(dateDimensionId ->
+                                                                                               dateDimensionId ==
+                                                                                                       configurationDataProvider
+                                                                                                               .getDateDimensionId(
+                                                                                                                       databaseId,
+                                                                                                                       landUsesHistoricDetail
+                                                                                                                               .getYear()))
+                                                                                       .findAny()
+                                                                                       .orElse(-1L),
+                                                                               new ArrayList<FluxReportingResult>()
+                                                                       )
+                                                               )
+                                                             )
                                                         .build())
 
                                         .collectList()
