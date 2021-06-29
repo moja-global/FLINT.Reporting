@@ -21,7 +21,9 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -153,6 +155,8 @@ public class PartyBasedDataProcessingService {
                                                 log.info("");
                                                 log.info("Database: {}, Party: {}, Location: {}", request.getDatabaseId(), request.getPartyId(), location.getId());
                                                 log.info("------------------------------------------------------------------------");
+                                                log.info("{} Location Flux Reporting Results Present", fluxReportingResultMap.get(location.getId()) == null ? 0 : fluxReportingResultMap.get(location.getId()).size());
+                                                log.info("{} Vegetation Types Histories Present", vegetationHistoryVegetationTypeMap.get(location.getId()) == null ? 0 : vegetationHistoryVegetationTypeMap.get(location.getId()).size());
                                                 log.info("");
                                             })
 
