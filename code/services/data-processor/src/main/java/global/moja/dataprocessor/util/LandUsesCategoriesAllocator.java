@@ -217,9 +217,10 @@ public class LandUsesCategoriesAllocator {
                         "Conversion Period of the previous Land Use{}", lineSeparator, lineSeparator, lineSeparator);
 
                 if(conversionAndRemainingPeriod == null) {
-                    log.warn("Cover Type has changed since initial timestep but Conversion / Remaining Periods are null");
-                    log.info("Different Previous Land Use History = {}", differentPreviousLocationLandUsesHistory);
+                    log.warn("CONVERSION / REMAINING PERIOD NOT FOUND");
+                    log.info("Previous Land Use History = {}", differentPreviousLocationLandUsesHistory);
                     log.info("Current Cover Type History = {}", currentLocationCoverTypesHistory);
+                    log.info("");
 
                     // Todo Confirm with rdl
                     return
@@ -1409,7 +1410,7 @@ public class LandUsesCategoriesAllocator {
         Set<LocationCoverTypesHistory> nextNonCurrentCoverTypesHistories =
                 locationCoverTypesHistories
                         .stream()
-                        
+
                         .filter(c ->
                                 c.getItemNumber() > currentLocationCoverTypesHistory.getItemNumber() &&
                                         !c.getCoverType().getId().equals(

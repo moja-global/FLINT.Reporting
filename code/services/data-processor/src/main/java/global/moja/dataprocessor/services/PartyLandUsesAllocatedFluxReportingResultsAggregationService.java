@@ -49,7 +49,7 @@ public class PartyLandUsesAllocatedFluxReportingResultsAggregationService {
             Long databaseId,
             List<LocationLandUsesAllocatedFluxReportingResultsAggregation> locationLandUsesAllocatedFluxReportingResultsAggregations) {
 
-        log.trace("{} - Entering aggregateFluxReportingResultsAggregations()", logMessagePrefix);
+        log.info("{} - Entering aggregateFluxReportingResultsAggregations()", logMessagePrefix);
         log.debug("{} - Task id = {}", logMessagePrefix, taskId);
         log.debug("{} - Party id = {}", logMessagePrefix, partyId);
         log.debug("{} - Database id = {}", logMessagePrefix, databaseId);
@@ -57,7 +57,7 @@ public class PartyLandUsesAllocatedFluxReportingResultsAggregationService {
                 locationLandUsesAllocatedFluxReportingResultsAggregations);
 
         // Validate the passed-in arguments
-        log.trace("{} - Validating passed-in arguments", logMessagePrefix);
+        log.info("{} - Validating passed-in arguments", logMessagePrefix);
 
         if (taskId == null || partyId == null || databaseId == null ||
                 locationLandUsesAllocatedFluxReportingResultsAggregations == null) {
@@ -76,7 +76,7 @@ public class PartyLandUsesAllocatedFluxReportingResultsAggregationService {
         }
 
         // Aggregate the Location Land Uses Allocated Flux Reporting Results Aggregations
-        log.trace("Aggregating the Location Land Uses Allocated Flux Reporting Results Aggregations");
+        log.info("Aggregating the Location Land Uses Allocated Flux Reporting Results Aggregations");
         final List<QuantityObservation> observations = new ArrayList<>();
 
         // 1. Create a stream from the Location Land Uses Allocated Flux Reporting Results Aggregations
@@ -115,7 +115,9 @@ public class PartyLandUsesAllocatedFluxReportingResultsAggregationService {
                                     // This will turn the current Hectares into Kilohectares and Tonnes in Kilotonnes
                                     if (observation != null) {
                                         if (aggregation.getAmount() != null) {
-                                            observation.setAmount(observation.getAmount()
+                                            observation
+                                                    .setAmount(
+                                                            observation.getAmount()
                                                     .add(aggregation.getAmount().divide(new BigDecimal(1000), 6, RoundingMode.HALF_UP)));
                                         }
                                     } else {
