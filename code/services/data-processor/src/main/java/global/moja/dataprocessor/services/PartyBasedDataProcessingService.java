@@ -21,9 +21,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -168,7 +166,10 @@ public class PartyBasedDataProcessingService {
                                             .doOnError(e -> log.error(e.getMessage(), e))
                                             .onErrorReturn(new LocationVegetationTypesHistories())
                                             .filter(l -> l.getLocationId() != null)
+                                            .filter(l -> l.getHistories() != null)
                                             .filter(l -> !l.getHistories().isEmpty())
+
+                                            .doOnNext(l -> log.info("Processed {} Vegetation Types Histories for the location", l.getHistories().size()))
 
                                             // Convert the Vegetation Types Histories to Cover Types Histories
                                             .flatMap(locationVegetationTypesHistories ->
@@ -178,7 +179,10 @@ public class PartyBasedDataProcessingService {
                                             .doOnError(e -> log.error(e.getMessage(), e))
                                             .onErrorReturn(new LocationCoverTypesHistories())
                                             .filter(l -> l.getLocationId() != null)
+                                            .filter(l -> l.getHistories() != null)
                                             .filter(l -> !l.getHistories().isEmpty())
+
+                                            .doOnNext(l -> log.info("Processed {} Cover Types Histories for the location", l.getHistories().size()))
 
                                             // Convert Cover Types Histories to Land Use Histories
                                             .flatMap(locationCoverTypesHistories ->
@@ -188,7 +192,10 @@ public class PartyBasedDataProcessingService {
                                             .doOnError(e -> log.error(e.getMessage(), e))
                                             .onErrorReturn(new LocationLandUsesHistories())
                                             .filter(l -> l.getLocationId() != null)
+                                            .filter(l -> l.getHistories() != null)
                                             .filter(l -> !l.getHistories().isEmpty())
+
+                                            .doOnNext(l -> log.info("Processed {} Land Uses Histories for the location", l.getHistories().size()))
 
                                             // Append the Location's Flux Reporting Results
                                             .flatMap(locationLandUsesHistories ->
@@ -200,7 +207,10 @@ public class PartyBasedDataProcessingService {
                                             .doOnError(e -> log.error(e.getMessage(), e))
                                             .onErrorReturn(new LocationLandUsesFluxReportingResultsHistories())
                                             .filter(l -> l.getLocationId() != null)
+                                            .filter(l -> l.getHistories() != null)
                                             .filter(l -> !l.getHistories().isEmpty())
+
+                                            .doOnNext(l -> log.info("Processed {} Land Uses Flux Reporting Results Histories for the location", l.getHistories().size()))
 
                                             // Allocate the Location's Flux Reporting Results
                                             .flatMap(locationLandUsesFluxReportingResultsHistories ->
@@ -210,7 +220,10 @@ public class PartyBasedDataProcessingService {
                                             .doOnError(e -> log.error(e.getMessage(), e))
                                             .onErrorReturn(new LocationLandUsesAllocatedFluxReportingResults())
                                             .filter(l -> l.getLocationId() != null)
+                                            .filter(l -> l.getAllocations() != null)
                                             .filter(l -> !l.getAllocations().isEmpty())
+
+                                            .doOnNext(l -> log.info("Processed {} Allocations for the location", l.getAllocations().size()))
 
                                             // Aggregated the allocated the Location's Flux Reporting Results
                                             .flatMap(allocatedFluxReportingResults ->
@@ -220,7 +233,10 @@ public class PartyBasedDataProcessingService {
                                             .doOnError(e -> log.error(e.getMessage(), e))
                                             .onErrorReturn(new LocationLandUsesAllocatedFluxReportingResultsAggregation())
                                             .filter(l -> l.getLocationId() != null)
+                                            .filter(l -> l.getAggregations() != null)
                                             .filter(l -> !l.getAggregations().isEmpty())
+
+                                            .doOnNext(l -> log.info("Processed {} Aggregations for the location", l.getAggregations().size()))
 
 
                                             // Collect the aggregated Flux Reporting Results
@@ -231,6 +247,7 @@ public class PartyBasedDataProcessingService {
                                                 log.info("");
                                                 log.info("Database: {}, Party: {}, Location: All", request.getDatabaseId(), request.getPartyId());
                                                 log.info("------------------------------------------------------------------------");
+                                                log.info("Aggregating {} locations aggregates", locationLandUsesAllocatedFluxReportingResultsAggregations.size());
                                                 log.info("");
                                             })
 
@@ -243,6 +260,8 @@ public class PartyBasedDataProcessingService {
                                                                     request.getDatabaseId(),
                                                                     locationLandUsesAllocatedFluxReportingResultsAggregations))
                                             .doOnError(e -> log.error(e.getMessage(), e))
+                                            .doOnNext(l -> log.info("Aggregations = {}", l))
+
 
                                             // Save the aggregated results
                                             .flatMap(quantityObservations ->

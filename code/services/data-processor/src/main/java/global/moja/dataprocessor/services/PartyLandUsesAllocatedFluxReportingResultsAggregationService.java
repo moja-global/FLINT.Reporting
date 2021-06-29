@@ -49,11 +49,11 @@ public class PartyLandUsesAllocatedFluxReportingResultsAggregationService {
             Long databaseId,
             List<LocationLandUsesAllocatedFluxReportingResultsAggregation> locationLandUsesAllocatedFluxReportingResultsAggregations) {
 
-        log.info("{} - Entering aggregateFluxReportingResultsAggregations()", logMessagePrefix);
+        log.debug("{} - Entering aggregateFluxReportingResultsAggregations()", logMessagePrefix);
         log.debug("{} - Task id = {}", logMessagePrefix, taskId);
         log.debug("{} - Party id = {}", logMessagePrefix, partyId);
         log.debug("{} - Database id = {}", logMessagePrefix, databaseId);
-        log.info("{} - Location Land Uses Allocated Flux Reporting Results Aggregations = {}", logMessagePrefix ,
+        log.debug("{} - Location Land Uses Allocated Flux Reporting Results Aggregations = {}", logMessagePrefix ,
                 locationLandUsesAllocatedFluxReportingResultsAggregations);
 
         // Validate the passed-in arguments
@@ -144,7 +144,7 @@ public class PartyLandUsesAllocatedFluxReportingResultsAggregationService {
 
 
         // Return the aggregated result
-        log.info("Returning aggregated results: {}", observations);
+        log.debug("Returning aggregated results: {}", observations);
         return Mono.just(observations);
 
 
