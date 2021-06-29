@@ -53,7 +53,7 @@ public class PartyLandUsesAllocatedFluxReportingResultsAggregationService {
         log.debug("{} - Task id = {}", logMessagePrefix, taskId);
         log.debug("{} - Party id = {}", logMessagePrefix, partyId);
         log.debug("{} - Database id = {}", logMessagePrefix, databaseId);
-        log.debug("{} - Location Land Uses Allocated Flux Reporting Results Aggregations = {}", logMessagePrefix ,
+        log.info("{} - Location Land Uses Allocated Flux Reporting Results Aggregations = {}", logMessagePrefix ,
                 locationLandUsesAllocatedFluxReportingResultsAggregations);
 
         // Validate the passed-in arguments
