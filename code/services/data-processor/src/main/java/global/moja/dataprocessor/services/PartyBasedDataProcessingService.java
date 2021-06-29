@@ -143,7 +143,7 @@ public class PartyBasedDataProcessingService {
                                             .collectMultimap(VegetationHistoryVegetationType::getVegetationHistoryId, result -> result))
                             .doOnNext(vegetationHistoryVegetationTypeMap::putAll)
 
-                            .then(
+                            .flatMap(map ->
                                     endpointsUtil
 
                                             // Retrieve the Locations associated with the Party
