@@ -77,7 +77,7 @@ public class LocationLandUsesAllocatedFluxReportingResultsAggregationService {
             (LocationLandUsesAllocatedFluxReportingResults locationLandUsesAllocatedFluxReportingResults) {
 
         log.trace("{} - Entering aggregateLocationLandUsesAllocatedFluxReportingResults()", logMessagePrefix);
-        log.debug("Location Land Uses Allocated Flux Reporting Results = {}", locationLandUsesAllocatedFluxReportingResults);
+        log.info("Location Land Uses Allocated Flux Reporting Results = {}", locationLandUsesAllocatedFluxReportingResults);
 
         // Validate the passed-in arguments
         log.trace("{} - Validating passed-in arguments", logMessagePrefix);
