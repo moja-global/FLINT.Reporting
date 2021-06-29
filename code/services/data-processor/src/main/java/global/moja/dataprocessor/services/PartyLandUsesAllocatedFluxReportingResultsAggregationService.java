@@ -57,7 +57,7 @@ public class PartyLandUsesAllocatedFluxReportingResultsAggregationService {
                 locationLandUsesAllocatedFluxReportingResultsAggregations);
 
         // Validate the passed-in arguments
-        log.info("{} - Validating passed-in arguments", logMessagePrefix);
+        log.debug("{} - Validating passed-in arguments", logMessagePrefix);
 
         if (taskId == null || partyId == null || databaseId == null ||
                 locationLandUsesAllocatedFluxReportingResultsAggregations == null) {
@@ -76,7 +76,7 @@ public class PartyLandUsesAllocatedFluxReportingResultsAggregationService {
         }
 
         // Aggregate the Location Land Uses Allocated Flux Reporting Results Aggregations
-        log.info("Aggregating the Location Land Uses Allocated Flux Reporting Results Aggregations");
+        log.debug("Aggregating the Location Land Uses Allocated Flux Reporting Results Aggregations");
         final List<QuantityObservation> observations = new ArrayList<>();
 
         // 1. Create a stream from the Location Land Uses Allocated Flux Reporting Results Aggregations

@@ -66,9 +66,9 @@ public class LocationLandUsesFluxReportingResultsAllocationService {
                 Flux.fromIterable(locationLandUsesFluxReportingResultsHistories.getHistories())
 
                         .doOnNext(locationLandUsesFluxReportingResultsHistory -> {
-                            log.info("");
-                            log.info("Land Use Category = {}", locationLandUsesFluxReportingResultsHistory.getLandUseCategory());
-                            log.info("Flux Reporting Results = {}", locationLandUsesFluxReportingResultsHistory.getFluxReportingResults());
+                            log.debug("");
+                            log.debug("Land Use Category = {}", locationLandUsesFluxReportingResultsHistory.getLandUseCategory());
+                            log.debug("Flux Reporting Results = {}", locationLandUsesFluxReportingResultsHistory.getFluxReportingResults());
                         })
 
                         // 2. Filter out records with a null Land Use Category
@@ -102,8 +102,8 @@ public class LocationLandUsesFluxReportingResultsAllocationService {
                                         .sort()
 
                                         .doOnNext(fluxReportingResult -> {
-                                            log.info("");
-                                            log.info("Flux Reporting Result = {}", fluxReportingResult);
+                                            log.debug("");
+                                            log.debug("Flux Reporting Result = {}", fluxReportingResult);
                                         })
 
                                         // 5.5. Allocate the Flux Reporting Results
@@ -116,7 +116,7 @@ public class LocationLandUsesFluxReportingResultsAllocationService {
                                                                 fluxReportingResult))
 
                                         .doOnNext(allocatedFluxReportingResults -> {
-                                            log.info("Allocated Flux Reporting Results = {}", allocatedFluxReportingResults);
+                                            log.debug("Allocated Flux Reporting Results = {}", allocatedFluxReportingResults);
                                         })
 
                                         // 5.6. Collate the allocated Flux Reporting Results

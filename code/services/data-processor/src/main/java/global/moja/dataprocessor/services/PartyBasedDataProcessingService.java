@@ -21,9 +21,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -251,7 +249,7 @@ public class PartyBasedDataProcessingService {
                                                 log.info("");
                                                 log.info("Database: {}, Party: {}, Location: All", request.getDatabaseId(), request.getPartyId());
                                                 log.info("------------------------------------------------------------------------");
-                                                log.info("Aggregating {} locations aggregates", locationLandUsesAllocatedFluxReportingResultsAggregations.size());
+                                                log.info("Summing up {} locations aggregates", locationLandUsesAllocatedFluxReportingResultsAggregations.size());
                                                 log.info("");
                                             })
 
@@ -264,7 +262,7 @@ public class PartyBasedDataProcessingService {
                                                                     request.getDatabaseId(),
                                                                     locationLandUsesAllocatedFluxReportingResultsAggregations))
                                             .doOnError(e -> log.error(e.getMessage(), e))
-                                            .doOnNext(l -> log.info("Aggregations = {}", l))
+                                            .doOnNext(l -> log.info("Saving {} aggregations", l.size()))
 
 
                                             // Save the aggregated results
@@ -272,9 +270,7 @@ public class PartyBasedDataProcessingService {
                                                     endpointsUtil
                                                             .createQuantityObservations(quantityObservations.toArray(QuantityObservation[]::new))
                                                             .collectList())
-                                            .doOnError(e -> {
-                                                log.error("[Quantity Observations Endpoint] - Aggregated Quantity Observations Saving Failed", e);
-                                            })
+                                            .doOnError(e -> log.error("[Quantity Observations Endpoint] - Aggregated Quantity Observations Saving Failed", e))
 
                                             .map(ids -> SUCCEEDED)
                                             .onErrorReturn(DataProcessingStatus.FAILED))

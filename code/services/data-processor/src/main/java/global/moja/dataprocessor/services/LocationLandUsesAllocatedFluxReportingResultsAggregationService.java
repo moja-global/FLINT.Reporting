@@ -77,7 +77,7 @@ public class LocationLandUsesAllocatedFluxReportingResultsAggregationService {
             (LocationLandUsesAllocatedFluxReportingResults locationLandUsesAllocatedFluxReportingResults) {
 
         log.trace("{} - Entering aggregateLocationLandUsesAllocatedFluxReportingResults()", logMessagePrefix);
-        log.info("Location Land Uses Allocated Flux Reporting Results = {}", locationLandUsesAllocatedFluxReportingResults);
+        log.debug("Location Land Uses Allocated Flux Reporting Results = {}", locationLandUsesAllocatedFluxReportingResults);
 
         // Validate the passed-in arguments
         log.trace("{} - Validating passed-in arguments", logMessagePrefix);
@@ -210,7 +210,7 @@ public class LocationLandUsesAllocatedFluxReportingResultsAggregationService {
                             });
                 });
 
-        log.info("Area aggregations = {}", aggregations);
+        log.debug("Area aggregations = {}", aggregations);
 
         return aggregations;
 
@@ -223,7 +223,7 @@ public class LocationLandUsesAllocatedFluxReportingResultsAggregationService {
                 locationLandUsesAllocatedFluxReportingResults,
                 CARBON_STOCK_CHANGE_POOLS_REPORTING_VARIABLES);
 
-        log.info("Carbon Interchange Pools aggregations = {}", aggregations);
+        log.debug("Carbon Interchange Pools aggregations = {}", aggregations);
 
         return aggregations;
 
@@ -310,7 +310,7 @@ public class LocationLandUsesAllocatedFluxReportingResultsAggregationService {
                 });
 
 
-        log.info("Net CO2 aggregations = {}", aggregations);
+        log.debug("Net CO2 aggregations = {}", aggregations);
 
         return aggregations;
 
@@ -323,7 +323,7 @@ public class LocationLandUsesAllocatedFluxReportingResultsAggregationService {
                 locationLandUsesAllocatedFluxReportingResults,
                 new HashSet<>(Arrays.asList(METHANE_REPORTING_VARIABLE)));
 
-        log.info("Methane aggregations = {}", aggregations);
+        log.debug("Methane aggregations = {}", aggregations);
         return aggregations;
 
     }
@@ -335,7 +335,7 @@ public class LocationLandUsesAllocatedFluxReportingResultsAggregationService {
                 locationLandUsesAllocatedFluxReportingResults,
                 new HashSet<>(Arrays.asList(NITROUS_OXIDE_REPORTING_VARIABLE)));
 
-        log.info("Nitrous Oxide aggregations = {}", aggregations);
+        log.debug("Nitrous Oxide aggregations = {}", aggregations);
         return aggregations;
 
     }
