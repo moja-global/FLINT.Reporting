@@ -12,9 +12,9 @@ import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 
 /**
- * @since 0.0.1
  * @author Kwaje Anthony <tony@miles.co.ke>
  * @version 1.0
+ * @since 0.0.1
  */
 
 @Jacksonized
@@ -31,16 +31,20 @@ public class LocationVegetationTypesHistory implements Comparable<LocationVegeta
     @Override
     public int compareTo(LocationVegetationTypesHistory l) {
 
-        if(this.itemNumber != null && l.getItemNumber() != null){
+        if (this.itemNumber != null && l.getItemNumber() != null) {
             return this.itemNumber.compareTo(l.getItemNumber());
-        } else {
+        } else if (this.year != null && l.getYear() != null) {
+            return this.year.compareTo(l.getYear());
+        }else if (this.vegetationType != null && l.getVegetationType() != null) {
+            return this.vegetationType.compareTo(l.getVegetationType());
+        }  else {
             return 0;
         }
 
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return String.format("Timestep: %d, Year: %d, Vegetation Type: %s",
                 itemNumber, year, vegetationType == null ? null : vegetationType.toString());
     }

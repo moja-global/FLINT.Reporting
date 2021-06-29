@@ -25,15 +25,35 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Builder
-public class LocationLandUsesHistories {
+public class LocationLandUsesHistories implements Comparable<LocationLandUsesHistories> {
 
     private Long locationId;
     private Long partyId;
     private Long tileId;
     private Long vegetationHistoryId;
+    @EqualsAndHashCode.Exclude
     private Long unitCount;
+    @EqualsAndHashCode.Exclude
     private Double unitAreaSum;
+    @EqualsAndHashCode.Exclude
     private List<LocationLandUsesHistory> histories;
+
+    @Override
+    public int compareTo(LocationLandUsesHistories l) {
+
+        if (!this.partyId.equals(l.getPartyId())) {
+            return this.partyId.compareTo(l.getPartyId());
+        } else if (!this.tileId.equals(l.getTileId())) {
+            return this.tileId.compareTo(l.getTileId());
+        } else if (!this.locationId.equals(l.getLocationId())) {
+            return this.locationId.compareTo(l.getLocationId());
+        } else if (!this.vegetationHistoryId.equals(l.getVegetationHistoryId())) {
+            return this.vegetationHistoryId.compareTo(l.getVegetationHistoryId());
+        } else {
+            return 0;
+        }
+
+    }
 
     @Override
     public String toString() {

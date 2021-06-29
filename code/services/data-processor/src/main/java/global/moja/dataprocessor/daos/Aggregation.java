@@ -28,7 +28,6 @@ public class Aggregation implements Comparable<Aggregation>{
     private Long landUseCategoryId;
     private Long reportingVariableId;
     private Integer year;
-
     @EqualsAndHashCode.Exclude
     private BigDecimal amount;
 

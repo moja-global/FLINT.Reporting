@@ -32,8 +32,14 @@ public class LocationLandUsesHistory implements Comparable<LocationLandUsesHisto
     @Override
     public int compareTo(LocationLandUsesHistory l) {
 
-        if(this.itemNumber != null && l.getItemNumber() != null){
+        if (this.itemNumber != null && l.getItemNumber() != null) {
             return this.itemNumber.compareTo(l.getItemNumber());
+        } else if (this.year != null && l.getYear() != null) {
+            return this.year.compareTo(l.getYear());
+        } else if (this.landUseCategory != null && l.getLandUseCategory() != null) {
+            return this.landUseCategory.compareTo(l.getLandUseCategory());
+        } else if (this.confirmed != null && l.getConfirmed() != null) {
+            return this.confirmed.compareTo(l.getConfirmed());
         } else {
             return 0;
         }

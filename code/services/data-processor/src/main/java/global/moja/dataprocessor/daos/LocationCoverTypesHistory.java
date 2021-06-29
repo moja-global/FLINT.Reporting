@@ -12,9 +12,9 @@ import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 
 /**
- * @since 0.0.1
  * @author Kwaje Anthony <tony@miles.co.ke>
  * @version 1.0
+ * @since 0.0.1
  */
 
 @Jacksonized
@@ -31,8 +31,12 @@ public class LocationCoverTypesHistory implements Comparable<LocationCoverTypesH
     @Override
     public int compareTo(LocationCoverTypesHistory l) {
 
-        if(this.itemNumber != null && l.getItemNumber() != null){
+        if (this.itemNumber != null && l.getItemNumber() != null) {
             return this.itemNumber.compareTo(l.getItemNumber());
+        } else if (this.year != null && l.getYear() != null) {
+            return this.year.compareTo(l.getYear());
+        } else if (this.coverType != null && l.getCoverType() != null) {
+            return this.coverType.compareTo(l.getCoverType());
         } else {
             return 0;
         }
@@ -40,7 +44,7 @@ public class LocationCoverTypesHistory implements Comparable<LocationCoverTypesH
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return String.format("Timestep: %d, Year: %d, Cover Type: %s",
                 itemNumber, year, coverType == null ? null : coverType.toString());
     }

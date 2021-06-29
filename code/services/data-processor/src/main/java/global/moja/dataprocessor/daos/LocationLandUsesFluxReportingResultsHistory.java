@@ -15,9 +15,9 @@ import lombok.extern.jackson.Jacksonized;
 import java.util.List;
 
 /**
- * @since 0.0.1
  * @author Kwaje Anthony <tony@miles.co.ke>
  * @version 1.0
+ * @since 0.0.1
  */
 @Jacksonized
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
@@ -30,13 +30,20 @@ public class LocationLandUsesFluxReportingResultsHistory implements Comparable<L
     private Integer year;
     private LandUseCategory landUseCategory;
     private Boolean confirmed;
+    @EqualsAndHashCode.Exclude
     private List<FluxReportingResult> fluxReportingResults;
 
     @Override
     public int compareTo(LocationLandUsesFluxReportingResultsHistory l) {
 
-        if(this.itemNumber != null && l.getItemNumber() != null){
+        if (this.itemNumber != null && l.getItemNumber() != null) {
             return this.itemNumber.compareTo(l.getItemNumber());
+        } else if (this.year != null && l.getYear() != null) {
+            return this.year.compareTo(l.getYear());
+        } else if (this.landUseCategory != null && l.getLandUseCategory() != null) {
+            return this.landUseCategory.compareTo(l.getLandUseCategory());
+        } else if (this.confirmed != null && l.getConfirmed() != null) {
+            return this.confirmed.compareTo(l.getConfirmed());
         } else {
             return 0;
         }
@@ -44,7 +51,7 @@ public class LocationLandUsesFluxReportingResultsHistory implements Comparable<L
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return String.format("Timestep: %d, Year: %d, Land Use: %s, Confirmed: %s, Fluxes: %s",
                 itemNumber, year, landUseCategory == null ? null : landUseCategory.toString(), confirmed, fluxReportingResults.toString());
     }

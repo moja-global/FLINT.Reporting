@@ -18,11 +18,24 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 @Builder
-public class ReportingVariableEmissionType{
+public class ReportingVariableEmissionType implements Comparable<ReportingVariableEmissionType>{
 
     private Long reportingVariableId;
     private Long emissionTypeId;
     private Integer version;
+
+    @Override
+    public int compareTo(ReportingVariableEmissionType r) {
+
+        if(this.reportingVariableId != null && r.getReportingVariableId() != null){
+            return this.reportingVariableId.compareTo(r.getReportingVariableId());
+        } else if(this.emissionTypeId != null && r.getEmissionTypeId()!= null){
+            return this.emissionTypeId.compareTo(r.getEmissionTypeId());
+        } else {
+            return 0;
+        }
+
+    }
 
 
     @Override
