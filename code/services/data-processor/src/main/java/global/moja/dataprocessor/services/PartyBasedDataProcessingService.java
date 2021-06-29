@@ -21,6 +21,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -242,8 +243,6 @@ public class PartyBasedDataProcessingService {
                                                                     request.getDatabaseId(),
                                                                     locationLandUsesAllocatedFluxReportingResultsAggregations))
                                             .doOnError(e -> log.error(e.getMessage(), e))
-                                            .onErrorReturn(new ArrayList<>())
-                                            .filter(quantityObservations -> !quantityObservations.isEmpty())
 
                                             // Save the aggregated results
                                             .flatMap(quantityObservations ->
@@ -252,7 +251,6 @@ public class PartyBasedDataProcessingService {
                                                             .collectList())
                                             .doOnError(e -> {
                                                 log.error("[Quantity Observations Endpoint] - Aggregated Quantity Observations Saving Failed", e);
-                                                log.error(e.getMessage(), e);
                                             })
 
                                             .map(ids -> SUCCEEDED)

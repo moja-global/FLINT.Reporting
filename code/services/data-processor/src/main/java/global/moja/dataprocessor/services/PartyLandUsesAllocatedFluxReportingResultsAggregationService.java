@@ -144,7 +144,7 @@ public class PartyLandUsesAllocatedFluxReportingResultsAggregationService {
 
 
         // Return the aggregated result
-        log.info("Returning the aggregated result");
+        log.info("Returning aggregated results: {}", observations);
         return Mono.just(observations);
 
 
