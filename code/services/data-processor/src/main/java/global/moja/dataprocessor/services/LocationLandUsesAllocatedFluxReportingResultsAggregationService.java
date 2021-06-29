@@ -210,6 +210,8 @@ public class LocationLandUsesAllocatedFluxReportingResultsAggregationService {
                             });
                 });
 
+        log.info("Area aggregations = {}", aggregations);
+
         return aggregations;
 
     }
@@ -217,9 +219,13 @@ public class LocationLandUsesAllocatedFluxReportingResultsAggregationService {
     private List<Aggregation> aggregateCarbonInterchangePoolsAllocations(
             LocationLandUsesAllocatedFluxReportingResults locationLandUsesAllocatedFluxReportingResults) {
 
-        return aggregateVariables(
+        List<Aggregation>  aggregations = aggregateVariables(
                 locationLandUsesAllocatedFluxReportingResults,
                 CARBON_STOCK_CHANGE_POOLS_REPORTING_VARIABLES);
+
+        log.info("Carbon Interchange Pools aggregations = {}", aggregations);
+
+        return aggregations;
 
     }
 
@@ -303,6 +309,9 @@ public class LocationLandUsesAllocatedFluxReportingResultsAggregationService {
                             });
                 });
 
+
+        log.info("Net CO2 aggregations = {}", aggregations);
+
         return aggregations;
 
     }
@@ -310,18 +319,24 @@ public class LocationLandUsesAllocatedFluxReportingResultsAggregationService {
     private List<Aggregation> aggregateMethaneAllocations(
             LocationLandUsesAllocatedFluxReportingResults locationLandUsesAllocatedFluxReportingResults) {
 
-        return aggregateVariables(
+        List<Aggregation> aggregations = aggregateVariables(
                 locationLandUsesAllocatedFluxReportingResults,
                 new HashSet<>(Arrays.asList(METHANE_REPORTING_VARIABLE)));
+
+        log.info("Methane aggregations = {}", aggregations);
+        return aggregations;
 
     }
 
     private List<Aggregation> aggregateNitrousOxideAllocations(
             LocationLandUsesAllocatedFluxReportingResults locationLandUsesAllocatedFluxReportingResults) {
 
-        return aggregateVariables(
+        List<Aggregation> aggregations = aggregateVariables(
                 locationLandUsesAllocatedFluxReportingResults,
                 new HashSet<>(Arrays.asList(NITROUS_OXIDE_REPORTING_VARIABLE)));
+
+        log.info("Nitrous Oxide aggregations = {}", aggregations);
+        return aggregations;
 
     }
 
