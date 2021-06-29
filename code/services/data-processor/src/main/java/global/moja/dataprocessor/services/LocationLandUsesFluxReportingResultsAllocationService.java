@@ -65,6 +65,13 @@ public class LocationLandUsesFluxReportingResultsAllocationService {
                 // 1. Create a Flux from the Land Uses Flux Reporting Results Histories' histories
                 Flux.fromIterable(locationLandUsesFluxReportingResultsHistories.getHistories())
 
+                        .doOnNext(locationLandUsesFluxReportingResultsHistory -> {
+                            log.info("");
+                            log.info("Land Use Category = {}", locationLandUsesFluxReportingResultsHistory.getLandUseCategory());
+                            log.info("Flux Reporting Results = {}", locationLandUsesFluxReportingResultsHistory.getFluxReportingResults());
+                            log.info("");
+                        })
+
                         // 2. Filter out records with a null Land Use Category
                         .filter(locationLandUsesFluxReportingResultsHistory ->
                                 locationLandUsesFluxReportingResultsHistory.getLandUseCategory() != null &&
