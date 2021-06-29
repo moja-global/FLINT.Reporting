@@ -156,7 +156,7 @@ public class PartyBasedDataProcessingService {
                                                 log.info("Database: {}, Party: {}, Location: {}", request.getDatabaseId(), request.getPartyId(), location.getId());
                                                 log.info("------------------------------------------------------------------------");
                                                 log.info("{} Location Flux Reporting Results Present", fluxReportingResultMap.get(location.getId()) == null ? 0 : fluxReportingResultMap.get(location.getId()).size());
-                                                log.info("{} Vegetation Types Histories Present", vegetationHistoryVegetationTypeMap.get(location.getId()) == null ? 0 : vegetationHistoryVegetationTypeMap.get(location.getId()).size());
+                                                log.info("{} Vegetation Types Histories Present", vegetationHistoryVegetationTypeMap.get(location.getVegetationHistoryId()) == null ? 0 : vegetationHistoryVegetationTypeMap.get(location.getVegetationHistoryId()).size());
                                                 log.info("");
                                             })
 
