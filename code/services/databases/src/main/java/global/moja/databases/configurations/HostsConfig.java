@@ -21,13 +21,4 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 public class HostsConfig {
 
-    @Value("${task.manager.service.host}/api/v1/task_manager")
-    private String taskManagerServiceHost;
-
-    @Value("${quantity.observations.service.host}/api/v1/quantity_observations")
-    private String quantityObservationsServiceHost;
-
-    @Value("${tasks.service.host}/api/v1/tasks")
-    private String tasksServiceHost;
-
 }

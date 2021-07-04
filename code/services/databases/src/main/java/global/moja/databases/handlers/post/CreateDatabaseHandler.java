@@ -62,7 +62,6 @@ public class CreateDatabaseHandler {
         return
                 repository
                         .insertDatabase(database)
-                        .doOnNext(id -> endpointsUtil.integrateDatabase(id).subscribe())
                         .flatMap(id -> repository.selectDatabase(id));
 
     }

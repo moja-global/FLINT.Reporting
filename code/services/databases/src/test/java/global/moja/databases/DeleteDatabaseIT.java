@@ -92,9 +92,6 @@ public class DeleteDatabaseIT {
     @Test
     public void Given_RecordExists_When_DeleteWithIdParameter_Then_TheDatabaseRecordWithThatIdWillBeDeletedAndACountOfOneAffectedRecordReturned() {
 
-        Mockito.doReturn(Mono.just(1)).when(endpointsUtil).deleteQuantityObservations(any(Long.class));
-        Mockito.doReturn(Mono.just(1)).when(endpointsUtil).deleteTasks(any(Long.class));
-
         webTestClient
                 .delete()
                 .uri("/api/v1/databases/ids/1")

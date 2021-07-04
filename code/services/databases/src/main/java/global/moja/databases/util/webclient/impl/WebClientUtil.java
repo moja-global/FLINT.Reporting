@@ -20,29 +20,4 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Component
 public class WebClientUtil {
 
-    @Autowired
-    QuantityObservationsWebClientUtil quantityObservationsWebClientUtil;
-
-    @Autowired
-    TasksWebClientUtil tasksWebClientUtil;
-
-    @Autowired
-    TaskManagerWebClientUtil taskManagerWebClientUtil;
-
-
-    // Quantity Observations
-    public WebClient getQuantityObservationsWebClient() {
-        return quantityObservationsWebClientUtil.getQuantityObservationsWebClient();
-    }
-
-    // Tasks
-    public WebClient getTasksWebClient() {
-        return tasksWebClientUtil.getTasksWebClient();
-    }
-
-    // Tasks Manager
-    public WebClient getTaskManagerWebClient() {
-        return taskManagerWebClientUtil.getTaskManagerWebClient();
-    }
-
 }

@@ -110,9 +110,6 @@ public class CreateDatabaseIT {
     @Test
     public void Given_DatabaseDetails_When_Post_Then_DatabaseRecordWillBeCreatedAndReturned() {
 
-        Mockito.doReturn(Mono.empty().then()).when(endpointsUtil).integrateDatabase(any(Long.class));
-
-
         webTestClient
                 .post()
                 .uri("/api/v1/databases")

@@ -27,9 +27,6 @@ public class DeleteDatabaseQuery {
     @Autowired
     DatabaseConfig databaseConfig;
 
-    @Autowired
-    EndpointsUtil endpointsUtil;
-
     /**
      * Deletes a Database record from the database
      *
@@ -42,15 +39,11 @@ public class DeleteDatabaseQuery {
 
         String query = "DELETE FROM database WHERE id = ?";
 
-        return endpointsUtil
-                .deleteQuantityObservations(id)
-                .flatMap(count -> endpointsUtil.deleteTasks(id))
-                .flatMap(count ->
-                        Mono.from(databaseConfig
-                                .getDatabase()
-                                .update(query)
-                                .parameters(id)
-                                .counts()));
+        return Mono.from(databaseConfig
+                .getDatabase()
+                .update(query)
+                .parameters(id)
+                .counts());
     }
 
 }

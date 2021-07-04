@@ -20,26 +20,4 @@ import reactor.core.publisher.Mono;
 @Component
 public class EndpointsUtil {
 
-    @Autowired
-    QuantityObservationsEndpointUtil quantityObservationsEndpointUtil;
-
-    @Autowired
-    TasksEndpointUtil tasksEndpointUtil;
-
-    @Autowired
-    TaskManagerEndpointUtil taskManagerEndpointUtil;
-
-    public Mono<Integer> deleteQuantityObservations(Long databaseId) {
-        return quantityObservationsEndpointUtil.deleteQuantityObservations(databaseId);
-    }
-
-    public Mono<Integer> deleteTasks(Long databaseId) {
-        return tasksEndpointUtil.deleteTasks(databaseId);
-    }
-
-    public Mono<Void> integrateDatabase(Long databaseId) {
-        return taskManagerEndpointUtil.integrateDatabase(databaseId);
-    }
-
-
 }
