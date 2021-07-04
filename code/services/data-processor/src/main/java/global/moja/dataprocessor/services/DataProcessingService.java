@@ -8,6 +8,7 @@
  */
 package global.moja.dataprocessor.services;
 
+import global.moja.dataprocessor.configurations.ConfigurationDataProvider;
 import global.moja.dataprocessor.configurations.RabbitConfig;
 import global.moja.dataprocessor.daos.*;
 import global.moja.dataprocessor.models.FluxReportingResult;
@@ -35,7 +36,7 @@ import static global.moja.dataprocessor.util.DataProcessingStatus.SUCCEEDED;
  */
 @Service
 @Slf4j
-public class PartyBasedDataProcessingService {
+public class DataProcessingService {
 
 
     @Autowired
@@ -65,6 +66,9 @@ public class PartyBasedDataProcessingService {
     @Autowired
     EndpointsUtil endpointsUtil;
 
+    @Autowired
+    ConfigurationDataProvider configurationDataProvider;
+
 
     @RabbitListener(queues = RabbitConfig.RAW_DATA_PROCESSING_QUEUE)
     public void processData(final DataProcessingRequest request) {
@@ -77,6 +81,12 @@ public class PartyBasedDataProcessingService {
         log.info("{} - Entering  Data Processing Service", prefix);
         log.info("========================================================================");
         log.info("");
+
+        // Check if the target database has been configured.
+        // If not, configure it first
+        if(!configurationDataProvider.databaseIsConfigured(request.getDatabaseId())) {
+            configurationDataProvider.configureDatabase(request.getDatabaseId());
+        }
 
 
         // Validate the passed-in arguments

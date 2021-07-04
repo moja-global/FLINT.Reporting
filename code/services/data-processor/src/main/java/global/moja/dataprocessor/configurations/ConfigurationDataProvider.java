@@ -9,6 +9,7 @@
 package global.moja.dataprocessor.configurations;
 
 import global.moja.dataprocessor.models.*;
+import global.moja.dataprocessor.models.Date;
 import global.moja.dataprocessor.util.LandUseChangeAction;
 import global.moja.dataprocessor.util.endpoints.EndpointsUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +18,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -32,8 +30,11 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ConfigurationDataProvider {
 
+    private final EndpointsUtil endpointsUtil;
+
     private final List<ConversionAndRemainingPeriod> conversionAndRemainingPeriods;
     private final List<CoverType> coverTypes;
+    private final List<Database> databases;
     private final List<EmissionType> emissionTypes;
     private final List<LandUseCategory> landUseCategories;
     private final List<LandUseFluxType> landUsesFluxTypes;
@@ -45,6 +46,8 @@ public class ConfigurationDataProvider {
 
     @Autowired
     public ConfigurationDataProvider(EndpointsUtil endpointsUtil) {
+
+        this.endpointsUtil = endpointsUtil;
 
         this.conversionAndRemainingPeriods =
                 endpointsUtil
@@ -89,7 +92,7 @@ public class ConfigurationDataProvider {
                         .collect(Collectors.toList())
                         .block();
 
-        List<Database> databases = endpointsUtil
+        this.databases = endpointsUtil
                 .retrieveDatabases()
                 .collect(Collectors.toList())
                 .block();
@@ -121,6 +124,7 @@ public class ConfigurationDataProvider {
             } catch (Exception e) {
                 log.error("{} Database Dates retrieval failed", database.getLabel());
             }
+
 
         });
 
@@ -187,6 +191,58 @@ public class ConfigurationDataProvider {
         log.debug("Cover Type = {}", c);
 
         return c;
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="Databases">
+
+    public boolean databaseIsConfigured(Long databaseId) {
+
+        log.trace("Entering databaseIsConfigured()");
+        log.debug("Database Id = {}", databaseId);
+
+        return
+                databases
+                        .stream()
+                        .anyMatch(database -> database.getId().equals(databaseId));
+    }
+
+    public void configureDatabase(Long databaseId) {
+
+        log.trace("Entering configureDatabase()");
+        log.debug("Database Id = {}", databaseId);
+
+        Database database =
+                endpointsUtil
+                        .retrieveDatabase(databaseId)
+                        .block();
+
+        // Vegetation Types
+        try {
+            databasesVegetationTypes.put(
+                    database.getId(),
+                    endpointsUtil
+                            .retrieveVegetationTypes(database.getId())
+                            .collect(Collectors.toList())
+                            .block()
+            );
+        } catch (Exception e) {
+            log.error("{} Database Vegetation Types retrieval failed", database.getLabel());
+        }
+
+        // Dates
+        try {
+            databasesDates.put(
+                    database.getId(),
+                    endpointsUtil
+                            .retrieveDates(database.getId())
+                            .collect(Collectors.toList())
+                            .block()
+            );
+        } catch (Exception e) {
+            log.error("{} Database Dates retrieval failed", database.getLabel());
+        }
     }
 
     //</editor-fold>
@@ -325,7 +381,7 @@ public class ConfigurationDataProvider {
         log.debug("Flux Type Id = {}", fluxTypeId);
 
         List<LandUseFluxTypeToReportingTable> l =
-        getLandUsesFluxTypesToReportingTables(getLandUseFluxType(landUseCategoryId, fluxTypeId));
+                getLandUsesFluxTypesToReportingTables(getLandUseFluxType(landUseCategoryId, fluxTypeId));
 
         log.debug("Land Use Flux Types To Reporting Tables = {}", l);
 
@@ -343,7 +399,7 @@ public class ConfigurationDataProvider {
         if (landUseFluxType == null || landUseFluxType.getId() == null) {
             l = new ArrayList<>();
         } else {
-           l =
+            l =
                     landUsesFluxTypesToReportingTables
                             .stream()
                             .filter(landUseFluxTypeToReportingTable ->

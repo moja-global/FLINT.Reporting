@@ -49,7 +49,6 @@ echo "Downloading test_db_1"
 echo "------------------------------------------------------------------------"
 echo
 
-
 wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1MdDNFCIzsH6z1Iwdtq2P1Z9EVbXlmmmb' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1MdDNFCIzsH6z1Iwdtq2P1Z9EVbXlmmmb" -O test_db_1.backup && rm -rf /tmp/cookies.txt
 
 
@@ -58,7 +57,6 @@ echo
 echo "Downloading test_db_2"
 echo "------------------------------------------------------------------------"
 echo
-
 
 wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1E5mLj8oIMYmkxQyGJmoSMHwpq0i7RXLO' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1E5mLj8oIMYmkxQyGJmoSMHwpq0i7RXLO" -O test_db_2.backup && rm -rf /tmp/cookies.txt
 
@@ -69,7 +67,7 @@ echo "Downloading test_db_3"
 echo "------------------------------------------------------------------------"
 echo
 
-wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1Iaa_SpeCpmGT9VYWuvXqEEKREqwthDTd' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1Iaa_SpeCpmGT9VYWuvXqEEKREqwthDTd" -O test_db_3.backup && rm -rf /tmp/cookies.txt
+wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1Gup-iA-bXOiC4WPhvWuZKPsKOUIt6_09' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1Gup-iA-bXOiC4WPhvWuZKPsKOUIt6_09" -O test_db_3.backup && rm -rf /tmp/cookies.txt
 
 
 

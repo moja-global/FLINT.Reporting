@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * @author Kwaje Anthony <tony@miles.co.ke>
@@ -27,6 +28,23 @@ public class DatabasesEndpointsUtil {
 
     @Autowired
     WebClientUtil webClientUtil;
+
+    public Mono<Database> retrieveDatabase(Long databaseId) {
+
+        log.trace("Entering retrieveDatabase()");
+
+        return webClientUtil
+                .getDatabasesWebClient()
+                .get()
+                .uri(uriBuilder ->
+                        uriBuilder
+                                .path("/ids/{param1}")
+                                .build(Long.toString(databaseId)))
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(Database.class);
+
+    }
 
     public Flux<Database> retrieveDatabases() {
 

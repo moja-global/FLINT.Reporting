@@ -12,6 +12,7 @@ import global.moja.dataprocessor.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * @author Kwaje Anthony <tony@miles.co.ke>
@@ -81,10 +82,16 @@ public class EndpointsUtil {
                 .retrieveCoverTypes();
     }
 
+    public Mono<Database> retrieveDatabase(Long databaseId) {
+        return databasesEndpointsUtil
+                .retrieveDatabase(databaseId);
+    }
+
     public Flux<Database> retrieveDatabases() {
         return databasesEndpointsUtil
                 .retrieveDatabases();
     }
+
 
     public Flux<Date> retrieveDates(Long databaseId) {
         return datesEndpointsUtil
