@@ -10,12 +10,9 @@ package global.moja.databases.repository;
 import global.moja.databases.daos.QueryParameters;
 import global.moja.databases.models.Database;
 import global.moja.databases.repository.updation.UpdateDatabaseQuery;
-import global.moja.databases.repository.updation.UpdateDatabasesQuery;
 import global.moja.databases.repository.deletion.DeleteDatabaseQuery;
-import global.moja.databases.repository.deletion.DeleteDatabasesQuery;
 import global.moja.databases.repository.selection.SelectDatabasesQuery;
 import global.moja.databases.repository.insertion.InsertDatabaseQuery;
-import global.moja.databases.repository.insertion.InsertDatabasesQuery;
 import global.moja.databases.repository.selection.SelectDatabaseQuery;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +32,7 @@ public class DatabasesRepository {
 	
 	@Autowired
 	InsertDatabaseQuery insertDatabaseQuery;
-	
-	@Autowired
-	InsertDatabasesQuery insertDatabasesQuery;
-	
+
 	@Autowired
 	SelectDatabaseQuery selectDatabaseQuery;
 	
@@ -49,21 +43,10 @@ public class DatabasesRepository {
 	UpdateDatabaseQuery updateDatabaseQuery;
 	
 	@Autowired
-	UpdateDatabasesQuery updateDatabasesQuery;
-	
-	@Autowired
 	DeleteDatabaseQuery deleteDatabaseQuery;
-	
-	@Autowired
-    DeleteDatabasesQuery deleteDatabasesQuery;
-
 
 	public Mono<Long> insertDatabase(Database database) {
 		return insertDatabaseQuery.insertDatabase(database);
-	}
-	
-	public Flux<Long> insertDatabases(Database[] databases) {
-		return insertDatabasesQuery.insertDatabases(databases);
 	}
 
 	public Mono<Database> selectDatabase(Long id) {
@@ -77,18 +60,9 @@ public class DatabasesRepository {
 	public Mono<Integer> updateDatabase(Database database) {
 		return updateDatabaseQuery.updateDatabase(database);
 	}
-	
-	public Flux<Integer> updateDatabases(Database[] databases) {
-		return updateDatabasesQuery.updateDatabases(databases);
-	}	
-	
+
 	public Mono<Integer> deleteDatabaseById(Long id) {
 		return deleteDatabaseQuery.deleteDatabase(id);
 	}
-	
-	public Mono<Integer> deleteDatabases(QueryParameters parameters) {
-		return deleteDatabasesQuery.deleteDatabases(parameters);
-	}
-
 
 }

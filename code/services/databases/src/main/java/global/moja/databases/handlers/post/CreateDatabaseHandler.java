@@ -10,6 +10,7 @@ package global.moja.databases.handlers.post;
 import global.moja.databases.exceptions.ServerException;
 import global.moja.databases.models.Database;
 import global.moja.databases.repository.DatabasesRepository;
+import global.moja.databases.util.endpoints.EndpointsUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,9 @@ public class CreateDatabaseHandler {
 
     @Autowired
     DatabasesRepository repository;
+
+    @Autowired
+    EndpointsUtil endpointsUtil;
 
     /**
      * Creates a Database record
@@ -58,6 +62,7 @@ public class CreateDatabaseHandler {
         return
                 repository
                         .insertDatabase(database)
+                        .doOnNext(id -> endpointsUtil.integrateDatabase(id).subscribe())
                         .flatMap(id -> repository.selectDatabase(id));
 
     }

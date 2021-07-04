@@ -9,9 +9,14 @@ package global.moja.databases;
 
 import global.moja.databases.models.Database;
 import global.moja.databases.util.builders.DatabaseBuilder;
+import global.moja.databases.util.endpoints.EndpointsUtil;
 import org.assertj.core.api.Assertions;
 import org.junit.AfterClass;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +29,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.Arrays;
+
+import static org.mockito.ArgumentMatchers.any;
 
 /**
  * @author Kwaje Anthony <tony@miles.co.ke>
@@ -36,6 +46,10 @@ import reactor.core.publisher.Mono;
 @AutoConfigureWebTestClient
 @ContextConfiguration(initializers = CreateDatabaseIT.Initializer.class)
 public class CreateDatabaseIT {
+
+    @Spy
+    @Autowired
+    EndpointsUtil endpointsUtil;
 
     @Autowired
     WebTestClient webTestClient;
@@ -88,8 +102,16 @@ public class CreateDatabaseIT {
         postgreSQLContainer.stop();
     }
 
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+    }
+
     @Test
     public void Given_DatabaseDetails_When_Post_Then_DatabaseRecordWillBeCreatedAndReturned() {
+
+        Mockito.doReturn(Mono.empty().then()).when(endpointsUtil).integrateDatabase(any(Long.class));
+
 
         webTestClient
                 .post()

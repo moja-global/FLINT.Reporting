@@ -65,34 +65,6 @@ public class RoutesConfig {
                         .build()
 
                 .and(route()
-                        .POST("/api/v1/databases/all",
-                                accept(APPLICATION_JSON).and(contentType(APPLICATION_JSON)),
-                                handler::createDatabases,
-                                ops -> ops
-                                        .tag("Create")
-                                        .operationId("createDatabases")
-                                        .beanClass(DatabasesHandler.class)
-                                        .beanMethod("createDatabases")
-                                        .description("Inserts several Databases Records into the database")
-                                        .requestBody(
-                                                requestBodyBuilder()
-                                                        .content(contentBuilder()
-                                                                .array(arraySchemaBuilder()
-                                                                        .schema(schemaBuilder()
-                                                                                .implementation(Database.class)))))
-
-                                        .response(
-                                                responseBuilder()
-                                                        .responseCode("201").description("The Databases Records were successfully created")
-                                                        .implementationArray(Database.class))
-
-                                        .response(
-                                                responseBuilder()
-                                                        .responseCode("500").description("An unexpected condition was encountered while creating the Databases Records")
-                                                        .implementation(String.class)))
-                        .build()
-
-                .and(route()
                         .GET("/api/v1/databases/ids/{id}",
                                 accept(APPLICATION_JSON),
                                 handler::retrieveDatabase,
@@ -249,32 +221,6 @@ public class RoutesConfig {
                         .build())
 
                 .and(route()
-                        .PUT("/api/v1/databases/all",
-                                accept(APPLICATION_JSON).and(contentType(APPLICATION_JSON)),
-                                handler::updateDatabases,
-                                ops -> ops
-                                        .tag("Update")
-                                        .operationId("updateDatabase")
-                                        .beanClass(DatabasesHandler.class)
-                                        .beanMethod("updateDatabases")
-                                        .description("Updates several Databases Records in the database")
-                                        .requestBody(
-                                                requestBodyBuilder()
-                                                        .content(contentBuilder()
-                                                                .array(arraySchemaBuilder()
-                                                                        .schema(schemaBuilder()
-                                                                                .implementation(Database.class)))))
-                                        .response(
-                                                responseBuilder()
-                                                        .responseCode("200").description("The Databases Records were successfully updated")
-                                                        .implementation(Database.class))
-                                        .response(
-                                                responseBuilder()
-                                                        .responseCode("500").description("An unexpected condition was encountered while updating the Databases Records")
-                                                        .implementation(String.class)))
-                        .build())
-
-                .and(route()
                         .DELETE("/api/v1/databases/ids/{id}",
                                 accept(APPLICATION_JSON),
                                 handler::deleteDatabase,
@@ -298,63 +244,7 @@ public class RoutesConfig {
                                                 responseBuilder()
                                                         .responseCode("500").description("An unexpected condition was encountered while deleting the Database Record")
                                                         .implementation(String.class)))
-                        .build())
-
-                .and(route()
-                        .DELETE("/api/v1/databases/all",
-                                accept(APPLICATION_JSON),
-                                handler::deleteDatabases,
-                                ops -> ops
-                                        .tag("Delete")
-                                        .operationId("deleteDatabases")
-                                        .beanClass(DatabasesHandler.class)
-                                        .beanMethod("deleteDatabases")
-                                        .description("Deleted all or some of the Databases Records from the database depending on whether or not query parameters were included in the query string")
-                                        .parameter(
-                                                parameterBuilder()
-                                                        .name("ids").in(ParameterIn.QUERY)
-                                                        .description("The list of unique identifiers of the Databases Records to filter the deleted values by")
-                                                        .implementation(Long.class))
-                                        .parameter(
-                                                parameterBuilder()
-                                                        .name("label").in(ParameterIn.QUERY)
-                                                        .description("The Database label to filter the deleted values by")
-                                                        .implementation(Long.class))
-                                        .parameter(
-                                                parameterBuilder()
-                                                        .name("startYear").in(ParameterIn.QUERY)
-                                                        .description("The start year to filter the deleted values by")
-                                                        .implementation(Long.class))
-                                        .parameter(
-                                                parameterBuilder()
-                                                        .name("endYear").in(ParameterIn.QUERY)
-                                                        .description("The end year to filter the deleted values by")
-                                                        .implementation(Long.class))
-                                        .parameter(
-                                                parameterBuilder()
-                                                        .name("processed").in(ParameterIn.QUERY)
-                                                        .description("The Processed Status (True or False)  to filter the deleted values by ")
-                                                        .implementation(Boolean.class))
-                                        .parameter(
-                                                parameterBuilder()
-                                                        .name("published").in(ParameterIn.QUERY)
-                                                        .description("The Published Status (True or False)  to filter the deleted values by ")
-                                                        .implementation(Boolean.class))
-                                        .parameter(
-                                                parameterBuilder()
-                                                        .name("archived").in(ParameterIn.QUERY)
-                                                        .description("The Archived Status (True or False)  to filter the deleted values by ")
-                                                        .implementation(Boolean.class))
-                                        .response(
-                                                responseBuilder()
-                                                        .responseCode("200").description("The Databases Records were successfully deleted")
-                                                        .implementation(Integer.class)
-                                                        .description("The number of Databases Records successfully deleted"))
-                                        .response(
-                                                responseBuilder()
-                                                        .responseCode("500").description("An unexpected condition was encountered while deleting the Databases Records")
-                                                        .implementation(String.class)))
-                        .build()));                        
+                        .build());
     }
 
 }

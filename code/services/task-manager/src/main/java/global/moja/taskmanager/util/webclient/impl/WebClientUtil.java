@@ -57,7 +57,7 @@ WebClientUtil {
         return quantityObservationsWebClientUtil.getQuantityObservationsWebClient();
     }
 
-    // Taks
+    // Tasks
     public WebClient getTasksWebClient() {
         return tasksWebClientUtil.getTasksWebClient();
     }

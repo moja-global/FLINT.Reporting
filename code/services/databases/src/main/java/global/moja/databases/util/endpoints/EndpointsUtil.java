@@ -8,7 +8,9 @@
 
 package global.moja.databases.util.endpoints;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 /**
  * @since 0.0.1
@@ -17,6 +19,27 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class EndpointsUtil {
+
+    @Autowired
+    QuantityObservationsEndpointUtil quantityObservationsEndpointUtil;
+
+    @Autowired
+    TasksEndpointUtil tasksEndpointUtil;
+
+    @Autowired
+    TaskManagerEndpointUtil taskManagerEndpointUtil;
+
+    public Mono<Integer> deleteQuantityObservations(Long databaseId) {
+        return quantityObservationsEndpointUtil.deleteQuantityObservations(databaseId);
+    }
+
+    public Mono<Integer> deleteTasks(Long databaseId) {
+        return tasksEndpointUtil.deleteTasks(databaseId);
+    }
+
+    public Mono<Void> integrateDatabase(Long databaseId) {
+        return taskManagerEndpointUtil.integrateDatabase(databaseId);
+    }
 
 
 }

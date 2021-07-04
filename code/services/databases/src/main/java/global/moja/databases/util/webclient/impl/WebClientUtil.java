@@ -8,7 +8,9 @@
 package global.moja.databases.util.webclient.impl;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
 
 /**
  * @since 0.0.1
@@ -18,5 +20,29 @@ import org.springframework.stereotype.Component;
 @Component
 public class WebClientUtil {
 
+    @Autowired
+    QuantityObservationsWebClientUtil quantityObservationsWebClientUtil;
+
+    @Autowired
+    TasksWebClientUtil tasksWebClientUtil;
+
+    @Autowired
+    TaskManagerWebClientUtil taskManagerWebClientUtil;
+
+
+    // Quantity Observations
+    public WebClient getQuantityObservationsWebClient() {
+        return quantityObservationsWebClientUtil.getQuantityObservationsWebClient();
+    }
+
+    // Tasks
+    public WebClient getTasksWebClient() {
+        return tasksWebClientUtil.getTasksWebClient();
+    }
+
+    // Tasks Manager
+    public WebClient getTaskManagerWebClient() {
+        return taskManagerWebClientUtil.getTaskManagerWebClient();
+    }
 
 }

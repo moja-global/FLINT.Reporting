@@ -11,6 +11,8 @@ CREATE TABLE database (
     processed BOOLEAN NOT NULL,
     published BOOLEAN NOT NULL,
     archived BOOLEAN NOT NULL,
+    default_accountability_type_id INTEGER NULL,
+    default_party_type_id INTEGER NULL,
     version INTEGER NOT NULL);
 
 

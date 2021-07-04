@@ -7,8 +7,13 @@
  */
 package global.moja.databases;
 
+import global.moja.databases.util.endpoints.EndpointsUtil;
 import org.junit.AfterClass;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +25,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import reactor.core.publisher.Mono;
+
+import static org.mockito.ArgumentMatchers.any;
 
 /**
  * @since 1.0
@@ -34,6 +42,10 @@ public class DeleteDatabaseIT {
 
     @Autowired
     WebTestClient webTestClient;
+
+    @Spy
+    @Autowired
+    EndpointsUtil endpointsUtil;
 
 
     static final PostgreSQLContainer postgreSQLContainer;
@@ -70,8 +82,18 @@ public class DeleteDatabaseIT {
         postgreSQLContainer.stop();
     }
 
+
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+
     @Test
     public void Given_RecordExists_When_DeleteWithIdParameter_Then_TheDatabaseRecordWithThatIdWillBeDeletedAndACountOfOneAffectedRecordReturned() {
+
+        Mockito.doReturn(Mono.just(1)).when(endpointsUtil).deleteQuantityObservations(any(Long.class));
+        Mockito.doReturn(Mono.just(1)).when(endpointsUtil).deleteTasks(any(Long.class));
 
         webTestClient
                 .delete()

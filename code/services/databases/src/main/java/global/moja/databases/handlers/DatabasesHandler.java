@@ -8,15 +8,12 @@
 package global.moja.databases.handlers;
 
 import global.moja.databases.handlers.delete.DeleteDatabaseHandler;
-import global.moja.databases.handlers.delete.DeleteDatabasesHandler;
 import global.moja.databases.handlers.get.RetrieveDatabaseHandler;
 import global.moja.databases.handlers.get.RetrieveDatabaseTemporalScaleHandler;
 import global.moja.databases.handlers.get.RetrieveDatabaseValidationResultsHandler;
 import global.moja.databases.handlers.get.RetrieveDatabasesHandler;
 import global.moja.databases.handlers.post.CreateDatabaseHandler;
 import global.moja.databases.handlers.put.UpdateDatabaseHandler;
-import global.moja.databases.handlers.put.UpdateDatabasesHandler;
-import global.moja.databases.handlers.post.CreateDatabasesHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,10 +33,6 @@ public class DatabasesHandler {
 	@Autowired
     CreateDatabaseHandler createDatabaseHandler;
 
-	@Autowired
-	CreateDatabasesHandler createDatabasesHandler;
-
-	
 	// GET HANDLERS
 	@Autowired
     RetrieveDatabaseHandler retrieveDatabaseByIdHandler;
@@ -57,28 +50,15 @@ public class DatabasesHandler {
 	// PUT HANDLERS
 	@Autowired
     UpdateDatabaseHandler updateDatabaseHandler;
-	
-	@Autowired
-    UpdateDatabasesHandler updateDatabasesHandler;
 
-	
 	// DELETE HANDLERS
 	@Autowired
     DeleteDatabaseHandler deleteDatabaseByIdHandler;
-	
-	@Autowired
-    DeleteDatabasesHandler deleteDatabasesHandler;
-
 	
 	// <editor-fold desc="POST">
 	public Mono<ServerResponse> createDatabase(ServerRequest request) {
 		return this.createDatabaseHandler.createDatabase(request);
 	}
-	
-	public Mono<ServerResponse> createDatabases(ServerRequest request) {
-		return createDatabasesHandler.createDatabases(request);
-	}
-
 	// </editor-fold>
 
 	// <editor-fold desc="GET">
@@ -105,10 +85,6 @@ public class DatabasesHandler {
 	public Mono<ServerResponse> updateDatabase(ServerRequest request) {
 		return this.updateDatabaseHandler.updateDatabase(request);
 	}
-	
-	public Mono<ServerResponse> updateDatabases(ServerRequest request) {
-		return this.updateDatabasesHandler.updateDatabases(request);
-	}	
 
 	// </editor-fold>	
 	
@@ -116,10 +92,6 @@ public class DatabasesHandler {
 	public Mono<ServerResponse> deleteDatabase(ServerRequest request) {
 		return this.deleteDatabaseByIdHandler.deleteDatabase(request);
 	}
-	
-	public Mono<ServerResponse> deleteDatabases(ServerRequest request) {
-		return this.deleteDatabasesHandler.deleteDatabases(request);
-	}	
 
 	// </editor-fold>	
 
