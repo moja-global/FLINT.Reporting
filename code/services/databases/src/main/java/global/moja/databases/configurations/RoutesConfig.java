@@ -172,6 +172,57 @@ public class RoutesConfig {
                                                         .implementation(String.class)))
                         .build())
 
+                        .and(route()
+                                .GET("/api/v1/databases/validity",
+                                        accept(APPLICATION_JSON),
+                                        handler::retrieveDatabaseValidationResults,
+                                        ops -> ops
+                                                .tag("Retrieve")
+                                                .operationId("retrieveDatabasePreProcessingValidationResults")
+                                                .beanClass(DatabasesHandler.class)
+                                                .beanMethod("retrieveDatabaseValidationResults")
+                                                .description("Retrieves a FLINT Output Database's Pre-Processing Validation Results given its url")
+                                                .requestBody(
+                                                        requestBodyBuilder()
+                                                                .content(contentBuilder()
+                                                                        .schema(schemaBuilder()
+                                                                                .implementation(String.class))))
+                                                .response(
+                                                        responseBuilder()
+                                                                .responseCode("200").description("The Database's Validation Results were successfully retrieved")
+                                                                .implementation(Database.class))
+                                                .response(
+                                                        responseBuilder()
+                                                                .responseCode("500").description("An unexpected condition was encountered while retrieving a Database's Validation Result")
+                                                                .implementation(String.class)))
+                                .build())
+
+                        .and(route()
+                                .GET("/api/v1/databases/temporal_scale",
+                                        accept(APPLICATION_JSON),
+                                        handler::retrieveDatabaseTemporalScale,
+                                        ops -> ops
+                                                .tag("Retrieve")
+                                                .operationId("retrieveDatabaseTemporalScale")
+                                                .beanClass(DatabasesHandler.class)
+                                                .beanMethod("retrieveDatabaseTemporalScale")
+                                                .description("Retrieves a FLINT Output Database's Temporal Scale (in terms of years) given its url. " +
+                                                        "A value of -1 is returned where a year cannot be successfully determined")
+                                                .requestBody(
+                                                        requestBodyBuilder()
+                                                                .content(contentBuilder()
+                                                                        .schema(schemaBuilder()
+                                                                                .implementation(String.class))))
+                                                .response(
+                                                        responseBuilder()
+                                                                .responseCode("200").description("The Database's Temporal Scale was successfully retrieved")
+                                                                .implementation(Database.class))
+                                                .response(
+                                                        responseBuilder()
+                                                                .responseCode("500").description("An unexpected condition was encountered while retrieving a Database's Temporal Scale'")
+                                                                .implementation(String.class)))
+                                .build())
+
                 .and(route()
                         .PUT("/api/v1/databases",
                                 accept(APPLICATION_JSON).and(contentType(APPLICATION_JSON)),

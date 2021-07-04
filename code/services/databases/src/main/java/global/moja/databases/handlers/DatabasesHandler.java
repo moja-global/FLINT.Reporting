@@ -10,6 +10,8 @@ package global.moja.databases.handlers;
 import global.moja.databases.handlers.delete.DeleteDatabaseHandler;
 import global.moja.databases.handlers.delete.DeleteDatabasesHandler;
 import global.moja.databases.handlers.get.RetrieveDatabaseHandler;
+import global.moja.databases.handlers.get.RetrieveDatabaseTemporalScaleHandler;
+import global.moja.databases.handlers.get.RetrieveDatabaseValidationResultsHandler;
 import global.moja.databases.handlers.get.RetrieveDatabasesHandler;
 import global.moja.databases.handlers.post.CreateDatabaseHandler;
 import global.moja.databases.handlers.put.UpdateDatabaseHandler;
@@ -44,6 +46,12 @@ public class DatabasesHandler {
 	
 	@Autowired
     RetrieveDatabasesHandler retrieveDatabasesHandler;
+
+	@Autowired
+	RetrieveDatabaseValidationResultsHandler retrieveDatabaseValidationResultsHandler;
+
+	@Autowired
+	RetrieveDatabaseTemporalScaleHandler retrieveDatabaseTemporalScaleHandler;
 
 	
 	// PUT HANDLERS
@@ -82,7 +90,14 @@ public class DatabasesHandler {
 	public Mono<ServerResponse> retrieveDatabases(ServerRequest request) {
 		return this.retrieveDatabasesHandler.retrieveDatabases(request);
 	}
-	
+
+	public Mono<ServerResponse> retrieveDatabaseValidationResults(ServerRequest request) {
+		return this.retrieveDatabaseValidationResultsHandler.retrieveDatabaseValidationResults(request);
+	}
+
+	public Mono<ServerResponse> retrieveDatabaseTemporalScale(ServerRequest request) {
+		return this.retrieveDatabaseTemporalScaleHandler.retrieveDatabaseTemporalScale(request);
+	}
 
 	// </editor-fold>	
 
