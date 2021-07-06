@@ -35,7 +35,7 @@ export class LandUseCategoriesRecordsTabulationService implements OnDestroy {
 
     // The user defined search or sort criteria.
     // Determines which & how many Land Use Categories records should be displayed
-    private _state: LandUseCategoryState = { reportingFrameworkId: null, parentLandUseCategoryId: 0, page: 1, pageSize: 4, searchTerm: '', sortColumn: '', sortDirection: '' };
+    private _state: LandUseCategoryState = { reportingFrameworkId: 1, parentLandUseCategoryId: 0, page: 1, pageSize: 4, searchTerm: '', sortColumn: '', sortDirection: '' };
 
     // A common gathering point for all the component's subscriptions.
     // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
@@ -180,6 +180,8 @@ export class LandUseCategoriesRecordsTabulationService implements OnDestroy {
         this.log.debug(`${LOG_PREFIX} Setting Reporting Framework id to ${JSON.stringify(reportingFrameworkId)}`);
         this._set({ reportingFrameworkId });
     }
+
+ 
 
     /**
      * Utility method for all the class setters.

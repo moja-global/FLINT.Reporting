@@ -1,0 +1,53 @@
+<div class="d-flex justify-content-center flex-column flex-md-row mb-1">
+    <div class="p-2 flex-fill">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="databaseSelect">Database</label>
+            </div>
+            <select class="custom-select" id="databaseSelect" [(ngModel)] = "selectedDatabaseId" (change)="onDatabaseChange($event)"> 
+                <option disabled>Select Database</option>
+                <option *ngFor="let database of databases$ | async" [value]="database.id">{{database.label}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="p-2 flex-fill">
+
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">Location</label>
+            </div>  
+            
+            <input type="text" class="form-control" placeholder="Location" aria-label="Select Location" aria-describedby="button-addon4" value="Kenya" disabled>
+            
+            <!--
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" id="button-addon2">Change</button>
+            </div>
+            -->
+          </div>
+    </div>
+
+    <div class="p-2">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="startYearSelect">Start Year</label>
+            </div>
+            <select class="custom-select" id="startYearSelect" [(ngModel)] = "selectedStartYear" (change)="onStartYearChange($event)"> 
+                <option disabled>Select Start Year</option>
+                <option *ngFor="let year of years$ | async" [value]="year">{{year}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="p-2">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="endYearSelect">End Year</label>
+            </div>
+            <select class="custom-select" id="endYearSelect" [(ngModel)] = "selectedEndYear" (change)="onEndYearChange($event)"> 
+                <option disabled>Select End Year</option>
+                <option *ngFor="let year of years$ | async" [value]="year">{{year}}</option>
+            </select>
+        </div>
+    </div>    
+</div>

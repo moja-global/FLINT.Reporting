@@ -18,6 +18,13 @@ const routes: Routes = [
             import('modules/charts/charts-routing.module').then(m => m.ChartsRoutingModule),
     }, 
     {
+        path: 'databases',
+        loadChildren: () =>
+            import('modules/databases/databases-routing.module').then(
+                m => m.DatabasesRoutingModule
+            ),
+    },    
+    {
         path: 'dashboard',
         loadChildren: () =>
             import('modules/dashboard/dashboard-routing.module').then(

@@ -21,6 +21,7 @@ export class ButtonComponent {
   @Output() yes: EventEmitter<void> = new EventEmitter<void>();
   @Output() no: EventEmitter<void> = new EventEmitter<void>();
   @Output() open: EventEmitter<any> = new EventEmitter<any>();
+  @Output() download: EventEmitter<void> = new EventEmitter<void>();
 
   // Instantiate and avail the action variable to the parent component for customization.
   // Supported actions are add, update and delete
@@ -39,7 +40,7 @@ export class ButtonComponent {
 
   // Instantiate and avail the name variable to the parent component for customization.
   // The name is the unique identifier of the entity
-  @Input() name!: string;  
+  @Input() name!: string;
 
 
   // Instantiate and avail the guarded variable to the parent component for customization.
@@ -55,13 +56,13 @@ export class ButtonComponent {
 
   // Instantiate and avail the tooltip variable to the parent component for customization.
   // The tooltip, if provided, will be used in place of the getTooltip()'s concatenated result
-  @Input() tooltip!: string;  
+  @Input() tooltip!: string;
 
   // Instantiate an array containing offline css classes
-  offlineClasses: string[] = ["btn", "btn-sm", "btn-secondary", "mr-1"];
+  offlineClasses: string[] = ["btn", "btn-sm", "btn-secondary", "btn-tool", "mr-1"];
 
   // Instantiate an array containing offline css classes
-  onlineClasses: string[] = ["btn", "btn-sm", "btn-primary", "mr-1"];
+  onlineClasses: string[] = ["btn", "btn-sm", "btn-primary", "btn-tool", "mr-1"];
 
   // Keep tabs on whether or not we are online
   online: boolean = false;
@@ -143,7 +144,12 @@ export class ButtonComponent {
   }
 
   onOpen(): void {
-    this.open.emit({ id: this.id , name: this.name });
+    this.open.emit({ id: this.id, name: this.name });
+  }
+
+
+  onDownload(): void {
+    this.download.emit();
   }
 
 
@@ -161,7 +167,7 @@ export class ButtonComponent {
 
   getTooltip(): string {
 
-    if(this.tooltip != undefined) {
+    if (this.tooltip != undefined) {
 
     }
 
@@ -176,7 +182,7 @@ export class ButtonComponent {
 
       case "add":
 
-        prefix = this.tooltip != undefined? this.tooltip : `Add ${this.entity}`;
+        prefix = this.tooltip != undefined ? this.tooltip : `Add ${this.entity}`;
 
         if (this.disabled) {
           return `${prefix} ${disabledSuffix1}`;
@@ -188,7 +194,7 @@ export class ButtonComponent {
 
       case "update":
 
-        prefix = this.tooltip != undefined? this.tooltip : `Update ${this.entity}`;
+        prefix = this.tooltip != undefined ? this.tooltip : `Update ${this.entity}`;
 
         if (this.disabled) {
           return `${prefix} ${disabledSuffix1}`;
@@ -200,7 +206,7 @@ export class ButtonComponent {
 
       case "delete":
 
-        prefix = this.tooltip != undefined? this.tooltip : `Delete ${this.entity}`;
+        prefix = this.tooltip != undefined ? this.tooltip : `Delete ${this.entity}`;
 
         if (this.disabled) {
           return `${prefix} ${disabledSuffix1}`;
@@ -212,7 +218,7 @@ export class ButtonComponent {
 
       case "save":
 
-        prefix = this.tooltip != undefined? this.tooltip : `Save`;
+        prefix = this.tooltip != undefined ? this.tooltip : `Save`;
 
         if (this.disabled) {
           return `${prefix} ${disabledSuffix1}`;
@@ -224,7 +230,7 @@ export class ButtonComponent {
 
       case "yes":
 
-        prefix = this.tooltip != undefined? this.tooltip : `Yes`;
+        prefix = this.tooltip != undefined ? this.tooltip : `Yes`;
 
         if (this.disabled) {
           return `${prefix} ${disabledSuffix1}`;
@@ -236,7 +242,7 @@ export class ButtonComponent {
 
       case "no":
 
-        prefix = this.tooltip != undefined? this.tooltip : `No`;
+        prefix = this.tooltip != undefined ? this.tooltip : `No`;
 
         if (this.disabled) {
           return `${prefix} ${disabledSuffix1}`;
@@ -246,17 +252,30 @@ export class ButtonComponent {
             `${prefix}`;
         }
 
-        case "open":
+      case "open":
 
-          prefix = this.tooltip != undefined? this.tooltip : `More details`;
+        prefix = this.tooltip != undefined ? this.tooltip : `More details`;
 
-          if (this.disabled) {
-            return `${prefix} ${disabledSuffix1}`;
-          } else {
-            return this.guarded ?
-              this.online ? `${prefix}` : `${prefix} ${disabledSuffix2}` :
-              `${prefix}`;
-          }        
+        if (this.disabled) {
+          return `${prefix} ${disabledSuffix1}`;
+        } else {
+          return this.guarded ?
+            this.online ? `${prefix}` : `${prefix} ${disabledSuffix2}` :
+            `${prefix}`;
+        }
+
+      case "download":
+
+        prefix = this.tooltip != undefined ? this.tooltip : `Download`;
+
+        if (this.disabled) {
+          return `${prefix} ${disabledSuffix1}`;
+        } else {
+          return this.guarded ?
+            this.online ? `${prefix}` : `${prefix} ${disabledSuffix2}` :
+            `${prefix}`;
+        }
+
 
       default:
         return "";

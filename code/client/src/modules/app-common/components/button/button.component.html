@@ -74,3 +74,14 @@
     (click)="onOpen()">
     <fa-icon [icon]='["fas", "external-link-alt"]'></fa-icon>
 </button>
+
+<button *ngIf="action === 'download'" 
+    type="button" 
+    [ngClass]="classes$ | async" 
+    data-toggle="tooltip"
+    data-placement="top" 
+    [title]="tooltip$ | async" 
+    [disabled]="disabled$ | async" 
+    (click)="onDownload()">
+    <fa-icon [icon]='["fas", "download"]'></fa-icon>
+</button>

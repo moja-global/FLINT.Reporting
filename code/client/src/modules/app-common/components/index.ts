@@ -12,6 +12,7 @@ import { PaginationComponent } from './pagination/pagination.component';
 import { SearchComponent } from './search/search.component';
 import { SortIconComponent } from './sort-icon/sort-icon.component';
 import { TableComponent } from './table/table.component';
+import { FilterComponent } from './filter/filter.component';
 
 
 export const components = [
@@ -20,6 +21,7 @@ export const components = [
     CardInfoComponent,
     CardViewDetailsComponent,
     CountdownOverlayComponent,
+    FilterComponent,
     LoadingAnimationComponent,
     ModalComponent,
     OverlayComponent,
@@ -43,3 +45,4 @@ export * from './pagination/pagination.component';
 export * from './search/search.component';
 export * from './sort-icon/sort-icon.component';
 export * from './table/table.component';
+export * from './filter/filter.component';

@@ -8,6 +8,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AppCommonModule } from '@common/app-common.module';
 import { NavigationModule } from '@modules/navigation/navigation.module';
 import { ChartsModule } from '@modules/charts/charts.module';
+import { QuantityObservationsModule } from '@modules/quantity-observations/quantity-observations.module';
 
 /* Components */
 import * as dashboardComponents from './components';
@@ -21,6 +22,7 @@ import * as dashboardGuards from './guards';
 /* Services */
 import * as dashboardServices from './services';
 
+
 @NgModule({
     imports: [
         CommonModule,
@@ -30,6 +32,7 @@ import * as dashboardServices from './services';
         AppCommonModule,
         NavigationModule,
         ChartsModule,
+        QuantityObservationsModule
     ],
     providers: [...dashboardServices.services, ...dashboardGuards.guards],
     declarations: [...dashboardContainers.containers, ...dashboardComponents.components],

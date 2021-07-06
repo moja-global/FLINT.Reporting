@@ -1,0 +1,41 @@
+form
+  .row
+    .col
+      .d-flex.justify-content-between.p-2
+        sb-search((searched)='onSearch($event)')
+        sb-loading-animation
+  .row
+    .col
+      sb-table
+        ng-container(header)
+          tr
+            th.text-center.align-middle(scope='col')
+              span #
+            th.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
+              span Name
+              sb-sort-icon(*ngif='sortedColumn === "name"', [direction]='sortedDirection')
+            th.align-middle(scope='col')
+              span Description
+            th.align-middle(scope='col')
+              span.d-flex.flex-row-reverse
+                | Actions
+        ng-container(footer='')
+          tr
+            td.align-middle(scope='col', colspan='4')
+              span.d-flex.flex-row-reverse
+                sb-button(action='add', entity='QuantityObservation', (add)='onAddQuantityObservation()')
+        ng-container(body')
+          tr(*ngfor='let quantityObservation of quantityObservationsTableService.quantityObservations$ | async')
+            td.text-center.align-middle
+              | {{quantityObservation.pos}}
+            td.align-middle
+              ngb-highlight([result]='quantityObservation.name', [term]='quantityObservationsTableService.searchTerm')
+            td.align-middle
+              ngb-highlight([result]='quantityObservation.description', [term]='quantityObservationsTableService.searchTerm')
+            td.align-middle
+              span.d-flex.flex-row-reverse
+                sb-button(action='delete', entity='QuantityObservation', id='{{quantityObservation.id}}', (delete)='onDeleteQuantityObservation($event)')
+                sb-button(action='update', entity='QuantityObservation', id='{{quantityObservation.id}}', (update)='onUpdateQuantityObservation($event)')
+  .row
+    .col
+      sb-pagination((pagechanged)='onPageChange($event)', (pagesizechanged)='onPageSizeChange($event)')

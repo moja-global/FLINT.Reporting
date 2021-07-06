@@ -6,6 +6,10 @@ export const sideNavSections: SideNavSection[] = [
         items: ['core'],
     },
     {
+        text: 'MANAGEMENT',
+        items: ['databases'],
+    },     
+    {
         text: 'CONFIGURATIONS',
         items: ['coverTypes', 'emissionTypes', 'fluxTypes', 'pools', 'reportingFrameworks','units'],
     },    
@@ -22,6 +26,11 @@ export const sideNavItems: SideNavItems = {
         text: 'Cover Types',
         link: '/cover_types',
     },
+    databases: {
+        icon: 'database',
+        text: 'Databases',
+        link: '/databases',
+    },    
     emissionTypes: {
         icon: 'cog',
         text: 'Emission Types',

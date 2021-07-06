@@ -1,0 +1,25 @@
+@import "styles/variables.scss";
+
+table {
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+    table th, table td {
+        overflow: hidden;
+    }
+th.category {
+    width: 150px !important;
+  }
+
+  th.variable {
+    width: 300px !important;
+  }  
+
+  th.year {
+    width: 100px !important;
+  }    
+
+  tr.remaining td {
+      background-color: #eee;
+  }

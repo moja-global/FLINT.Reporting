@@ -1,0 +1,9 @@
+form
+  .row
+    .col
+      .input-group.mb-3
+        .input-group-prepend
+          span#search-icon.input-group-text
+            fa-icon.mr-1([icon]='["fas", "search"]')
+        // See: https://github.com/angular/angular/issues/22606#issuecomment-371167109
+        input.form-control(type='text', aria-label='Search', aria-describedby='search-icon', [placeholder]='placeholder', [value]='searchTerm', (keyup)='searchTerm=$event.target.value', name='search', #input='')

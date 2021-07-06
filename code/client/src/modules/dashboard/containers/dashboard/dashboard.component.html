@@ -1,12 +1,3 @@
-<!--
-<sb-layout-dashboard>
-    <sb-dashboard-header title="Dashboard" [hideBreadcrumbs]="false"></sb-dashboard-header>
-    <sb-dashboard-cards></sb-dashboard-cards>
-    <sb-dashboard-charts></sb-dashboard-charts>
-    <sb-dashboard-tables></sb-dashboard-tables>
-</sb-layout-dashboard>
--->
-
 <sb-layout-main>
     
     <ng-container header>
@@ -14,20 +5,108 @@
     </ng-container>
       
     <ng-container body>
-        <sb-card>
+        <sb-card *ngIf="!hasProcessedDatabase">
             <div class="card-header">
-                Under Construction
+                Reports
             </div>
             <div class="card-body">
                 <div class="text-center">
-                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="assets/img/under_construction.svg" alt="...">
+                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="assets/img/no_result.svg" alt="...">
                 </div>
                 <p class="text-center">
-                    This is a placeholder for the Reporting Business Intelligence content. <br />
-                    This page is currently under development and will be updated soon.
+                    We could not find any processed FLINT Output Database to display. <br />
+                    Try reloading this page if you are sure a new database has been integrated. 
+                    
                 </p>
+
             </div>
         </sb-card>
+        
+        <sb-card *ngIf="hasProcessedDatabase">
+            <div class="card-body">
+                <sb-filter (databaseFilterChanged)="onDatabaseFilterChange($event)"></sb-filter>
+            </div>
+        </sb-card>        
+        
+        <sb-card *ngIf="hasProcessedDatabase">
+            <div class="card-header">
+                Graphs
+            </div>
+            <div class="card-body">
+                <ul ngbNav #nav="ngbNav" class="nav-tabs">
+                    <li ngbNavItem>
+                        <a ngbNavLink>Total GHG Emissions</a>
+                        <ng-template ngbNavContent>
+                            <app-chart chartId="1"></app-chart>
+                        </ng-template>
+                    </li>                    
+                    <li ngbNavItem>
+                        <a ngbNavLink>Total GHG Emissions - By Carbon Pools</a>
+                        <ng-template ngbNavContent>
+                            <app-chart chartId="2"></app-chart>
+                        </ng-template>
+                    </li>
+                    <li ngbNavItem>
+                        <a ngbNavLink>Total GHG Emissions - By Gases</a>
+                        <ng-template ngbNavContent>
+                            <app-chart chartId="3"></app-chart>
+                        </ng-template>
+                    </li>
+                </ul>
+
+                <div [ngbNavOutlet]="nav" class="pt-3"></div>              
+                
+            </div>
+        </sb-card>  
+
+        <sb-card *ngIf="hasProcessedDatabase">
+            <div class="card-header">
+                Tables
+            </div>
+            <div class="card-body">
+                <ul ngbNav #tables="ngbNav" class="nav-tabs">
+                    <li ngbNavItem>
+                        <a ngbNavLink>UNFCCC - Forest land</a>
+                        <ng-template ngbNavContent>
+                            <!--<sb-forestland-crf-table></sb-forestland-crf-table>-->
+                            <sb-crf-table sector=1></sb-crf-table>
+                        </ng-template>
+                    </li>                    
+                    <li ngbNavItem>
+                        <a ngbNavLink>UNFCCC - Cropland</a>
+                        <ng-template ngbNavContent>
+                            <sb-crf-table sector=2></sb-crf-table>
+                        </ng-template>
+                    </li>
+                    <li ngbNavItem>
+                        <a ngbNavLink>UNFCCC - Grassland</a>
+                        <ng-template ngbNavContent>
+                            <sb-crf-table sector=3></sb-crf-table>
+                        </ng-template>
+                    </li>
+                    <li ngbNavItem>
+                        <a ngbNavLink>UNFCCC - Wetland</a>
+                        <ng-template ngbNavContent>
+                            <sb-crf-table sector=4></sb-crf-table>
+                        </ng-template>
+                    </li>                    
+                </ul>
+
+                <div [ngbNavOutlet]="tables" class="pt-3"></div> 
+                
+                <div class="d-flex flex-row-reverse">
+                    <div class="p-2">
+
+                        <sb-button action="download" entity="Database" (download)="downloadCRFTable()"></sb-button> 
+
+                    </div>
+                  </div>
+                
+            </div>
+        </sb-card>          
+
+        
+
     </ng-container>
 
 </sb-layout-main>

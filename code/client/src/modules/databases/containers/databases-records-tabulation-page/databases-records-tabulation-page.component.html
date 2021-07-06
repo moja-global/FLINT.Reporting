@@ -1,0 +1,19 @@
+<sb-layout-main>
+    
+    <ng-container header>
+        <sb-header title="Databases" subtitle="The main classes of units of measure"></sb-header>
+    </ng-container>
+      
+    
+    <ng-container body>
+        <sb-card>
+            <div class="card-header">
+                Databases List
+            </div>
+            <div class="card-body">
+                <sb-databases-records-tabulation [pageSize]="6"></sb-databases-records-tabulation>
+            </div>
+        </sb-card>
+    </ng-container>
+
+</sb-layout-main>

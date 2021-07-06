@@ -10,7 +10,8 @@ import { take, toArray } from 'rxjs/operators';
 
 import { LandUseCategoriesRecordsTabulationService } from './land-use-categories-records-tabulation.service';
 
-describe('LandUseCategoriesRecordsTabulationService', () => {
+fdescribe('LandUseCategoriesRecordsTabulationService', () => {
+
 
     let landUseCategoriesDataService: LandUseCategoriesDataService;
     let landUseCategoriesTableDataService: LandUseCategoriesRecordsTabulationService;
@@ -31,15 +32,17 @@ describe('LandUseCategoriesRecordsTabulationService', () => {
 
 
     describe('landUseCategories$', () => {
-
-        it('should return transformed LandUseCategories', () => {
+ 
+        it('should return transformed Land Use Categories', () => {
 
             // Define a couple of mock LandUseCategories
             const mockLandUseCategories = [
-                new LandUseCategory({ id: 1, name: "LandUseCategory 1", description: "LandUseCategory 1 Description", version: 1 }),
-                new LandUseCategory({ id: 2, name: "LandUseCategory 2", description: "LandUseCategory 2 Description", version: 1 }),
-                new LandUseCategory({ id: 3, name: "LandUseCategory 3", description: "LandUseCategory 3 Description", version: 1 })
+                new LandUseCategory({ id: 1, reportingFrameworkId: 1, parentLandUseCategoryId: null, coverTypeId: 1, name: "Forest land", version: 1 }),
+                new LandUseCategory({ id: 9, reportingFrameworkId: 1, parentLandUseCategoryId: null, coverTypeId: 2, name: "Cropland", version: 1 }),
+                new LandUseCategory({ id: 17, reportingFrameworkId: 1, parentLandUseCategoryId: null, coverTypeId: 3, name: "Grassland", version: 1 })
             ];
+
+            landUseCategoriesTableDataService.reportingFrameworkId = 1;
 
 
             landUseCategoriesTableDataService.landUseCategories$
@@ -49,9 +52,10 @@ describe('LandUseCategoriesRecordsTabulationService', () => {
                 )
                 .subscribe(response => {
 
-                    expect(response.length).toEqual(2)
+                    expect(response.length).toEqual(3)
                     expect(response[0]).toEqual([]);
                     expect(response[1]).toEqual(mockLandUseCategories);
+
                 });
 
             // Mock the get all request
@@ -62,37 +66,55 @@ describe('LandUseCategoriesRecordsTabulationService', () => {
         });
 
 
-        it('should filter Land Use Categories records by landUseCategory category id', () => {
+        it('should filter Land Use Categories records by Reporting Framework Id', () => {
 
-            // Define a couple of mock LandUseCategories
+            // Define a couple of mock Land Use Categories
 
             const unfilteredMockLandUseCategories = [
-                new LandUseCategory({ id: 1, reportingFrameworkId: 1, name: "LandUseCategory 1", description: "LandUseCategory 1 Description", version: 1 }),
-                new LandUseCategory({ id: 2, reportingFrameworkId: 1, name: "LandUseCategory 2", description: "LandUseCategory 2 Description", version: 1 }),
-                new LandUseCategory({ id: 3, reportingFrameworkId: 2, name: "LandUseCategory 3", description: "LandUseCategory 3 Description", version: 1 })
+                new LandUseCategory({ id: 1, reportingFrameworkId: 1, parentLandUseCategoryId: null, coverTypeId: 1, name: "Forest land", version: 1 }),
+                new LandUseCategory({ id: 2, reportingFrameworkId: 1, parentLandUseCategoryId: null, coverTypeId: 1, name: "Peat land", version: 1 })
             ]; 
             
             const filteredMockLandUseCategories = [
-                new LandUseCategory({ id: 1, reportingFrameworkId: 1, name: "LandUseCategory 1", description: "LandUseCategory 1 Description", version: 1 }),
-                new LandUseCategory({ id: 2, reportingFrameworkId: 1, name: "LandUseCategory 2", description: "LandUseCategory 2 Description", version: 1 })
+                new LandUseCategory({ id: 2, reportingFrameworkId: 1, parentLandUseCategoryId: null, coverTypeId: 1, name: "Peat land", version: 1 })
             ];             
 
 
-            expect(landUseCategoriesTableDataService.filterByReportingFramework(unfilteredMockLandUseCategories, 1)).toEqual(filteredMockLandUseCategories);            
-        });          
+            expect(landUseCategoriesTableDataService.filterByReportingFramework(unfilteredMockLandUseCategories, 2)).toEqual(filteredMockLandUseCategories);            
+        });  
+        
+        
+        it('should filter Land Use Categories records by the Parent Land Use Category Id', () => {
+
+            // Define a couple of mock Land Use Categories
+
+            const unfilteredMockLandUseCategories = [
+                new LandUseCategory({ id: 1, reportingFrameworkId: 1, parentLandUseCategoryId: null, coverTypeId: 1, name: "Forest land", version: 1 }),
+                new LandUseCategory({ id: 2, reportingFrameworkId: 1, parentLandUseCategoryId: 1, coverTypeId: 2, name: "Forest land Remaining Forest land", version: 1 }),
+                new LandUseCategory({ id: 3, reportingFrameworkId: 1, parentLandUseCategoryId: 1, coverTypeId: 3, name: "Land Converted To Forest land", version: 1 })
+            ]; 
+            
+            const filteredMockLandUseCategories = [
+                new LandUseCategory({ id: 2, reportingFrameworkId: 1, parentLandUseCategoryId: 1, coverTypeId: 2, name: "Forest land Remaining Forest land", version: 1 }),
+                new LandUseCategory({ id: 3, reportingFrameworkId: 1, parentLandUseCategoryId: 1, coverTypeId: 3, name: "Land Converted To Forest land", version: 1 })
+            ];             
 
 
-        it('should return a numerical value indicating how the first value compares to the second value for sorting purposes', () => {
+            expect(landUseCategoriesTableDataService.filterByParentLandUseCategory(unfilteredMockLandUseCategories, 1)).toEqual(filteredMockLandUseCategories);            
+        });         
+
+
+        it('should return a numerical value indicating how the first value compares to the second value for sorting purposes', () => {          
 
             // strings
-            expect(landUseCategoriesTableDataService.compare("LandUseCategory 1", "LandUseCategory 2")).toEqual(-1);
-            expect(landUseCategoriesTableDataService.compare("LandUseCategory 1", "LandUseCategory 1")).toEqual(0);
-            expect(landUseCategoriesTableDataService.compare("LandUseCategory 2", "LandUseCategory 1")).toEqual(1);
+            expect(landUseCategoriesTableDataService.compare("Forest land", "Grassland 1")).toEqual(-1);
+            expect(landUseCategoriesTableDataService.compare("Forest land", "Forest land")).toEqual(0);
+            expect(landUseCategoriesTableDataService.compare("Forest land", "Cropland")).toEqual(1);
 
             // numbers
-            expect(landUseCategoriesTableDataService.compare(1, 2)).toEqual(-1);
+            expect(landUseCategoriesTableDataService.compare(1, 9)).toEqual(-1);
             expect(landUseCategoriesTableDataService.compare(1, 1)).toEqual(0);
-            expect(landUseCategoriesTableDataService.compare(2, 1)).toEqual(1);            
+            expect(landUseCategoriesTableDataService.compare(17, 1)).toEqual(1);            
 
         }); 
         
@@ -102,32 +124,43 @@ describe('LandUseCategoriesRecordsTabulationService', () => {
             // Define a couple of mock LandUseCategories
 
             const unsortedMockLandUseCategories = [
-                new LandUseCategory({ id: 2, name: "LandUseCategory 2", description: "LandUseCategory 2 Description", version: 1 }),
-                new LandUseCategory({ id: 3, name: "LandUseCategory 3", description: "LandUseCategory 3 Description", version: 1 }),
-                new LandUseCategory({ id: 1, name: "LandUseCategory 1", description: "LandUseCategory 1 Description", version: 1 }),                
+                new LandUseCategory({ id: 1, reportingFrameworkId: 1, parentLandUseCategoryId: null, coverTypeId: 1, name: "Forest land", version: 1 }),
+                new LandUseCategory({ id: 9, reportingFrameworkId: 1, parentLandUseCategoryId: null, coverTypeId: 2, name: "Cropland", version: 1 }),
+                new LandUseCategory({ id: 17, reportingFrameworkId: 1, parentLandUseCategoryId: null, coverTypeId: 3, name: "Grassland", version: 1 })                 
             ];
 
             const sortedMockLandUseCategories1 = [
-                new LandUseCategory({ id: 1, name: "LandUseCategory 1", description: "LandUseCategory 1 Description", version: 1 }),
-                new LandUseCategory({ id: 2, name: "LandUseCategory 2", description: "LandUseCategory 2 Description", version: 1 }),
-                new LandUseCategory({ id: 3, name: "LandUseCategory 3", description: "LandUseCategory 3 Description", version: 1 })
+                new LandUseCategory({ id: 1, reportingFrameworkId: 1, parentLandUseCategoryId: null, coverTypeId: 1, name: "Forest land", version: 1 }),
+                new LandUseCategory({ id: 9, reportingFrameworkId: 1, parentLandUseCategoryId: null, coverTypeId: 2, name: "Cropland", version: 1 }),
+                new LandUseCategory({ id: 17, reportingFrameworkId: 1, parentLandUseCategoryId: null, coverTypeId: 3, name: "Grassland", version: 1 }) 
             ];  
             
             const sortedMockLandUseCategories2 = [
-                new LandUseCategory({ id: 3, name: "LandUseCategory 3", description: "LandUseCategory 3 Description", version: 1 }),                
-                new LandUseCategory({ id: 2, name: "LandUseCategory 2", description: "LandUseCategory 2 Description", version: 1 }),
-                new LandUseCategory({ id: 1, name: "LandUseCategory 1", description: "LandUseCategory 1 Description", version: 1 }),                
+                new LandUseCategory({ id: 17, reportingFrameworkId: 1, parentLandUseCategoryId: null, coverTypeId: 3, name: "Grassland", version: 1 }),
+                new LandUseCategory({ id: 9, reportingFrameworkId: 1, parentLandUseCategoryId: null, coverTypeId: 2, name: "Cropland", version: 1 }),
+                new LandUseCategory({ id: 1, reportingFrameworkId: 1, parentLandUseCategoryId: null, coverTypeId: 1, name: "Forest land", version: 1 })             
+            ]; 
+            
+            const sortedMockLandUseCategories3 = [
+                new LandUseCategory({ id: 9, reportingFrameworkId: 1, parentLandUseCategoryId: null, coverTypeId: 2, name: "Cropland", version: 1 }),
+                new LandUseCategory({ id: 1, reportingFrameworkId: 1, parentLandUseCategoryId: null, coverTypeId: 1, name: "Forest land", version: 1 }),
+                new LandUseCategory({ id: 17, reportingFrameworkId: 1, parentLandUseCategoryId: null, coverTypeId: 3, name: "Grassland", version: 1 }) 
+            ];  
+            
+            const sortedMockLandUseCategories4 = [
+                new LandUseCategory({ id: 17, reportingFrameworkId: 1, parentLandUseCategoryId: null, coverTypeId: 3, name: "Grassland", version: 1 }),
+                new LandUseCategory({ id: 1, reportingFrameworkId: 1, parentLandUseCategoryId: null, coverTypeId: 1, name: "Forest land", version: 1 }),
+                new LandUseCategory({ id: 9, reportingFrameworkId: 1, parentLandUseCategoryId: null, coverTypeId: 2, name: "Cropland", version: 1 })
+                              
             ];            
 
 
             expect(landUseCategoriesTableDataService.sort(unsortedMockLandUseCategories,"id", "asc")).toEqual(sortedMockLandUseCategories1);
             expect(landUseCategoriesTableDataService.sort(unsortedMockLandUseCategories,"id", "desc")).toEqual(sortedMockLandUseCategories2);
 
-            expect(landUseCategoriesTableDataService.sort(unsortedMockLandUseCategories,"name", "asc")).toEqual(sortedMockLandUseCategories1);
-            expect(landUseCategoriesTableDataService.sort(unsortedMockLandUseCategories,"name", "desc")).toEqual(sortedMockLandUseCategories2);
-            
-            expect(landUseCategoriesTableDataService.sort(unsortedMockLandUseCategories,"description", "asc")).toEqual(sortedMockLandUseCategories1);
-            expect(landUseCategoriesTableDataService.sort(unsortedMockLandUseCategories,"description", "desc")).toEqual(sortedMockLandUseCategories2);            
+            expect(landUseCategoriesTableDataService.sort(unsortedMockLandUseCategories,"name", "asc")).toEqual(sortedMockLandUseCategories3);
+            expect(landUseCategoriesTableDataService.sort(unsortedMockLandUseCategories,"name", "desc")).toEqual(sortedMockLandUseCategories4);
+                       
         }); 
         
         

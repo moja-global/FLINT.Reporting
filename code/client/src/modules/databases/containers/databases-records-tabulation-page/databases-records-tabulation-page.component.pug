@@ -1,0 +1,9 @@
+sb-layout-main
+  ng-container(header)
+    sb-header(title='Databases', subtitle='Units of measurements groupings')
+  ng-container(body')
+    sb-card
+      .card-header
+        | Databases List
+      .card-body
+        sb-databases-records-tabulation([pagesize]='6')

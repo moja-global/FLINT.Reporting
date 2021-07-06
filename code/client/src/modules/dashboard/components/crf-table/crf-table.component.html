@@ -1,0 +1,215 @@
+<div class="row">
+    <div class="col">
+        <div class="table-responsive">
+            <table class="table table-sm" style="width: 100%;">
+                <thead>
+                    <tr class="crf">
+                        <th scope="col" class="align-middle category">
+                            Land Use
+                        </th>
+                        <th scope="col" class="align-middle variable">
+                            Variable
+                        </th>
+                        <th scope="col" class="align-middle year" *ngFor="let year of years$ | async">
+                            {{year}}
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <!--TOTAL-->
+
+                    <!--Area (kha)-->
+                    <tr class="total">
+                        <td scope="row" rowspan="5" class="align-middle">
+                            {{getTotalLandTitle()}}
+                        </td>
+                        <td scope="col" class="align-middle">
+                            Area (kha)
+                        </td>
+                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                            {{getTotalLandReportingVariableValue(areaReportingVariableId, year)}}
+                        </td>
+                    </tr>
+
+                    <!--Net carbon stock change in living biomass (kt C)-->
+                    <tr class="total">
+
+                        <td scope="col" class="align-middle">
+                            Net carbon stock change in living biomass (kt C)
+                        </td>
+                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                            {{getTotalLandReportingVariableValue(netCarbonStockChangeInLivingBiomassReportingVariableId,
+                            year)}}
+                        </td>
+                    </tr>
+
+                    <!--Net carbon stock change in dead organic matter (kt C)-->
+                    <tr class="total">
+
+                        <td scope="col" class="align-middle">
+                            Net carbon stock change in dead organic matter (kt C)
+                        </td>
+                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                            {{getTotalLandReportingVariableValue(netCarbonStockChangeInDeadOrganicMatterReportingVariableId,
+                            year)}}
+                        </td>
+                    </tr>
+
+                    <!--Net carbon stock change in mineral soils (kt C)-->
+                    <tr class="total">
+
+                        <td scope="col" class="align-middle">
+                            Net carbon stock change in mineral soils (kt C)
+                        </td>
+                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                            {{getTotalLandReportingVariableValue(netCarbonStockChangeInMineralSoilsReportingVariableId,
+                            year)}}
+                        </td>
+                    </tr>
+
+                    <!--Net carbon stock change in organic soils (kt C)-->
+                    <tr class="total">
+
+                        <td scope="col" class="align-middle">
+                            Net carbon stock change in organic soils (kt C)
+                        </td>
+                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                            {{getTotalLandReportingVariableValue(netCarbonStockChangeInOrganicSoilsReportingVariableId,
+                            year)}}
+                        </td>
+                    </tr>
+
+
+                    <!--REMAINING-->
+
+                    <!--Area (kha)-->
+                    <tr class="remaining">
+                        <td scope="row" rowspan="5" class="align-middle">
+                            {{getRemainingLandTitle()}}
+                        </td>
+                        <td scope="col" class="align-middle">
+                            Area (kha)
+                        </td>
+                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                            {{getRemainingLandReportingVariableValue(areaReportingVariableId, year)}}
+                        </td>
+                    </tr>
+
+                    <!--Net carbon stock change in living biomass (kt C)-->
+                    <tr class="remaining">
+
+                        <td scope="col" class="align-middle">
+                            Net carbon stock change in living biomass (kt C)
+                        </td>
+                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                            {{getRemainingLandReportingVariableValue(netCarbonStockChangeInLivingBiomassReportingVariableId,
+                            year)}}
+                        </td>
+                    </tr>
+
+                    <!--Net carbon stock change in dead organic matter (kt C)-->
+                    <tr class="remaining">
+
+                        <td scope="col" class="align-middle">
+                            Net carbon stock change in dead organic matter (kt C)
+                        </td>
+                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                            {{getRemainingLandReportingVariableValue(netCarbonStockChangeInDeadOrganicMatterReportingVariableId,
+                            year)}}
+                        </td>
+                    </tr>
+
+                    <!--Net carbon stock change in mineral soils (kt C)-->
+                    <tr class="remaining">
+
+                        <td scope="col" class="align-middle">
+                            Net carbon stock change in mineral soils (kt C)
+                        </td>
+                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                            {{getRemainingLandReportingVariableValue(netCarbonStockChangeInMineralSoilsReportingVariableId,
+                            year)}}
+                        </td>
+                    </tr>
+
+                    <!--Net carbon stock change in organic soils (kt C)-->
+                    <tr class="remaining">
+  
+                        <td scope="col" class="align-middle">
+                            Net carbon stock change in organic soils (kt C)
+                        </td>
+                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                            {{getRemainingLandReportingVariableValue(netCarbonStockChangeInOrganicSoilsReportingVariableId,
+                            year)}}
+                        </td>
+                    </tr>
+
+
+
+                    <!--CONVERTED-->
+
+                    <!--Area (kha)-->
+                    <tr class="converted">
+                        <td scope="row" rowspan="5" class="align-middle">
+                            {{getConvertedLandTitle()}}
+                        </td>
+                        <td scope="col" class="align-middle">
+                            Area (kha)
+                        </td>
+                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                            {{getConvertedLandReportingVariableValue(areaReportingVariableId, year)}}
+                        </td>
+                    </tr>
+
+                    <!--Net carbon stock change in living biomass (kt C)-->
+                    <tr class="converted">
+
+                        <td scope="col" class="align-middle">
+                            Net carbon stock change in living biomass (kt C)
+                        </td>
+                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                            {{getConvertedLandReportingVariableValue(netCarbonStockChangeInLivingBiomassReportingVariableId,
+                            year)}}
+                        </td>
+                    </tr>
+
+                    <!--Net carbon stock change in dead organic matter (kt C)-->
+                    <tr class="converted">
+
+                        <td scope="col" class="align-middle">
+                            Net carbon stock change in dead organic matter (kt C)
+                        </td>
+                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                            {{getConvertedLandReportingVariableValue(netCarbonStockChangeInDeadOrganicMatterReportingVariableId,
+                            year)}}
+                        </td>
+                    </tr>
+
+                    <!--Net carbon stock change in mineral soils (kt C)-->
+                    <tr class="converted">
+
+                        <td scope="col" class="align-middle">
+                            Net carbon stock change in mineral soils (kt C)
+                        </td>
+                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                            {{getConvertedLandReportingVariableValue(netCarbonStockChangeInMineralSoilsReportingVariableId,
+                            year)}}
+                        </td>
+                    </tr>
+
+                    <!--Net carbon stock change in organic soils (kt C)--> 
+                    <tr class="converted">
+
+                        <td scope="col" class="align-middle">
+                            Net carbon stock change in organic soils (kt C)
+                        </td>
+                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                            {{getConvertedLandReportingVariableValue(netCarbonStockChangeInOrganicSoilsReportingVariableId,
+                            year)}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>

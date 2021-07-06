@@ -1,0 +1,78 @@
+<form>
+    <div class="row">
+        <div class="col">
+            <div class="d-flex justify-content-between p-2">
+                <sb-search (searched)="onSearch($event)"></sb-search>
+                <sb-loading-animation></sb-loading-animation>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col">
+            <sb-table>
+                <ng-container header>
+                    <tr>
+                        <th scope="col" class="text-center align-middle">
+                            <span>#</span>
+                        </th>
+                        <th scope="col" sbSortable="name" (sort)="onSort($event)" class="align-middle">
+                            <span>Label</span>
+                            <sb-sort-icon *ngIf='sortedColumn === "name"' [direction]="sortedDirection"></sb-sort-icon>
+                        </th>
+                        <th scope="col" class="align-middle">
+                            <span class="d-flex flex-row-reverse pr-1">
+                                Actions
+                            </span>
+                        </th>
+                    </tr>
+                </ng-container>
+
+                <ng-container footer>
+                    <tr>
+                        <td scope="col" colspan="4" class="align-middle">
+                            <span class="d-flex flex-row-reverse pr-1">
+                                <sb-button action="add" entity="Database" (add)="onAddDatabase()"></sb-button>
+                            </span>
+                        </td>
+                    </tr>
+                </ng-container>
+
+                <ng-container body>
+                    <tr *ngFor="let database of databasesTableService.databases$ | async">
+                        <td class="text-center align-middle">
+                            {{database.pos}}
+                        </td>
+                        <td class="align-middle">
+                            <ngb-highlight [result]="database.label" [term]="databasesTableService.searchTerm">
+                            </ngb-highlight>
+                        </td>
+                        <td>
+                            <span class="d-flex flex-row-reverse pr-1">
+                                <!--<sb-button action="open" entity="Database" id="{{database.id}}" name="{{database.label}}"  (open)="onOpenDatabase($event)"></sb-button>-->
+                                <sb-button action="delete" entity="Database" id="{{database.id}}"
+                                    (delete)="onDeleteDatabase($event)"></sb-button>                           
+                                <!--
+                                <button type="button" data-toggle="tooltip" data-placement="top" title="Download"
+                                    (click)="downloadCRFTable(database.id,database.startYear,database.endYear)">
+                                    <fa-icon [icon]='["fas", "download"]'></fa-icon>
+                                </button>
+                                -->
+                                <!--<sb-button action="update" entity="Database" id="{{database.id}}" (update)="onUpdateDatabase($event)"></sb-button>-->
+                            </span>
+                        </td>
+                    </tr>
+                </ng-container>
+            </sb-table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <sb-pagination (pageChanged)="onPageChange($event)" (pageSizeChanged)="onPageSizeChange($event)">
+            </sb-pagination>
+        </div>
+    </div>
+
+</form>
