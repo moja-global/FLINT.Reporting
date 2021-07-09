@@ -6,9 +6,11 @@ import offline from 'highcharts/modules/offline-exporting';
 import { QuantityObservation } from '@modules/quantity-observations/models/quantity-observation.model';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { ConfigService } from '@common/services/config.service';
-import { ChartConfig} from '@common/models/chart-config';
+import { ChartConfig } from '@common/models/chart-config.model';
 import { Serie } from '@common/models/serie';
 import { QuantityObservationsRecordsFilterService } from '@modules/quantity-observations/services/quantity-observations-records-filter.service';
+import { DatabaseFilterService } from '@common/services/database-filter.service';
+import { DatabaseFilter } from '@common/models/database-filter.model';
 
 declare var require: any;
 let Boost = require('highcharts/modules/boost');
@@ -53,28 +55,6 @@ export class ChartComponent implements OnInit, AfterViewInit {
     readonly years$: Observable<Array<number>> = this._yearsSubject$.asObservable();
 
     observations: QuantityObservation[] = [];
-
-    // Land Use Categories / Subcategories Ids
-    forestLandId: number = 1;
-    forestLandRemainingForestLandId: number = 2;
-    landConvertedToForestLandId: number = 3;
-    croplandConvertedToForestLandId: number = 4;
-    grasslandConvertedToForestLandId: number = 5;
-    wetlandsConvertedToForestLandId: number = 6;
-    settlementsConvertedToForestLandId: number = 7;
-    otherLandConvertedToForestLandId: number = 8;
-
-
-    // Reporting Variables Ids    
-    areaReportingVariableId: number = 1;
-    netCarbonStockChangeInLivingBiomassReportingVariableId: number = 2;
-    netCarbonStockChangeInDeadOrganicMatterReportingVariableId: number = 3;
-    netCarbonStockChangeInMineralSoilsReportingVariableId: number = 4;
-    netCarbonStockChangeInOrganicSoilsReportingVariableId: number = 5;
-    netCarbonDioxideEmissionsRemovalsReportingVariableId: number = 6;
-    methaneReportingVariableId: number = 7;
-    nitrousOxideReportingVariableId: number = 8;
-
 
     // Instantiate a central gathering point for all the component's subscriptions.
     // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
@@ -257,31 +237,67 @@ export class ChartComponent implements OnInit, AfterViewInit {
     constructor(
         private configService: ConfigService,
         public quantityObservationsTableService: QuantityObservationsRecordsFilterService,
+        private databaseFilterService: DatabaseFilterService,
         private cd: ChangeDetectorRef,
         private log: NGXLogger) {
 
     }
 
     ngOnInit(): void {
-
-
-
     }
 
     ngAfterViewInit(): void {
 
         this.loadConfiguration(() => {
-
             // Subscribe to quantity observations data notifications.
             this.log.trace(`${LOG_PREFIX} Subscribing to quantity observations data notifications`);
             this._subscriptions.push(
                 this.quantityObservationsTableService.quantityObservations$.subscribe(
                     data => {
-                        this.observations = data;                   },
+
+                        // Update the local quantity observations
+                        this.log.trace(`${LOG_PREFIX} Updating the local Quantity Observations`);
+                        this.observations = data;
+                        this.log.debug(`${LOG_PREFIX} Quantity Observations = ${JSON.stringify(this.observations)}`);
+
+                        // Get the current database filter
+                        this.log.trace(`${LOG_PREFIX} Getting the current Database Filter`);
+                        let databaseFilter: DatabaseFilter = this.databaseFilterService.filter;
+                        this.log.debug(`${LOG_PREFIX} Database Filter = ${JSON.stringify(databaseFilter)}`);
+
+                        // Get the start year from the database filter
+                        this.log.trace(`${LOG_PREFIX} Getting the Start Year from the current database filter`);
+                        let startYear: number = databaseFilter.startYear == undefined || databaseFilter.startYear == null ? -1 : databaseFilter.startYear;
+                        this.log.debug(`${LOG_PREFIX} Start Year = ${JSON.stringify(startYear)}`);
+
+                        // Get the end year from the database filter
+                        this.log.trace(`${LOG_PREFIX} Getting the End Year from the current database filter`);
+                        let endYear: number = databaseFilter.endYear == undefined || databaseFilter.endYear == null ? -1 : databaseFilter.endYear;
+                        this.log.debug(`${LOG_PREFIX} End Year = ${JSON.stringify(endYear)}`);
+
+                        // Update the year range
+                        this.log.trace(`${LOG_PREFIX} Updating the year range`);
+                        let years: number[] = [];
+                        if (startYear != -1 && endYear != -1) {
+                            for (let i = startYear; i <= endYear; i++) {
+                                years.push(i);
+                            }
+                            this._yearsSubject$.next(years);
+                        } else {
+                            this._yearsSubject$.next(years);
+                        }
+                        this.log.debug(`${LOG_PREFIX} Years = ${JSON.stringify(years)}`);
+
+                        // Reload the displayed chart
+                        this.log.trace(`${LOG_PREFIX} Reloading the displayed chart`);
+                        this.loadChart();
+
+
+                    },
                     error => {
                         this.log.trace(`${LOG_PREFIX} Could not load quantity observations`);
                         this.observations = [];
-                    }));            
+                    }));
 
             // Subscribe to loading events and propagate them to the loading component.
             // Loading events occur when the user changes the filter status
@@ -292,34 +308,6 @@ export class ChartComponent implements OnInit, AfterViewInit {
                         this.loading = loading;
                         this.cd.detectChanges();
                     }));
-
-            // Subscribe to data filters changes notifications.
-            this.log.trace(`${LOG_PREFIX} Subscribing to data filter changes notifications`);
-            this._subscriptions.push(
-                this.quantityObservationsTableService.filter$.subscribe(
-                    databaseFilter => {
-
-                        let startYear: number = databaseFilter.startYear == undefined || databaseFilter.startYear == null ? -1 : databaseFilter.startYear;
-                        let endYear: number = databaseFilter.endYear == undefined || databaseFilter.endYear == null ? -1 : databaseFilter.endYear;
-
-                        if (startYear != -1 && endYear != -1) {
-                            let years: number[] = [];
-                            for (let i = startYear; i <= endYear; i++) {
-                                years.push(i);
-                            }
-                            this._yearsSubject$.next(years);
-                        } else {
-                            this._yearsSubject$.next([]);
-                        }
-
-                        this.loadChart();                         
-                    },
-                    error => {
-                        this.log.trace(`${LOG_PREFIX} Could not load quantity observations`);
-                        this.observations = [];
-                    }));
-
-
         });
 
 
@@ -445,48 +433,56 @@ export class ChartComponent implements OnInit, AfterViewInit {
             } else if (this.chartId == 2) {
 
                 let a = ycategories.find(s => s.name === "Net carbon stock change in living biomass (kt C)");
-                
+
                 if (typeof a == 'undefined') {
-                    a = { showInLegend: this.config.showSeriesLabelsInLegend, name: "Net carbon stock change in living biomass (kt C)", 
-                    data: [this.getTotalReportingVariableValue(this.netCarbonStockChangeInLivingBiomassReportingVariableId, year)] };
+                    a = {
+                        showInLegend: this.config.showSeriesLabelsInLegend, name: "Net carbon stock change in living biomass (kt C)",
+                        data: [this.getTotalReportingVariableValue(this.configService.netCarbonStockChangeInLivingBiomassReportingVariableId, year)]
+                    };
                     ycategories.push(a);
                 } else {
-                    a.data.push(this.getTotalReportingVariableValue(this.netCarbonStockChangeInLivingBiomassReportingVariableId, year));
-                } 
-                
-                
-                
+                    a.data.push(this.getTotalReportingVariableValue(this.configService.netCarbonStockChangeInLivingBiomassReportingVariableId, year));
+                }
+
+
+
                 let b = ycategories.find(s => s.name === "Net carbon stock change in dead organic matter (kt C)");
-                
+
                 if (typeof b == 'undefined') {
-                    b = { showInLegend: this.config.showSeriesLabelsInLegend, name: "Net carbon stock change in dead organic matter (kt C)", 
-                    data: [this.getTotalReportingVariableValue(this.netCarbonStockChangeInDeadOrganicMatterReportingVariableId, year)] };
+                    b = {
+                        showInLegend: this.config.showSeriesLabelsInLegend, name: "Net carbon stock change in dead organic matter (kt C)",
+                        data: [this.getTotalReportingVariableValue(this.configService.netCarbonStockChangeInDeadOrganicMatterReportingVariableId, year)]
+                    };
                     ycategories.push(b);
                 } else {
-                    b.data.push(this.getTotalReportingVariableValue(this.netCarbonStockChangeInDeadOrganicMatterReportingVariableId, year));
+                    b.data.push(this.getTotalReportingVariableValue(this.configService.netCarbonStockChangeInDeadOrganicMatterReportingVariableId, year));
                 }
-                
-                
+
+
                 let c = ycategories.find(s => s.name === "Net carbon stock change in mineral soils (kt C)");
-                
+
                 if (typeof c == 'undefined') {
-                    c = { showInLegend: this.config.showSeriesLabelsInLegend, name: "Net carbon stock change in mineral soils (kt C)", 
-                    data: [this.getTotalReportingVariableValue(this.netCarbonStockChangeInMineralSoilsReportingVariableId, year)] };
+                    c = {
+                        showInLegend: this.config.showSeriesLabelsInLegend, name: "Net carbon stock change in mineral soils (kt C)",
+                        data: [this.getTotalReportingVariableValue(this.configService.netCarbonStockChangeInMineralSoilsReportingVariableId, year)]
+                    };
                     ycategories.push(c);
                 } else {
-                    c.data.push(this.getTotalReportingVariableValue(this.netCarbonStockChangeInMineralSoilsReportingVariableId, year));
-                }                  
-                
+                    c.data.push(this.getTotalReportingVariableValue(this.configService.netCarbonStockChangeInMineralSoilsReportingVariableId, year));
+                }
+
 
                 let d = ycategories.find(s => s.name === "Net carbon stock change in organic soils (kt C)");
-                
+
                 if (typeof d == 'undefined') {
-                    d = { showInLegend: this.config.showSeriesLabelsInLegend, name: "Net carbon stock change in organic soils (kt C)", 
-                    data: [this.getTotalReportingVariableValue(this.netCarbonStockChangeInOrganicSoilsReportingVariableId, year)] };
+                    d = {
+                        showInLegend: this.config.showSeriesLabelsInLegend, name: "Net carbon stock change in organic soils (kt C)",
+                        data: [this.getTotalReportingVariableValue(this.configService.netCarbonStockChangeInOrganicSoilsReportingVariableId, year)]
+                    };
                     ycategories.push(d);
                 } else {
-                    d.data.push(this.getTotalReportingVariableValue(this.netCarbonStockChangeInOrganicSoilsReportingVariableId, year));
-                }  
+                    d.data.push(this.getTotalReportingVariableValue(this.configService.netCarbonStockChangeInOrganicSoilsReportingVariableId, year));
+                }
 
 
 
@@ -494,37 +490,43 @@ export class ChartComponent implements OnInit, AfterViewInit {
 
 
                 let a = ycategories.find(s => s.name === "CO2 (kt)");
-                
+
                 if (typeof a == 'undefined') {
-                    a = { showInLegend: this.config.showSeriesLabelsInLegend, name: "CO2 (kt)", 
-                    data: [this.getTotalReportingVariableValue(this.netCarbonDioxideEmissionsRemovalsReportingVariableId, year)] };
+                    a = {
+                        showInLegend: this.config.showSeriesLabelsInLegend, name: "CO2 (kt)",
+                        data: [this.getTotalReportingVariableValue(this.configService.netCarbonDioxideEmissionsRemovalsReportingVariableId, year)]
+                    };
                     ycategories.push(a);
                 } else {
-                    a.data.push(this.getTotalReportingVariableValue(this.netCarbonDioxideEmissionsRemovalsReportingVariableId, year));
-                } 
-                
-                
-                
+                    a.data.push(this.getTotalReportingVariableValue(this.configService.netCarbonDioxideEmissionsRemovalsReportingVariableId, year));
+                }
+
+
+
                 let b = ycategories.find(s => s.name === "CH4 (kt)");
-                
+
                 if (typeof b == 'undefined') {
-                    b = { showInLegend: this.config.showSeriesLabelsInLegend, name: "CH4 (kt)", 
-                    data: [this.getTotalReportingVariableValue(this.methaneReportingVariableId, year)] };
+                    b = {
+                        showInLegend: this.config.showSeriesLabelsInLegend, name: "CH4 (kt)",
+                        data: [this.getTotalReportingVariableValue(this.configService.methaneReportingVariableId, year)]
+                    };
                     ycategories.push(b);
                 } else {
-                    b.data.push(this.getTotalReportingVariableValue(this.methaneReportingVariableId, year));
+                    b.data.push(this.getTotalReportingVariableValue(this.configService.methaneReportingVariableId, year));
                 }
-                
-                
+
+
                 let c = ycategories.find(s => s.name === "N2O (kt)");
-                
+
                 if (typeof c == 'undefined') {
-                    c = { showInLegend: this.config.showSeriesLabelsInLegend, name: "N2O (kt)", 
-                    data: [this.getTotalReportingVariableValue(this.nitrousOxideReportingVariableId, year)] };
+                    c = {
+                        showInLegend: this.config.showSeriesLabelsInLegend, name: "N2O (kt)",
+                        data: [this.getTotalReportingVariableValue(this.configService.nitrousOxideReportingVariableId, year)]
+                    };
                     ycategories.push(c);
                 } else {
-                    c.data.push(this.getTotalReportingVariableValue(this.nitrousOxideReportingVariableId, year));
-                } 
+                    c.data.push(this.getTotalReportingVariableValue(this.configService.nitrousOxideReportingVariableId, year));
+                }
 
             }
 
@@ -597,16 +599,16 @@ export class ChartComponent implements OnInit, AfterViewInit {
         return this.observations
             .filter(o => o.year == year)
             .filter(o =>
-                o.reportingVariableId == this.netCarbonDioxideEmissionsRemovalsReportingVariableId ||
-                o.reportingVariableId == this.methaneReportingVariableId ||
-                o.reportingVariableId == this.nitrousOxideReportingVariableId)
+                o.reportingVariableId == this.configService.netCarbonDioxideEmissionsRemovalsReportingVariableId ||
+                o.reportingVariableId == this.configService.methaneReportingVariableId ||
+                o.reportingVariableId == this.configService.nitrousOxideReportingVariableId)
             .reduce((accumulator, observation) => accumulator + this.getCO2Equivalent(observation.reportingVariableId, observation.amount), 0);
     }
 
     getCO2Equivalent(reportingVariableId: number, emission: number): number {
-        if (reportingVariableId == this.methaneReportingVariableId) {
+        if (reportingVariableId == this.configService.methaneReportingVariableId) {
             return +(emission) * +(25);
-        } else if (reportingVariableId == this.nitrousOxideReportingVariableId) {
+        } else if (reportingVariableId == this.configService.nitrousOxideReportingVariableId) {
             return +(emission) * +(298);
         } else {
             return emission;

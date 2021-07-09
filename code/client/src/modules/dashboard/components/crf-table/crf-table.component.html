@@ -29,7 +29,7 @@
                             Area (kha)
                         </td>
                         <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
-                            {{getTotalLandReportingVariableValue(areaReportingVariableId, year)}}
+                            {{getTotalLandReportingVariableValue(configService.areaReportingVariableId, year)}}
                         </td>
                     </tr>
 
@@ -40,7 +40,7 @@
                             Net carbon stock change in living biomass (kt C)
                         </td>
                         <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
-                            {{getTotalLandReportingVariableValue(netCarbonStockChangeInLivingBiomassReportingVariableId,
+                            {{getTotalLandReportingVariableValue(configService.netCarbonStockChangeInLivingBiomassReportingVariableId,
                             year)}}
                         </td>
                     </tr>
@@ -52,7 +52,7 @@
                             Net carbon stock change in dead organic matter (kt C)
                         </td>
                         <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
-                            {{getTotalLandReportingVariableValue(netCarbonStockChangeInDeadOrganicMatterReportingVariableId,
+                            {{getTotalLandReportingVariableValue(configService.netCarbonStockChangeInDeadOrganicMatterReportingVariableId,
                             year)}}
                         </td>
                     </tr>
@@ -64,7 +64,7 @@
                             Net carbon stock change in mineral soils (kt C)
                         </td>
                         <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
-                            {{getTotalLandReportingVariableValue(netCarbonStockChangeInMineralSoilsReportingVariableId,
+                            {{getTotalLandReportingVariableValue(configService.netCarbonStockChangeInMineralSoilsReportingVariableId,
                             year)}}
                         </td>
                     </tr>
@@ -76,7 +76,7 @@
                             Net carbon stock change in organic soils (kt C)
                         </td>
                         <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
-                            {{getTotalLandReportingVariableValue(netCarbonStockChangeInOrganicSoilsReportingVariableId,
+                            {{getTotalLandReportingVariableValue(configService.netCarbonStockChangeInOrganicSoilsReportingVariableId,
                             year)}}
                         </td>
                     </tr>
@@ -93,7 +93,7 @@
                             Area (kha)
                         </td>
                         <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
-                            {{getRemainingLandReportingVariableValue(areaReportingVariableId, year)}}
+                            {{getRemainingLandReportingVariableValue(configService.areaReportingVariableId, year)}}
                         </td>
                     </tr>
 
@@ -104,7 +104,7 @@
                             Net carbon stock change in living biomass (kt C)
                         </td>
                         <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
-                            {{getRemainingLandReportingVariableValue(netCarbonStockChangeInLivingBiomassReportingVariableId,
+                            {{getRemainingLandReportingVariableValue(configService.netCarbonStockChangeInLivingBiomassReportingVariableId,
                             year)}}
                         </td>
                     </tr>
@@ -116,7 +116,7 @@
                             Net carbon stock change in dead organic matter (kt C)
                         </td>
                         <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
-                            {{getRemainingLandReportingVariableValue(netCarbonStockChangeInDeadOrganicMatterReportingVariableId,
+                            {{getRemainingLandReportingVariableValue(configService.netCarbonStockChangeInDeadOrganicMatterReportingVariableId,
                             year)}}
                         </td>
                     </tr>
@@ -128,7 +128,7 @@
                             Net carbon stock change in mineral soils (kt C)
                         </td>
                         <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
-                            {{getRemainingLandReportingVariableValue(netCarbonStockChangeInMineralSoilsReportingVariableId,
+                            {{getRemainingLandReportingVariableValue(configService.netCarbonStockChangeInMineralSoilsReportingVariableId,
                             year)}}
                         </td>
                     </tr>
@@ -140,7 +140,7 @@
                             Net carbon stock change in organic soils (kt C)
                         </td>
                         <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
-                            {{getRemainingLandReportingVariableValue(netCarbonStockChangeInOrganicSoilsReportingVariableId,
+                            {{getRemainingLandReportingVariableValue(configService.netCarbonStockChangeInOrganicSoilsReportingVariableId,
                             year)}}
                         </td>
                     </tr>

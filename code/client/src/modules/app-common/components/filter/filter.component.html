@@ -1,4 +1,5 @@
 <div class="d-flex justify-content-center flex-column flex-md-row mb-1">
+
     <div class="p-2 flex-fill">
         <div class="input-group">
             <div class="input-group-prepend">
@@ -10,6 +11,7 @@
             </select>
         </div>
     </div>
+
     <div class="p-2 flex-fill">
 
         <div class="input-group">
@@ -25,7 +27,22 @@
             </div>
             -->
           </div>
-    </div>
+    </div> 
+    
+    <div class="p-2 flex-fill">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="landUseSelect">Land Use</label>
+            </div>
+            <select class="custom-select" id="landUseSelect" [(ngModel)] = "selectedLandUseId" (change)="onLandUseChange($event)"> 
+                <option value="-1">All</option>
+                <option [value]="configService.forestLandId">Forest land</option>
+                <option [value]="configService.cropland">Cropland</option>
+                <option [value]="configService.grasslandId">Grassland</option>
+                <option [value]="configService.wetlandsId">Wetlands</option>
+            </select>
+        </div>
+    </div>     
 
     <div class="p-2">
         <div class="input-group">
@@ -49,5 +66,8 @@
                 <option *ngFor="let year of years$ | async" [value]="year">{{year}}</option>
             </select>
         </div>
-    </div>    
+    </div>
+    
+   
+    
 </div>

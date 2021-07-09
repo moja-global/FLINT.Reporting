@@ -1,26 +1,17 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Component, ChangeDetectionStrategy, OnInit } from "@angular/core";
 import { DatabaseFilter } from "@common/models/database-filter.model";
+import { ConfigService } from "@common/services/config.service";
+import { DatabaseFilterService } from "@common/services/database-filter.service";
 import { DatabasesDataService } from "@modules/databases/services/databases-data.service";
-import { QuantityObservationsRecordsFilterService } from "@modules/quantity-observations/services/quantity-observations-records-filter.service";
 import { environment } from "environments/environment";
 import FileSaver from "file-saver";
 import { NGXLogger } from "ngx-logger";
-import { BehaviorSubject, Observable, Subscription } from "rxjs";
-import { map } from "rxjs/internal/operators/map";
+import { BehaviorSubject, Subscription } from "rxjs";
 
 
-const LOG_PREFIX: string = "[Dashboard Component]";
 const API_PREFIX: string = "api/v1/crf_tables";
-const HEADERS = { 'Content-Type': 'application/json' };
 
-const httpOptions = {
-    headers: new HttpHeaders({
-    'Content-Type': 'application/json'
-    }),
-    observe: 'response' as 'body',
-    responseType: 'blob' as 'blob'
-};
 
 
 @Component({
@@ -29,16 +20,28 @@ const httpOptions = {
     templateUrl: './dashboard.component.html',
     styleUrls: ['dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit {  
+export class DashboardComponent implements OnInit {
 
-      // The base url of the server
-  private _baseUrl: string = environment.baseUrl; 
+    // The base url of the server
+    private _baseUrl: string = environment.baseUrl;
 
+    // Keep tabs on the current date
+    // Use it to update the date that is displayed on the dashboard
     private _subject$ = new BehaviorSubject<number>(Date.now());
     readonly time$ = this._subject$.asObservable();
 
+    // Keep tabs on whether the system has a processed database.
+    // Use this to determine the UI component that is displayed
     hasProcessedDatabase: boolean = false;
 
+    // Set the default selected graph
+    graph: string = "total";
+
+    // Set the default selected table
+    table: string = "forestLand"
+
+
+    // Keep tabs on the criteria by which the current displayed database has been filtered
     databaseFilter!: DatabaseFilter;
 
     // A common gathering point for all the component's subscriptions.
@@ -47,10 +50,10 @@ export class DashboardComponent implements OnInit {
 
     constructor(
         private databasesDataService: DatabasesDataService,
-        private quantityObservationsRecordsFilterService: QuantityObservationsRecordsFilterService,
-        private cd: ChangeDetectorRef,
+        public databaseFilterService: DatabaseFilterService,
+        public configService: ConfigService,
         private http: HttpClient,
-        private log: NGXLogger) { 
+        private log: NGXLogger) {
 
         setInterval(() => {
             this._subject$.next(Date.now());
@@ -75,13 +78,14 @@ export class DashboardComponent implements OnInit {
                             }
                         }
                     },
-                    error => {
+                    () => {
 
                         // Assume the worst and set processed databases to false
                         this.log.error('Could not load databases');
                         this.hasProcessedDatabase = false;
                     }
                 ));
+                
     }
 
     ngOnInit() { }
@@ -91,22 +95,15 @@ export class DashboardComponent implements OnInit {
     }
 
 
-    onDatabaseFilterChange(databaseFilter: DatabaseFilter) {
-        this.databaseFilter = databaseFilter;
-        this.quantityObservationsRecordsFilterService.filterQuantityObservations(databaseFilter);
-        this.cd.detectChanges();
-    }
-
-
     // See: https://stackoverflow.com/questions/49169806/download-file-in-angular4-using-file-saver
-    downloadCRFTable(){
-        return this.http.get(`${this._baseUrl}/${API_PREFIX}/partyId/48/databaseId/${this.databaseFilter.databaseId}/from/${this.databaseFilter.startYear}/to/${this.databaseFilter.endYear}`,{responseType: 'blob'})
-        .subscribe( data => {
-            const file: Blob = new Blob([data], { type: 'application/vnd.ms-excel' });
-            FileSaver.saveAs(file, 'crf_table.xlsx');
-          }
-        ); 
-    }    
+    downloadCRFTable() {
+        return this.http.get(`${this._baseUrl}/${API_PREFIX}/partyId/48/databaseId/${this.databaseFilter.databaseId}/from/${this.databaseFilter.startYear}/to/${this.databaseFilter.endYear}`, { responseType: 'blob' })
+            .subscribe(data => {
+                const file: Blob = new Blob([data], { type: 'application/vnd.ms-excel' });
+                FileSaver.saveAs(file, 'crf_table.xlsx');
+            }
+            );
+    }
 
 
 

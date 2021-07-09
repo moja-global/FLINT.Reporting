@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, AfterViewInit, Output, EventEmitter, HostListener, OnInit, OnDestroy } from "@angular/core";
-import { DatabaseFilter } from "@common/models";
+import { ConfigService } from "@common/services/config.service";
+import { DatabaseFilterService } from "@common/services/database-filter.service";
 import { Database } from "@modules/databases/models";
 import { DatabasesDataService } from "@modules/databases/services";
 import { NGXLogger } from "ngx-logger";
@@ -16,7 +17,7 @@ const LOG_PREFIX: string = "[Filter Component]";
 export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Database Filter Changed Emitter
-  @Output() databaseFilterChanged: EventEmitter<DatabaseFilter> = new EventEmitter<DatabaseFilter>();
+  // @Output() databaseFilterChanged: EventEmitter<DatabaseFilter> = new EventEmitter<DatabaseFilter>();
 
   // Flag
   hasProcessedDatabase: boolean = false;
@@ -29,6 +30,10 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
   private _yearsSubject$: BehaviorSubject<Array<number>> = new BehaviorSubject<Array<number>>([]);
   readonly years$: Observable<Array<number>> = this._yearsSubject$.asObservable();
 
+  // Allows the land use selection drop downs to keep tabs of the land uses in the selected database
+  private _landUsesSubject$: BehaviorSubject<Array<number>> = new BehaviorSubject<Array<number>>([]);
+  readonly landUses$: Observable<Array<number>> = this._landUsesSubject$.asObservable();
+
   // Selected Database
   selectedDatabase!: Database;
 
@@ -37,6 +42,9 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Selected Party Id
   selectedPartyId: number | null | undefined = 48;
+
+  // selected Land Use Id
+  selectedLandUseId: number | null | undefined = -1;
 
   // Selected Start Year
   selectedStartYear!: number | null | undefined;
@@ -52,9 +60,9 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
     private databasesDataService: DatabasesDataService,
+    public configService: ConfigService,
+    private databaseFilterService: DatabaseFilterService,
     private log: NGXLogger) {
-
-
   }
 
 
@@ -128,7 +136,6 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
               this._yearsSubject$.next([]);
             }
 
-
           },
           error => {
 
@@ -143,14 +150,17 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    
-    // Emit
-    this.databaseFilterChanged.emit({
+
+    this.log.trace(`${LOG_PREFIX} Post View initialization`);
+
+    // Broadcast
+    this.databaseFilterService.filter = {
       databaseId: this.selectedDatabaseId,
       partyId: this.selectedPartyId,
+      landUseCategoryId: this.selectedLandUseId,
       startYear: this.selectedStartYear,
       endYear: this.selectedEndYear
-    });
+    };
   }
 
   @HostListener('window:beforeunload')
@@ -159,6 +169,8 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onDatabaseChange(event: any) {
+
+    this.log.trace(`${LOG_PREFIX} Database changed`);
 
     // Get the selected database
     let database: Database | undefined = this._databasesSubject$.value.find(d => d.id == this.selectedDatabaseId);
@@ -187,13 +199,14 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
         this._yearsSubject$.next([]);
       }
 
-      // Emit
-      this.databaseFilterChanged.emit({
+      // Broadcast
+      this.databaseFilterService.filter = {
         databaseId: this.selectedDatabaseId,
         partyId: this.selectedPartyId,
+        landUseCategoryId: this.selectedLandUseId,
         startYear: this.selectedStartYear,
         endYear: this.selectedEndYear
-      });
+      };
 
     } else {
       // Assume the worst and set processed databases to false
@@ -207,6 +220,8 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onStartYearChange(event: any) {
 
+    this.log.trace(`${LOG_PREFIX} Start Year changed`);
+
     if (this.selectedStartYear != undefined &&
       this.selectedStartYear != null &&
       this.selectedEndYear != undefined &&
@@ -216,19 +231,22 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
         this.selectedEndYear = this.selectedStartYear;
       }
 
-      // Emit
-      this.databaseFilterChanged.emit({
+      // Broadcast
+      this.databaseFilterService.filter = {
         databaseId: this.selectedDatabaseId,
         partyId: this.selectedPartyId,
+        landUseCategoryId: this.selectedLandUseId,
         startYear: this.selectedStartYear,
         endYear: this.selectedEndYear
-      });
+      };
     }
 
   }
 
 
   onEndYearChange(event: any) {
+
+    this.log.trace(`${LOG_PREFIX} End Year changed`);
 
     if (this.selectedStartYear != undefined &&
       this.selectedStartYear != null &&
@@ -239,27 +257,48 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
         this.selectedStartYear = this.selectedEndYear;
       }
 
-      // Emit
-      this.databaseFilterChanged.emit({
+      // Broadcast
+      this.databaseFilterService.filter = {
         databaseId: this.selectedDatabaseId,
         partyId: this.selectedPartyId,
+        landUseCategoryId: this.selectedLandUseId,
         startYear: this.selectedStartYear,
         endYear: this.selectedEndYear
-      });
+      };
     }
+
+  }
+
+
+  onLandUseChange(event: any) {
+
+    this.log.trace(`${LOG_PREFIX} Land Use changed`);
+
+    // Broadcast
+    this.databaseFilterService.filter = {
+      databaseId: this.selectedDatabaseId,
+      partyId: this.selectedPartyId,
+      landUseCategoryId: this.selectedLandUseId,
+      startYear: this.selectedStartYear,
+      endYear: this.selectedEndYear
+    };
 
   }
 
 
   onLocationChange() {
 
-    // Emit
-    this.databaseFilterChanged.emit({
+
+    this.log.trace(`${LOG_PREFIX} Location changed`);
+
+    // Broadcast
+    this.databaseFilterService.filter = {
       databaseId: this.selectedDatabaseId,
       partyId: this.selectedPartyId,
+      landUseCategoryId: this.selectedLandUseId,
       startYear: this.selectedStartYear,
       endYear: this.selectedEndYear
-    });
+    };
   }
 
 
