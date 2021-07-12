@@ -62,7 +62,7 @@ export class DashboardComponent implements OnInit {
         this._subscriptions.push(
             this.databasesDataService.databases$
                 .subscribe(
-                    databases => {
+                    success => {
 
                         // The update could have been an an addition or a removal
                         // So start by assuming that there are no proceesed databases
@@ -71,14 +71,14 @@ export class DashboardComponent implements OnInit {
 
                         // Loop through the databases and check for a least one processed database
                         // If found, set the processed databases flag to true
-                        for (let database of databases) {
+                        for (let database of success) {
                             if (database.processed) {
                                 this.hasProcessedDatabase = true;
                                 break;
                             }
                         }
                     },
-                    () => {
+                    error => {
 
                         // Assume the worst and set processed databases to false
                         this.log.error('Could not load databases');

@@ -119,6 +119,7 @@ export class TotalGHGEmissionsChartComponent implements OnInit, AfterViewInit {
                     // Update the local quantity observations
                     this.log.trace(`${LOG_PREFIX} Updating the local Quantity Observations`);
                     this.observations = data;
+                    this.log.debug(`${LOG_PREFIX} Quantity Observations = ${JSON.stringify(data)}`);
 
                     // Get the current database filter
                     this.log.trace(`${LOG_PREFIX} Getting the current Database Filter`);
@@ -236,21 +237,16 @@ export class TotalGHGEmissionsChartComponent implements OnInit, AfterViewInit {
                 o.reportingVariableId == this.configService.netCarbonDioxideEmissionsRemovalsReportingVariableId ||
                 o.reportingVariableId == this.configService.methaneReportingVariableId ||
                 o.reportingVariableId == this.configService.nitrousOxideReportingVariableId)
-            .reduce((accumulator, observation) => accumulator + this.getCO2Equivalent(observation.reportingVariableId, observation.amount), 0);
+            .map(o => this.getCO2Equivalent(o.reportingVariableId, o.amount))
+            .reduce((accumulator, observation) => accumulator + observation, 0);
     }
 
     getCO2Equivalent(reportingVariableId: number, emission: number): number {
 
         if (reportingVariableId == this.configService.methaneReportingVariableId) {
-            return +(emission) * +(25);
+            return emission * +25;
         } else if (reportingVariableId == this.configService.nitrousOxideReportingVariableId) {
-            return +(emission) * +(298);
-        }else if(
-            reportingVariableId == this.configService.netCarbonStockChangeInLivingBiomassReportingVariableId || 
-            reportingVariableId == this.configService.netCarbonStockChangeInDeadOrganicMatterReportingVariableId || 
-            reportingVariableId == this.configService.netCarbonStockChangeInMineralSoilsReportingVariableId || 
-            reportingVariableId == this.configService.netCarbonStockChangeInOrganicSoilsReportingVariableId) {
-            return +(emission) * +(3.666667);
+            return emission * +298;
         } else {
             return emission;
         }

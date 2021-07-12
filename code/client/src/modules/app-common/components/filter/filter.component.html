@@ -1,73 +1,76 @@
-<div class="d-flex justify-content-center flex-column flex-md-row mb-1">
-
-    <div class="p-2 flex-fill">
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <label class="input-group-text" for="databaseSelect">Database</label>
+<form [formGroup]="filterForm">
+    <div class="d-flex justify-content-center flex-column flex-md-row mb-1">
+        <div class="p-2 flex-fill">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="databaseId">Database</label>
+                </div>
+                <select id="databaseSelect" formControlName="databaseId" class="custom-select" (change)="onDatabaseChange($event)">
+                    <option [ngValue]="-1" disabled>Select Database</option>
+                    <option *ngFor="let database of databases$ | async" [ngValue]="database.id">
+                        {{database.label}}
+                    </option>
+                </select>
             </div>
-            <select class="custom-select" id="databaseSelect" [(ngModel)] = "selectedDatabaseId" (change)="onDatabaseChange($event)"> 
-                <option disabled>Select Database</option>
-                <option *ngFor="let database of databases$ | async" [value]="database.id">{{database.label}}</option>
-            </select>
+        </div>
+
+        <div class="p-2 flex-fill">
+
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="partyId">Location</label>
+                </div>
+
+                <input type="text" id="partyId" class="form-control" placeholder="Location" aria-label="Change Location"
+                    aria-describedby="change-location-button" value="Kenya" disabled>
+
+                <!--
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" id="change-location-button"">Change</button>
+        </div>
+        -->
+            </div>
+        </div>
+
+        <div class="p-2 flex-fill">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="landUseCategoryId">Land Use</label>
+                </div>
+                <select id="landUseCategoryId" formControlName="landUseCategoryId" class="custom-select"
+                    (change)="onLandUseChange($event)">
+                    <option [ngValue]="-1">All</option>
+                    <option [ngValue]="configService.forestLandId">Forest land</option>
+                    <option [ngValue]="configService.cropland">Cropland</option>
+                    <option [ngValue]="configService.grasslandId">Grassland</option>
+                    <option [ngValue]="configService.wetlandsId">Wetlands</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="p-2">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="startYear">Start Year</label>
+                </div>
+                <select id="startYear" formControlName="startYear" class="custom-select"
+                    (change)="onStartYearChange($event)">
+                    <option [ngValue]="-1" disabled>Select Start Year</option>
+                    <option *ngFor="let year of years$ | async" [ngValue]="year">{{year}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="p-2">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="endYear">End Year</label>
+                </div>
+                <select id="endYear" formControlName="endYear" class="custom-select" (change)="onEndYearChange($event)">
+                    <option [ngValue]="-1" disabled>Select End Year</option>
+                    <option *ngFor="let year of years$ | async" [ngValue]="year">{{year}}</option>
+                </select>
+            </div>
         </div>
     </div>
-
-    <div class="p-2 flex-fill">
-
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <label class="input-group-text" for="inputGroupSelect01">Location</label>
-            </div>  
-            
-            <input type="text" class="form-control" placeholder="Location" aria-label="Select Location" aria-describedby="button-addon4" value="Kenya" disabled>
-            
-            <!--
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button" id="button-addon2">Change</button>
-            </div>
-            -->
-          </div>
-    </div> 
-    
-    <div class="p-2 flex-fill">
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <label class="input-group-text" for="landUseSelect">Land Use</label>
-            </div>
-            <select class="custom-select" id="landUseSelect" [(ngModel)] = "selectedLandUseId" (change)="onLandUseChange($event)"> 
-                <option value="-1">All</option>
-                <option [value]="configService.forestLandId">Forest land</option>
-                <option [value]="configService.cropland">Cropland</option>
-                <option [value]="configService.grasslandId">Grassland</option>
-                <option [value]="configService.wetlandsId">Wetlands</option>
-            </select>
-        </div>
-    </div>     
-
-    <div class="p-2">
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <label class="input-group-text" for="startYearSelect">Start Year</label>
-            </div>
-            <select class="custom-select" id="startYearSelect" [(ngModel)] = "selectedStartYear" (change)="onStartYearChange($event)"> 
-                <option disabled>Select Start Year</option>
-                <option *ngFor="let year of years$ | async" [value]="year">{{year}}</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="p-2">
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <label class="input-group-text" for="endYearSelect">End Year</label>
-            </div>
-            <select class="custom-select" id="endYearSelect" [(ngModel)] = "selectedEndYear" (change)="onEndYearChange($event)"> 
-                <option disabled>Select End Year</option>
-                <option *ngFor="let year of years$ | async" [value]="year">{{year}}</option>
-            </select>
-        </div>
-    </div>
-    
-   
-    
-</div>
+</form>

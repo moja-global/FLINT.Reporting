@@ -33,7 +33,10 @@ export class DatabasesRecordsHomePageComponent implements OnInit {
 
                 // Get and update the name from the query parameters
                 const name: string | null = params.get('name');
-                this.targetDatabase.name = name;
+                if(name != null) {
+                    this.targetDatabase.name = name;
+                }
+                
 
             })
         );         

@@ -19,11 +19,11 @@ export class DatabaseFilterService {
 
         this.log.trace(`${LOG_PREFIX} Setting filter to ${JSON.stringify(f)}`);
         this._filterSubject$.next(f);
-    }
+    } 
 
     get filter(): DatabaseFilter {
 
-        this.log.trace(`${LOG_PREFIX} Returning ${JSON.stringify(this._filterSubject$.value)} as filter`);
+        //this.log.trace(`${LOG_PREFIX} Returning ${JSON.stringify(this._filterSubject$.value)} as filter`);
         return this._filterSubject$.value;
     }
 

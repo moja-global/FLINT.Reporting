@@ -144,7 +144,7 @@ export class DatabasesRecordsUpdationComponent implements OnInit, AfterContentIn
 
       // Read in the provided name 
       this.log.trace(`${LOG_PREFIX} Reading in the provided name `);
-      const name: string | null = this.databasesForm.get('name') == null ? null : this.databasesForm.get('name')?.value;
+      const name: string = this.databasesForm.get('name')?.value;
       this.log.debug(`${LOG_PREFIX} Database Name  = ${name}`);
 
       // Save the record

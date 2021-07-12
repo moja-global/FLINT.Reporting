@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, AfterViewInit, Output, EventEmitter, HostListener, OnInit, OnDestroy } from "@angular/core";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { ConfigService } from "@common/services/config.service";
 import { DatabaseFilterService } from "@common/services/database-filter.service";
 import { Database } from "@modules/databases/models";
@@ -15,9 +16,6 @@ const LOG_PREFIX: string = "[Filter Component]";
   styleUrls: ['filter.component.scss'],
 })
 export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
-
-  // Database Filter Changed Emitter
-  // @Output() databaseFilterChanged: EventEmitter<DatabaseFilter> = new EventEmitter<DatabaseFilter>();
 
   // Flag
   hasProcessedDatabase: boolean = false;
@@ -38,20 +36,22 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedDatabase!: Database;
 
   // Selected Database Id
-  selectedDatabaseId!: number | null | undefined;
+  selectedDatabaseId: number = -1;
 
   // Selected Party Id
-  selectedPartyId: number | null | undefined = 48;
+  selectedPartyId: number = 48;
 
   // selected Land Use Id
-  selectedLandUseId: number | null | undefined = -1;
+  selectedLandUseId: number = -1;
 
   // Selected Start Year
-  selectedStartYear!: number | null | undefined;
+  selectedStartYear: number = -1;
 
   // Selected End Year
-  selectedEndYear!: number | null | undefined;
+  selectedEndYear: number = -1;
 
+  // Allows the handling of the filter's select options as a reactive form
+  filterForm!: FormGroup;
 
   // A common gathering point for all the component's subscriptions.
   // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
@@ -62,12 +62,23 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
     private databasesDataService: DatabasesDataService,
     public configService: ConfigService,
     private databaseFilterService: DatabaseFilterService,
+    private fb: FormBuilder,
     private log: NGXLogger) {
   }
 
 
   ngOnInit() {
+
     this.log.trace(`${LOG_PREFIX} Initializing Component`);
+
+
+    this.filterForm = this.fb.group({
+      databaseId: [-1],
+      landUseCategoryId: [-1],
+      startYear: [-1],
+      endYear: [-1]
+    });
+
     this._subscriptions.push(
       this.databasesDataService.databases$
         .subscribe(
@@ -140,7 +151,7 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
           error => {
 
             // Assume the worst and set processed databases to false
-            this.log.error('Could not load databases');
+            this.log.error(`${LOG_PREFIX} 'Could not load databases`);
             this.hasProcessedDatabase = false;
             this._databasesSubject$.next([]);
             this._yearsSubject$.next([]);
@@ -153,14 +164,9 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.log.trace(`${LOG_PREFIX} Post View initialization`);
 
-    // Broadcast
-    this.databaseFilterService.filter = {
-      databaseId: this.selectedDatabaseId,
-      partyId: this.selectedPartyId,
-      landUseCategoryId: this.selectedLandUseId,
-      startYear: this.selectedStartYear,
-      endYear: this.selectedEndYear
-    };
+    // Call the global change management method
+    this.log.trace(`${LOG_PREFIX} Calling the global change management method`);
+    this.onChange();
   }
 
   @HostListener('window:beforeunload')
@@ -170,75 +176,140 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onDatabaseChange(event: any) {
 
-    this.log.trace(`${LOG_PREFIX} Database changed`);
+    this.log.trace(`${LOG_PREFIX} Database change event received`);
 
-    // Get the selected database
-    let database: Database | undefined = this._databasesSubject$.value.find(d => d.id == this.selectedDatabaseId);
-    if (database != undefined) {
-      // Set the selected start year to the latest database's start year
-      this.selectedStartYear = database.startYear;
+    // Get the id of the selected database
+    this.log.trace(`${LOG_PREFIX} Getting the id of the selected database`);
+    const id: number = this.filterForm.get("databaseId")?.value;
+    this.log.debug(`${LOG_PREFIX} Database = ${id}`);
 
-      // Set the selected end year to the latest database's end year
-      this.selectedEndYear = database.endYear;
+    // Check if the selected database id is indeed different from the locally saved database id
+    this.log.trace(`${LOG_PREFIX} Checking if the selected database id is indeed different from the locally saved database id`);
 
-      // Create the new year range
-      if (this.selectedStartYear != undefined &&
-        this.selectedStartYear != null &&
-        this.selectedEndYear != undefined &&
-        this.selectedEndYear != null) {
+    if (id != this.selectedDatabaseId) {
 
+      // The selected database id is different from the locally saved database id
+      this.log.trace(`${LOG_PREFIX} The selected database id is different from the locally saved database id`);
+
+      // Update the locally saved database id
+      this.log.trace(`${LOG_PREFIX} Updating the locally saved database id`);
+      this.selectedDatabaseId = id;
+
+      // Get the record of the database with the given id
+      this.log.trace("Getting the record of the database with the given id");
+      let database: Database | undefined = this._databasesSubject$.value.find(d => d.id == this.selectedDatabaseId);
+
+      // Check if the record exists
+      this.log.trace("Checking if the database record exists");
+
+      if (database != undefined) {
+
+        // The record exists
+        this.log.trace("The database record exists");
+
+        // Set the form's / local variable's start year to the database's start year
+        this.log.trace(`${LOG_PREFIX} Setting the form's / local variable's start year to the database's start year`);
+        this.filterForm.get("startYear")?.patchValue(database.startYear);
+        this.selectedStartYear = database.startYear;
+
+
+        // Set the form's / local variable's end year to the database's end year
+        this.log.trace(`${LOG_PREFIX} Setting the form's / local variable's end year to the database's end year`);
+        this.filterForm.get("endYear")?.patchValue(database.endYear);
+        this.selectedEndYear = database.endYear;
+
+        // Create a new year range
+        this.log.trace(`${LOG_PREFIX} Creating a new year range`);
         let years: number[] = [];
-
-        for (let i = this.selectedStartYear; i <= this.selectedEndYear; i++) {
+        for (let i = database.startYear; i <= database.endYear; i++) {
           years.push(i);
         }
 
+        // Broadcast the new year range
+        this.log.trace(`${LOG_PREFIX} Broadcast the new year range`);
         this._yearsSubject$.next(years);
 
+        // Call the global change management method
+        this.log.trace(`${LOG_PREFIX} Calling the global change management method`);
+        this.onChange();
+
+
       } else {
+
+        // The record does not exist
+        this.log.warn(`${LOG_PREFIX} The database record does not exist`);
+
+        // Assume the worst and set 'has processed databases' to false
+        this.log.warn(`${LOG_PREFIX}Assuming the worst and setting 'has processed databases' to false`);
+        this.hasProcessedDatabase = false;
+
+        // Assume the worst and clear the databases array
+        this.log.warn(`${LOG_PREFIX}Assuming the worst and clearing the databases data`);
+        this._databasesSubject$.next([]);
+
+        // Assume the worst and clear the years array
+        this.log.warn(`${LOG_PREFIX}Assuming the worst and clearing the years data`);
         this._yearsSubject$.next([]);
       }
 
-      // Broadcast
-      this.databaseFilterService.filter = {
-        databaseId: this.selectedDatabaseId,
-        partyId: this.selectedPartyId,
-        landUseCategoryId: this.selectedLandUseId,
-        startYear: this.selectedStartYear,
-        endYear: this.selectedEndYear
-      };
-
     } else {
-      // Assume the worst and set processed databases to false
-      this.log.error('Could not load databases');
-      this.hasProcessedDatabase = false;
-      this._databasesSubject$.next([]);
-      this._yearsSubject$.next([]);
+
+      // The selected database id is not different from the locally saved database id
+      this.log.trace(`${LOG_PREFIX} The selected database id is not different from the locally saved database id`);
+
+      // Ignore the value
+      this.log.trace(`${LOG_PREFIX} Ignoring the change event`);
     }
+
+
   }
 
 
   onStartYearChange(event: any) {
 
-    this.log.trace(`${LOG_PREFIX} Start Year changed`);
+    this.log.trace(`${LOG_PREFIX} Start year change event received`);
 
-    if (this.selectedStartYear != undefined &&
-      this.selectedStartYear != null &&
-      this.selectedEndYear != undefined &&
-      this.selectedEndYear != null) {
+    // Get the the selected start year
+    this.log.trace(`${LOG_PREFIX} Getting the selected start year`);
+    const year = this.filterForm.get("startYear")?.value;
+    this.log.debug(`${LOG_PREFIX} Start Year = ${year}`);
 
-      if (this.selectedStartYear > this.selectedEndYear) {
+    // Check if the selected start year is indeed different from the locally saved start year
+    this.log.trace(`${LOG_PREFIX} Checking if the selected start year is indeed different from the locally saved start year`);
+
+    if (year != this.selectedStartYear) {
+
+
+      // Selected start year is different from the locally saved start year
+      this.log.trace(`${LOG_PREFIX} Selected start year is indeed different from the locally saved start year`);
+
+      // Update the locally saved start year
+      this.log.trace(`${LOG_PREFIX} Updating the locally saved start year`);
+      this.selectedStartYear = year;
+
+
+      // Check if the selected start year is greater than the locally saved end year
+      this.log.trace(`${LOG_PREFIX} Checking if the selected start year is greater than the locally saved end year`);
+
+      if (year > this.selectedEndYear) {
+
+        // The selected start year is greater than the locally saved end year
+        this.log.trace(`${LOG_PREFIX} The selected start year is greater than the locally saved end year`);
+
+        // Adjust the end year - to be equivalent to the start year
+        this.log.trace(`${LOG_PREFIX} Adjusting the end year - to be equivalent to the start year`);
         this.selectedEndYear = this.selectedStartYear;
+        this.filterForm.get("endYear")?.patchValue(year);
+
+      } else {
+        // The selected start year is not greater than the locally saved end year
+        this.log.trace(`${LOG_PREFIX} The selected start year is not greater than the locally saved end year`);
       }
 
-      // Broadcast
-      this.databaseFilterService.filter = {
-        databaseId: this.selectedDatabaseId,
-        partyId: this.selectedPartyId,
-        landUseCategoryId: this.selectedLandUseId,
-        startYear: this.selectedStartYear,
-        endYear: this.selectedEndYear
-      };
+      // Call the global change management method
+      this.log.trace(`${LOG_PREFIX} Calling the global change management method`);
+      this.onChange();
+
     }
 
   }
@@ -246,25 +317,49 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onEndYearChange(event: any) {
 
-    this.log.trace(`${LOG_PREFIX} End Year changed`);
+    this.log.trace(`${LOG_PREFIX} End year change event received`);
 
-    if (this.selectedStartYear != undefined &&
-      this.selectedStartYear != null &&
-      this.selectedEndYear != undefined &&
-      this.selectedEndYear != null) {
+    // Get the the selected end year
+    this.log.trace(`${LOG_PREFIX} Getting the selected end year`);
+    const year = this.filterForm.get("endYear")?.value;
+    this.log.debug(`${LOG_PREFIX} End Year = ${year}`);
 
-      if (this.selectedEndYear < this.selectedStartYear) {
-        this.selectedStartYear = this.selectedEndYear;
+    // Check if the selected end year is indeed different from the locally saved end year
+    this.log.trace(`${LOG_PREFIX} Checking if the selected end year is indeed different from the locally saved end year`);
+
+    if (year != this.selectedEndYear) {
+
+
+      // Selected end year is different from the locally saved end year
+      this.log.trace(`${LOG_PREFIX} Selected end year is indeed different from the locally saved end year`);
+
+      // Update the locally saved end year
+      this.log.trace(`${LOG_PREFIX} Updating the locally saved end year`);
+      this.selectedEndYear = year;
+
+
+      // Check if the selected end year is lesser than the locally saved end year
+      this.log.trace(`${LOG_PREFIX} Checking if the selected end year is lesser than the locally saved end year`);
+
+      if (year < this.selectedEndYear) {
+
+        // The selected end year is lesser than the locally saved end year
+        this.log.trace(`${LOG_PREFIX} The selected end year is lesser than the locally saved end year`);
+
+        // Adjust the start year - to be equivalent to the end year
+        this.log.trace(`${LOG_PREFIX} Adjusting the start year - to be equivalent to the end year`);
+        this.selectedEndYear = this.selectedEndYear;
+        this.filterForm.get("endYear")?.patchValue(year);
+
+      } else {
+        // The selected end year is not greater than the locally saved end year
+        this.log.trace(`${LOG_PREFIX} The selected end year is not greater than the locally saved end year`);
       }
 
-      // Broadcast
-      this.databaseFilterService.filter = {
-        databaseId: this.selectedDatabaseId,
-        partyId: this.selectedPartyId,
-        landUseCategoryId: this.selectedLandUseId,
-        startYear: this.selectedStartYear,
-        endYear: this.selectedEndYear
-      };
+      // Call the global change management method
+      this.log.trace(`${LOG_PREFIX} Calling the global change management method`);
+      this.onChange();
+
     }
 
   }
@@ -272,8 +367,71 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onLandUseChange(event: any) {
 
-    this.log.trace(`${LOG_PREFIX} Land Use changed`);
+    this.log.trace(`${LOG_PREFIX} Land use change event received`);
 
+    // Get the the selected land use
+    this.log.trace(`${LOG_PREFIX} Getting the selected land use category id`);
+    const id = this.filterForm.get("landUseCategoryId")?.value;
+    this.log.debug(`${LOG_PREFIX} Land Use Category Id = ${id}`);
+
+    // Check if the selected land use category id is indeed different from the locally saved land use
+    this.log.trace(`${LOG_PREFIX} Checking if the selected land use category id is indeed different from the locally saved land use category id`);
+
+    if (id != this.selectedLandUseId) {
+
+      // The selected land use category id is different from the locally saved land use
+      this.log.trace(`${LOG_PREFIX} The selected land use category id is different from the locally saved land use`);
+
+      // Update the locally saved land use
+      this.log.trace(`${LOG_PREFIX} Updating the locally saved land use`);
+      this.selectedLandUseId = id;
+
+      // Call the global change management method
+      this.log.trace(`${LOG_PREFIX} Calling the global change management method`);
+      this.onChange();
+
+    } else {
+      // The selected land use category id is not different from the locally saved land use
+      this.log.trace(`${LOG_PREFIX} The selected land use category id is not different from the locally saved land use`);
+    }
+
+  }
+
+
+  onLocationChange(event: any) {
+
+    this.log.trace(`${LOG_PREFIX} Location change event received`);
+
+    // Get the the selected location
+    this.log.trace(`${LOG_PREFIX} Getting the selected location`);
+    const id = this.filterForm.get("locationId")?.value;
+    this.log.debug(`${LOG_PREFIX} Location Id = ${id}`);
+
+    // Check if the selected location is indeed different from the locally saved location
+    this.log.trace(`${LOG_PREFIX} Checking if the selected location is indeed different from the locally saved location`);
+
+    if (id != this.selectedLandUseId) {
+
+      // The selected location is different from the locally saved location
+      this.log.trace(`${LOG_PREFIX} The selected location is different from the locally saved location`);
+
+      // Update the locally saved location
+      this.log.trace(`${LOG_PREFIX} Updating the locally saved location`);
+      this.selectedPartyId = id;
+
+      // Call the global change management method
+      this.log.trace(`${LOG_PREFIX} Calling the global change management method`);
+      this.onChange();
+
+    } else {
+      // The selected location is not different from the locally saved location
+      this.log.trace(`${LOG_PREFIX} The selected location is not different from the locally saved location`);
+    }
+
+  }
+
+
+  onChange() {
     // Broadcast
     this.databaseFilterService.filter = {
       databaseId: this.selectedDatabaseId,
@@ -282,24 +440,6 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
       startYear: this.selectedStartYear,
       endYear: this.selectedEndYear
     };
-
   }
-
-
-  onLocationChange() {
-
-
-    this.log.trace(`${LOG_PREFIX} Location changed`);
-
-    // Broadcast
-    this.databaseFilterService.filter = {
-      databaseId: this.selectedDatabaseId,
-      partyId: this.selectedPartyId,
-      landUseCategoryId: this.selectedLandUseId,
-      startYear: this.selectedStartYear,
-      endYear: this.selectedEndYear
-    };
-  }
-
 
 }

@@ -4,7 +4,7 @@ import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { DatabaseFilter } from '@common/models/database-filter.model';
 import { QuantityObservation } from '../models/quantity-observation.model';
-import { map } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
 import { ConfigService } from '@common/services/config.service';
 import { DatabaseFilterService } from '@common/services/database-filter.service';
 
@@ -41,7 +41,9 @@ export class QuantityObservationsRecordsFilterService implements OnDestroy {
         // Subscribe to database filters changes notifications.
         this.log.trace(`${LOG_PREFIX} Subscribing to database filter changes notifications`);
         this._subscriptions.push(
-            this.databaseFilterService.filter$.subscribe(
+            this.databaseFilterService.filter$
+            .pipe(debounceTime(500))
+            .subscribe(
                 databaseFilter => {
 
                     // Database filter changed.

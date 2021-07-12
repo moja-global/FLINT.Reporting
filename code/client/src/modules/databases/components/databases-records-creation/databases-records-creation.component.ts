@@ -111,27 +111,27 @@ export class DatabasesRecordsCreationComponent implements OnInit {
 
       // Read in the provided url
       this.log.trace(`${LOG_PREFIX} Reading in the provided url`);
-      const url: string | null = this.databasesForm.get('url') == null ? null : this.databasesForm.get('url')?.value;
+      const url: string = this.databasesForm.get('url')?.value;
       this.log.debug(`${LOG_PREFIX} Database URL = ${url}`);      
 
       // Read in the provided label
       this.log.trace(`${LOG_PREFIX} Reading in the provided label`);
-      const label: string | null = this.databasesForm.get('label') == null ? null : this.databasesForm.get('label')?.value;
+      const label: string = this.databasesForm.get('label')?.value;
       this.log.debug(`${LOG_PREFIX} Database Label = ${label}`);
 
       // Read in the provided description
       this.log.trace(`${LOG_PREFIX} Reading in the provided description`);
-      const description: string | null = this.databasesForm.get('description') == null ? null : this.databasesForm.get('description')?.value;
+      const description: string = this.databasesForm.get('description')?.value;
       this.log.debug(`${LOG_PREFIX} Database Description = ${description}`);
 
       // Read in the provided start year
       this.log.trace(`${LOG_PREFIX} Reading in the provided start year`);
-      const startYear: number | null = this.databasesForm.get('startYear') == null ? null : this.databasesForm.get('startYear')?.value;
+      const startYear: number = this.databasesForm.get('startYear')?.value;
       this.log.debug(`${LOG_PREFIX} Database Start Year = ${description}`);    
       
       // Read in the provided end year
       this.log.trace(`${LOG_PREFIX} Reading in the provided end year`);
-      const endYear: number | null = this.databasesForm.get('endYear') == null ? null : this.databasesForm.get('endYear')?.value;
+      const endYear: number = this.databasesForm.get('endYear')?.value;
       this.log.debug(`${LOG_PREFIX} Database End Year = ${description}`);        
       
       

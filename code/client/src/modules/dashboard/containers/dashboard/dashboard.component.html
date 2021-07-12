@@ -1,151 +1,149 @@
 <sb-layout-main>
 
     <ng-container header>
-        <sb-header title="Dashboard" subtitle="{{ time$ | async | date:'fullDate'}} {{ time$ | async | date:'HH:mm'}}">
-        </sb-header>
+        <!--<sb-header title="Dashboard" subtitle="{{ time$ | async | date:'fullDate'}} {{ time$ | async | date:'HH:mm'}}"></sb-header>-->
+        <sb-header title="Dashboard"></sb-header>
     </ng-container>
 
     <ng-container body>
 
-        <ng-container *ngIf="!hasProcessedDatabase">
-            <sb-card>
-                <div class="card-header">
-                    Reports
-                </div>
-                <div class="card-body">
-                    <div class="text-center">
-                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                            src="assets/img/no_result.svg" alt="...">
-                    </div>
-                    <p class="text-center">
-                        We could not find any processed FLINT Output Database to display. <br />
-                        Try reloading this page if you are sure a new database has been integrated.
-                    </p>
-                </div>
-            </sb-card>
-        </ng-container>
-
-        <ng-container *ngIf="hasProcessedDatabase">
-            <sb-card>
-                <div class="card-body">
-                    <sb-filter></sb-filter>
-                </div>
-            </sb-card>
-            <h6>Graphs</h6>
-            <hr>
-            <div class="card text-center mb-4">
-                <div class="card-header">
-                    <ul class="nav nav-tabs card-header-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link" [ngClass]="{'active' : graph == 'total'}" href="javascript:void(0);"
-                                (click)='graph = "total"'>
-                                Total GHG Emissions
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" [ngClass]="{'active' : graph == 'pools'}" href="javascript:void(0);"
-                                (click)='graph = "pools"'>
-                                Total GHG Emissions - By Carbon Pools
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" [ngClass]="{'active' : graph == 'gases'}" href="javascript:void(0);"
-                                (click)='graph = "gases"'>
-                                Total GHG Emissions - By Gases
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="card-body">
-                    <sb-total-ghg-emissions-chart *ngIf='graph == "total"'></sb-total-ghg-emissions-chart>
-                    <sb-total-ghg-emissions-by-pools-chart *ngIf='graph == "pools"'>
-                    </sb-total-ghg-emissions-by-pools-chart>
-                    <sb-total-ghg-emissions-by-gases-chart *ngIf='graph == "gases"'>
-                    </sb-total-ghg-emissions-by-gases-chart>
-                </div>
+        <sb-card *ngIf="!hasProcessedDatabase; else processed ">
+            <div class="card-header">
+                Reports
             </div>
-
-            <h6>Tables</h6>
-            <hr>
-
-            <div class="card text-center mb-4" *ngIf="databaseFilterService.filter.landUseCategoryId == -1">
-                <div class="card-header">
-                    <ul class="nav nav-tabs card-header-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link" [ngClass]="{'active' : table == 'forestLand'}"
-                                href="javascript:void(0);" (click)='table = "forestLand"'>
-                                Forest Land
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" [ngClass]="{'active' : table == 'cropland'}" href="javascript:void(0);"
-                                (click)='table = "cropland"'>
-                                Cropland
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" [ngClass]="{'active' : table == 'grassland'}" href="javascript:void(0);"
-                                (click)='table = "grassland"'>
-                                Grassland
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" [ngClass]="{'active' : table == 'wetland'}" href="javascript:void(0);"
-                                (click)='table = "wetland"'>
-                                Wetland
-                            </a>
-                        </li>
-                    </ul>
+            <div class="card-body">
+                <div class="text-center">
+                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="assets/img/no_result.svg"
+                        alt="...">
                 </div>
-                <div class="card-body">
-                    <sb-crf-table sector="1" *ngIf='table == "forestLand"'></sb-crf-table>
-                    <sb-crf-table sector="2" *ngIf='table == "cropland"'></sb-crf-table>
-                    <sb-crf-table sector="3" *ngIf='table == "grassland"'></sb-crf-table>
-                    <sb-crf-table sector="4" *ngIf='table == "wetland"'></sb-crf-table>
-                </div>
+                <p class="text-center">
+                    We could not find any processed FLINT Output Database to display. <br />
+                    Try reloading this page if you are sure a new database has been integrated.
+                </p>
             </div>
-
-            <div class="card mb-4" *ngIf="databaseFilterService.filter.landUseCategoryId == configService.forestLandId">
-                <div class="card-header">Forest land</div>
-                <div class="card-body">
-                    <sb-crf-table sector="1"></sb-crf-table>
-                </div>
-            </div> 
-
-            <div class="card mb-4" *ngIf="databaseFilterService.filter.landUseCategoryId == configService.cropland">
-                <div class="card-header">Cropland</div>
-                <div class="card-body">
-                    <sb-crf-table sector="2"></sb-crf-table>
-                </div>
-            </div>  
-            
-            <div class="card mb-4" *ngIf="databaseFilterService.filter.landUseCategoryId == configService.grasslandId">
-                <div class="card-header">Grassland</div>
-                <div class="card-body">
-                    <sb-crf-table sector="3"></sb-crf-table>
-                </div>
-            </div> 
-            
-            <div class="card mb-4" *ngIf="databaseFilterService.filter.landUseCategoryId == configService.wetlandsId">
-                <div class="card-header">Wetland</div>
-                <div class="card-body">
-                    <sb-crf-table sector="4"></sb-crf-table>
-                </div>
-            </div>            
-            
-            <h6>Download</h6>
-            <hr>
-            
-            <div class="d-flex flex-row-reverse mb-5">
-                <div class="p-2">
-
-                    <sb-button action="download" entity="Database" (download)="downloadCRFTable()"></sb-button>
-
-                </div>
-            </div>            
-
-        </ng-container>
+        </sb-card>
 
     </ng-container>
 
 </sb-layout-main>
+
+
+<ng-template #processed>
+    <sb-card>
+        <div class="card-body">
+            <sb-filter></sb-filter>
+        </div>
+    </sb-card>
+    <h6>Graphs</h6>
+    <hr>
+    <div class="card text-center mb-4">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" [ngClass]="{'active' : graph == 'total'}" href="javascript:void(0);"
+                        (click)='graph = "total"'>
+                        Total GHG Emissions
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [ngClass]="{'active' : graph == 'pools'}" href="javascript:void(0);"
+                        (click)='graph = "pools"'>
+                        Total GHG Emissions - By Carbon Pools
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [ngClass]="{'active' : graph == 'gases'}" href="javascript:void(0);"
+                        (click)='graph = "gases"'>
+                        Total GHG Emissions - By Gases
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <sb-total-ghg-emissions-chart *ngIf='graph == "total"'></sb-total-ghg-emissions-chart>
+            <sb-total-ghg-emissions-by-pools-chart *ngIf='graph == "pools"'>
+            </sb-total-ghg-emissions-by-pools-chart>
+            <sb-total-ghg-emissions-by-gases-chart *ngIf='graph == "gases"'>
+            </sb-total-ghg-emissions-by-gases-chart>
+        </div>
+    </div>
+
+    <h6>Tables</h6>
+    <hr>
+
+    <div class="card text-center mb-4" *ngIf="databaseFilterService.filter.landUseCategoryId == -1">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" [ngClass]="{'active' : table == 'forestLand'}" href="javascript:void(0);"
+                        (click)='table = "forestLand"'>
+                        Forest Land
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [ngClass]="{'active' : table == 'cropland'}" href="javascript:void(0);"
+                        (click)='table = "cropland"'>
+                        Cropland
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [ngClass]="{'active' : table == 'grassland'}" href="javascript:void(0);"
+                        (click)='table = "grassland"'>
+                        Grassland
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [ngClass]="{'active' : table == 'wetland'}" href="javascript:void(0);"
+                        (click)='table = "wetland"'>
+                        Wetland
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <sb-crf-table sector="1" *ngIf='table == "forestLand"'></sb-crf-table>
+            <sb-crf-table sector="2" *ngIf='table == "cropland"'></sb-crf-table>
+            <sb-crf-table sector="3" *ngIf='table == "grassland"'></sb-crf-table>
+            <sb-crf-table sector="4" *ngIf='table == "wetland"'></sb-crf-table>
+        </div>
+    </div>
+
+    <div class="card mb-4" *ngIf="databaseFilterService.filter.landUseCategoryId == configService.forestLandId">
+        <div class="card-header">Forest land</div>
+        <div class="card-body">
+            <sb-crf-table sector="1"></sb-crf-table>
+        </div>
+    </div>
+
+    <div class="card mb-4" *ngIf="databaseFilterService.filter.landUseCategoryId == configService.cropland">
+        <div class="card-header">Cropland</div>
+        <div class="card-body">
+            <sb-crf-table sector="2"></sb-crf-table>
+        </div>
+    </div>
+
+    <div class="card mb-4" *ngIf="databaseFilterService.filter.landUseCategoryId == configService.grasslandId">
+        <div class="card-header">Grassland</div>
+        <div class="card-body">
+            <sb-crf-table sector="3"></sb-crf-table>
+        </div>
+    </div>
+
+    <div class="card mb-4" *ngIf="databaseFilterService.filter.landUseCategoryId == configService.wetlandsId">
+        <div class="card-header">Wetland</div>
+        <div class="card-body">
+            <sb-crf-table sector="4"></sb-crf-table>
+        </div>
+    </div>
+
+    <h6>Download</h6>
+    <hr>
+
+    <div class="d-flex flex-row-reverse mb-5">
+        <div class="p-2">
+
+            <sb-button action="download" entity="Database" (download)="downloadCRFTable()"></sb-button>
+
+        </div>
+    </div>
+</ng-template>
