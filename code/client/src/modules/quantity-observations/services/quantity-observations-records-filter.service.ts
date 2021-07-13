@@ -42,7 +42,7 @@ export class QuantityObservationsRecordsFilterService implements OnDestroy {
         this.log.trace(`${LOG_PREFIX} Subscribing to database filter changes notifications`);
         this._subscriptions.push(
             this.databaseFilterService.filter$
-            .pipe(debounceTime(500))
+            .pipe(debounceTime(100))
             .subscribe(
                 databaseFilter => {
 

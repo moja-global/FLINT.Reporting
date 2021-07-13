@@ -122,30 +122,26 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
 
             // Set the selected database's id to the latest database
             this.selectedDatabaseId = sorted[0].id;
-
+            
             // Set the selected start year to the latest database's start year
             this.selectedStartYear = sorted[0].startYear;
 
             // Set the selected end year to the latest database's end year
             this.selectedEndYear = sorted[0].endYear;
+            
+
 
             // Create the new year range
-            if (this.selectedStartYear != undefined &&
-              this.selectedStartYear != null &&
-              this.selectedEndYear != undefined &&
-              this.selectedEndYear != null) {
-
-              let years: number[] = [];
-
-              for (let i = this.selectedStartYear; i <= this.selectedEndYear; i++) {
-                years.push(i);
-              }
-
-              this._yearsSubject$.next(years);
-
-            } else {
-              this._yearsSubject$.next([]);
+            let years: number[] = [];
+            for (let i = this.selectedStartYear; i <= this.selectedEndYear; i++) {
+              years.push(i);
             }
+            this._yearsSubject$.next(years);
+
+            // Update the default selected values
+            this.filterForm.get("databaseId")?.patchValue(sorted[0].id);
+            this.filterForm.get("startYear")?.patchValue(sorted[0].startYear);
+            this.filterForm.get("endYear")?.patchValue(sorted[0].endYear);
 
           },
           error => {
