@@ -97,7 +97,7 @@ export class DashboardComponent implements OnInit {
 
     // See: https://stackoverflow.com/questions/49169806/download-file-in-angular4-using-file-saver
     downloadCRFTable() {
-        return this.http.get(`${this._baseUrl}/${API_PREFIX}/partyId/48/databaseId/${this.databaseFilter.databaseId}/from/${this.databaseFilter.startYear}/to/${this.databaseFilter.endYear}`, { responseType: 'blob' })
+        return this.http.get(`${this._baseUrl}/${API_PREFIX}/partyId/48/databaseId/${this.databaseFilterService.filter.databaseId}/from/${this.databaseFilterService.filter.startYear}/to/${this.databaseFilterService.filter.endYear}`, { responseType: 'blob' })
             .subscribe(data => {
                 const file: Blob = new Blob([data], { type: 'application/vnd.ms-excel' });
                 FileSaver.saveAs(file, 'crf_table.xlsx');

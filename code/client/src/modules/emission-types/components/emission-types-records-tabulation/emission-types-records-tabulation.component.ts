@@ -13,11 +13,8 @@ import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
 import { SortEvent } from '@common/directives/sortable.directive';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { EmissionTypesRecordsTabulationService } from '../../services';
 import { ConnectivityStatusService } from '@common/services';
-import { EmissionTypesRecordsCreationModalComponent } from '@modules/emission-types/containers/emission-types-records-creation-modal/emission-types-records-creation-modal.component';
-import { EmissionTypesRecordsDeletionModalComponent } from '@modules/emission-types/containers/emission-types-records-deletion-modal/emission-types-records-deletion-modal.component';
-import { EmissionTypesRecordsUpdationModalComponent } from '@modules/emission-types/containers/emission-types-records-updation-modal/emission-types-records-updation-modal.component';
+import { EmissionTypesRecordsTabulationService } from '@modules/emission-types/services/emission-types-records-tabulation.service';
 
 const LOG_PREFIX: string = "[Emission Types Records Tabulation]";
 
@@ -63,7 +60,6 @@ export class EmissionTypesRecordsTabulationComponent implements OnInit, AfterVie
     constructor(
         public emissionTypesTableService: EmissionTypesRecordsTabulationService,
         private changeDetectorRef: ChangeDetectorRef,
-        private modalService: NgbModal,
         public connectivityStatusService: ConnectivityStatusService,
         private log: NGXLogger) {
     }
@@ -161,33 +157,4 @@ export class EmissionTypesRecordsTabulationComponent implements OnInit, AfterVie
         this.emissionTypesTableService.pageSize = event;
         this.changeDetectorRef.detectChanges();
     }
-
-    /**
-     * Propagates Emission Types records Addition Requests to the responsible component
-     */
-    onAddEmissionType() {
-        this.log.trace(`${LOG_PREFIX} Adding a new Emission Type record`);
-        const modalRef = this.modalService.open(EmissionTypesRecordsCreationModalComponent, { centered: true, backdrop: 'static' });
-    }
-
-    /**
-     * Propagates Emission Types records Updation Requests to the responsible component
-     */
-    onUpdateEmissionType(id: number) {
-        this.log.trace(`${LOG_PREFIX} Updating Emission Type record`);
-        this.log.debug(`${LOG_PREFIX} Emission Type record Id = ${id}`);
-        const modalRef = this.modalService.open(EmissionTypesRecordsUpdationModalComponent, { centered: true, backdrop: 'static' });
-        modalRef.componentInstance.id = id;
-    }
-
-    /**
-     * Propagates Emission Types records Deletion Requests to the responsible component
-     */
-    onDeleteEmissionType(id: number) {
-        this.log.trace(`${LOG_PREFIX} Deleting Emission Type record`);
-        this.log.debug(`${LOG_PREFIX} Emission Type record Id = ${id}`);
-        const modalRef = this.modalService.open(EmissionTypesRecordsDeletionModalComponent, { centered: true, backdrop: 'static' });
-        modalRef.componentInstance.id = id;
-    }
-
 }

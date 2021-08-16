@@ -56,40 +56,6 @@ describe('FilterComponent', () => {
     });
 
 
-    it('should display the component', () => {
-        expect(hostComponentNE.querySelector('sb-filter')).toBeDefined();
-    });
 
-    it('should sync input values when the user inputs a filter term', waitForAsync(() => {
-
-        let input = filterComponentDE.query(By.css('input'));
-        let el = input.nativeElement;
-
-        expect(filterComponent.filterTerm).toBe('');
-
-        el.value = 'x';
-        el.dispatchEvent(event);
-
-        expect(filterComponent.filterTerm).toBe('x');
-
-    }));
-
-    it('should emit a filter request when the user inputs a filter term', waitForAsync(() => {
-
-        spyOn(filterComponent.filtered, 'emit');
-
-        let input = filterComponentDE.query(By.css('input'));
-        let el = input.nativeElement;
-
-        el.value = 'y';
-        el.dispatchEvent(event);
-
-        fixture.whenStable().then(() => {
-            fixture.detectChanges();
-            expect(filterComponent.filtered.emit).toHaveBeenCalledWith("y");
-        }); 
-
-
-    }));
 
 });

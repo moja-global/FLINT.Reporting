@@ -3,7 +3,7 @@ import { PartyType } from '../models';
 export const BasePartyTypes: PartyType[] = [
     {
         id: 4,
-        parentPartyTypeId: null,
+        parentAdministrativeLevelId: null,
         name: 'Administrative Unit',
         plural: 'Administrative Units',
         version: 1, 
@@ -11,7 +11,7 @@ export const BasePartyTypes: PartyType[] = [
     },
     {
         id: 10,
-        parentPartyTypeId: null,
+        parentAdministrativeLevelId: null,
         name: 'Organization',
         plural: 'Organizations',
         version: 1, 
@@ -19,7 +19,7 @@ export const BasePartyTypes: PartyType[] = [
     },
     {
         id: 1,
-        parentPartyTypeId: null,
+        parentAdministrativeLevelId: null,
         name: 'Person',
         plural: 'People',
         version: 1, 
@@ -27,7 +27,7 @@ export const BasePartyTypes: PartyType[] = [
     },
     {
         id: 18,
-        parentPartyTypeId: null,
+        parentAdministrativeLevelId: null,
         name: 'Beneficiary',
         plural: 'Beneficiaries',
         version: 1, 

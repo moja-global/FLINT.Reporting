@@ -152,7 +152,7 @@ export class PartyTypesRecordsUpdationComponent implements OnInit, AfterContentI
       // Save the record
       this.log.trace(`${LOG_PREFIX} Saving the Party Type record`);
       this.partyTypesDataService
-        .updatePartyType(Object.assign(this.partyType, {  name: name, parentPartyTypeId: this.targetPartyType?.id}))
+        .updatePartyType(Object.assign(this.partyType, {  name: name, parentAdministrativeLevelId: this.targetPartyType?.id}))
         .subscribe(
           (response: PartyType) => {
 

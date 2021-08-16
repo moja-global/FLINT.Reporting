@@ -8,39 +8,22 @@
         </div>
     </div>
 
-    
-    <div class="row">
+
+    <!--For Small-Sized Devices Only-->
+    <div class="row d-md-none">
         <div class="col">
             <sb-table>
                 <ng-container header>
                     <tr>
-                        <th scope="col" class="text-center align-middle">
+                        <th scope="col" class="col-sm-1 text-center align-middle">
                             <span>#</span>
                         </th>
-                        <th scope="col" sbSortable="name" (sort)="onSort($event)" class="align-middle">
+                        <th scope="col" class="col-sm-11 align-middle" sbSortable="name" (sort)="onSort($event)" >
                             <span>Name</span>
                             <sb-sort-icon *ngIf='sortedColumn === "name"' [direction]="sortedDirection"></sb-sort-icon>
                         </th>
-                        <th scope="col" class="align-middle">
-                            <span>Description</span>
-                        </th>
-                        <th scope="col" class="align-middle">
-                            <span class="d-flex flex-row-reverse">
-                                Actions
-                            </span>
-                        </th>
                     </tr>
                 </ng-container>
-
-                <ng-container footer>
-                    <tr>
-                        <td scope="col" colspan="4" class="align-middle">
-                            <span class="d-flex flex-row-reverse">
-                                <sb-button action="add" entity="Flux Type" (add)="onAddFluxType()"></sb-button>
-                            </span> 
-                        </td>
-                    </tr>
-                </ng-container>                
 
                 <ng-container body>
                     <tr *ngFor="let fluxType of fluxTypesTableService.fluxTypes$ | async">
@@ -48,16 +31,47 @@
                             {{fluxType.pos}}
                         </td>
                         <td class="align-middle">
-                            <ngb-highlight [result]="fluxType.name" [term]="fluxTypesTableService.searchTerm"></ngb-highlight>
+                            <ngb-highlight [result]="fluxType.name" [term]="fluxTypesTableService.searchTerm">
+                            </ngb-highlight>
                         </td>
-                        <td class="align-middle"> 
-                            <ngb-highlight [result]="fluxType.description" [term]="fluxTypesTableService.searchTerm"></ngb-highlight>
+                    </tr>
+                </ng-container>
+            </sb-table>
+        </div>
+    </div>
+
+
+    <!--For Middle-Sized Devices Upwards-->
+    <div class="row d-none d-md-block">
+        <div class="col">
+            <sb-table>
+                <ng-container header>
+                    <tr>
+                        <th scope="col" class="col-md-1 text-center align-middle">
+                            <span>#</span>
+                        </th>
+                        <th scope="col" class="col-md-2 text-left align-middle" sbSortable="name" (sort)="onSort($event)">
+                            <span>Name</span>
+                            <sb-sort-icon *ngIf='sortedColumn === "name"' [direction]="sortedDirection"></sb-sort-icon>
+                        </th>
+                        <th scope="col" class="col-md-9 text-left align-middle">
+                            <span>Description</span>
+                        </th>
+                    </tr>
+                </ng-container>
+
+                <ng-container body>
+                    <tr *ngFor="let fluxType of fluxTypesTableService.fluxTypes$ | async">
+                        <td class="text-center align-middle">
+                            {{fluxType.pos}}
                         </td>
-                        <td class="align-middle">
-                            <span class="d-flex flex-row-reverse">
-                                <sb-button action="delete" entity="Flux Type" id="{{fluxType.id}}" (delete)="onDeleteFluxType($event)"></sb-button>
-                                <sb-button action="update" entity="Flux Type" id="{{fluxType.id}}" (update)="onUpdateFluxType($event)"></sb-button>
-                            </span> 
+                        <td class="text-left align-middle">
+                            <ngb-highlight [result]="fluxType.name" [term]="fluxTypesTableService.searchTerm">
+                            </ngb-highlight>
+                        </td>
+                        <td class="text-left align-middle">
+                            <ngb-highlight [result]="fluxType.description" [term]="fluxTypesTableService.searchTerm">
+                            </ngb-highlight>
                         </td>
                     </tr>
                 </ng-container>

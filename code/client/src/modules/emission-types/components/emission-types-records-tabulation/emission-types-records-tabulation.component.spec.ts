@@ -1,198 +1,55 @@
-import { DecimalPipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { LoadingAnimationComponent, PaginationComponent } from '@common/components';
+import { PaginationComponent, LoadingAnimationComponent } from '@common/components';
+import { MessageService, ConnectivityStatusService } from '@common/services';
+import { EmissionTypesDataService } from '@modules/emission-types/services';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
-
 import { EmissionTypesRecordsTabulationComponent } from './emission-types-records-tabulation.component';
+
+
+@Component({
+    template: `
+        <sb-emission-types-records-tabulation [someInput]="someInput" (someFunction)="someFunction($event)"></sb-emission-types-records-tabulation>
+    `,
+})
+class TestHostComponent {
+    // someInput = 1;
+    // someFunction(event: Event) {}
+}
 
 describe('EmissionTypesRecordsTabulationComponent', () => {
 
-    let fixture: ComponentFixture<EmissionTypesRecordsTabulationComponent>;
+    let fixture: ComponentFixture<TestHostComponent>;
+    let hostComponent: TestHostComponent;
+    let hostComponentDE: DebugElement;
+    let hostComponentNE: Element;
 
     let component: EmissionTypesRecordsTabulationComponent;
     let componentDE: DebugElement;
     let componentNE: Element;
 
-    
-
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [LoadingAnimationComponent, PaginationComponent, EmissionTypesRecordsTabulationComponent],
-            imports: [NoopAnimationsModule, FormsModule, HttpClientTestingModule, LoggerModule.forRoot({ serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.OFF })],
-            providers: [DecimalPipe],
+            declarations: [TestHostComponent, EmissionTypesRecordsTabulationComponent, PaginationComponent, LoadingAnimationComponent],
+            imports: [HttpClientTestingModule, LoggerModule.forRoot({ serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.OFF })],
+            providers: [EmissionTypesDataService, MessageService, ConnectivityStatusService],
             schemas: [NO_ERRORS_SCHEMA],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(EmissionTypesRecordsTabulationComponent);
+        fixture = TestBed.createComponent(TestHostComponent);
+        hostComponent = fixture.componentInstance;
+        hostComponentDE = fixture.debugElement;
+        hostComponentNE = hostComponentDE.nativeElement;
 
-        componentDE = fixture.debugElement;
-        component = fixture.componentInstance;
-        componentNE = fixture.nativeElement;
+        componentDE = hostComponentDE.children[0];
+        component = componentDE.componentInstance;
+        componentNE = componentDE.nativeElement;
 
         fixture.detectChanges();
     });
 
     it('should display the component', () => {
-        expect(component).toBeDefined();
+        expect(hostComponentNE.querySelector('sb-emission-types-records-tabulation')).toEqual(jasmine.anything());
     });
-
-    it('should display the Emission Types headers correctly', () => {
-
-        // #
-        const th1: HTMLTableHeaderCellElement = componentDE.query(By.css('tr th:nth-of-type(1)')).nativeElement;
-
-        expect(th1).toBeDefined();
-        expect(th1.innerText).toEqual("#");
-
-
-        // Name
-        const th2: HTMLTableHeaderCellElement = componentDE.query(By.css('tr th:nth-of-type(2)')).nativeElement;
-
-        expect(th2).toBeDefined();
-        expect(th2.innerText).toEqual("Name");
-
-
-        // Abbreviation
-        const th3: HTMLTableHeaderCellElement = componentDE.query(By.css('tr th:nth-of-type(3)')).nativeElement;
-
-        expect(th3).toBeDefined();
-        expect(th3.innerText).toEqual("Abbreviation");        
-        
-
-        // Description
-        const th4: HTMLTableHeaderCellElement = componentDE.query(By.css('tr th:nth-of-type(4)')).nativeElement;
-
-        expect(th4).toBeDefined();
-        expect(th4.innerText).toEqual("Description");
-        
-
-        // Actions
-        const th5: HTMLTableHeaderCellElement = componentDE.query(By.css('tr th:nth-of-type(5)')).nativeElement;
-
-        expect(th5).toBeDefined();
-        expect(th5.innerText).toEqual("Actions");        
-        
-    }); 
-    
-    it('should trigger the search for Emission Types records with the specified search term', () => {
-
-        const searchTermSetter = spyOnProperty(component.emissionTypesTableService, 'searchTerm', 'set');
-        
-        const searchComponent: DebugElement = componentDE.query(By.css('sb-search'));
-
-        expect(searchComponent).toBeDefined();
-
-        searchComponent.triggerEventHandler("searched", "x");
-
-        fixture.detectChanges();
-
-        expect(searchTermSetter).toHaveBeenCalledOnceWith("x");
-
-    });  
-    
-    it('should trigger the loading of the Emission Types records page change', () => {
-
-        const pageSetter = spyOnProperty(component.emissionTypesTableService, 'page', 'set');
-        
-        const paginationComponent: DebugElement = componentDE.query(By.css('sb-pagination'));
-
-        expect(paginationComponent).toBeDefined();
-
-        paginationComponent.triggerEventHandler("pageChanged", 3);
-
-        fixture.detectChanges();
-
-        expect(pageSetter).toHaveBeenCalledOnceWith(3);
-
-    });
-    
-    it('should trigger the loading of the Emission Types records page size change', () => {
-
-        const pageSizeSetter = spyOnProperty(component.emissionTypesTableService, 'pageSize', 'set');
-        
-        const paginationComponent: DebugElement = componentDE.query(By.css('sb-pagination'));
-
-        expect(paginationComponent).toBeDefined();
-
-        paginationComponent.triggerEventHandler("pageSizeChanged", 10);
-
-        fixture.detectChanges();
-
-        expect(pageSizeSetter).toHaveBeenCalledOnceWith(10);
-
-    });    
-    
-    it('should trigger the sorting of Emission Types records by name', () => {
-
-        const sortColumnSetter = spyOnProperty(component.emissionTypesTableService, 'sortColumn', 'set');
-        const sortDirectionSetter = spyOnProperty(component.emissionTypesTableService, 'sortDirection', 'set');
-
-        const th2: DebugElement = componentDE.query(By.css('tr th:nth-of-type(2)'));
-
-        expect(th2).toBeDefined();
-
-        // asc
-        th2.triggerEventHandler('sort', {column: th2.nativeElement.getAttribute('sbSortable'), direction: "asc"});
-
-        fixture.detectChanges();
-
-        expect(component.sortedColumn).toEqual("name");
-	    expect(component.sortedDirection).toEqual("asc");
-        expect(sortColumnSetter).toHaveBeenCalledOnceWith("name");
-        expect(sortDirectionSetter).toHaveBeenCalledOnceWith("asc");
-
-        // desc
-        th2.triggerEventHandler('sort', {column: th2.nativeElement.getAttribute('sbSortable'), direction: "desc"});
-
-        fixture.detectChanges();
-
-        expect(component.sortedColumn).toEqual("name");
-	    expect(component.sortedDirection).toEqual("desc"); 
-        expect(sortColumnSetter).toHaveBeenCalledTimes(2); 
-        expect(sortColumnSetter).toHaveBeenCalledWith("name");
-        expect(sortDirectionSetter).toHaveBeenCalledTimes(2);
-        expect(sortDirectionSetter).toHaveBeenCalledWith("desc"); 
-
-
-    }); 
-
-    it('should trigger the sorting of Emission Types records by abbreviation', () => {
-
-        const sortColumnSetter = spyOnProperty(component.emissionTypesTableService, 'sortColumn', 'set');
-        const sortDirectionSetter = spyOnProperty(component.emissionTypesTableService, 'sortDirection', 'set');
-
-        const th3: DebugElement = componentDE.query(By.css('tr th:nth-of-type(3)'));
-
-        expect(th3).toBeDefined();
-
-        // asc
-        th3.triggerEventHandler('sort', {column: th3.nativeElement.getAttribute('sbSortable'), direction: "asc"});
-
-        fixture.detectChanges();
-
-        expect(component.sortedColumn).toEqual("abbreviation");
-	    expect(component.sortedDirection).toEqual("asc");
-        expect(sortColumnSetter).toHaveBeenCalledOnceWith("abbreviation");
-        expect(sortDirectionSetter).toHaveBeenCalledOnceWith("asc");
-
-        // desc
-        th3.triggerEventHandler('sort', {column: th3.nativeElement.getAttribute('sbSortable'), direction: "desc"});
-
-        fixture.detectChanges();
-
-        expect(component.sortedColumn).toEqual("abbreviation");
-	    expect(component.sortedDirection).toEqual("desc"); 
-        expect(sortColumnSetter).toHaveBeenCalledTimes(2); 
-        expect(sortColumnSetter).toHaveBeenCalledWith("abbreviation");
-        expect(sortDirectionSetter).toHaveBeenCalledTimes(2);
-        expect(sortDirectionSetter).toHaveBeenCalledWith("desc"); 
-
-
-    });    
-        
 });

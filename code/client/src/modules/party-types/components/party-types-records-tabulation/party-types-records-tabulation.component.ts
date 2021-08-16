@@ -83,8 +83,8 @@ export class PartyTypesRecordsTabulationComponent implements OnInit, AfterViewIn
 
         this._subscriptions.push(
             this.activatedRoute.paramMap.subscribe(params => {
-                this.targetPartyType = Object.assign({}, BasePartyTypes.find(p => p.id == params.get('parentPartyTypeId')));
-                this.onParentPartyTypeChange(params.get('parentPartyTypeId'));
+                this.targetPartyType = Object.assign({}, BasePartyTypes.find(p => p.id == params.get('parentAdministrativeLevelId')));
+                this.onParentPartyTypeChange(params.get('parentAdministrativeLevelId'));
             })
         );        
     }
@@ -176,7 +176,7 @@ export class PartyTypesRecordsTabulationComponent implements OnInit, AfterViewIn
      */
      onParentPartyTypeChange(event: any) {
         this.log.trace(`${LOG_PREFIX} Changing Parent Party Type Id to ${event}`);
-        this.partyTypesTableService.parentPartyTypeId = event;
+        this.partyTypesTableService.parentAdministrativeLevelId = event;
         this.cd.detectChanges();
     }    
 

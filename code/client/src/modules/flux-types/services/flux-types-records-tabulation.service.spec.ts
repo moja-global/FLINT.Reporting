@@ -10,7 +10,7 @@ import { take, toArray } from 'rxjs/operators';
 
 import { FluxTypesRecordsTabulationService } from './flux-types-records-tabulation.service';
 
-describe('FluxTypesRecordsTabulationService', () => {
+fdescribe('FluxTypesRecordsTabulationService', () => {
 
     let fluxTypesDataService: FluxTypesDataService;
     let fluxTypesTableDataService: FluxTypesRecordsTabulationService;

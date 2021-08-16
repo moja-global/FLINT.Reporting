@@ -15,7 +15,7 @@ import { SBRouteData } from '@modules/navigation/models';
 /* Routes */
 export const ROUTES: Routes = [
     {
-        path: ':parentPartyTypeId',
+        path: ':parentAdministrativeLevelId',
         canActivate: [],
         component: partyTypesContainers.PartyTypesRecordsTabulationPageComponent,
         data: {

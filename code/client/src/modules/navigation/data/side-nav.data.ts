@@ -12,7 +12,7 @@ export const sideNavSections: SideNavSection[] = [
     {
         text: 'CONFIGURATIONS',
         items: ['coverTypes', 'emissionTypes', 'fluxTypes', 'pools', 'reportingFrameworks','units'],
-    },    
+    }     
 ];
 
 export const sideNavItems: SideNavItems = {

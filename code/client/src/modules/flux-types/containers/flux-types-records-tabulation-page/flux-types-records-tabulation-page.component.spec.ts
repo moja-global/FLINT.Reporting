@@ -1,12 +1,13 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { FluxTypesRecordsTabulationPageComponent } from './flux-types-records-tabulation-page.component';
 
 
 @Component({
     template: `
-        <sb-flux-types-records [someInput]="someInput" (someFunction)="someFunction($event)"></sb-flux-types-records>
+        <sb-flux-types-records-tabulation-page [someInput]="someInput" (someFunction)="someFunction($event)"></sb-flux-types-records-tabulation-page>
     `,
 })
 class TestHostComponent {
@@ -14,7 +15,8 @@ class TestHostComponent {
     // someFunction(event: Event) {}
 }
 
-describe('FluxTypesRecordsTabulationPageComponent', () => {
+fdescribe('FluxTypesRecordsTabulationPageComponent', () => {
+
     let fixture: ComponentFixture<TestHostComponent>;
     let hostComponent: TestHostComponent;
     let hostComponentDE: DebugElement;
@@ -26,8 +28,7 @@ describe('FluxTypesRecordsTabulationPageComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [TestHostComponent, FluxTypesRecordsTabulationPageComponent],
-            imports: [NoopAnimationsModule],
+            imports: [HttpClientTestingModule, LoggerModule.forRoot({ serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.OFF })],
             providers: [],
             schemas: [NO_ERRORS_SCHEMA],
         }).compileComponents();
@@ -45,6 +46,6 @@ describe('FluxTypesRecordsTabulationPageComponent', () => {
     });
 
     it('should display the component', () => {
-        expect(hostComponentNE.querySelector('sb-flux-types-records')).toEqual(jasmine.anything());
+        expect(hostComponentNE.querySelector('sb-flux-types-records-tabulation-page')).toEqual(jasmine.anything());
     });
 });

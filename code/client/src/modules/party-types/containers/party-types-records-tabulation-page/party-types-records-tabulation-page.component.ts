@@ -31,7 +31,7 @@ export class PartyTypesRecordsTabulationPageComponent implements OnInit {
 
         this._subscriptions.push(
             this.activatedRoute.paramMap.subscribe(params => {
-              this.targetPartyType = BasePartyTypes.find(p => p.id == params.get('parentPartyTypeId'));
+              this.targetPartyType = BasePartyTypes.find(p => p.id == params.get('parentAdministrativeLevelId'));
             })
           );        
     }

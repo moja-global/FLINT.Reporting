@@ -14,7 +14,6 @@ import * as coverTypesComponents from './components';
 
 /* Containers */
 import * as coverTypesContainers from './containers';
-import * as coverTypesModalContainers from './containers/modals';
 
 /* Guards */
 import * as coverTypesGuards from './guards';
@@ -40,7 +39,6 @@ import * as coverTypesServices from './services';
         ...coverTypesContainers.containers,
         ...coverTypesComponents.components
     ],
-    exports: [...coverTypesContainers.containers, ...coverTypesComponents.components],
-    entryComponents: [...coverTypesModalContainers.containers]
+    exports: [...coverTypesContainers.containers, ...coverTypesComponents.components]
 })
 export class CoverTypesModule {}

@@ -13,11 +13,8 @@ import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
 import { SortEvent } from '@common/directives/sortable.directive';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CoverTypesRecordsTabulationService } from '../../services';
 import { ConnectivityStatusService } from '@common/services';
-import { CoverTypesRecordsCreationModalComponent } from '@modules/cover-types/containers/cover-types-records-creation-modal/cover-types-records-creation-modal.component';
-import { CoverTypesRecordsDeletionModalComponent } from '@modules/cover-types/containers/cover-types-records-deletion-modal/cover-types-records-deletion-modal.component';
-import { CoverTypesRecordsUpdationModalComponent } from '@modules/cover-types/containers/cover-types-records-updation-modal/cover-types-records-updation-modal.component';
+import { CoverTypesRecordsTabulationService } from '@modules/cover-types/services/cover-types-records-tabulation.service';
 
 const LOG_PREFIX: string = "[Cover Types Records Tabulation]";
 
@@ -59,11 +56,9 @@ export class CoverTypesRecordsTabulationComponent implements OnInit, AfterViewIn
     // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
     private _subscriptions: Subscription[] = [];
 
-
     constructor(
         public coverTypesTableService: CoverTypesRecordsTabulationService,
         private changeDetectorRef: ChangeDetectorRef,
-        private modalService: NgbModal,
         public connectivityStatusService: ConnectivityStatusService,
         private log: NGXLogger) {
     }
@@ -162,32 +157,5 @@ export class CoverTypesRecordsTabulationComponent implements OnInit, AfterViewIn
         this.changeDetectorRef.detectChanges();
     }
 
-    /**
-     * Propagates Cover Types records Addition Requests to the responsible component
-     */
-    onAddCoverType() {
-        this.log.trace(`${LOG_PREFIX} Adding a new Cover Type record`);
-        const modalRef = this.modalService.open(CoverTypesRecordsCreationModalComponent, { centered: true, backdrop: 'static' });
-    }
-
-    /**
-     * Propagates Cover Types records Updation Requests to the responsible component
-     */
-    onUpdateCoverType(id: number) {
-        this.log.trace(`${LOG_PREFIX} Updating Cover Type record`);
-        this.log.debug(`${LOG_PREFIX} Cover Type record Id = ${id}`);
-        const modalRef = this.modalService.open(CoverTypesRecordsUpdationModalComponent, { centered: true, backdrop: 'static' });
-        modalRef.componentInstance.id = id;
-    }
-
-    /**
-     * Propagates Cover Types records Deletion Requests to the responsible component
-     */
-    onDeleteCoverType(id: number) {
-        this.log.trace(`${LOG_PREFIX} Deleting Cover Type record`);
-        this.log.debug(`${LOG_PREFIX} Cover Type record Id = ${id}`);
-        const modalRef = this.modalService.open(CoverTypesRecordsDeletionModalComponent, { centered: true, backdrop: 'static' });
-        modalRef.componentInstance.id = id;
-    }
 
 }

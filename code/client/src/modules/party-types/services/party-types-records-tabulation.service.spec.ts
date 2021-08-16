@@ -66,14 +66,14 @@ describe('PartyTypesRecordsTabulationService', () => {
             // Define a couple of mock PartyTypes
 
             const unfilteredMockPartyTypes = [
-                new PartyType({ id: 1, parentPartyTypeId: 1, name: "PartyType 1", version: 1 }),
-                new PartyType({ id: 2, parentPartyTypeId: 1, name: "PartyType 2", version: 1 }),
-                new PartyType({ id: 3, parentPartyTypeId: 2, name: "PartyType 3", version: 1 })
+                new PartyType({ id: 1, parentAdministrativeLevelId: 1, name: "PartyType 1", version: 1 }),
+                new PartyType({ id: 2, parentAdministrativeLevelId: 1, name: "PartyType 2", version: 1 }),
+                new PartyType({ id: 3, parentAdministrativeLevelId: 2, name: "PartyType 3", version: 1 })
             ]; 
             
             const filteredMockPartyTypes = [
-                new PartyType({ id: 1, parentPartyTypeId: 1, name: "PartyType 1", version: 1 }),
-                new PartyType({ id: 2, parentPartyTypeId: 1, name: "PartyType 2", version: 1 })
+                new PartyType({ id: 1, parentAdministrativeLevelId: 1, name: "PartyType 1", version: 1 }),
+                new PartyType({ id: 2, parentAdministrativeLevelId: 1, name: "PartyType 2", version: 1 })
             ];             
 
 

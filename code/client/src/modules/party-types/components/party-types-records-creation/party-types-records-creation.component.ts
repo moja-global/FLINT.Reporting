@@ -112,7 +112,7 @@ export class PartyTypesRecordsCreationComponent implements OnInit {
       // Save the record
       this.log.trace(`${LOG_PREFIX} Saving the Party Type record`);
       this.partyTypesDataService
-        .createPartyType(new PartyType({ name: name, parentPartyTypeId: this.targetPartyType?.id }))
+        .createPartyType(new PartyType({ name: name, parentAdministrativeLevelId: this.targetPartyType?.id }))
         .subscribe(
           (response: PartyType) => {
 

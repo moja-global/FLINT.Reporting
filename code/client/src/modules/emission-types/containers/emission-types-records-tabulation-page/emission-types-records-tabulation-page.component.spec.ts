@@ -1,12 +1,14 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { EmissionTypesRecordsTabulationPageComponent } from './emission-types-records-tabulation-page.component';
 
 
 @Component({
     template: `
-        <sb-emission-types-records [someInput]="someInput" (someFunction)="someFunction($event)"></sb-emission-types-records>
+        <sb-emission-types-records-tabulation-page [someInput]="someInput" (someFunction)="someFunction($event)"></sb-emission-types-records-tabulation-page>
     `,
 })
 class TestHostComponent {
@@ -26,8 +28,7 @@ describe('EmissionTypesRecordsTabulationPageComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [TestHostComponent, EmissionTypesRecordsTabulationPageComponent],
-            imports: [NoopAnimationsModule],
+            imports: [HttpClientTestingModule, LoggerModule.forRoot({ serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.OFF })],
             providers: [],
             schemas: [NO_ERRORS_SCHEMA],
         }).compileComponents();
@@ -45,6 +46,6 @@ describe('EmissionTypesRecordsTabulationPageComponent', () => {
     });
 
     it('should display the component', () => {
-        expect(hostComponentNE.querySelector('sb-emission-types-records')).toEqual(jasmine.anything());
+        expect(hostComponentNE.querySelector('sb-emission-types-records-tabulation-page')).toEqual(jasmine.anything());
     });
 });

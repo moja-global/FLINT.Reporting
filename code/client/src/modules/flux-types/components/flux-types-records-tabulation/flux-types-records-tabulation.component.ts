@@ -15,9 +15,6 @@ import { SortEvent } from '@common/directives/sortable.directive';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FluxTypesRecordsTabulationService } from '../../services';
 import { ConnectivityStatusService } from '@common/services';
-import { FluxTypesRecordsCreationModalComponent } from '@modules/flux-types/containers/flux-types-records-creation-modal/flux-types-records-creation-modal.component';
-import { FluxTypesRecordsDeletionModalComponent } from '@modules/flux-types/containers/flux-types-records-deletion-modal/flux-types-records-deletion-modal.component';
-import { FluxTypesRecordsUpdationModalComponent } from '@modules/flux-types/containers/flux-types-records-updation-modal/flux-types-records-updation-modal.component';
 
 const LOG_PREFIX: string = "[Flux Types Records Tabulation]";
 
@@ -161,33 +158,4 @@ export class FluxTypesRecordsTabulationComponent implements OnInit, AfterViewIni
         this.fluxTypesTableService.pageSize = event;
         this.changeDetectorRef.detectChanges();
     }
-
-    /**
-     * Propagates Flux Types records Addition Requests to the responsible component
-     */
-    onAddFluxType() {
-        this.log.trace(`${LOG_PREFIX} Adding a new Flux Type record`);
-        const modalRef = this.modalService.open(FluxTypesRecordsCreationModalComponent, { centered: true, backdrop: 'static' });
-    }
-
-    /**
-     * Propagates Flux Types records Updation Requests to the responsible component
-     */
-    onUpdateFluxType(id: number) {
-        this.log.trace(`${LOG_PREFIX} Updating Flux Type record`);
-        this.log.debug(`${LOG_PREFIX} Flux Type record Id = ${id}`);
-        const modalRef = this.modalService.open(FluxTypesRecordsUpdationModalComponent, { centered: true, backdrop: 'static' });
-        modalRef.componentInstance.id = id;
-    }
-
-    /**
-     * Propagates Flux Types records Deletion Requests to the responsible component
-     */
-    onDeleteFluxType(id: number) {
-        this.log.trace(`${LOG_PREFIX} Deleting Flux Type record`);
-        this.log.debug(`${LOG_PREFIX} Flux Type record Id = ${id}`);
-        const modalRef = this.modalService.open(FluxTypesRecordsDeletionModalComponent, { centered: true, backdrop: 'static' });
-        modalRef.componentInstance.id = id;
-    }
-
 }

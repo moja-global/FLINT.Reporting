@@ -1,18 +1,16 @@
 
 // Light theme for header
 
-.header-light {
+.header-light { 
 
-  /*height: 200px;*/
-
-  background-color: $blue-light-300;
+  background-color: $header-light-bg;
 
   .header-title {
-    color: $gray-dark-900;
+    color: $header-light-title-color;
   }
 
   .header-subtitle {
-    color: $gray-dark-500;
+    color: $header-light-subtitle-color;
   }  
 }
 
@@ -21,13 +19,13 @@
 
 .header-dark {
 
-  background-color: $gray-light-300;
+  background-color: $header-dark-bg;
 
   .header-title {
-    color: $gray-dark-900;
+    color: $header-dark-title-color;
   }
   
   .header-subtitle {
-    color: $gray-dark-500;
-  }   
+    color: $header-dark-subtitle-color;
+  }    
 }

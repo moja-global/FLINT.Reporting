@@ -1,5 +1,6 @@
 <div class="d-flex flex-row justify-content-center flex-wrap justify-content-md-between flex-md-nowrap p-1">
-    <ngb-pagination [collectionSize]="total$ | async" [(page)]="page" [pageSize]="pageSize" class="text-primary">
+    <ngb-pagination [collectionSize]="total$ | async" [(page)]="page" [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true" class="text-primary">
+
     </ngb-pagination>
     <select class="custom-select" style="width: auto;" name="pageSize" [(ngModel)]="pageSize">
         <option [ngValue]="2">2 items per page</option>

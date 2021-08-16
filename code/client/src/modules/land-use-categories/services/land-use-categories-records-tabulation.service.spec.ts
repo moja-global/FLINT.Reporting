@@ -10,7 +10,7 @@ import { take, toArray } from 'rxjs/operators';
 
 import { LandUseCategoriesRecordsTabulationService } from './land-use-categories-records-tabulation.service';
 
-fdescribe('LandUseCategoriesRecordsTabulationService', () => {
+describe('LandUseCategoriesRecordsTabulationService', () => {
 
 
     let landUseCategoriesDataService: LandUseCategoriesDataService;

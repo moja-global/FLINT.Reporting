@@ -14,7 +14,6 @@ import * as fluxTypesComponents from './components';
 
 /* Containers */
 import * as fluxTypesContainers from './containers';
-import * as fluxTypesModalContainers from './containers/modals';
 
 /* Guards */
 import * as fluxTypesGuards from './guards';
@@ -40,7 +39,6 @@ import * as fluxTypesServices from './services';
         ...fluxTypesContainers.containers,
         ...fluxTypesComponents.components
     ],
-    exports: [...fluxTypesContainers.containers, ...fluxTypesComponents.components],
-    entryComponents: [...fluxTypesModalContainers.containers]
+    exports: [...fluxTypesContainers.containers, ...fluxTypesComponents.components]
 })
 export class FluxTypesModule {}

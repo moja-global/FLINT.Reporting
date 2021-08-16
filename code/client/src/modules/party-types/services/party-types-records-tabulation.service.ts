@@ -9,7 +9,7 @@ import { PartyType } from '../models/party-type.model';
 const LOG_PREFIX: string = "[Party Types Records Tabulation Service]";
 
 interface PartyTypeState extends State {
-    parentPartyTypeId: number | undefined | null;
+    parentAdministrativeLevelId: number | undefined | null;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -34,7 +34,7 @@ export class PartyTypesRecordsTabulationService implements OnDestroy {
 
     // The user defined search or sort criteria.
     // Determines which & how many Party Types records should be displayed
-    private _state: PartyTypeState = { parentPartyTypeId: null, page: 1, pageSize: 4, searchTerm: '', sortColumn: '', sortDirection: '' };
+    private _state: PartyTypeState = { parentAdministrativeLevelId: null, page: 1, pageSize: 4, searchTerm: '', sortColumn: '', sortDirection: '' };
 
     // A common gathering point for all the component's subscriptions.
     // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
@@ -164,18 +164,18 @@ export class PartyTypesRecordsTabulationService implements OnDestroy {
     /**
      * Returns the currently set parent party type id
      */
-     get parentPartyTypeId() {
+     get parentAdministrativeLevelId() {
         this.log.trace(`${LOG_PREFIX} Getting parent party type id detail`);
-        this.log.debug(`${LOG_PREFIX} Current parent party type id detail = ${JSON.stringify(this._state.parentPartyTypeId)}`);
-        return this._state.parentPartyTypeId;
+        this.log.debug(`${LOG_PREFIX} Current parent party type id detail = ${JSON.stringify(this._state.parentAdministrativeLevelId)}`);
+        return this._state.parentAdministrativeLevelId;
     }
 
     /**
      * Updates the desired parent party type id detail and then triggers data transformation
      */
-    set parentPartyTypeId(parentPartyTypeId: number | undefined | null) {
-        this.log.debug(`${LOG_PREFIX} Setting parent party type id to ${JSON.stringify(parentPartyTypeId)}`);
-        this._set({ parentPartyTypeId });
+    set parentAdministrativeLevelId(parentAdministrativeLevelId: number | undefined | null) {
+        this.log.debug(`${LOG_PREFIX} Setting parent party type id to ${JSON.stringify(parentAdministrativeLevelId)}`);
+        this._set({ parentAdministrativeLevelId });
     }    
 
     /**
@@ -197,15 +197,15 @@ export class PartyTypesRecordsTabulationService implements OnDestroy {
     /**
      * Filters party type records by parent party type id
      * @param partyTypes 
-     * @param parentPartyTypeId 
+     * @param parentAdministrativeLevelId 
      * @returns 
      */
-     filterByParentPartyType(partyTypes: PartyType[], parentPartyTypeId: number | null | undefined): PartyType[] {
+     filterByParentPartyType(partyTypes: PartyType[], parentAdministrativeLevelId: number | null | undefined): PartyType[] {
         this.log.trace(`${LOG_PREFIX} Filtering party types records`);
-        if (parentPartyTypeId == null || parentPartyTypeId == undefined) {
+        if (parentAdministrativeLevelId == null || parentAdministrativeLevelId == undefined) {
             return partyTypes;
         } else {
-            return partyTypes.filter((u) => u.parentPartyTypeId == parentPartyTypeId);
+            return partyTypes.filter((u) => u.parentAdministrativeLevelId == parentAdministrativeLevelId);
         }
     }    
 
@@ -308,10 +308,10 @@ export class PartyTypesRecordsTabulationService implements OnDestroy {
 
             this.log.trace(`${LOG_PREFIX} Sorting, filtering and paginating Party Types records`);
 
-            const { parentPartyTypeId, sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
+            const { parentAdministrativeLevelId, sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
 
             // Filter by Parent Party Type
-            let transformed: PartyType[] = this.filterByParentPartyType(records, parentPartyTypeId);
+            let transformed: PartyType[] = this.filterByParentPartyType(records, parentAdministrativeLevelId);
 
             // Sort
             transformed = this.sort(transformed, sortColumn, sortDirection);

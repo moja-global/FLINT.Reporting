@@ -2,7 +2,7 @@ export class PartyType {
 
 	[key: string]: string | number | undefined | null;
 	pos: number | undefined | null;
-	parentPartyTypeId: number | undefined | null;
+	parentAdministrativeLevelId: number | undefined | null;
 	id: number | undefined | null;
 	name: string | undefined | null;
 	plural: string | undefined | null;

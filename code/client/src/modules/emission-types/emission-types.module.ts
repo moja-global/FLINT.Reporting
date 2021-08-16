@@ -14,7 +14,6 @@ import * as emissionTypesComponents from './components';
 
 /* Containers */
 import * as emissionTypesContainers from './containers';
-import * as emissionTypesModalContainers from './containers/modals';
 
 /* Guards */
 import * as emissionTypesGuards from './guards';
@@ -40,7 +39,6 @@ import * as emissionTypesServices from './services';
         ...emissionTypesContainers.containers,
         ...emissionTypesComponents.components
     ],
-    exports: [...emissionTypesContainers.containers, ...emissionTypesComponents.components],
-    entryComponents: [...emissionTypesModalContainers.containers]
+    exports: [...emissionTypesContainers.containers, ...emissionTypesComponents.components]
 })
 export class EmissionTypesModule {}
