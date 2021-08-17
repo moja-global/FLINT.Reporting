@@ -1,17 +1,28 @@
 <span [ngClass]='{"sb-nav-fixed": !static}'>
     <sb-topnav></sb-topnav>
-    <div id="sidenav-layout">
-        <div id="sidenav-layout-nav">
+    <div id="sidenav-dashboard-layout">
+        <div id="sidenav-dashboard-layout-nav">
             <sb-side-nav 
                 [sideNavItems]="sideNavItems"
                 [sideNavSections]="sideNavSections">
             </sb-side-nav>
         </div>
-        <div id="sidenav-layout-content">
+        <div id="sidenav-dashboard-layout-content">
             <main>
-                <div class="container-fluid">
-                    <ng-content></ng-content>
-                </div>
+                <!-- Main Page Content-->
+                <ng-content select="[header]"></ng-content>
+
+                <!-- Filter Content-->
+                <ng-content select="[filter]"></ng-content>                
+
+                <!-- Welcome Card -->
+                <ng-content select="[welcome]"></ng-content>
+
+                <!-- Filter-->
+                <ng-content select="[filter]"></ng-content>                
+
+                <!-- Dashboard Content-->
+                <ng-content select="[content]"></ng-content>
             </main>
             <sb-footer></sb-footer>
         </div>

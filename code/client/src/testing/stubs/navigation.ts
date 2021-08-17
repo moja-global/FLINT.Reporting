@@ -6,5 +6,5 @@ export const NavigationServiceStub: Partial<NavigationService> = {
     sideNavVisible$: () => of(true),
     toggleSideNav: (visibility?: boolean) => {},
     routeData$: () => of({} as SBRouteData),
-    currentURL$: () => of('TEST_URL')
+    currentURL$: () => of('TEST_URL'),
 };

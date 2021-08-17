@@ -107,6 +107,8 @@ export class CrfTableComponent implements OnInit, AfterViewInit {
                     this.observations = [];
                 }));
 
+                this.cd.detectChanges();
+
     }
 
     @HostListener('window:beforeunload')

@@ -1,0 +1,18 @@
+.card.bg-white.text-dark.border-top-0.border-bottom-0.border-right-0.border-left-lg.shadow([style]="'border-color:' + primaryVisualizationVariable.color + ';'")
+  .card-body
+    .d-flex.flex-column.justify-content-center
+      span.text-uppercase.text-center
+        | {{primaryVisualizationVariable?.label}}
+      span.font-weight-bold.text-center
+        span([countup]='primaryVisualizationVariableQuantityObservation?.amount', [options]='{decimalPlaces: primaryVisualizationVariableQuantityObservation?.decimalPlaces}') 0
+        span(*ngif='variableCount == 1')
+          | {{primaryVisualizationVariableQuantityObservationUnit?.symbol}}
+      ng-container(*ngif='variableCount > 1')
+        span.text-center
+          small
+            | {{secondaryVisualizationVariable?.label}} :
+            span([countup]='secondaryVisualizationVariableQuantityObservation?.amount', [options]='{decimalPlaces: secondaryVisualizationVariableQuantityObservation?.decimalPlaces}') 0
+      ng-container(*ngif='variableCount == 1')
+        span.text-center
+          small
+            span {{visualization?.context}}

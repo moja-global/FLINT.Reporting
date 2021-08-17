@@ -1,0 +1,106 @@
+<ng-container *ngFor="let domain of domainsDataService.getDomains$() | async">
+
+  <h6 [hidden]='view == "details"'>{{domain.name}}</h6>
+  <hr [hidden]='view == "details"' />
+
+
+  <div [hidden]='view == "details"' class="card m-0 mb-5 bg-transparent p-0 border-0">
+    <div class="card-body m-0 p-0">
+
+      <div class="card-columns border-0">
+        <div class="card border-0 p-0 m-0 bg-transparent"
+          *ngFor="let activity of activitiesDataService.getActivities$(domain.id) | async">
+          <div class="card-body m-0 p-0">
+            <sb-activity-result [activity]="activity" [color]="domain.colorCode" (open)="onOpen($event)"></sb-activity-result>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ng-container>
+
+<!-- result details -->
+
+<div [hidden]='view == "decks"' class="card">
+  <h5 class="card-header">
+    <span class="d-flex flex-row justify-content-between align-items-center">
+      <span style="height: 100%;">{{activity.name}}</span>
+      <button type="button" class="btn btn-primary" (click)="onClose()">x</button>
+    </span>
+  </h5>
+  <div class="card-body">
+
+    <div [hidden]="activity.id != 4" class="container mb-5">
+
+      <div class="row">
+        <div class="col-6 text-left">
+
+          <div class="d-flex flex-row justify-content-start align-items-center mb-3">
+            <div class="p-2">
+              <img class="img-fluid pt-2" src="/assets/icons/{{activity.icon}}" alt="Activity Icon"
+                style="height: 64px; width: 64px;">
+            </div>
+            <div class="p-2">
+
+              <div class="d-flex flex-column justify-content-start mt-4 mb-0 pb-0">
+                <div class="flex-shrink-1">
+                  <div class="d-flex flex-row justify-content-start">
+                    <span class="pl-2 text-center"> Results</span>
+                    <span class="text-center"> / </span>
+                    <span class="text-center">Plans</span>
+                  </div>
+                </div>
+              </div>              
+
+              <div class="d-flex flex-column justify-content-start mb-1">
+                <div class="flex-shrink-1">
+
+                  <div class="d-flex flex-row justify-content-start">
+                    <span class="p-2 results font-weight-bold text-left" [countUp]="285"
+                      [options]="{decimalPlaces: 0}">0</span>
+                    <span class="p-2 font-weight-bold text-center">/</span>
+                    <span class="p-2 results font-weight-bold text-left" [countUp]="612"
+                      [options]="{decimalPlaces: 0}">0</span>
+                    <span class="p-2 pl-5">
+                      <fa-icon *ngIf="39 > 0" [icon]='["fas", "caret-up"]' class="text-success"></fa-icon>
+                      <fa-icon *ngIf="39 < 0" [icon]='["fas", "caret-down"]' class="text-danger"></fa-icon>
+                    </span>
+                    <span class="p-2 results font-weight-bold text-left" [countUp]="39"
+                      [options]="{decimalPlaces: 0}">0</span>                    
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+        <div class="col-6">
+          <sb-activity-gauge></sb-activity-gauge>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+    <div *ngIf="activity.id == 4" class="card-deck">
+      <div class="card border-0 bg-transparent m-0 p-0"
+        *ngFor="let visualization of getActivityResultsChartsVisualizations() | async">
+        <div class="card-body m-0 p-2">
+          <h6 class="mt-2 text-center">{{visualization.name}} - {{visualization.context}}</h6>
+          <hr>
+         
+          <div class="card border-0 m-0 p-0">
+            <div class="card-body ">
+              <sb-chart [visualization]="visualization" [steps]="5"></sb-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

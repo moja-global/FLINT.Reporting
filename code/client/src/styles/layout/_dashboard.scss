@@ -1,0 +1,87 @@
+// Default behavior for the sidenav layout
+// The default positioning for the sidenav is a static position
+
+#sidenav-dashboard-layout {
+
+  display: flex;
+  background-color: $violet-light-100;
+
+
+  // Wraps the .sb-sidenav element and sets the size
+  #sidenav-dashboard-layout-nav {
+    flex-basis: $sidenav-base-width;
+    flex-shrink: 0;
+    transition: transform 0.15s ease-in-out;
+    z-index: $sidenav-zindex;
+    // Mobile first transform - by default the sidenav will be moved off-canvas
+    transform: translateX(-$sidenav-base-width);
+  }
+  // Wraps the content when using the sidenav layout
+  #sidenav-dashboard-layout-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+    flex-grow: 1;
+    min-height: calc(100vh - #{$topnav-base-height});
+    margin-left: -$sidenav-base-width;
+
+    main {
+      padding: 2rem;
+    }
+    
+  }
+}
+
+// Default behavior for the static sidenav collapse
+.sb-sidenav-toggled {
+  #sidenav-dashboard-layout {
+    #sidenav-dashboard-layout-nav {
+      transform: translateX(0);
+    }
+    #sidenav-dashboard-layout-content {
+      &:before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: $black;
+        z-index: $zindex-modal-backdrop;
+        opacity: 0.5;
+        transition: opacity 0.3s ease-in-out;
+      }
+    }
+  }
+}
+
+// Responsive styling for the sidenav layout
+@include media-breakpoint-up(lg) {
+  #sidenav-dashboard-layout {
+    #sidenav-dashboard-layout-nav {
+      transform: translateX(0);
+    }
+    #sidenav-dashboard-layout-content {
+      margin-left: 0;
+      transition: all 0.15s ease-in-out;
+    }
+  }
+  // Behavior for the sidenav collapse on screens larger than the med breakpoint
+  .sb-sidenav-toggled {
+    #sidenav-dashboard-layout {
+      #sidenav-dashboard-layout-nav {
+        transform: translateX(-$sidenav-base-width);
+      }
+      #sidenav-dashboard-layout-content {
+        margin-left: -$sidenav-base-width;
+        // Removes the sidenav overlay on screens larger than the med breakpoint
+        &:before {
+          display: none;
+        }
+      }
+    }
+  }
+}

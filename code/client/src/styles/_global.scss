@@ -45,7 +45,7 @@ tfoot>tr>td{
   bottom: 0;
   background: $white;
   opacity: 0.99;
-  z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+  z-index: 1000; /* Specify a stack order in case you're using a different order for other elements */
   cursor: pointer; /* Add a pointer on hover */
 
   h5, p {

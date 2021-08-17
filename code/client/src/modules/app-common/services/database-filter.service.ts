@@ -9,7 +9,7 @@ const LOG_PREFIX: string = "[Database Filter Service]";
 @Injectable({ providedIn: 'root' })
 export class DatabaseFilterService {
 
-    private _filterSubject$ = new BehaviorSubject<DatabaseFilter>({ databaseId: -1, startYear: -1, endYear: -1, landUseCategoryId: -1, partyId: -1 });
+    private _filterSubject$ = new BehaviorSubject<DatabaseFilter>({ databaseId: -1, startYear: -1, endYear: -1, landUseCategoryId: -1, partyId: 48});
     readonly filter$ = this._filterSubject$.asObservable();
 
     constructor(private log: NGXLogger){
@@ -18,7 +18,7 @@ export class DatabaseFilterService {
     set filter(f: DatabaseFilter) {
 
         this.log.trace(`${LOG_PREFIX} Setting filter to ${JSON.stringify(f)}`);
-        this._filterSubject$.next(f);
+        this._filterSubject$.next(Object.assign({}, f));
     } 
 
     get filter(): DatabaseFilter {

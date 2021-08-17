@@ -1,0 +1,21 @@
+
+<!-- Progression Graphs -->
+
+<div class="card border-0 bg-transparent m-0 mt-4 p-0">
+    <div class="card-body p-0 mt-0">
+        <div class="card-deck">
+            <div class="card border-0 bg-transparent m-0 p-0"
+                *ngFor="let visualization of getParticipationChartsVisualizations() | async">
+                <div class="card-body m-0 p-2">
+                    <h6 class="mt-2">{{visualization.name}}</h6>
+                    <hr />
+                    <div class="card border-0 m-0 p-0">
+                        <div class="card-body ">
+                            <sb-chart [visualization]="visualization" [steps]="1"></sb-chart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

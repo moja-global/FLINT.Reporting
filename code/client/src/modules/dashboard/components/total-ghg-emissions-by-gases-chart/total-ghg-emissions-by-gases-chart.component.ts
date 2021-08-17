@@ -165,8 +165,10 @@ export class TotalGHGEmissionsByGasesChartComponent implements OnInit, AfterView
             this.quantityObservationsTableService.loading$.subscribe(
                 (loading) => {
                     this.loading = loading;
-                    this.cd.detectChanges();
                 }));
+
+
+                this.cd.detectChanges();
 
     }
 
@@ -202,8 +204,10 @@ export class TotalGHGEmissionsByGasesChartComponent implements OnInit, AfterView
 
             if (typeof a == 'undefined') {
                 a = {
-                    showInLegend: true, name: "CO2",
-                    data: [this.getTotalReportingVariableValue(this.configService.netCarbonDioxideEmissionsRemovalsReportingVariableId, year)]
+                    showInLegend: true, 
+                    name: "CO2",
+                    data: [this.getTotalReportingVariableValue(this.configService.netCarbonDioxideEmissionsRemovalsReportingVariableId, year)],
+                    color: "#A0E7E5"
                 };
                 ycategories.push(a);
             } else {
@@ -216,8 +220,10 @@ export class TotalGHGEmissionsByGasesChartComponent implements OnInit, AfterView
 
             if (typeof b == 'undefined') {
                 b = {
-                    showInLegend: true, name: "CH4",
-                    data: [this.getTotalReportingVariableValue(this.configService.methaneReportingVariableId, year)]
+                    showInLegend: true, 
+                    name: "CH4",
+                    data: [this.getTotalReportingVariableValue(this.configService.methaneReportingVariableId, year)],
+                    color: "#B4F8C8"
                 };
                 ycategories.push(b);
             } else {
@@ -229,8 +235,10 @@ export class TotalGHGEmissionsByGasesChartComponent implements OnInit, AfterView
 
             if (typeof c == 'undefined') {
                 c = {
-                    showInLegend: true, name: "N2O",
-                    data: [this.getTotalReportingVariableValue(this.configService.nitrousOxideReportingVariableId, year)]
+                    showInLegend: true, 
+                    name: "N2O",
+                    data: [this.getTotalReportingVariableValue(this.configService.nitrousOxideReportingVariableId, year)],
+                    color: "#FBE7C6"
                 };
                 ycategories.push(c);
             } else {

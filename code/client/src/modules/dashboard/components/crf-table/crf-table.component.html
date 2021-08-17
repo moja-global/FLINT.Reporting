@@ -4,13 +4,13 @@
             <table class="table table-sm" style="width: 100%;">
                 <thead>
                     <tr class="crf">
-                        <th scope="col" class="align-middle category">
+                        <th scope="col" class="text-left align-middle category">
                             Land Use
                         </th>
-                        <th scope="col" class="align-middle variable">
+                        <th scope="col" class="text-left align-middle variable" style="min-width: 420px !important;">
                             Variable
                         </th>
-                        <th scope="col" class="align-middle year" *ngFor="let year of years$ | async">
+                        <th scope="col" class="text-center align-middle year" *ngFor="let year of years$ | async">
                             {{year}}
                         </th>
                     </tr>
@@ -22,13 +22,13 @@
 
                     <!--Area (kha)-->
                     <tr class="total">
-                        <td scope="row" rowspan="5" class="align-middle">
+                        <td scope="row" rowspan="5" class="text-left align-middle">
                             {{getTotalLandTitle()}}
                         </td>
-                        <td scope="col" class="align-middle">
+                        <td scope="col" class="text-left align-middle">
                             Area (kha)
                         </td>
-                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                        <td scope="col" class="text-center align-middle" *ngFor="let year of years$ | async">
                             {{getTotalLandReportingVariableValue(configService.areaReportingVariableId, year)}}
                         </td>
                     </tr>
@@ -36,10 +36,10 @@
                     <!--Net carbon stock change in living biomass (kt C)-->
                     <tr class="total">
 
-                        <td scope="col" class="align-middle">
+                        <td scope="col" class="text-left align-middle">
                             Net carbon stock change in living biomass (kt C)
                         </td>
-                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                        <td scope="col" class="text-center align-middle" *ngFor="let year of years$ | async">
                             {{getTotalLandReportingVariableValue(configService.netCarbonStockChangeInLivingBiomassReportingVariableId,
                             year)}}
                         </td>
@@ -48,10 +48,10 @@
                     <!--Net carbon stock change in dead organic matter (kt C)-->
                     <tr class="total">
 
-                        <td scope="col" class="align-middle">
+                        <td scope="col" class="text-left align-middle">
                             Net carbon stock change in dead organic matter (kt C)
                         </td>
-                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                        <td scope="col" class="text-center align-middle" *ngFor="let year of years$ | async">
                             {{getTotalLandReportingVariableValue(configService.netCarbonStockChangeInDeadOrganicMatterReportingVariableId,
                             year)}}
                         </td>
@@ -60,10 +60,10 @@
                     <!--Net carbon stock change in mineral soils (kt C)-->
                     <tr class="total">
 
-                        <td scope="col" class="align-middle">
+                        <td scope="col" class="text-left align-middle">
                             Net carbon stock change in mineral soils (kt C)
                         </td>
-                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                        <td scope="col" class="text-center align-middle" *ngFor="let year of years$ | async">
                             {{getTotalLandReportingVariableValue(configService.netCarbonStockChangeInMineralSoilsReportingVariableId,
                             year)}}
                         </td>
@@ -72,10 +72,10 @@
                     <!--Net carbon stock change in organic soils (kt C)-->
                     <tr class="total">
 
-                        <td scope="col" class="align-middle">
+                        <td scope="col" class="text-left align-middle">
                             Net carbon stock change in organic soils (kt C)
                         </td>
-                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                        <td scope="col" class="text-center align-middle" *ngFor="let year of years$ | async">
                             {{getTotalLandReportingVariableValue(configService.netCarbonStockChangeInOrganicSoilsReportingVariableId,
                             year)}}
                         </td>
@@ -86,13 +86,13 @@
 
                     <!--Area (kha)-->
                     <tr class="remaining">
-                        <td scope="row" rowspan="5" class="align-middle">
+                        <td scope="row" rowspan="5" class="text-left align-middle">
                             {{getRemainingLandTitle()}}
                         </td>
-                        <td scope="col" class="align-middle">
+                        <td scope="col" class="text-left align-middle">
                             Area (kha)
                         </td>
-                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                        <td scope="col" class="text-center align-middle" *ngFor="let year of years$ | async">
                             {{getRemainingLandReportingVariableValue(configService.areaReportingVariableId, year)}}
                         </td>
                     </tr>
@@ -100,10 +100,10 @@
                     <!--Net carbon stock change in living biomass (kt C)-->
                     <tr class="remaining">
 
-                        <td scope="col" class="align-middle">
+                        <td scope="col" class="text-left align-middle">
                             Net carbon stock change in living biomass (kt C)
                         </td>
-                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                        <td scope="col" class="text-center align-middle" *ngFor="let year of years$ | async">
                             {{getRemainingLandReportingVariableValue(configService.netCarbonStockChangeInLivingBiomassReportingVariableId,
                             year)}}
                         </td>
@@ -112,10 +112,10 @@
                     <!--Net carbon stock change in dead organic matter (kt C)-->
                     <tr class="remaining">
 
-                        <td scope="col" class="align-middle">
+                        <td scope="col" class="text-left align-middle">
                             Net carbon stock change in dead organic matter (kt C)
                         </td>
-                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                        <td scope="col" class="text-center align-middle" *ngFor="let year of years$ | async">
                             {{getRemainingLandReportingVariableValue(configService.netCarbonStockChangeInDeadOrganicMatterReportingVariableId,
                             year)}}
                         </td>
@@ -124,10 +124,10 @@
                     <!--Net carbon stock change in mineral soils (kt C)-->
                     <tr class="remaining">
 
-                        <td scope="col" class="align-middle">
+                        <td scope="col" class="text-left align-middle">
                             Net carbon stock change in mineral soils (kt C)
                         </td>
-                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                        <td scope="col" class="text-center align-middle" *ngFor="let year of years$ | async">
                             {{getRemainingLandReportingVariableValue(configService.netCarbonStockChangeInMineralSoilsReportingVariableId,
                             year)}}
                         </td>
@@ -136,10 +136,10 @@
                     <!--Net carbon stock change in organic soils (kt C)-->
                     <tr class="remaining">
   
-                        <td scope="col" class="align-middle">
+                        <td scope="col" class="text-left align-middle">
                             Net carbon stock change in organic soils (kt C)
                         </td>
-                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                        <td scope="col" class="text-center align-middle" *ngFor="let year of years$ | async">
                             {{getRemainingLandReportingVariableValue(configService.netCarbonStockChangeInOrganicSoilsReportingVariableId,
                             year)}}
                         </td>
@@ -151,13 +151,13 @@
 
                     <!--Area (kha)-->
                     <tr class="converted">
-                        <td scope="row" rowspan="5" class="align-middle">
+                        <td scope="row" rowspan="5" class="text-left align-middle">
                             {{getConvertedLandTitle()}}
                         </td>
-                        <td scope="col" class="align-middle">
+                        <td scope="col" class="text-left align-middle">
                             Area (kha)
                         </td>
-                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                        <td scope="col" class="text-center align-middle" *ngFor="let year of years$ | async">
                             {{getConvertedLandReportingVariableValue(configService.areaReportingVariableId, year)}}
                         </td>
                     </tr>
@@ -165,10 +165,10 @@
                     <!--Net carbon stock change in living biomass (kt C)-->
                     <tr class="converted">
 
-                        <td scope="col" class="align-middle">
+                        <td scope="col" class="text-left align-middle">
                             Net carbon stock change in living biomass (kt C)
                         </td>
-                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                        <td scope="col" class="text-center align-middle" *ngFor="let year of years$ | async">
                             {{getConvertedLandReportingVariableValue(configService.netCarbonStockChangeInLivingBiomassReportingVariableId,
                             year)}}
                         </td>
@@ -177,10 +177,10 @@
                     <!--Net carbon stock change in dead organic matter (kt C)-->
                     <tr class="converted">
 
-                        <td scope="col" class="align-middle">
+                        <td scope="col" class="text-left align-middle">
                             Net carbon stock change in dead organic matter (kt C)
                         </td>
-                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                        <td scope="col" class="text-center align-middle" *ngFor="let year of years$ | async">
                             {{getConvertedLandReportingVariableValue(configService.netCarbonStockChangeInDeadOrganicMatterReportingVariableId,
                             year)}}
                         </td>
@@ -189,10 +189,10 @@
                     <!--Net carbon stock change in mineral soils (kt C)-->
                     <tr class="converted">
 
-                        <td scope="col" class="align-middle">
+                        <td scope="col" class="text-left align-middle">
                             Net carbon stock change in mineral soils (kt C)
                         </td>
-                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                        <td scope="col" class="text-center align-middle" *ngFor="let year of years$ | async">
                             {{getConvertedLandReportingVariableValue(configService.netCarbonStockChangeInMineralSoilsReportingVariableId,
                             year)}}
                         </td>
@@ -201,10 +201,10 @@
                     <!--Net carbon stock change in organic soils (kt C)--> 
                     <tr class="converted">
 
-                        <td scope="col" class="align-middle">
+                        <td scope="col" class="text-left align-middle">
                             Net carbon stock change in organic soils (kt C)
                         </td>
-                        <td scope="col" class="align-middle" *ngFor="let year of years$ | async">
+                        <td scope="col" class="text-center align-middle" *ngFor="let year of years$ | async">
                             {{getConvertedLandReportingVariableValue(configService.netCarbonStockChangeInOrganicSoilsReportingVariableId,
                             year)}}
                         </td>

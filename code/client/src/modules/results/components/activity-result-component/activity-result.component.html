@@ -1,0 +1,62 @@
+
+<div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+    <div class="mainflip">
+        <div class="frontside">
+            <div class="card m-0 p-0 border-top-0 border-bottom-0 border-right-0 border-left-lg"  (click)="onClick()">
+                
+                <div class="card-body m-0 p-0 ">
+
+                    <div class="d-flex flex-row bd-highlight mb-3">
+                        <div class="p-2 mt-4">
+                            <span class="circle-image">
+                                <img class="img-fluid svg {{color}}" src="/assets/icons/{{activity.icon}}" alt="Activity Icon" >
+                            </span>
+                        </div>
+                        <div class="p-2 mt-4 flex-grow-1">
+                            <div class="d-flex flex-column bd-highlight mb-3">
+                                <div class="flex-shrink-1">
+        
+                                    <div class="d-flex flex-row justify-content-around">
+                                        <span class="flex-grow-1 p-2 results font-weight-bold text-left"
+                                            [countUp]="primaryPhenomenonTypeQuantityObservation?.amount"
+                                            [options]="{decimalPlaces: primaryPhenomenonTypeQuantityObservation?.decimalPlaces}">0</span>
+                                        <span class="p-2">
+                                            <fa-icon *ngIf="secondaryPhenomenonTypeQuantityObservation?.amount > 0" [icon]='["fas", "caret-up"]' class="text-success"></fa-icon>
+                                            <fa-icon *ngIf="secondaryPhenomenonTypeQuantityObservation?.amount < 0" [icon]='["fas", "caret-down"]' class="text-danger"></fa-icon>
+                                        </span>
+                                        <span class="p-2 results"
+                                            [countUp]="secondaryPhenomenonTypeQuantityObservation?.amount"
+                                            [options]="{decimalPlaces: secondaryPhenomenonTypeQuantityObservation?.decimalPlaces}">0</span>
+        
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <p class="card-text text-left p-2">
+                                        {{primaryPhenomenonType.fullName}}
+                                    </p>
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+        <div class="backside">
+            <div class="card">
+                <div class="card-header">
+                    Trend
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        {{primaryPhenomenonType.fullName}} Trend
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

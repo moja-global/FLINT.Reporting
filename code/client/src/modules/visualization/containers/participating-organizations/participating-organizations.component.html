@@ -1,0 +1,23 @@
+
+<h6 class="mt-4">Participating Organizations</h6>
+<hr />
+
+<div class="d-flex flex-column flex-md-row justify-content-center bd-highlight mt-3 mb-3">
+    <button type="button" class="btn" [ngClass]="{'btn-primary': organizationTypeId == -1, 'btn-secondary': organizationTypeId != -1}" (click)="onFilterByOrganizationType(-1)">All <span *ngIf="organizationTypeId == -1" class="badge badge-light m-1 p-1">{{totalCount}}</span></button>
+    <button type="button" class="btn" [ngClass]="{'btn-primary': organizationTypeId == 1, 'btn-secondary': organizationTypeId != 1}" (click)="onFilterByOrganizationType(1)">Private <span *ngIf="organizationTypeId == 1" class="badge badge-light m-1 p-1">{{totalCount}}</span></button>
+    <button type="button" class="btn" [ngClass]="{'btn-primary': organizationTypeId == 2, 'btn-secondary': organizationTypeId != 2}" (click)="onFilterByOrganizationType(2)">CBO/CSO <span *ngIf="organizationTypeId == 2" class="badge badge-light m-1 p-1">{{totalCount}}</span></button>
+    <button type="button" class="btn" [ngClass]="{'btn-primary': organizationTypeId == 3, 'btn-secondary': organizationTypeId != 3}" (click)="onFilterByOrganizationType(3)">NGO <span *ngIf="organizationTypeId == 3" class="badge badge-light m-1 p-1">{{totalCount}}</span></button>
+    <button type="button" class="btn" [ngClass]="{'btn-primary': organizationTypeId == 4, 'btn-secondary': organizationTypeId != 4}" (click)="onFilterByOrganizationType(4)">INGO <span *ngIf="organizationTypeId == 4" class="badge badge-light m-1 p-1">{{totalCount}}</span></button>
+    <button type="button" class="btn" [ngClass]="{'btn-primary': organizationTypeId == 5, 'btn-secondary': organizationTypeId != 5}" (click)="onFilterByOrganizationType(5)">UN <span *ngIf="organizationTypeId == 5" class="badge badge-light m-1 p-1">{{totalCount}}</span></button>
+    <button type="button" class="btn" [ngClass]="{'btn-primary': organizationTypeId == 6, 'btn-secondary': organizationTypeId != 6}" (click)="onFilterByOrganizationType(6)">Donor <span *ngIf="organizationTypeId == 6" class="badge badge-light m-1 p-1">{{totalCount}}</span></button>
+  </div>
+
+
+
+<ul class="brands pr-5">
+    <li class="brands__item shadow" *ngFor="let organization of organizations$ | async">
+        <a href="{{organization.website}}" target="_blank">
+            <img src="/assets/logos/{{organization.id}}.png" alt="" />
+        </a>
+    </li>
+</ul>

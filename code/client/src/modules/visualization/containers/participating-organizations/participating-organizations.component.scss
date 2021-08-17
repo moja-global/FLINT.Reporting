@@ -1,0 +1,57 @@
+@import "styles/variables.scss";
+
+h6 {
+    font-family: "Roboto";
+    font-size: 80%;
+    letter-spacing: 0.075rem;
+}
+
+.btn {
+    border-radius: 0;
+}
+
+span {
+    font-family: "Roboto";
+    font-size: 80%;
+    letter-spacing: 0.075rem;
+}
+
+ul {
+    list-style-type: none;
+  }
+
+  
+
+
+.brands {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-gap: 1rem;
+  }
+  
+  .brands__item {
+    background: #eee;
+  }
+  
+  .brands__item img {
+    width: 130px;
+    height: 75px;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+  }
+  
+
+  .brands__item a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .btn-primary {
+      text-transform: uppercase !important;
+      font-size: 80%;
+      outline: none;
+  }
+  
+  

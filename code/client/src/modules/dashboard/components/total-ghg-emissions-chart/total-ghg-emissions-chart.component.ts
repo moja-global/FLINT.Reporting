@@ -153,6 +153,8 @@ export class TotalGHGEmissionsChartComponent implements OnInit, AfterViewInit {
                     this.log.trace(`${LOG_PREFIX}  Loading or reloading the  chart`);
                     this.loadChart();
 
+                    this.cd.markForCheck();
+
 
                 },
                 error => {
@@ -167,8 +169,9 @@ export class TotalGHGEmissionsChartComponent implements OnInit, AfterViewInit {
             this.quantityObservationsTableService.loading$.subscribe(
                 (loading) => {
                     this.loading = loading;
-                    this.cd.detectChanges();
                 }));
+
+                this.cd.detectChanges();
 
     }
 
@@ -200,7 +203,7 @@ export class TotalGHGEmissionsChartComponent implements OnInit, AfterViewInit {
             let a = ycategories.find(s => s.name === "Total Emissions (kt CO2-eq)");
 
             if (typeof a == 'undefined') {
-                a = { showInLegend: true, name: "Total Emissions (kt CO2-eq)", data: [this.getTotalCO2EquivalentValue(year)] };
+                a = { showInLegend: true, name: "Total Emissions (kt CO2-eq)", data: [this.getTotalCO2EquivalentValue(year)], color: "#A0E7E5" };
                 ycategories.push(a);
             } else {
                 a.data.push(this.getTotalCO2EquivalentValue(year));
@@ -224,7 +227,7 @@ export class TotalGHGEmissionsChartComponent implements OnInit, AfterViewInit {
         Highcharts.chart("container", this.basicColumnChartOptions);
 
         
-        this.cd.detectChanges();
+        
 
 
     }

@@ -165,8 +165,9 @@ export class TotalGHGEmissionsByPoolsChartComponent implements OnInit, AfterView
             this.quantityObservationsTableService.loading$.subscribe(
                 (loading) => {
                     this.loading = loading;
-                    this.cd.detectChanges();
                 }));
+
+                this.cd.detectChanges();
 
     }
 
@@ -199,8 +200,10 @@ export class TotalGHGEmissionsByPoolsChartComponent implements OnInit, AfterView
 
             if (typeof a == 'undefined') {
                 a = {
-                    showInLegend: true, name: "Living Biomass",
-                    data: [this.getTotalReportingVariableValue(this.configService.netCarbonStockChangeInLivingBiomassReportingVariableId, year)]
+                    showInLegend: true, 
+                    name: "Living Biomass",
+                    data: [this.getTotalReportingVariableValue(this.configService.netCarbonStockChangeInLivingBiomassReportingVariableId, year)],
+                    color: "#A0E7E5"
                 };
                 ycategories.push(a);
             } else {
@@ -213,8 +216,10 @@ export class TotalGHGEmissionsByPoolsChartComponent implements OnInit, AfterView
 
             if (typeof b == 'undefined') {
                 b = {
-                    showInLegend: true, name: "Dead Organic Matter",
-                    data: [this.getTotalReportingVariableValue(this.configService.netCarbonStockChangeInDeadOrganicMatterReportingVariableId, year)]
+                    showInLegend: true, 
+                    name: "Dead Organic Matter",
+                    data: [this.getTotalReportingVariableValue(this.configService.netCarbonStockChangeInDeadOrganicMatterReportingVariableId, year)],
+                    color: "#FFAEBC"
                 };
                 ycategories.push(b);
             } else {
@@ -226,8 +231,10 @@ export class TotalGHGEmissionsByPoolsChartComponent implements OnInit, AfterView
 
             if (typeof c == 'undefined') {
                 c = {
-                    showInLegend: true, name: "Mineral Soils",
-                    data: [this.getTotalReportingVariableValue(this.configService.netCarbonStockChangeInMineralSoilsReportingVariableId, year)]
+                    showInLegend: true, 
+                    name: "Mineral Soils",
+                    data: [this.getTotalReportingVariableValue(this.configService.netCarbonStockChangeInMineralSoilsReportingVariableId, year)],
+                    color: "#B4F8C8"
                 };
                 ycategories.push(c);
             } else {
@@ -239,8 +246,10 @@ export class TotalGHGEmissionsByPoolsChartComponent implements OnInit, AfterView
 
             if (typeof d == 'undefined') {
                 d = {
-                    showInLegend: true, name: "Organic Soils",
-                    data: [this.getTotalReportingVariableValue(this.configService.netCarbonStockChangeInOrganicSoilsReportingVariableId, year)]
+                    showInLegend: true, 
+                    name: "Organic Soils",
+                    data: [this.getTotalReportingVariableValue(this.configService.netCarbonStockChangeInOrganicSoilsReportingVariableId, year)],
+                    color: "#FBE7C6"
                 };
                 ycategories.push(d);
             } else {

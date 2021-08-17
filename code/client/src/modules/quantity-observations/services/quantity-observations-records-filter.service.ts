@@ -151,7 +151,7 @@ export class QuantityObservationsRecordsFilterService implements OnDestroy {
         // If the incoming database id or the party id is null, return an empty array
         if (incomingDatabaseId == -1 || incomingPartyId == -1) {
 
-            this._quantityObservationsSubject$.next([]);
+            this._quantityObservationsSubject$.next(Object.assign([],[]));
             this._filter = databaseFilter;
 
             // Unflag

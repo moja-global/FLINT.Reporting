@@ -35,8 +35,8 @@ cd $BASEDIR
 echo
 echo "Building, tagging & pushing versioned image"
 echo
-docker build -t reporter.miles.co.ke:5043/client:0.0.1 $BASEDIR
-docker push reporter.miles.co.ke:5043/client:0.0.1
+docker build -t systems.ags.co.ke:5043/client:0.0.1 $BASEDIR
+docker push systems.ags.co.ke:5043/client:0.0.1
 
 
 

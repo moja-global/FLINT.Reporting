@@ -1,5 +1,7 @@
+<!--
+
 <form [formGroup]="filterForm">
-    <div class="d-flex justify-content-center flex-column flex-md-row mb-1">
+    <div class="d-flex justify-content-center flex-column flex-md-row mb-0">
         <div class="p-2 flex-fill">
             <div class="input-group">
                 <div class="input-group-prepend">
@@ -24,11 +26,6 @@
                 <input type="text" id="partyId" class="form-control" placeholder="Location" aria-label="Change Location"
                     aria-describedby="change-location-button" value="Kenya" disabled>
 
-                <!--
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button" id="change-location-button"">Change</button>
-        </div>
-        -->
             </div>
         </div>
 
@@ -73,4 +70,142 @@
             </div>
         </div>
     </div>
+</form>
+
+-->
+
+
+<form [formGroup]="filterForm">
+
+
+    <!--For Small-Sized Devices Only-->
+    <div class="row d-md-none">
+        <div class="col">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th scope="row" class="w-25 text-left align-middle">Database</th>
+                        <td class="w-75 text-left align-middle">
+                            <select id="databaseSelect" formControlName="databaseId" class="custom-select"
+                                (change)="onDatabaseChange($event)">
+                                <option [ngValue]="-1" disabled>Select Database</option>
+                                <option *ngFor="let database of databases$ | async" [ngValue]="database.id">
+                                    {{database.label}}
+                                </option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="w-25 text-left align-middle">Location</th>
+                        <td class="w-75 text-left align-middle">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="w-25 text-left align-middle">Land Use</th>
+                        <td class="w-75 text-left align-middle">
+                            <select id="landUseCategoryId" formControlName="landUseCategoryId" class="custom-select"
+                                (change)="onLandUseChange($event)">
+                                <option [ngValue]="-1">All</option>
+                                <option [ngValue]="configService.forestLandId">Forest land</option>
+                                <option [ngValue]="configService.cropland">Cropland</option>
+                                <option [ngValue]="configService.grasslandId">Grassland</option>
+                                <option [ngValue]="configService.wetlandsId">Wetlands</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="w-25 text-left align-middle">Start Year</th>
+                        <td class="w-75 text-left align-middle">
+                            <select id="startYear" formControlName="startYear" class="custom-select"
+                                (change)="onStartYearChange($event)">
+                                <option [ngValue]="-1" disabled>Select Start Year</option>
+                                <option *ngFor="let year of years$ | async" [ngValue]="year">{{year}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="w-25 text-left align-middle">End Year</th>
+                        <td class="w-75 text-left align-middle">
+                            <select id="endYear" formControlName="endYear" class="custom-select"
+                                (change)="onEndYearChange($event)">
+                                <option [ngValue]="-1" disabled>Select End Year</option>
+                                <option *ngFor="let year of years$ | async" [ngValue]="year">{{year}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!--For Middle-Sized Devices Upwards-->
+    <div class="row d-none d-md-block">
+        <div class="col">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col" class="col-md-3 text-left align-middle">Database</th>
+                        <th scope="col" class="col-md-3 text-left align-middle">Location</th>
+                        <th scope="col" class="col-md-2 text-center align-middle">Land Use</th>
+                        <th scope="col" class="col-md-2 text-center align-middle">Start Year</th>
+                        <th scope="col" class="col-md-2 text-center align-middle">End Year</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-left align-middle">
+                            <select id="databaseSelect" formControlName="databaseId" class="custom-select"
+                                (change)="onDatabaseChange($event)">
+                                <option [ngValue]="-1" disabled>Select Database</option>
+                                <option *ngFor="let database of databases$ | async" [ngValue]="database.id">
+                                    {{database.label}}
+                                </option>
+                            </select>
+                        </td>
+
+                        <td class="text-left align-middle">
+                            <select id="partySelect" formControlName="partyId"
+                                class="custom-select" (change)="onPartyChange($event)">
+                                <option [ngValue]="-1" disabled>Select Administrative Unit</option>
+                                <option *ngFor="let party of parties$ | async"
+                                    [ngValue]="party.id" [selected]="party.id == selectedPartyId">
+                                    {{party.name}}
+                                </option>
+                            </select>
+                        </td>
+
+                        <td class="text-left align-middle">
+                            <select id="landUseCategoryId" formControlName="landUseCategoryId" class="custom-select"
+                                (change)="onLandUseChange($event)">
+                                <option [ngValue]="-1">All</option>
+                                <option [ngValue]="configService.forestLandId">Forest land</option>
+                                <option [ngValue]="configService.cropland">Cropland</option>
+                                <option [ngValue]="configService.grasslandId">Grassland</option>
+                                <option [ngValue]="configService.wetlandsId">Wetlands</option>
+                            </select>
+                        </td>
+
+                        <td class="text-center align-middle">
+                            <select id="startYear" formControlName="startYear" class="custom-select text-center"
+                                (change)="onStartYearChange($event)">
+                                <option [ngValue]="-1" disabled>Select Start Year</option>
+                                <option *ngFor="let year of years$ | async" [ngValue]="year">{{year}}</option>
+                            </select>
+                        </td>
+
+                        <td class="text-center align-middle">
+                            <select id="endYear" formControlName="endYear" class="custom-select text-center"
+                                (change)="onEndYearChange($event)">
+                                <option [ngValue]="-1" disabled>Select End Year</option>
+                                <option *ngFor="let year of years$ | async" [ngValue]="year">{{year}}</option>
+                            </select>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </form>

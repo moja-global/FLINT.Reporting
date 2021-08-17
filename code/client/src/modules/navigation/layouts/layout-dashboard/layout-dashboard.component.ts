@@ -31,13 +31,13 @@ export class LayoutDashboardComponent implements OnInit, OnDestroy {
 
     constructor(
         public navigationService: NavigationService,
-        private changeDetectorRef: ChangeDetectorRef
+        private cd: ChangeDetectorRef
     ) { }
     ngOnInit() {
         this.subscription.add(
             this.navigationService.sideNavVisible$().subscribe(isVisible => {
                 this.sideNavHidden = !isVisible;
-                this.changeDetectorRef.markForCheck();
+                this.cd.markForCheck();
             })
         );
     }

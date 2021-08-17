@@ -611,9 +611,9 @@
 // Font, line-height, and color for body text, headings, and more.
 
 // stylelint-disable value-keyword-case
-//$font-family-sans-serif:      "Josefin Sans";
 $font-family-sans-serif:      "Raleway";
-$font-family-monospace:       "Roboto Mono";
+//$font-family-sans-serif:      "Raleway";
+$font-family-monospace:       "Roboto";
 $font-family-special:         "Roboto";
 $font-family-base:            $font-family-sans-serif;
 
@@ -648,7 +648,8 @@ $h1-font-size:                  $font-size-base * 1.875;
 //$h6-font-size:                $font-size-base !default;
 
 //$headings-margin-bottom:      $spacer / 2 !default;
-$headings-font-family:          "Raleway";
+//$headings-font-family:          "Raleway";
+$headings-font-family:          "Roboto";
 $headings-font-weight:          400;
 //$headings-line-height:        1.2 !default;
 $headings-color:                $gray-700;

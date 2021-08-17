@@ -18,11 +18,11 @@ export const sideNavSections: SideNavSection[] = [
 export const sideNavItems: SideNavItems = {
     core: {
         icon: 'tachometer-alt',
-        text: 'Core',
+        text: 'Dashboard',
         link: '/dashboard',
     },
     coverTypes: {
-        icon: 'cog',
+        icon: 'seedling',
         text: 'Cover Types',
         link: '/cover_types',
     },
@@ -32,27 +32,27 @@ export const sideNavItems: SideNavItems = {
         link: '/databases',
     },    
     emissionTypes: {
-        icon: 'cog',
+        icon: 'fire',
         text: 'Emission Types',
         link: '/emission_types',
     }, 
     fluxTypes: {
-        icon: 'cog',
+        icon: 'exchange-alt',
         text: 'Flux Types',
         link: '/flux_types',
     },    
     pools: {
-        icon: 'cog',
+        icon: 'water',
         text: 'Pools',
         link: '/pools',
     },         
     reportingFrameworks: {
-        icon: 'cog',
+        icon: 'file-excel',
         text: 'Reporting Frameworks',
         link: '/reporting_frameworks',
     },
     units: {
-        icon: 'cog',
+        icon: 'balance-scale',
         text: 'Units',
         link: '/unit_categories'
     }           

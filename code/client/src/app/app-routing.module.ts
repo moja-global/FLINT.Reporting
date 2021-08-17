@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [
+const routes: Routes = [  
     {
         path: '',
         pathMatch: 'full',
@@ -11,6 +11,11 @@ const routes: Routes = [
         path: 'auth',
         loadChildren: () =>
             import('modules/auth/auth-routing.module').then(m => m.AuthRoutingModule),
+    }, 
+    {
+        path: 'cover_types',
+        loadChildren: () =>
+            import('modules/cover-types/cover-types-routing.module').then(m => m.CoverTypesRoutingModule)
     },     
     {
         path: 'databases',
@@ -26,11 +31,6 @@ const routes: Routes = [
                 m => m.DashboardRoutingModule
             ),
     },
-    {
-        path: 'cover_types',
-        loadChildren: () =>
-            import('modules/cover-types/cover-types-routing.module').then(m => m.CoverTypesRoutingModule)
-    }, 
     {
         path: 'emission_types',
         loadChildren: () =>
@@ -72,7 +72,21 @@ const routes: Routes = [
         path: 'reporting_variables',
         loadChildren: () =>
             import('modules/reporting-variables/reporting-variables-routing.module').then(m => m.ReportingVariablesRoutingModule)
-    },           
+    }, 
+    {
+        path: 'results',
+        loadChildren: () =>
+            import('modules/results/results-routing.module').then(
+                m => m.ResultsRoutingModule
+            ),
+    },     
+    {
+        path: 'situation',
+        loadChildren: () =>
+            import('modules/situations/situations-routing.module').then(
+                m => m.SituationsRoutingModule
+            ),
+    },          
     {
         path: 'unit_categories',
         loadChildren: () =>

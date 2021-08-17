@@ -2,12 +2,12 @@
 
 // Black
 // ----------------------------------
-$black:    #000000 !default;
+$black:    #000 !default;
 
 
 // White
 // ----------------------------------
-$white:    #ffffff !default;
+$white:    #fff !default;
 
 
 // Gray
@@ -419,8 +419,14 @@ $indigo: $indigo-light-900  !default;
 // Violet
 // ----------------------------------
 
-$violet-light-100: #fce6fc !default;
-$violet-light-200: #fadafa !default;
+$violet-light-100: #e6e6ff  !default;
+$violet-light-200: #2770b9 !default;
+//$violet-light-200: #37b37b !default;
+
+
+//legit
+//$violet-light-100: #fce6fc !default;
+//$violet-light-200: #fadafa !default;
 $violet-light-300: #f8cdf8 !default;
 $violet-light-400: #f7c1f7 !default;
 $violet-light-500: #f5b4f5 !default;
@@ -714,6 +720,7 @@ $theme-colors: map-merge(
   ),
   $theme-colors
 );
+
 
 // Add blues
 $theme-colors: map-merge(

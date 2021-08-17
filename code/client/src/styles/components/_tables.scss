@@ -1,33 +1,15 @@
+.w-10 {
+  width: 10% !important;
+}
 
-/*table {
+.w-80 {
+  width: 80% !important;
+}
 
-    border-collapse: collapse;
+/*
 
-    thead {
-        tr {
-            th {
-                border: 1px solid $gray-light-200 !important;
-            }
-        }
-    }
-
-    tbody {
-        tr {
-            td {
-                border: 1px solid $gray-light-200 !important;
-            }
-
-            &:nth-child(odd) {
-
-                td {
-                    background-color: $gray-light-100 !important;
-                }
-    
-                tr.found {
-                    background-color: $gray-light-100 !important;
-                }
-            }
-        }
-    }
+.table-striped > tbody > tr:nth-child(odd) > td,
+tr.found {
+  background-color: #F8FAFD !important;
 }
 */

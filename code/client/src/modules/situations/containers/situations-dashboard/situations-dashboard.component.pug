@@ -1,0 +1,9 @@
+sb-layout-main
+  ng-container(header)
+    sb-header(title='Situations', subtitle='The supported reporting structures')
+  ng-container(body')
+    sb-card
+      .card-header
+        | Situations List
+      .card-body
+        sb-situations-records-tabulation([pagesize]='6')

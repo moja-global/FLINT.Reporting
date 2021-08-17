@@ -32,6 +32,7 @@ Notes
 // Pages
 @import "./layout/authentication.scss";
 @import "./layout/default.scss";
+@import "./layout/dashboard.scss";
 @import "./layout/fixed.scss";
 @import "./layout/error.scss";
 @import "./layout/home.scss";
@@ -63,10 +64,12 @@ Notes
 
 
 /* ---------- 7. Components ---------- */
+@import "./components/borders.scss";
 @import "./components/buttons.scss";
 @import "./components/cards.scss";
 @import "./components/headers.scss";
 @import "./components/modals.scss";
+@import "./components/forms.scss";
 @import "./components/tables.scss";
 
 

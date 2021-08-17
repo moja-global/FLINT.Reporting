@@ -1,9 +1,11 @@
-import { Component, ChangeDetectionStrategy, AfterViewInit, Output, EventEmitter, HostListener, OnInit, OnDestroy } from "@angular/core";
+import { Component, ChangeDetectionStrategy, AfterViewInit, Output, EventEmitter, HostListener, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { PARTIES, DEFAULT_PARTY_ID } from "@common/data";
 import { ConfigService } from "@common/services/config.service";
 import { DatabaseFilterService } from "@common/services/database-filter.service";
 import { Database } from "@modules/databases/models";
 import { DatabasesDataService } from "@modules/databases/services";
+import { Party } from "@modules/parties/models/party.model";
 import { NGXLogger } from "ngx-logger";
 import { BehaviorSubject, Observable, Subscription } from "rxjs";
 
@@ -24,6 +26,10 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
   private _databasesSubject$: BehaviorSubject<Array<Database>> = new BehaviorSubject<Array<Database>>([]);
   readonly databases$: Observable<Array<Database>> = this._databasesSubject$.asObservable();
 
+  // Allows the database selection drop down to keep tabs of the current status of parties
+  private _partiesSubject$: BehaviorSubject<Array<Party>> = new BehaviorSubject<Array<Party>>([]);
+  readonly parties$: Observable<Array<Party>> = this._partiesSubject$.asObservable();     
+
   // Allows the year selection drop downs to keep tabs of the current status of years
   private _yearsSubject$: BehaviorSubject<Array<number>> = new BehaviorSubject<Array<number>>([]);
   readonly years$: Observable<Array<number>> = this._yearsSubject$.asObservable();
@@ -39,7 +45,7 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedDatabaseId: number = -1;
 
   // Selected Party Id
-  selectedPartyId: number = 48;
+  selectedPartyId: number = DEFAULT_PARTY_ID;
 
   // selected Land Use Id
   selectedLandUseId: number = -1;
@@ -62,6 +68,7 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
     private databasesDataService: DatabasesDataService,
     public configService: ConfigService,
     private databaseFilterService: DatabaseFilterService,
+    private cd: ChangeDetectorRef,
     private fb: FormBuilder,
     private log: NGXLogger) {
   }
@@ -71,14 +78,19 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.log.trace(`${LOG_PREFIX} Initializing Component`);
 
+        // Parties
+        this._partiesSubject$.next(PARTIES);    
+
 
     this.filterForm = this.fb.group({
       databaseId: [-1],
       landUseCategoryId: [-1],
       startYear: [-1],
-      endYear: [-1]
+      endYear: [-1],
+      partyId: DEFAULT_PARTY_ID
     });
 
+    // Databases
     this._subscriptions.push(
       this.databasesDataService.databases$
         .subscribe(
@@ -117,6 +129,8 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
             // Push the next databases update
             this._databasesSubject$.next(sorted);
 
+            if(sorted.length > 0) {
+
             // Set the selected database to the latest database
             this.selectedDatabase = sorted[0];
 
@@ -143,6 +157,11 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
             this.filterForm.get("startYear")?.patchValue(sorted[0].startYear);
             this.filterForm.get("endYear")?.patchValue(sorted[0].endYear);
 
+
+          }
+
+          this.onChange();
+
           },
           error => {
 
@@ -154,6 +173,10 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
 
           }
         ));
+
+
+
+        
   }
 
   ngAfterViewInit() {
@@ -162,7 +185,7 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Call the global change management method
     this.log.trace(`${LOG_PREFIX} Calling the global change management method`);
-    this.onChange();
+    
   }
 
   @HostListener('window:beforeunload')
@@ -257,6 +280,7 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
       this.log.trace(`${LOG_PREFIX} Ignoring the change event`);
     }
 
+    this.cd.detectChanges();
 
   }
 
@@ -394,35 +418,63 @@ export class FilterComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-  onLocationChange(event: any) {
+  onPartyChange(event: any) {
 
-    this.log.trace(`${LOG_PREFIX} Location change event received`);
+    this.log.trace(`${LOG_PREFIX} Party change event received`);
 
-    // Get the the selected location
-    this.log.trace(`${LOG_PREFIX} Getting the selected location`);
-    const id = this.filterForm.get("locationId")?.value;
-    this.log.debug(`${LOG_PREFIX} Location Id = ${id}`);
+    // Get the id of the selected party
+    this.log.trace(`${LOG_PREFIX} Getting the id of the selected party`);
+    const id: number = this.filterForm.get("partyId")?.value;
+    this.log.debug(`${LOG_PREFIX} Party = ${id}`);
 
-    // Check if the selected location is indeed different from the locally saved location
-    this.log.trace(`${LOG_PREFIX} Checking if the selected location is indeed different from the locally saved location`);
+    // Check if the selected party id is indeed different from the locally saved party id
+    this.log.trace(`${LOG_PREFIX} Checking if the selected party id is indeed different from the locally saved party id`);
 
-    if (id != this.selectedLandUseId) {
+    if (id != this.selectedPartyId) {
 
-      // The selected location is different from the locally saved location
-      this.log.trace(`${LOG_PREFIX} The selected location is different from the locally saved location`);
+      // The selected party id is different from the locally saved party id
+      this.log.trace(`${LOG_PREFIX} The selected party id is different from the locally saved party id`);
 
-      // Update the locally saved location
-      this.log.trace(`${LOG_PREFIX} Updating the locally saved location`);
+      // Update the locally saved party id
+      this.log.trace(`${LOG_PREFIX} Updating the locally saved party id`);
       this.selectedPartyId = id;
 
-      // Call the global change management method
-      this.log.trace(`${LOG_PREFIX} Calling the global change management method`);
-      this.onChange();
+      // Get the record of the party with the given id
+      this.log.trace("Getting the record of the party with the given id");
+      let party: Party | undefined = this._partiesSubject$.value.find(d => d.id == this.selectedPartyId);
+
+      // Check if the record exists
+      this.log.trace("Checking if the party record exists");
+
+      if (party != undefined) {
+
+        // The record exists
+        this.log.trace("The party record exists");
+
+        // Call the global change management method
+        this.log.trace(`${LOG_PREFIX} Calling the global change management method`);
+        this.onChange();
+
+
+      } else {
+
+        // The record does not exist
+        this.log.warn(`${LOG_PREFIX} The party record does not exist`);
+
+        // Assume the worst and clear the parties array
+        this.log.warn(`${LOG_PREFIX}Assuming the worst and clearing the parties data`);
+        this._partiesSubject$.next([]);
+      }
 
     } else {
-      // The selected location is not different from the locally saved location
-      this.log.trace(`${LOG_PREFIX} The selected location is not different from the locally saved location`);
+
+      // The selected party id is not different from the locally saved party id
+      this.log.trace(`${LOG_PREFIX} The selected party id is not different from the locally saved party id`);
+
+      // Ignore the value
+      this.log.trace(`${LOG_PREFIX} Ignoring the change event`);
     }
+
 
   }
 

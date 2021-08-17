@@ -1,0 +1,92 @@
+@import "styles/variables.scss";
+
+.results {
+    font-family: "Roboto";
+    font-size: 80%;
+    letter-spacing: 0.075rem; 
+}
+
+/*.image-flip:hover .backside,
+.image-flip.hover .backside {
+	-webkit-transform: rotateX(0deg);
+	-moz-transform: rotateX(0deg);
+	-o-transform: rotateX(0deg);
+	-ms-transform: rotateX(0deg);
+	transform: rotateX(0deg);
+}
+
+.image-flip:hover .frontside,
+.image-flip.hover .frontside {
+	-webkit-transform: rotateX(180deg);
+	-moz-transform: rotateX(180deg);
+	-o-transform: rotateX(180deg);
+	transform: rotateX(180deg);
+}*/
+
+.image-flip {
+	/*margin-bottom: 50px;*/
+	width: 100%;
+	height: 150px;
+}
+
+.mainflip {
+	-webkit-transition: 1s;
+	-webkit-transform-style: preserve-3d;
+	-ms-transition: 1s;
+	-moz-transition: 1s;
+	-moz-transform: perspective(1000px);
+	-moz-transform-style: preserve-3d;
+	-ms-transform-style: preserve-3d;
+	transition: 1s;
+	transform-style: preserve-3d;
+	position: relative;
+	height: 150px;
+}
+
+.frontside,
+.backside {
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-transition: 1s;
+	-webkit-transform-style: preserve-3d;
+	-moz-transition: 1s;
+	-moz-transform-style: preserve-3d;
+	-o-transition: 1s;
+	-o-transform-style: preserve-3d;
+	-ms-transition: 1s;
+	-ms-transform-style: preserve-3d;
+	transition: 1s;
+	transform-style: preserve-3d;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 150px;
+}
+
+.frontside {
+	-webkit-transform: rotateX(0deg);
+	-ms-transform: rotateX(0deg);
+	z-index: 2;
+}
+
+.frontside img {
+    width: 69px;
+	height: 69px;
+}
+
+.backside {
+	background: white;
+	-webkit-transform: rotateX(-180deg);
+	-moz-transform: rotateX(-180deg);
+	-o-transform: rotateX(-180deg);
+	-ms-transform: rotateX(-180deg);
+	transform: rotateX(-180deg);
+}
+
+.frontside .card, .backside .card  {
+	height: 100%;
+	border-radius: 0;
+}

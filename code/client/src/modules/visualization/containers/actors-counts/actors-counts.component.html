@@ -1,0 +1,5 @@
+<div class="d-flex flex-column flex-md-row justify-content-center justify-content-md-between ">
+    <ng-container *ngFor="let visualization of getActorCountsVisualizations() | async">
+        <sb-count [visualization]="visualization" class="p-2 flex-fill"></sb-count>
+    </ng-container>
+</div>

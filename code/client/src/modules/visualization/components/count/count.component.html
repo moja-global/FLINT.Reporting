@@ -1,0 +1,30 @@
+<div class="card bg-white text-dark border-top-0 border-bottom-0 border-right-0 border-left-lg shadow" [style]="'border-color:' + primaryVisualizationVariable?.color + ';'">
+    <div class="card-body">
+        <div class="d-flex flex-column justify-content-center">
+            <span class="text-uppercase text-center">
+                {{primaryVisualizationVariable?.label}}
+            </span>
+            <span class="font-weight-bold text-center">
+                <span [countUp]="primaryVisualizationVariableQuantityObservation?.amount" [options]="{decimalPlaces: primaryVisualizationVariableQuantityObservation?.decimalPlaces}">0</span>
+                <span *ngIf="variableCount == 1">
+                    {{primaryVisualizationVariableQuantityObservationUnit?.symbol}}
+                </span>
+            </span>
+            <ng-container *ngIf="variableCount > 1">
+                <span class="text-center">
+                    <small>
+                        {{secondaryVisualizationVariable?.label}} :
+                        <span [countUp]="secondaryVisualizationVariableQuantityObservation?.amount" [options]="{decimalPlaces: secondaryVisualizationVariableQuantityObservation?.decimalPlaces}">0</span>
+                    </small>
+                </span>
+            </ng-container>
+            <ng-container *ngIf="variableCount == 1">
+                <span class="text-center">
+                    <small>
+                        <span>{{visualization?.context}}</span>
+                    </small>                
+                </span>
+            </ng-container>            
+        </div>
+    </div>
+</div>

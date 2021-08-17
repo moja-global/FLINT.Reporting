@@ -1,18 +1,19 @@
 import { HttpClient } from "@angular/common/http";
-import { Component, ChangeDetectionStrategy, OnInit } from "@angular/core";
+import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef } from "@angular/core";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { DatabaseFilter } from "@common/models/database-filter.model";
 import { ConfigService } from "@common/services/config.service";
 import { DatabaseFilterService } from "@common/services/database-filter.service";
+import { Database } from "@modules/databases/models";
 import { DatabasesDataService } from "@modules/databases/services/databases-data.service";
 import { environment } from "environments/environment";
 import FileSaver from "file-saver";
 import { NGXLogger } from "ngx-logger";
-import { BehaviorSubject, Subscription } from "rxjs";
+import { BehaviorSubject, Observable, Subscription } from "rxjs";
 
 
+const LOG_PREFIX: string = "[Dashboard Component]";
 const API_PREFIX: string = "api/v1/crf_tables";
-
-
 
 @Component({
     selector: 'sb-dashboard',
@@ -40,6 +41,8 @@ export class DashboardComponent implements OnInit {
     // Set the default selected table
     table: string = "forestLand"
 
+    // Set whether or not the filter should be shown
+    showFilter: boolean = true;    
 
     // Keep tabs on the criteria by which the current displayed database has been filtered
     databaseFilter!: DatabaseFilter;
@@ -53,6 +56,8 @@ export class DashboardComponent implements OnInit {
         public databaseFilterService: DatabaseFilterService,
         public configService: ConfigService,
         private http: HttpClient,
+        private fb: FormBuilder,
+        private cd: ChangeDetectorRef,
         private log: NGXLogger) {
 
         setInterval(() => {
@@ -84,27 +89,47 @@ export class DashboardComponent implements OnInit {
                         this.log.error('Could not load databases');
                         this.hasProcessedDatabase = false;
                     }
-                ));
-                
+                ));        
+
     }
 
-    ngOnInit() { }
+    ngOnInit() {
+
+        this.log.trace(`${LOG_PREFIX} Initializing Component`);
+        this.cd.detectChanges();
+
+
+        
+    }
+
+
+    ngAfterViewInit() {
+        
+    }
 
     ngOnDestroy() {
         this._subscriptions.forEach((s) => s.unsubscribe());
     }
 
+    toggleShowFilter() {
+        this.showFilter = !this.showFilter;
+    }
+
+
+    detect() {
+        this.cd.markForCheck();
+    }
+
 
     // See: https://stackoverflow.com/questions/49169806/download-file-in-angular4-using-file-saver
     downloadCRFTable() {
-        return this.http.get(`${this._baseUrl}/${API_PREFIX}/partyId/48/databaseId/${this.databaseFilterService.filter.databaseId}/from/${this.databaseFilterService.filter.startYear}/to/${this.databaseFilterService.filter.endYear}`, { responseType: 'blob' })
+        return this.http.get(`${this._baseUrl}/${API_PREFIX}/partyId/${this.databaseFilterService.filter.partyId}/databaseId/${this.databaseFilterService.filter.databaseId}/from/${this.databaseFilterService.filter.startYear}/to/${this.databaseFilterService.filter.endYear}`, { responseType: 'blob' })
             .subscribe(data => {
                 const file: Blob = new Blob([data], { type: 'application/vnd.ms-excel' });
                 FileSaver.saveAs(file, 'crf_table.xlsx');
             }
             );
     }
-
 
 
 }
