@@ -13,6 +13,7 @@ This Documentation is meant for Developers wishing to contribute to moja global 
    :hidden:
 
    prerequisites/index
+   DevelopmentGuide/index
    DevelopmentSetup/index
    contributing/index
    DeveloperWorkflow/index
