@@ -51,4 +51,4 @@ parts of the documentation.
    functional-decomposition
    execution-flow
    source-code-organization
-
+   long-term-vision
