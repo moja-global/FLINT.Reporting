@@ -48,3 +48,4 @@ parts of the documentation.
    :hidden:
 
    major-design-elements
+   functional-decomposition
