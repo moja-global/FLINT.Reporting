@@ -52,3 +52,4 @@ parts of the documentation.
    execution-flow
    source-code-organization
    long-term-vision
+   logical-next-areas
