@@ -49,3 +49,7 @@ parts of the documentation.
 
    major-design-elements
    functional-decomposition
+   execution-flow
+   source-code-organization
+   long-term-vision
+   logical-next-areas

@@ -16,11 +16,10 @@
 
 
 # -- Project information -----------------------------------------------------
-
+import datetime
 project = "FLINT.Reporting Technical Guide"
-copyright = "2020, Anthony Kwaje"
-author = "Anthony Kwaje"
-
+author = "Anthony Kwaje & Harsh Bardhan Mishra"
+copyright = '{0} {1}, contributed by {2}'.format(datetime.datetime.now().year, 'moja global', author)
 
 # -- General configuration ---------------------------------------------------
 
