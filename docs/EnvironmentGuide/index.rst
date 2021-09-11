@@ -31,3 +31,4 @@ Reporting Tool repository is necessary.
    scripts
    system-environment-setup
    security-environment-setup
+   java-environment-setup
