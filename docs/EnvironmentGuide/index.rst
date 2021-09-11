@@ -35,3 +35,4 @@ Reporting Tool repository is necessary.
    nodejs-environment-setup
    meta-environment-setup
    docker-environment-setup
+   kubernetes-environment-setup
