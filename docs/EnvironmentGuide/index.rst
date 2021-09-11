@@ -32,3 +32,4 @@ Reporting Tool repository is necessary.
    system-environment-setup
    security-environment-setup
    java-environment-setup
+   nodejs-environment-setup
