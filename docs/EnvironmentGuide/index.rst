@@ -34,3 +34,4 @@ Reporting Tool repository is necessary.
    java-environment-setup
    nodejs-environment-setup
    meta-environment-setup
+   docker-environment-setup
