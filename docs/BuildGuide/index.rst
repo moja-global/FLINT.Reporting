@@ -49,3 +49,9 @@ follow with the exception of Step 1 and 2 which we covered extensively
 in the Reporting Tool Environment Setup Guide.
 
 .. _Environment Setup Guide: ../EnvironmentGuide/index.html
+
+
+.. toctree::
+   :hidden:
+
+   building-reporting-tool
