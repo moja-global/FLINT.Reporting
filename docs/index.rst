@@ -12,13 +12,7 @@ This Documentation is meant for Developers wishing to contribute to moja global 
 .. toctree::
    :hidden:
 
-   prerequisites/index
    DevelopmentGuide/index
    EnvironmentGuide/index
    BuildGuide/index
    InstallationGuide/index
-   DevelopmentSetup/index
-   contributing/index
-   DeveloperWorkflow/index
-   faq
-   contact
