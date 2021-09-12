@@ -15,6 +15,7 @@ This Documentation is meant for Developers wishing to contribute to moja global 
    prerequisites/index
    DevelopmentGuide/index
    EnvironmentGuide/index
+   BuildGuide/index
    DevelopmentSetup/index
    contributing/index
    DeveloperWorkflow/index
