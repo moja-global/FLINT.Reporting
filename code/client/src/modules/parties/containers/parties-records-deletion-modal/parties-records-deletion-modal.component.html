@@ -1,10 +1,10 @@
 <sb-modal>
     <ng-container title>
-        Delete {{targetPartyType?.name}} Type Record
+        Delete Administrative Unit Record
     </ng-container>
     <ng-container body>
 
-        <sb-parties-records-deletion [targetPartyType]="targetPartyType" [id]="id" (succeeded)="onSucceeded()" (failed)="onFailed($event)">
+        <sb-parties-records-deletion [id]="id" (succeeded)="onSucceeded()" (failed)="onFailed($event)">
         </sb-parties-records-deletion>
 
         <ng-container *ngIf='(status$ | async) === "deleting"'>
@@ -27,28 +27,28 @@
     <ng-container footer>
 
         <ng-container *ngIf='(status$ | async) === "new"'>
-            <sb-button action="yes" [entity]="targetPartyType?.name" (yes)="onDelete()"></sb-button>
-            <sb-button action="no" [entity]="targetPartyType?.name" guarded="false" (no)="onQuit()"></sb-button>             
+            <sb-button action="yes" entity="Administrative Unit" (yes)="onDelete()"></sb-button>
+            <sb-button action="no" entity="Administrative Unit" guarded="false" (no)="onQuit()"></sb-button>             
         </ng-container>
 
         <ng-container *ngIf='(status$ | async) === "deleting"'>
-            <sb-button action="yes" [entity]="targetPartyType?.name" disabled="true"></sb-button>
-            <sb-button action="no" [entity]="targetPartyType?.name" disabled="true"></sb-button>             
+            <sb-button action="yes" entity="Administrative Unit" disabled="true"></sb-button>
+            <sb-button action="no" entity="Administrative Unit" disabled="true"></sb-button>             
         </ng-container>     
 
         <ng-container *ngIf='(status$ | async) === "succeeded"'>
-            <sb-button action="yes" [entity]="targetPartyType?.name" disabled="true"></sb-button>
-            <sb-button action="no" [entity]="targetPartyType?.name" disabled="true"></sb-button>               
+            <sb-button action="yes" entity="Administrative Unit" disabled="true"></sb-button>
+            <sb-button action="no" entity="Administrative Unit" disabled="true"></sb-button>               
         </ng-container>
 
         <ng-container *ngIf='(status$ | async) === "failed"'>
-            <sb-button action="yes" [entity]="targetPartyType?.name" (yes)="onRetry()"></sb-button>
-            <sb-button action="no" [entity]="targetPartyType?.name" guarded="false" (no)="onQuit()"></sb-button>            
+            <sb-button action="yes" entity="Administrative Unit" (yes)="onRetry()"></sb-button>
+            <sb-button action="no" entity="Administrative Unit" guarded="false" (no)="onQuit()"></sb-button>            
         </ng-container>
 
         <ng-container *ngIf='(status$ | async) === "retrying"'>
-            <sb-button action="yes" [entity]="targetPartyType?.name" disabled="true"></sb-button>
-            <sb-button action="no" [entity]="targetPartyType?.name" disabled="true"></sb-button> 
+            <sb-button action="yes" entity="Administrative Unit" disabled="true"></sb-button>
+            <sb-button action="no" entity="Administrative Unit" disabled="true"></sb-button> 
         </ng-container>         
 
     </ng-container>

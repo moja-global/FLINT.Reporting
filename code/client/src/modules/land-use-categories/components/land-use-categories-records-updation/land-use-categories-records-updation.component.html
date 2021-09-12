@@ -24,7 +24,7 @@
         <label for="coverTypeId">Cover Type</label>
         <select class="custom-select" id="coverTypeId" formControlName="coverTypeId">
             <option [ngValue]="null" disabled>Select Cover</option>
-            <option *ngFor="let coverType of coverTypesDataService.coverTypes$ | async" [ngValue]="coverType.id">{{coverType.description}}</option>
+            <option *ngFor="let coverType of coverTypesDataService.coversTypes$ | async" [ngValue]="coverType.id">{{coverType.description}}</option>
         </select>    
       
         <div *ngIf="landUseCategoriesForm.get('coverType')?.invalid && (landUseCategoriesForm.get('coverType')?.dirty || landUseCategoriesForm.get('coverType')?.touched)"

@@ -1,4 +1,5 @@
 <form>
+
     <div class="row">
         <div class="col">
             <div class="d-flex justify-content-between p-2">
@@ -8,63 +9,132 @@
         </div>
     </div>
 
-    
-    <div class="row">
+    <!--For Small-Sized Devices Only-->
+    <div class="row d-md-none">
         <div class="col">
             <sb-table>
                 <ng-container header>
                     <tr>
-                        <th scope="col" class="text-center align-middle">
+                        <th scope="col" class="col-sm-1 text-center align-middle">
                             <span>#</span>
                         </th>
-                        <th scope="col" sbSortable="name" (sort)="onSort($event)" class="align-middle">
+                        <th scope="col" class="col-sm-9 text-left align-middle" sbSortable="name" (sort)="onSort($event)">
                             <span>Name</span>
                             <sb-sort-icon *ngIf='sortedColumn === "name"' [direction]="sortedDirection"></sb-sort-icon>
-                        </th>
-                        <th scope="col" class="align-middle">
-                            <span>Description</span>
-                        </th>
-                        <th scope="col" class="align-middle">
+                        </th>                       
+                        <th scope="col" class="col-sm-2 text-center align-middle">
                             <span class="d-flex flex-row-reverse">
                                 Actions
                             </span>
-                        </th>
+                        </th>                        
+                    </tr>
+                </ng-container>
+
+                <ng-container body>
+                    <tr *ngFor="let reportingFramework of reportingFrameworksRecordsTabulationService.reportingFrameworks$ | async">
+
+                        <td class="text-center align-middle">
+                            {{reportingFramework.pos}}
+                        </td>
+
+                        <td class="text-left align-middle">
+                            <ngb-highlight [result]="reportingFramework.name" [term]="reportingFrameworksRecordsTabulationService.searchTerm"></ngb-highlight>
+                        </td>                      
+
+                        <td class="text-center align-middle">
+                            <span class="d-flex flex-row-reverse"> 
+                                <sb-button action="open" entity="Reporting Framework" id="{{reportingFramework.id}}" (open)="onOpenLandUseClasses($event)" tooltip="Open {{reportingFramework.name}}'s Configuration Window"></sb-button>                                                     
+                                <sb-button action="delete" entity="Reporting Framework" id="{{reportingFramework.id}}" (delete)="onDeleteReportingFramework($event)" tooltip="Delete {{reportingFramework.name}}"></sb-button>
+                                <sb-button action="update" entity="Reporting Framework" id="{{reportingFramework.id}}" (update)="onUpdateReportingFramework($event)" tooltip="Update {{reportingFramework.name}}"></sb-button>
+                            </span> 
+                        </td>
+
                     </tr>
                 </ng-container>
 
                 <ng-container footer>
                     <tr>
-                        <td scope="col" colspan="4" class="align-middle">
-                            <span class="d-flex flex-row-reverse">
-                                <sb-button action="add" entity="Reporting Framework" (add)="onAddReportingFramework()"></sb-button>
-                            </span> 
+                        <td scope="col" colspan="6" class="align-middle">
+                            <span class="d-flex flex-row flex-row-reverse">
+                                  <sb-button action="add" entity="Reporting Framework" (add)="onAddReportingFramework()"></sb-button> 
+                            </span>
+
                         </td>
                     </tr>
-                </ng-container>                
+                </ng-container>  
+
+            </sb-table>
+        </div>
+    </div> 
+    
+    <!--For Middle-Sized Devices Upwards-->
+    <div class="row d-none d-md-block">
+        <div class="col">
+            <sb-table>
+                <ng-container header>
+                    <tr>
+                        <th scope="col" class="col-md-1 text-center align-middle">
+                            <span>#</span>
+                        </th>
+                        <th scope="col" class="col-md-3 text-left align-middle" sbSortable="name" (sort)="onSort($event)">
+                            <span>Name</span>
+                            <sb-sort-icon *ngIf='sortedColumn === "name"' [direction]="sortedDirection">
+                            </sb-sort-icon>
+                        </th> 
+                        <th scope="col" class="col-md-7 text-left align-middle" sbSortable="description" (sort)="onSort($event)">
+                            <span>Description</span>
+                            <sb-sort-icon *ngIf='sortedColumn === "description"' [direction]="sortedDirection"></sb-sort-icon>
+                        </th>                                                
+                        <th scope="col" class="col-md-1 text-center align-middle">
+                            <span class="d-flex flex-row-reverse">
+                                Actions
+                            </span>
+                        </th>                        
+                    </tr>
+                </ng-container>
 
                 <ng-container body>
-                    <tr *ngFor="let reportingFramework of reportingFrameworksTableService.reportingFrameworks$ | async">
+
+                    <tr *ngFor="let reportingFramework of reportingFrameworksRecordsTabulationService.reportingFrameworks$ | async">
+
                         <td class="text-center align-middle">
                             {{reportingFramework.pos}}
                         </td>
-                        <td class="align-middle">
-                            <ngb-highlight [result]="reportingFramework.name" [term]="reportingFrameworksTableService.searchTerm"></ngb-highlight>
+
+                        <td class="text-left align-middle">
+                            <ngb-highlight [result]="reportingFramework.name" [term]="reportingFrameworksRecordsTabulationService.searchTerm"></ngb-highlight>
                         </td>
-                        <td class="align-middle"> 
-                            <ngb-highlight [result]="reportingFramework.description" [term]="reportingFrameworksTableService.searchTerm"></ngb-highlight>
-                        </td>
-                        <td class="align-middle">
-                            <span class="d-flex flex-row-reverse">
-                                <sb-button action="open" entity="Reporting Framework Home" id="{{reportingFramework.id}}" name="{{reportingFramework.name}}" tooltip="Configure Reporting Framework" (open)="onOpenReportingFramework($event)"></sb-button>
-                                <sb-button action="delete" entity="Reporting Framework" id="{{reportingFramework.id}}" (delete)="onDeleteReportingFramework($event)"></sb-button>
-                                <sb-button action="update" entity="Reporting Framework" id="{{reportingFramework.id}}" (update)="onUpdateReportingFramework($event)"></sb-button>
+                        
+                        <td class="text-left align-middle">
+                            <ngb-highlight [result]="reportingFramework.description" [term]="reportingFrameworksRecordsTabulationService.searchTerm"></ngb-highlight>
+                        </td>                        
+
+                        <td class="text-center align-middle">
+                            <span class="d-flex flex-row-reverse">  
+                                <sb-button action="open" entity="Reporting Framework" id="{{reportingFramework.id}}" (open)="onOpenLandUseClasses($event)" tooltip="Open {{reportingFramework.name}}'s Configuration Window"></sb-button>                                                       
+                                <sb-button action="delete" entity="Reporting Framework" id="{{reportingFramework.id}}" (delete)="onDeleteReportingFramework($event)" tooltip="Delete {{reportingFramework.name}}"></sb-button>
+                                <sb-button action="update" entity="Reporting Framework" id="{{reportingFramework.id}}" (update)="onUpdateReportingFramework($event)" tooltip="Update {{reportingFramework.name}}"></sb-button>
                             </span> 
                         </td>
+                        
                     </tr>
+
                 </ng-container>
+
+                <ng-container footer>
+                    <tr>
+                        <td scope="col" colspan="6" class="align-middle">
+                            <span class="d-flex flex-row flex-row-reverse">
+                                  <sb-button action="add" entity="Reporting Framework" (add)="onAddReportingFramework()"></sb-button> 
+                            </span>
+
+                        </td>
+                    </tr>
+                </ng-container>  
+
             </sb-table>
         </div>
-    </div>
+    </div>     
 
     <div class="row">
         <div class="col">

@@ -14,7 +14,7 @@ import { NGXLogger } from 'ngx-logger';
 import { LandUseCategory } from '@modules/land-use-categories/models/land-use-category.model';
 import { Subject } from 'rxjs';
 import { ReportingFramework } from '@modules/reporting-frameworks/models';
-import { CoverTypesDataService } from '@modules/cover-types/services/cover-types-data.service';
+import { CoversTypesDataService } from '@modules/covers-types/services/covers-types-data.service';
 
 const LOG_PREFIX: string = "[Land Use Categories Records Creation Component]";
 
@@ -64,7 +64,7 @@ export class LandUseCategoriesRecordsCreationComponent implements OnInit, OnDest
 
 
   constructor(
-    public coverTypesDataService: CoverTypesDataService,
+    public coverTypesDataService: CoversTypesDataService,
     private landUseCategoriesDataService: LandUseCategoriesDataService,
     private log: NGXLogger) {
 

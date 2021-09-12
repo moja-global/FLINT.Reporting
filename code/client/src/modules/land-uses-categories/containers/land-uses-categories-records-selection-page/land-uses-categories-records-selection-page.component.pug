@@ -1,0 +1,5 @@
+sb-card
+  .card-header
+    | Select Land Use Category
+  .card-body
+    sb-land-uses-categories-records-selection([pagesize]='4', [selecteddomainactivitiesids]='selectedDomainActivitiesIds', [selectionmode]='selectionMode', (select)='onSelect($event)', (check)='onCheck($event)', (uncheck)='onUncheck($event)')

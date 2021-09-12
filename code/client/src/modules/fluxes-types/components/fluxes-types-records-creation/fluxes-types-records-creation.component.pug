@@ -1,0 +1,19 @@
+form([formgroup]='fluxesTypesForm')
+  .form-group
+    label(for='name') Name
+    input#name.form-control(type='text', placeholder='', formcontrolname='name')
+    .alert.alert-danger.mt-3(*ngif="fluxesTypesForm.get('name')?.invalid && (fluxesTypesForm.get('name')?.dirty || fluxesTypesForm.get('name')?.touched)")
+      div(*ngif="fluxesTypesForm.get('name')?.errors.required")
+        | Name is required.
+      div(*ngif="fluxesTypesForm.get('name')?.errors.minlength")
+        | Name should be at least 2 characters long.
+      div(*ngif="fluxesTypesForm.get('name')?.errors.maxlength")
+        | Name cannot be more than 250 characters long.
+      div(*ngif="fluxesTypesForm.get('name')?.errors.exists")
+        | Name should be unique.
+  .form-group
+    label(for='description') Description
+    textarea#description.form-control(formcontrolname='description', rows='5')
+    .alert.alert-danger.mt-3(*ngif="fluxesTypesForm.get('description')?.invalid && (fluxesTypesForm.get('description')?.dirty || fluxesTypesForm.get('description')?.touched)")
+      div(*ngif="fluxesTypesForm.get('description')?.errors.maxlength")
+        | Description cannot be more than 250 characters long.

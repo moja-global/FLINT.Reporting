@@ -12,22 +12,10 @@ form([formgroup]='landUseCategoriesForm')
       div(*ngif="landUseCategoriesForm.get('name')?.errors.exists")
         | Name should be unique.
   .form-group
-    label(for='name') Number
-    input#number.form-control(type='text', placeholder='', formcontrolname='number')
-    .alert.alert-danger.mt-3(*ngif="landUseCategoriesForm.get('number')?.invalid && (landUseCategoriesForm.get('number')?.dirty || landUseCategoriesForm.get('number')?.touched)")
-      div(*ngif="landUseCategoriesForm.get('number')?.errors.required")
-        | Number is required.
-      div(*ngif="landUseCategoriesForm.get('number')?.errors.minlength")
-        | Number cannot be less than 2 characters long.
-      div(*ngif="landUseCategoriesForm.get('number')?.errors.maxlength")
-        | Number cannot be more than 50 characters long.
-      div(*ngif="landUseCategoriesForm.get('number')?.errors.exists")
-        | Number should be unique.
-  .form-group
-    label(for='description')
-      | Description 
-      span.text-secondary  (Optional)
-    textarea#description.form-control(placeholder='', rows='3', formcontrolname='description')
-    .alert.alert-danger.mt-3(*ngif="landUseCategoriesForm.get('description')?.invalid && (landUseCategoriesForm.get('description')?.dirty || landUseCategoriesForm.get('description')?.touched)")
-      div(*ngif="landUseCategoriesForm.get('description')?.errors.maxlength")
-        | Description cannot be more than 250 characters long.
+    label(for='coverTypeId') Cover Type
+    select#coverTypeId.custom-select(formcontrolname='coverTypeId')
+      option([ngvalue]='null', disabled='') Select Cover
+      option(*ngfor='let coverType of coverTypesDataService.coversTypes$ | async', [ngvalue]='coverType.id') {{coverType.description}}
+    .alert.alert-danger.mt-3(*ngif="landUseCategoriesForm.get('coverType')?.invalid && (landUseCategoriesForm.get('coverType')?.dirty || landUseCategoriesForm.get('coverType')?.touched)")
+      div(*ngif="landUseCategoriesForm.get('coverType')?.errors.required")
+        | Cover Type is required.

@@ -1,19 +1,7 @@
-<sb-layout-main>
-    
-    <ng-container header>
-        <sb-header title="Reporting Frameworks" subtitle="The supported reporting structures"></sb-header>
-    </ng-container>
-      
-    
-    <ng-container body>
-        <sb-card>
-            <div class="card-header">
-                Reporting Frameworks List
-            </div>
-            <div class="card-body">
-                <sb-reporting-frameworks-records-tabulation [pageSize]="6"></sb-reporting-frameworks-records-tabulation>
-            </div>
-        </sb-card>
-    </ng-container>
-
-</sb-layout-main>
+<sb-reporting-frameworks-records-home-page>
+    <sb-card>
+        <div class="card-body">
+            <sb-reporting-frameworks-records-tabulation [pageSize]="6"></sb-reporting-frameworks-records-tabulation>
+        </div>
+    </sb-card>
+</sb-reporting-frameworks-records-home-page>

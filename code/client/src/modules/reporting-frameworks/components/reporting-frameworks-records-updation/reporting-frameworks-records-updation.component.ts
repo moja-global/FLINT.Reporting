@@ -9,10 +9,9 @@ import {
   Output
 } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { ReportingFrameworksDataService } from '../../services/reporting-frameworks-data.service';
+import { ReportingFramework } from '@modules/reporting-frameworks/models/reporting-framework.model';
+import { ReportingFrameworksDataService } from '@modules/reporting-frameworks/services/reporting-frameworks-data.service';
 import { NGXLogger } from 'ngx-logger';
-import { Subscription } from 'rxjs';
-import { ReportingFramework } from '../../../reporting-frameworks/models';
 
 const LOG_PREFIX: string = "[Reporting Frameworks Records Updation Component]";
 
@@ -32,35 +31,35 @@ export class ReportingFrameworksRecordsUpdationComponent implements OnInit, Afte
   // Instantiate an object to hold the details of the Reporting Framework record being updated.
   // This will allow the UI to get a hold on and prepolulate the current details of the 
   // record being updated
-  reportingFramework: ReportingFramework | undefined;
+  reportingFramework: ReportingFramework | undefined = new ReportingFramework();
 
   // Instantiate a 'succeeded' state notification Emitter.
   // This will allow us to broadcast notifications of successful updation events
   @Output() succeeded: EventEmitter<void> = new EventEmitter<void>();
 
   // Instantiate a 'failed' state notification Emitter.
-  // This will allow us to broadcast fnotifications of failed updation events
+  // This will allow us to broadcast notifications of failed updation events
   @Output() failed: EventEmitter<number> = new EventEmitter<number>();
 
-  // Instantitate a new reactive Form Group for the Reporting Frameworks Form.
-  // This will allow to define and enforce the validation rules for all the form controls.
-  reportingFrameworksForm: FormGroup = new FormGroup({
+  // Instantitate a new reactive Form Group for the ReportingFrameworks Form.
+  // This will allow us to define and enforce the validation rules for all the form controls.
+  reportingFrameworksForm = new FormGroup({
     name: new FormControl('', [
       Validators.required,
       Validators.minLength(2),
-      Validators.maxLength(50),
-      this.exists()
+      Validators.maxLength(250),
+      this.exists("name")
     ]),
     description: new FormControl('', [
       Validators.maxLength(250)
-    ])
+    ])    
   });
 
-  // Instantiate a central gathering point for all the component's subscriptions.
-  // This will make it easier to unsubscribe from all subscriptions when the component is destroyed.   
-  private _subscriptions: Subscription[] = [];
+  constructor(
+    private reportingFrameworksDataService: ReportingFrameworksDataService,
+    private log: NGXLogger) {
 
-  constructor(private reportingFrameworksDataService: ReportingFrameworksDataService, private log: NGXLogger) { }
+  }
 
   ngOnInit() {
 
@@ -69,10 +68,10 @@ export class ReportingFrameworksRecordsUpdationComponent implements OnInit, Afte
     // Retrieve the Reporting Framework record with the given id from the data store 
     this.log.trace(`${LOG_PREFIX} Retrieving the Reporting Framework record with the given id from the data store`);
     this.log.debug(`${LOG_PREFIX} Reporting Framework record Id = ${this.id}`);
-    this.reportingFramework = this.reportingFrameworksDataService.records.find(d => d.id == this.id);
 
-    const temp: ReportingFramework | undefined = (this.id == null || this.id == undefined)? undefined : this.reportingFrameworksDataService.records.find(d => d.id == this.id);
-    this.reportingFramework = (temp == undefined)? new ReportingFramework() : temp;   
+    const temp: ReportingFramework | undefined = (this.id == null || this.id == undefined) ? undefined : this.reportingFrameworksDataService.records.find(d => d.id == this.id);
+    this.reportingFramework = (temp == undefined) ? new ReportingFramework() : temp;
+
   }
 
   ngAfterContentInit() {
@@ -86,8 +85,8 @@ export class ReportingFrameworksRecordsUpdationComponent implements OnInit, Afte
       // Initialize the Reporting Framework records form fields
       this.log.trace(`${LOG_PREFIX} Initializing the Reporting Framework records form fields`);
       this.reportingFrameworksForm.setValue({
-        name: (this.reportingFramework.name)? this.reportingFramework.name : "",
-        description: (this.reportingFramework.description)? this.reportingFramework.description : ""
+        name: (this.reportingFramework.name) ? this.reportingFramework.name : "",
+        description: (this.reportingFramework.description) ? this.reportingFramework.description : ""
       });
 
     } else {
@@ -97,21 +96,14 @@ export class ReportingFrameworksRecordsUpdationComponent implements OnInit, Afte
 
   @HostListener('window:beforeunload')
   ngOnDestroy() {
-
     this.log.trace(`${LOG_PREFIX} Destroying Component`);
-
-    // Clear all subscriptions
-    this.log.trace(`${LOG_PREFIX} Clearing all subscriptions`);
-    this._subscriptions.forEach((s) => s.unsubscribe());
   }
 
   /**
    * Internal validator that checks whether another Reporting Framework record with the same attribute already exists
    * @returns 
    */
-  private exists(): ValidatorFn {
-
-    const values: string[] = <Array<string>>this.reportingFrameworksDataService.records.map(d => d.name);
+  private exists(attribute: string): ValidatorFn {
 
     return (control: AbstractControl): ValidationErrors | null => {
 
@@ -121,11 +113,13 @@ export class ReportingFrameworksRecordsUpdationComponent implements OnInit, Afte
 
           const s: string = control.value;
 
-          const reportingFramework: ReportingFramework | undefined = this.reportingFrameworksDataService.records.find(d => d.name?.toLowerCase() == s.toLowerCase());
+          let reportingFramework: ReportingFramework | undefined | null =
+            attribute == "name" ? this.reportingFrameworksDataService.records.find(v => v.name?.toLowerCase() == s.toLowerCase()) : null;
 
           if (reportingFramework != undefined && reportingFramework.id != this.id) {
             return { 'exists': true }
           }
+
         }
       }
 
@@ -143,25 +137,20 @@ export class ReportingFrameworksRecordsUpdationComponent implements OnInit, Afte
 
     if (this.reportingFrameworksForm.valid) {
 
-      // Form is invalid
-      this.log.trace(`${LOG_PREFIX} Form is invalid`);
-
-      // Read in the provided name 
-      this.log.trace(`${LOG_PREFIX} Reading in the provided name `);
+      // Read in the provided name
+      this.log.trace(`${LOG_PREFIX} Reading in the provided name`);
       const name: string | null = this.reportingFrameworksForm.get('name') == null ? null : this.reportingFrameworksForm.get('name')?.value;
-      this.log.debug(`${LOG_PREFIX} Reporting Framework Name  = ${name}`);
-
-
+      this.log.debug(`${LOG_PREFIX} Reporting Framework Name = ${name}`);   
 
       // Read in the provided description
       this.log.trace(`${LOG_PREFIX} Reading in the provided description`);
       const description: string | null = this.reportingFrameworksForm.get('description') == null ? null : this.reportingFrameworksForm.get('description')?.value;
-      this.log.debug(`${LOG_PREFIX} Reporting Framework Description = ${description}`);
+      this.log.debug(`${LOG_PREFIX} Reporting Framework Name = ${description}`);      
 
       // Save the record
       this.log.trace(`${LOG_PREFIX} Saving the Reporting Framework record`);
       this.reportingFrameworksDataService
-        .updateReportingFramework(new ReportingFramework(Object.assign(this.reportingFramework, { name, description })))
+        .updateReportingFramework(Object.assign(this.reportingFramework, { name: name, description: description }))
         .subscribe(
           (response: ReportingFramework) => {
 

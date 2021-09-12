@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy, OnInit } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { ReportingFrameworksDataService } from './reporting-frameworks-data.service';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject, Subscription } from 'rxjs';
@@ -8,29 +8,32 @@ import { ReportingFramework } from '../models/reporting-framework.model';
 
 const LOG_PREFIX: string = "[Reporting Frameworks Records Tabulation Service]";
 
+export interface ReportingFrameworkState extends State {
+
+}
+
 @Injectable({ providedIn: 'root' })
 export class ReportingFrameworksRecordsTabulationService implements OnDestroy {
 
-    // The observables that will be updated / broadcasted whenever 
-    // a background task is started and completed  
-    private _loadingSubject$ = new BehaviorSubject<boolean>(true);
-    private _loading$ = this._loadingSubject$.asObservable();
+    // The user defined search or sort criteria.
+    private _state: ReportingFrameworkState = { page: 1, pageSize: 4, searchTerm: '', sortColumn: '', sortDirection: '' };
 
     // The first set of observables that will be updated / broadcasted whenever 
-    // Reporting Frameworks records are transformed as per the user defined search 
-    // or sort criteria    
+    // a background task is started or completed  
+    private _loadingSubject$ = new BehaviorSubject<boolean>(false);
+    private _loading$ = this._loadingSubject$.asObservable();
+
+    // The second set of observables that will be updated / broadcasted whenever 
+    // the user enters a search term or specifies a sort criteria    
     private _reportingFrameworksSubject$ = new BehaviorSubject<ReportingFramework[]>([]);
     private _reportingFrameworks$ = this._reportingFrameworksSubject$.asObservable();
 
-    // The second set of observables that will be updated / broadcasted whenever 
-    // Reporting Frameworks records are transformed as per the user defined search 
-    // or sort criteria
+    // The third set of observables that will be updated / broadcasted whenever 
+    // the user enters a search term or specifies a sort criteria 
+    // and Reporting Frameworks Records as a result
     private _totalSubject$ = new BehaviorSubject<number>(0);
     private _total$ = this._totalSubject$.asObservable();
-
-    // The user defined search or sort criteria.
-    // Determines which & how many Reporting Frameworks records should be displayed
-    private _state: State = { page: 1, pageSize: 4, searchTerm: '', sortColumn: '', sortDirection: '' };
+  
 
     // A common gathering point for all the component's subscriptions.
     // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
@@ -44,17 +47,19 @@ export class ReportingFrameworksRecordsTabulationService implements OnDestroy {
             this.reportingFrameworksDataService.reportingFrameworks$
                 .subscribe(
                     (reportingFrameworks: ReportingFramework[]) => {
-                        this._transform(reportingFrameworks);
+                        this.transform(reportingFrameworks);
                     }));
 
     }
-    
-  ngOnDestroy() {
+
+    ngOnDestroy() {
+        this.log.trace(`${LOG_PREFIX} Destroying Service`);
         this._subscriptions.forEach((s) => s.unsubscribe());
     }
 
+
     /**
-     * Returns an observable containing Reporting Frameworks records that have been filtered as per the user defined criteria
+     * Returns an observable containing Reporting Frameworks Records that have been filtered as per the Current User Defined Criteria
      */
     get reportingFrameworks$() {
         this.log.trace(`${LOG_PREFIX} Getting reportingFrameworks$ observable`);
@@ -64,7 +69,7 @@ export class ReportingFrameworksRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Returns an observable containing the total number of Reporting Frameworks records that have been filtered as per the user defined criteria
+     * Returns an observable containing the total number of Reporting Frameworks Records that have been filtered as per the Current User Defined Criteria
      */
     get total$() {
         this.log.trace(`${LOG_PREFIX} Getting total$ observable`);
@@ -74,7 +79,7 @@ export class ReportingFrameworksRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Returns an observable containing a boolean flag that indicates whether or not a data operation exercise (sorting, searching etc.) is currently underway
+     * Returns an observable indicating whether or not a data operation exercise (sorting, searching etc.) is currently underway
      */
     get loading$() {
         this.log.trace(`${LOG_PREFIX} Getting loading$ observable`);
@@ -94,11 +99,11 @@ export class ReportingFrameworksRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Updates the currently active page detail and then triggers data transformation
+     * Updates the currently set active page detail and triggers the data transformation exercise
      */
     set page(page: number) {
         this.log.trace(`${LOG_PREFIX} Setting page detail to ${JSON.stringify(page)}`);
-        this._set({ page });
+        this.set({ page });
     }
 
 
@@ -113,16 +118,16 @@ export class ReportingFrameworksRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Updates the desired page size detail and then triggers data transformation
+     * Updates the currently set page size detail and triggers the data transformation exercise
      */
     set pageSize(pageSize: number) {
         this.log.debug(`${LOG_PREFIX} Setting page size to ${JSON.stringify(pageSize)}`);
-        this._set({ pageSize });
+        this.set({ pageSize });
     }
 
 
     /**
-     * Gets the currently entered search term
+     * Returns the currently set search term
      */
     get searchTerm() {
         this.log.debug(`${LOG_PREFIX} Getting search term detail`);
@@ -132,47 +137,30 @@ export class ReportingFrameworksRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Updates the search term detail and then triggers data transformation
+     * Updates the currently set search term and triggers the data transformation exercise
      */
     set searchTerm(searchTerm: string) {
         this.log.debug(`${LOG_PREFIX} Setting search term to ${JSON.stringify(searchTerm)}`);
-        this._set({ searchTerm });
+        this.set({ searchTerm });
     }
 
 
     /**
-     * Updates the sort column detail and then triggers data transformation
+     * Updates the currently set sort column detail and triggers the data transformation exercise
      */
     set sortColumn(sortColumn: string) {
         this.log.debug(`${LOG_PREFIX} Setting sort column to ${JSON.stringify(sortColumn)}`);
-        this._set({ sortColumn });
+        this.set({ sortColumn });
     }
 
 
     /**
-     * Updates the sort direction detail and then triggers data transformation
+     * Updates the currently set sort direction detail
      */
     set sortDirection(sortDirection: SortDirection) {
         this.log.debug(`${LOG_PREFIX} Setting sort direction to ${JSON.stringify(sortDirection)}`);
-        this._set({ sortDirection });
-    }
-
-
-    /**
-     * Utility method for all the class setters.
-     * Does the actual updating of details / transforming of data
-     * @param patch the partially updated details
-     */
-    private _set(patch: Partial<State>) {
-
-        // Update the state
-        Object.assign(this._state, patch);
-
-
-        // Transform the Reporting Frameworks records
-        this._transform(this.reportingFrameworksDataService.records);
-
-    }
+        this.set({ sortDirection });
+    }   
 
 
     /**
@@ -192,13 +180,13 @@ export class ReportingFrameworksRecordsTabulationService implements OnDestroy {
     /**
      * Sorts Reporting Frameworks Records
      * 
-     * @param reportingFrameworks The Reporting Frameworks records to sort
+     * @param reportingFrameworks The Reporting Frameworks Records to sort
      * @param column The table column to sort the records by 
      * @param direction The desired sort direction - ascending or descending
-     * @returns The sorted Reporting Frameworks records
+     * @returns The sorted Reporting Frameworks Records
      */
     sort(reportingFrameworks: ReportingFramework[], column: string, direction: string): ReportingFramework[] {
-        this.log.trace(`${LOG_PREFIX} Sorting Reporting Frameworks records`);
+        this.log.trace(`${LOG_PREFIX} Sorting Reporting Frameworks Records`);
         if (direction === '' || column == null) {
             return reportingFrameworks;
         } else {
@@ -218,7 +206,7 @@ export class ReportingFrameworksRecordsTabulationService implements OnDestroy {
      * @returns A boolean result indicating whether or not a match was found
      */
     matches(reportingFramework: ReportingFramework, term: string): boolean {
-        this.log.trace(`${LOG_PREFIX} Checking if search string is present in the Reporting Framework record`);
+        this.log.trace(`${LOG_PREFIX} Checking if the search string is present in the Reporting Framework record`);
         if (reportingFramework != null && reportingFramework != undefined) {
 
             // Try locating the search string in the Reporting Framework's name
@@ -227,13 +215,13 @@ export class ReportingFrameworksRecordsTabulationService implements OnDestroy {
                     return true;
                 }
             }
-
-            // Try locating the search string in the Reporting Framework's description if not yet found
+            
+            // Try locating the search string in the Reporting Framework's description
             if (reportingFramework.description != null && reportingFramework.description != undefined) {
                 if (reportingFramework.description.toLowerCase().includes(term.toLowerCase())) {
                     return true;
                 }
-            }
+            }            
         }
 
         return false;
@@ -241,64 +229,90 @@ export class ReportingFrameworksRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Paginates Reporting Frameworks Records
-     * 
-     * @param reportingFrameworks The Reporting Frameworks records to paginate
-     * @returns The paginated Reporting Frameworks records
-     */
-    paginate(reportingFrameworks: ReportingFramework[], page: number, pageSize: number): ReportingFramework[] {
-        this.log.trace(`${LOG_PREFIX} Paginating Reporting Frameworks records`);
-        return reportingFrameworks.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
-    }
-
-    /**
      * Updates the index of the Reporting Frameworks Records
      * 
-     * @param reportingFrameworks The Reporting Frameworks records to sort
-     * @returns The newly indexed Reporting Frameworks records
+     * @param reportingFrameworks The Reporting Frameworks Records to sort
+     * @returns The newly indexed Reporting Frameworks Records
      */
-    index(reportingFrameworks: ReportingFramework[]): ReportingFramework[] {
-        this.log.trace(`${LOG_PREFIX} Indexing Reporting Frameworks records`);
+     index(reportingFrameworks: ReportingFramework[]): ReportingFramework[] {
+        this.log.trace(`${LOG_PREFIX} Indexing Reporting Frameworks Records`);
         let pos: number = 0;
         return reportingFrameworks.map(d => {
             d.pos = ++pos;
             return d;
         });
+    }    
+
+
+    /**
+     * Paginates Reporting Frameworks Records
+     * 
+     * @param reportingFrameworks The Reporting Frameworks Records to paginate
+     * @returns The paginated Reporting Frameworks Records
+     */
+    paginate(reportingFrameworks: ReportingFramework[], page: number, pageSize: number): ReportingFramework[] {
+        this.log.trace(`${LOG_PREFIX} Paginating Reporting Frameworks Records`);
+        return reportingFrameworks.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
+    }
+
+
+
+
+    /**
+     * Utility method for all the class setters.
+     * Updates the sort / filter criteria and triggers the data transformation exercise
+     * @param patch the partially updated details
+     */
+    set(patch: Partial<ReportingFrameworkState>) {
+
+        // Update the state
+        Object.assign(this._state, patch);
+
+
+        // Transform the Reporting Frameworks Records
+        this.transform(this.reportingFrameworksDataService.records);
+
     }
 
 
     /**
-     * Sorts, filters and paginates Reporting Frameworks records
+     * Sorts, filters and paginates Reporting Frameworks Records
      * 
-     * @param records the original Reporting Frameworks records
+     * @param records the original Reporting Frameworks Records
      */
-    private _transform(records: ReportingFramework[]) {
+    transform(records: ReportingFramework[]) {
 
         // Flag
         this._loadingSubject$.next(true);
 
         if (records.length != 0) {
 
-            this.log.trace(`${LOG_PREFIX} Sorting, filtering and paginating Reporting Frameworks records`);
+            this.log.trace(`${LOG_PREFIX} Sorting, filtering and paginating Reporting Frameworks Records`);
+            this.log.debug(`${LOG_PREFIX} Reporting Frameworks Records before transformation = ${JSON.stringify(records)}`);
 
             const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
 
             // Sort
             let transformed: ReportingFramework[] = this.sort(records, sortColumn, sortDirection);
+            this.log.debug(`${LOG_PREFIX} Reporting Frameworks Records after 'Sort' Transformation = ${JSON.stringify(transformed)}`);
 
-            // Filter
+            // Filter by Search Term
             transformed = transformed.filter(reportingFramework => this.matches(reportingFramework, searchTerm));
             const total: number = transformed.length;
+            this.log.debug(`${LOG_PREFIX} Reporting Frameworks Records after 'Filter by Search Term' Transformation = ${JSON.stringify(transformed)}`);
 
             // Index
             transformed = this.index(transformed);
+            this.log.debug(`${LOG_PREFIX} Reporting Frameworks Records after 'Index' Transformation = ${JSON.stringify(transformed)}`);
 
             // Paginate
             transformed = this.paginate(transformed, page, pageSize);
+            this.log.debug(`${LOG_PREFIX} Reporting Frameworks Records after 'Paginate' Transformation = ${JSON.stringify(transformed)}`);
 
             // Broadcast
-            this._reportingFrameworksSubject$.next(transformed);
+            this._reportingFrameworksSubject$.next(Object.assign([],transformed));
             this._totalSubject$.next(total);
+
 
         } else {
 

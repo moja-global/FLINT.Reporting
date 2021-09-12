@@ -1,0 +1,7 @@
+.container
+  .row
+    .col
+      ngb-datepicker(#dp='', (dateselect)='onDateSelection($event)', [displaymonths]='2', [daytemplate]='t', outsidedays='hidden', [showweeknumbers]='true', [mindate]='minDate', [maxdate]='maxDate')
+      ng-template(#t='', let-date='', let-focused=' focused')
+        span.custom-day([class.focused]='focused', [class.range]='isRange(date)', [class.faded]='isHovered(date) || isInside(date)', (mouseenter)='hoveredDate = date', (mouseleave)='hoveredDate = null')
+          | {{ date.day }}

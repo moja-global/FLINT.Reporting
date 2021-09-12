@@ -1,0 +1,1 @@
+export * from './accountability-rule.model';

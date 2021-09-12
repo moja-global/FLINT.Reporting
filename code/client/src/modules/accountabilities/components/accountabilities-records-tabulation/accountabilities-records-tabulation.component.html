@@ -1,0 +1,231 @@
+<form>
+
+    <div class="row">
+        <div class="col">
+            <div class="d-flex justify-content-between p-2">
+                <sb-search (searched)="onSearch($event)"></sb-search>
+                <sb-loading-animation></sb-loading-animation>
+            </div>
+        </div>
+    </div>
+
+    <!--For Small-Sized Devices Only-->
+    <div class="row d-md-none">
+        <div class="col">
+            <sb-table>
+                <ng-container header>
+                    <tr>
+
+                        <ng-container *ngIf="parentPartyType; else no_parent_header_sm">
+
+                            <th scope="col" class="col-sm-1 text-center align-middle">
+                                <span>#</span>
+                            </th>
+                            <th scope="col" class="col-sm-4 text-left align-middle" sbSortable="name" (sort)="onSort($event)">
+                                <span>{{parentPartyType.name}}</span>
+                                <sb-sort-icon *ngIf='sortedColumn === "parent"' [direction]="sortedDirection">
+                                </sb-sort-icon>
+                            </th>
+                            <th scope="col" class="col-sm-5 text-left align-middle" sbSortable="name" (sort)="onSort($event)">
+                                <span>{{subsidiaryPartyType?.name}}</span>
+                                <sb-sort-icon *ngIf='sortedColumn === "subsidiary"' [direction]="sortedDirection">
+                                </sb-sort-icon>
+                            </th>                            
+                            <th scope="col" class="col-sm-2 text-center align-middle">
+                                <span class="d-flex flex-row-reverse">
+                                    Actions
+                                </span>
+                            </th> 
+
+                        </ng-container>
+
+                        <ng-template #no_parent_header_sm>
+
+                            <th scope="col" class="col-sm-1 text-center align-middle">
+                                <span>#</span>
+                            </th>
+                            <th scope="col" class="col-sm-9 text-left align-middle" sbSortable="name" (sort)="onSort($event)">
+                                <span>{{subsidiaryPartyType?.name}}</span>
+                                <sb-sort-icon *ngIf='sortedColumn === "subsidiary"' [direction]="sortedDirection">
+                                </sb-sort-icon>
+                            </th>
+                            <th scope="col" class="col-sm-2 text-center align-middle">
+                                <span class="d-flex flex-row-reverse">
+                                    Actions
+                                </span>
+                            </th> 
+
+                        </ng-template>
+                    </tr>
+                </ng-container>
+
+                <ng-container body>
+                    <tr *ngFor="let accountability of accountabilitiesRecordsTabulationService.accountabilities$ | async">
+
+                        <ng-container *ngIf="parentPartyType; else no_parent_data_sm">
+                            <td class="text-center align-middle">
+                                {{accountability.pos}}
+                            </td>
+    
+                            <td class="text-left align-middle">
+                                <ngb-highlight [result]="accountability.parentPartyName" [term]="accountabilitiesRecordsTabulationService.searchTerm"></ngb-highlight>
+                            </td>
+
+                            <td class="text-left align-middle">
+                                <ngb-highlight [result]="accountability.subsidiaryPartyName" [term]="accountabilitiesRecordsTabulationService.searchTerm"></ngb-highlight>
+                            </td>                            
+    
+                            <td class="text-center align-middle">
+                                <span class="d-flex flex-row-reverse">
+                                    <sb-button action="delete" entity="Accountability" id="{{accountability.id}}" (delete)="onDeleteAccountability($event)" tooltip="Delete {{accountability.subsidiaryPartyName}}"></sb-button>
+                                </span> 
+                            </td>
+                        </ng-container>
+
+                        <ng-template #no_parent_data_sm>
+                            <td class="text-center align-middle">
+                                {{accountability.pos}}
+                            </td>
+    
+                            <td class="text-left align-middle">
+                                <ngb-highlight [result]="accountability.subsidiaryPartyName" [term]="accountabilitiesRecordsTabulationService.searchTerm"></ngb-highlight>
+                            </td>  
+    
+                            <td class="text-center align-middle">
+                                <span class="d-flex flex-row-reverse">
+                                    <sb-button action="delete" entity="Accountability" id="{{accountability.id}}" (delete)="onDeleteAccountability($event)" tooltip="Delete {{accountability.name}}"></sb-button>
+                                </span> 
+                            </td>
+                        </ng-template>                       
+                    </tr>
+                </ng-container>
+
+                <ng-container footer *ngIf="this.accountabilitiesRecordsTabulationService.accountabilityRuleId != null">
+                    <tr>
+                        <td scope="col" colspan="6" class="align-middle">
+                            <span class="d-flex flex-row flex-row-reverse">
+                                  <sb-button action="add" entity="Accountability" (add)="onAddAccountability()"></sb-button> 
+                            </span>
+
+                        </td>
+                    </tr>
+                </ng-container>  
+
+            </sb-table>
+        </div>
+    </div> 
+    
+    <!--For Middle-Sized Devices Upwards-->
+    <div class="row d-none d-md-block">
+        <div class="col">
+            <sb-table>
+                <ng-container header>
+                    <tr>
+
+                        <ng-container *ngIf="parentPartyType; else no_parent_header_md">
+
+                            <th scope="col" class="col-md-1 text-center align-middle">
+                                <span>#</span>
+                            </th>
+                            <th scope="col" class="col-md-4 text-left align-middle" sbSortable="name" (sort)="onSort($event)">
+                                <span>{{parentPartyType.name}}</span>
+                                <sb-sort-icon *ngIf='sortedColumn === "parent"' [direction]="sortedDirection">
+                                </sb-sort-icon>
+                            </th>
+                            <th scope="col" class="col-md-5 text-left align-middle" sbSortable="name" (sort)="onSort($event)">
+                                <span>{{subsidiaryPartyType?.name}}</span>
+                                <sb-sort-icon *ngIf='sortedColumn === "subsidiary"' [direction]="sortedDirection">
+                                </sb-sort-icon>
+                            </th>                            
+                            <th scope="col" class="col-md-2 text-center align-middle">
+                                <span class="d-flex flex-row-reverse">
+                                    Actions
+                                </span>
+                            </th> 
+
+                        </ng-container>
+
+                        <ng-template #no_parent_header_md>
+
+                            <th scope="col" class="col-md-1 text-center align-middle">
+                                <span>#</span>
+                            </th>
+                            <th scope="col" class="col-md-9 text-left align-middle" sbSortable="name" (sort)="onSort($event)">
+                                <span>{{subsidiaryPartyType?.name}}</span>
+                                <sb-sort-icon *ngIf='sortedColumn === "subsidiary"' [direction]="sortedDirection">
+                                </sb-sort-icon>
+                            </th>
+                            <th scope="col" class="col-md-2 text-center align-middle">
+                                <span class="d-flex flex-row-reverse">
+                                    Actions
+                                </span>
+                            </th> 
+
+                        </ng-template>
+                    </tr>
+                </ng-container>
+
+                <ng-container body>
+                    <tr *ngFor="let accountability of accountabilitiesRecordsTabulationService.accountabilities$ | async">
+
+                        <ng-container *ngIf="parentPartyType; else no_parent_data_sm">
+                            <td class="text-center align-middle">
+                                {{accountability.pos}}
+                            </td>
+    
+                            <td class="text-left align-middle">
+                                <ngb-highlight [result]="accountability.parentPartyName" [term]="accountabilitiesRecordsTabulationService.searchTerm"></ngb-highlight>
+                            </td>
+
+                            <td class="text-left align-middle">
+                                <ngb-highlight [result]="accountability.subsidiaryPartyName" [term]="accountabilitiesRecordsTabulationService.searchTerm"></ngb-highlight>
+                            </td>                            
+    
+                            <td class="text-center align-middle">
+                                <span class="d-flex flex-row-reverse">
+                                    <sb-button action="delete" entity="Accountability" id="{{accountability.id}}" (delete)="onDeleteAccountability($event)" tooltip="Delete {{accountability.subsidiaryPartyName}}"></sb-button>
+                                </span> 
+                            </td>
+                        </ng-container>
+
+                        <ng-template #no_parent_data_sm>
+                            <td class="text-center align-middle">
+                                {{accountability.pos}}
+                            </td>
+    
+                            <td class="text-left align-middle">
+                                <ngb-highlight [result]="accountability.subsidiaryPartyName" [term]="accountabilitiesRecordsTabulationService.searchTerm"></ngb-highlight>
+                            </td>  
+    
+                            <td class="text-center align-middle">
+                                <span class="d-flex flex-row-reverse">
+                                    <sb-button action="delete" entity="Accountability" id="{{accountability.id}}" (delete)="onDeleteAccountability($event)" tooltip="Delete {{accountability.name}}"></sb-button>
+                                </span> 
+                            </td>
+                        </ng-template>                       
+                    </tr>
+                </ng-container>
+
+                <ng-container footer *ngIf="this.accountabilitiesRecordsTabulationService.accountabilityRuleId != null">
+                    <tr>
+                        <td scope="col" colspan="6" class="align-middle">
+                            <span class="d-flex flex-row flex-row-reverse">
+                                  <sb-button action="add" entity="Accountability" (add)="onAddAccountability()"></sb-button> 
+                            </span>
+
+                        </td>
+                    </tr>
+                </ng-container>  
+
+            </sb-table>
+        </div>
+    </div>     
+
+    <div class="row">
+        <div class="col">
+            <sb-pagination (pageChanged)="onPageChange($event)" (pageSizeChanged)="onPageSizeChange($event)">
+            </sb-pagination>
+        </div>
+    </div>
+
+</form>

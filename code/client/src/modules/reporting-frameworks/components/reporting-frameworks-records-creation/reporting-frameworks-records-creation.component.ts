@@ -3,14 +3,15 @@ import {
   Component,
   EventEmitter,
   HostListener,
+  Input,
+  OnDestroy,
   OnInit,
   Output
 } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { ReportingFrameworksDataService } from '../../services/reporting-frameworks-data.service';
+import { ReportingFramework } from '@modules/reporting-frameworks/models/reporting-framework.model';
+import { ReportingFrameworksDataService } from '@modules/reporting-frameworks/services/reporting-frameworks-data.service';
 import { NGXLogger } from 'ngx-logger';
-import { Subscription } from 'rxjs';
-import { ReportingFramework } from '../../models';
 
 const LOG_PREFIX: string = "[Reporting Frameworks Records Creation Component]";
 
@@ -20,57 +21,66 @@ const LOG_PREFIX: string = "[Reporting Frameworks Records Creation Component]";
   templateUrl: './reporting-frameworks-records-creation.component.html',
   styleUrls: ['reporting-frameworks-records-creation.component.scss'],
 })
-export class ReportingFrameworksRecordsCreationComponent implements OnInit {
+export class ReportingFrameworksRecordsCreationComponent implements OnInit, OnDestroy {
+
+  // Instantiate an 'initialized' state notification Emitter.
+  // This will allow us to notify the parent component that the component was successfully initialized
+  @Output() initialized: EventEmitter<void> = new EventEmitter<void>();
 
   // Instantiate a 'succeeded' state notification Emitter.
   // This will allow us to broadcast notifications of successful creation events
   @Output() succeeded: EventEmitter<void> = new EventEmitter<void>();
 
   // Instantiate a 'failed' state notification Emitter.
-  // This will allow us to broadcast fnotifications of failed creation events
+  // This will allow us to broadcast notifications of failed creation events
   @Output() failed: EventEmitter<number> = new EventEmitter<number>();
 
-  // Instantitate a new reactive Form Group for the Reporting Frameworks Form.
-  // This will allow to define and enforce the validation rules for all the form controls.
+  // Instantitate a new reactive Form Group for the ReportingFrameworks Form.
+  // This will allow us to define and enforce the validation rules for all the form controls.
   reportingFrameworksForm = new FormGroup({
     name: new FormControl('', [
       Validators.required,
       Validators.minLength(2),
-      Validators.maxLength(50),
-      this.exists()
-    ]),
+      Validators.maxLength(250),
+      this.exists("name")
+    ]), 
     description: new FormControl('', [
       Validators.maxLength(250)
-    ])
+    ])    
   });
 
-  // Instantiate a central gathering point for all the component's subscriptions.
-  // This will make it easier to unsubscribe from all subscriptions when the component is destroyed.   
-  private _subscriptions: Subscription[] = [];
 
-  constructor(private reportingFrameworksDataService: ReportingFrameworksDataService, private log: NGXLogger) { }
+  constructor(
+    private reportingFrameworksDataService: ReportingFrameworksDataService,
+    private log: NGXLogger) {
+
+  }
+
 
   ngOnInit() {
     this.log.trace(`${LOG_PREFIX} Initializing Component`);
   }
 
+
   @HostListener('window:beforeunload')
   ngOnDestroy() {
-
     this.log.trace(`${LOG_PREFIX} Destroying Component`);
-
-    // Clear all subscriptions
-    this.log.trace(`${LOG_PREFIX} Clearing all subscriptions`);
-    this._subscriptions.forEach((s) => s.unsubscribe());
   }
 
+
   /**
-   * Internal validator that checks whether a Reporting Framework record already exists
+   * Internal validator that checks whether a Reporting Framework Record already exists
    * @returns 
    */
-  private exists(): ValidatorFn {
+  private exists(attribute: string): ValidatorFn {
 
-    const values: string[] = <Array<string>>this.reportingFrameworksDataService.records.map(d => d.name);
+    this.log.trace(`${LOG_PREFIX} Checking whether ${attribute} already exists`);
+
+    const values: string[] =
+      attribute == "name" ? <Array<string>>this.reportingFrameworksDataService.records.map(d => d.name) :
+            [];
+
+    this.log.debug(`${LOG_PREFIX} Existing ${attribute} values = ${values}`);
 
     return (control: AbstractControl): ValidationErrors | null => {
 
@@ -80,7 +90,12 @@ export class ReportingFrameworksRecordsCreationComponent implements OnInit {
 
           const s: string = control.value;
 
+          this.log.debug(`${LOG_PREFIX} Checking whether ${s} matches any value in ${values}`);
+
           if (values.map(v => v.toLowerCase()).includes(s.toLowerCase())) {
+
+            this.log.trace(`${LOG_PREFIX} Matching ${attribute} found`);
+
             return { 'exists': true }
           }
         }
@@ -90,8 +105,10 @@ export class ReportingFrameworksRecordsCreationComponent implements OnInit {
     }
   }
 
+
+
   /**
-   * Validates and saves a new Reporting Framework record.
+   * Validates and saves a new Reporting Framework Record.
    * Emits a succeeded or failed event in response to whether or not the creation exercise was successful.
    * Error 400 = Indicates an invalid Form Control Entry was supplied.
    * Error 500 = Indicates something unexpected happened at the server side
@@ -103,22 +120,22 @@ export class ReportingFrameworksRecordsCreationComponent implements OnInit {
       // Read in the provided name
       this.log.trace(`${LOG_PREFIX} Reading in the provided name`);
       const name: string | null = this.reportingFrameworksForm.get('name') == null ? null : this.reportingFrameworksForm.get('name')?.value;
-      this.log.debug(`${LOG_PREFIX} Reporting Framework Name = ${name}`);
+      this.log.debug(`${LOG_PREFIX} Reporting Framework Name = ${name}`);   
 
       // Read in the provided description
       this.log.trace(`${LOG_PREFIX} Reading in the provided description`);
       const description: string | null = this.reportingFrameworksForm.get('description') == null ? null : this.reportingFrameworksForm.get('description')?.value;
-      this.log.debug(`${LOG_PREFIX} Reporting Framework Description = ${description}`);
+      this.log.debug(`${LOG_PREFIX} Reporting Framework Description = ${description}`);      
 
       // Save the record
-      this.log.trace(`${LOG_PREFIX} Saving the Reporting Framework record`);
+      this.log.trace(`${LOG_PREFIX} Saving the Reporting Framework Record`);
       this.reportingFrameworksDataService
-        .createReportingFramework(new ReportingFramework({ name, description }))
+        .createReportingFramework(new ReportingFramework({ name: name, description: description }))
         .subscribe(
           (response: ReportingFramework) => {
 
-            // The Reporting Framework record was saved successfully
-            this.log.trace(`${LOG_PREFIX} Reporting Framework record was saved successfuly`);
+            // The Reporting Framework Record was saved successfully
+            this.log.trace(`${LOG_PREFIX} Reporting Framework Record was saved successfuly`);
 
             // Reset the form
             this.log.trace(`${LOG_PREFIX} Resetting the form`);
@@ -130,8 +147,8 @@ export class ReportingFrameworksRecordsCreationComponent implements OnInit {
           },
           (error: any) => {
 
-            // The Reporting Framework record was not saved successfully
-            this.log.trace(`${LOG_PREFIX} Reporting Framework record was not saved successfuly`);
+            // The Reporting Framework Record was not saved successfully
+            this.log.trace(`${LOG_PREFIX} Reporting Framework Record was not saved successfuly`);
 
             // Emit a 'failed' event
             this.log.trace(`${LOG_PREFIX} Emitting a 'failed' event`);

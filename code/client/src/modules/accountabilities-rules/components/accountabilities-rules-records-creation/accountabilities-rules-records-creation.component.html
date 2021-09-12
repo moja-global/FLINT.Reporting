@@ -1,0 +1,2 @@
+<div class="alert alert-danger" role="alert" *ngIf='error'>{{error}}</div>
+<sb-parties-types-records-selection skipPreviouslySelectedPartiesTypesIds="true" [previouslySelectedPartiesTypesIds]="previouslySelectedPartiesTypesIds" selectionMode="single" (select)="onSelect($event)" (check)="onCheck($event)" (uncheck)="onUncheck($event)"></sb-parties-types-records-selection>

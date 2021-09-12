@@ -10,7 +10,6 @@ import { ReportingFrameworksRecordsUpdationComponent } from '../../components/re
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject, Subscription, timer } from 'rxjs';
-import { ConnectivityStatusService } from '@common/services';
 
 
 const LOG_PREFIX: string = "[Reporting Frameworks Records Updation Modal]";
@@ -26,9 +25,9 @@ export class ReportingFrameworksRecordsUpdationModalComponent implements OnInit 
     // Instantiate and avail the id variable to the parent component.
     // This will allow the parent component to inject the id of the 
     // record that has been served up for updation during the component's initialization.
-    @Input() id!: number;
+    @Input() id!: number; 
 
-    // Inject a reference to the Reporting Frameworks records updation component. 
+    // Inject a reference to the Reporting Frameworks Records updation component. 
     // This will provide a way of propagating save requests to it
     @ViewChild(ReportingFrameworksRecordsUpdationComponent) component!: ReportingFrameworksRecordsUpdationComponent;
 
@@ -68,7 +67,7 @@ export class ReportingFrameworksRecordsUpdationModalComponent implements OnInit 
 
     /**
      * Sets the processing status to 'saving', triggering a display change, and then 
-     * propagates the saving request to the Reporting Frameworks records updation component
+     * propagates the saving request to the Reporting Frameworks Records updation component
      */
     onSave() {
         this._statusSubject$.next("saving");

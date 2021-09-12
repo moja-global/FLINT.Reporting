@@ -1,0 +1,113 @@
+form
+  .row
+    .col
+      .d-flex.justify-content-between.p-2
+        sb-search((searched)='onSearch($event)')
+        sb-loading-animation
+  // For Small-Sized Devices Only
+  .row.d-md-none
+    .col
+      sb-table
+        ng-container(header='')
+          tr
+            ng-container(*ngif='parentPartyType; else no_parent_header_sm')
+              th.col-sm-1.text-center.align-middle(scope='col')
+                span #
+              th.col-sm-4.text-left.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
+                span {{parentPartyType.name}}
+                sb-sort-icon(*ngif='sortedColumn === "parent"', [direction]='sortedDirection')
+              th.col-sm-5.text-left.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
+                span {{subsidiaryPartyType?.name}}
+                sb-sort-icon(*ngif='sortedColumn === "subsidiary"', [direction]='sortedDirection')
+              th.col-sm-2.text-center.align-middle(scope='col')
+                span.d-flex.flex-row-reverse
+                  | Actions
+            ng-template(#no_parent_header_sm='')
+              th.col-sm-1.text-center.align-middle(scope='col')
+                span #
+              th.col-sm-9.text-left.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
+                span {{subsidiaryPartyType?.name}}
+                sb-sort-icon(*ngif='sortedColumn === "subsidiary"', [direction]='sortedDirection')
+              th.col-sm-2.text-center.align-middle(scope='col')
+                span.d-flex.flex-row-reverse
+                  | Actions
+        ng-container(body='')
+          tr(*ngfor='let accountability of accountabilitiesRecordsTabulationService.accountabilities$ | async')
+            ng-container(*ngif='parentPartyType; else no_parent_data_sm')
+              td.text-center.align-middle
+                | {{accountability.pos}}
+              td.text-left.align-middle
+                ngb-highlight([result]='accountability.parentPartyName', [term]='accountabilitiesRecordsTabulationService.searchTerm')
+              td.text-left.align-middle
+                ngb-highlight([result]='accountability.subsidiaryPartyName', [term]='accountabilitiesRecordsTabulationService.searchTerm')
+              td.text-center.align-middle
+                span.d-flex.flex-row-reverse
+                  sb-button(action='delete', entity='Accountability', id='{{accountability.id}}', (delete)='onDeleteAccountability($event)', tooltip='Delete {{accountability.subsidiaryPartyName}}')
+            ng-template(#no_parent_data_sm='')
+              td.text-center.align-middle
+                | {{accountability.pos}}
+              td.text-left.align-middle
+                ngb-highlight([result]='accountability.subsidiaryPartyName', [term]='accountabilitiesRecordsTabulationService.searchTerm')
+              td.text-center.align-middle
+                span.d-flex.flex-row-reverse
+                  sb-button(action='delete', entity='Accountability', id='{{accountability.id}}', (delete)='onDeleteAccountability($event)', tooltip='Delete {{accountability.name}}')
+        ng-container(footer='', *ngif='this.accountabilitiesRecordsTabulationService.accountabilityRuleId != null')
+          tr
+            td.align-middle(scope='col', colspan='6')
+              span.d-flex.flex-row.flex-row-reverse
+                sb-button(action='add', entity='Accountability', (add)='onAddAccountability()')
+  // For Middle-Sized Devices Upwards
+  .row.d-none.d-md-block
+    .col
+      sb-table
+        ng-container(header='')
+          tr
+            ng-container(*ngif='parentPartyType; else no_parent_header_md')
+              th.col-md-1.text-center.align-middle(scope='col')
+                span #
+              th.col-md-4.text-left.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
+                span {{parentPartyType.name}}
+                sb-sort-icon(*ngif='sortedColumn === "parent"', [direction]='sortedDirection')
+              th.col-md-5.text-left.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
+                span {{subsidiaryPartyType?.name}}
+                sb-sort-icon(*ngif='sortedColumn === "subsidiary"', [direction]='sortedDirection')
+              th.col-md-2.text-center.align-middle(scope='col')
+                span.d-flex.flex-row-reverse
+                  | Actions
+            ng-template(#no_parent_header_md='')
+              th.col-md-1.text-center.align-middle(scope='col')
+                span #
+              th.col-md-9.text-left.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
+                span {{subsidiaryPartyType?.name}}
+                sb-sort-icon(*ngif='sortedColumn === "subsidiary"', [direction]='sortedDirection')
+              th.col-md-2.text-center.align-middle(scope='col')
+                span.d-flex.flex-row-reverse
+                  | Actions
+        ng-container(body='')
+          tr(*ngfor='let accountability of accountabilitiesRecordsTabulationService.accountabilities$ | async')
+            ng-container(*ngif='parentPartyType; else no_parent_data_sm')
+              td.text-center.align-middle
+                | {{accountability.pos}}
+              td.text-left.align-middle
+                ngb-highlight([result]='accountability.parentPartyName', [term]='accountabilitiesRecordsTabulationService.searchTerm')
+              td.text-left.align-middle
+                ngb-highlight([result]='accountability.subsidiaryPartyName', [term]='accountabilitiesRecordsTabulationService.searchTerm')
+              td.text-center.align-middle
+                span.d-flex.flex-row-reverse
+                  sb-button(action='delete', entity='Accountability', id='{{accountability.id}}', (delete)='onDeleteAccountability($event)', tooltip='Delete {{accountability.subsidiaryPartyName}}')
+            ng-template(#no_parent_data_sm='')
+              td.text-center.align-middle
+                | {{accountability.pos}}
+              td.text-left.align-middle
+                ngb-highlight([result]='accountability.subsidiaryPartyName', [term]='accountabilitiesRecordsTabulationService.searchTerm')
+              td.text-center.align-middle
+                span.d-flex.flex-row-reverse
+                  sb-button(action='delete', entity='Accountability', id='{{accountability.id}}', (delete)='onDeleteAccountability($event)', tooltip='Delete {{accountability.name}}')
+        ng-container(footer='', *ngif='this.accountabilitiesRecordsTabulationService.accountabilityRuleId != null')
+          tr
+            td.align-middle(scope='col', colspan='6')
+              span.d-flex.flex-row.flex-row-reverse
+                sb-button(action='add', entity='Accountability', (add)='onAddAccountability()')
+  .row
+    .col
+      sb-pagination((pagechanged)='onPageChange($event)', (pagesizechanged)='onPageSizeChange($event)')

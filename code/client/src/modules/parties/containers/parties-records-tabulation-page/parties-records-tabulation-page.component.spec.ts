@@ -1,12 +1,16 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute } from '@angular/router';
+import { PartiesRecordsTabulationService } from '@modules/parties/services/parties-records-tabulation.service';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { of } from 'rxjs';
 import { PartiesRecordsTabulationPageComponent } from './parties-records-tabulation-page.component';
 
 
 @Component({
     template: `
-        <sb-parties-records [someInput]="someInput" (someFunction)="someFunction($event)"></sb-parties-records>
+        <sb-parties-records-tabulation-page [someInput]="someInput" (someFunction)="someFunction($event)"></sb-parties-records-tabulation-page>
     `,
 })
 class TestHostComponent {
@@ -27,8 +31,17 @@ describe('PartiesRecordsTabulationPageComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [TestHostComponent, PartiesRecordsTabulationPageComponent],
-            imports: [NoopAnimationsModule],
-            providers: [],
+            imports: [HttpClientTestingModule, LoggerModule.forRoot({ serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.OFF })],
+            providers: [
+                PartiesRecordsTabulationService, 
+                {
+                    provide: ActivatedRoute, 
+                    useValue: {
+                        paramMap: of({ get: (key: string) => 1 }),
+                        queryParamMap: of({ get: (key: string) => 'value' })
+                    }
+                }
+            ],
             schemas: [NO_ERRORS_SCHEMA],
         }).compileComponents();
 
@@ -45,6 +58,6 @@ describe('PartiesRecordsTabulationPageComponent', () => {
     });
 
     it('should display the component', () => {
-        expect(hostComponentNE.querySelector('sb-parties-records')).toEqual(jasmine.anything());
+        expect(hostComponentNE.querySelector('sb-parties-records-tabulation-page')).toEqual(jasmine.anything());
     });
 });

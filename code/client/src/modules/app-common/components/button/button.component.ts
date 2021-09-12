@@ -21,27 +21,30 @@ export class ButtonComponent {
   @Output() yes: EventEmitter<void> = new EventEmitter<void>();
   @Output() no: EventEmitter<void> = new EventEmitter<void>();
   @Output() open: EventEmitter<any> = new EventEmitter<any>();
-  @Output() download: EventEmitter<void> = new EventEmitter<void>();
+  @Output() select: EventEmitter<number> = new EventEmitter<number>();
+  @Output() check: EventEmitter<number> = new EventEmitter<number>();
+  @Output() uncheck: EventEmitter<number> = new EventEmitter<number>();
+  @Output() next: EventEmitter<void> = new EventEmitter<void>();
+  @Output() previous: EventEmitter<void> = new EventEmitter<void>();
+  @Output() drillUp: EventEmitter<void> = new EventEmitter<void>();
+  @Output() drillDown: EventEmitter<number> = new EventEmitter<number>();  
+
 
   // Instantiate and avail the action variable to the parent component for customization.
-  // Supported actions are add, update and delete
+  // Each event name above represents a supported action
   @Input() action!: string;
-
 
   // Instantiate and avail the entity variable to the parent component for customization.
   // The entity is the thing that we are adding, updating or deleting
   @Input() entity: string = "";
 
-
   // Instantiate and avail the id variable to the parent component for customization.
   // The id is the unique identifier of the entity
   @Input() id!: number;
 
-
   // Instantiate and avail the name variable to the parent component for customization.
   // The name is the unique identifier of the entity
   @Input() name!: string;
-
 
   // Instantiate and avail the guarded variable to the parent component for customization.
   // The guard variable, will determine whether or not a button is disabled when the system goes offline
@@ -53,19 +56,27 @@ export class ButtonComponent {
   // It should thus not be confused with the disabled$ observable
   @Input() disabled: boolean = false;
 
-
   // Instantiate and avail the tooltip variable to the parent component for customization.
   // The tooltip, if provided, will be used in place of the getTooltip()'s concatenated result
-  @Input() tooltip!: string;
+  @Input() tooltip!: string; 
+
+  // Instantiate and avail the selected variable to the parent component for customization.
+  // This will allow the Parent Component to specify whether or not it wants a Radio Button selected at the start
+  @Input() selected: boolean = false;
+
+  // Instantiate and avail the checked variable to the parent component for customization.
+  // This will allow the Parent Component to specify whether or not it wants a Checkbox selected at the start
+  @Input() checked: boolean = false;  
 
   // Instantiate an array containing offline css classes
-  offlineClasses: string[] = ["btn", "btn-sm", "btn-secondary", "btn-tool", "mr-1"];
+  offlineClasses: string[] = ["btn", "btn-sm", "btn-secondary", "mr-1"];
 
   // Instantiate an array containing offline css classes
-  onlineClasses: string[] = ["btn", "btn-sm", "btn-primary", "btn-tool", "mr-1"];
+  onlineClasses: string[] = ["btn", "btn-sm", "btn-primary", "mr-1"];
 
   // Keep tabs on whether or not we are online
   online: boolean = false;
+
 
   // Keep tabs on the current css classes.
   // Should be updated when the online status changes
@@ -147,10 +158,40 @@ export class ButtonComponent {
     this.open.emit({ id: this.id, name: this.name });
   }
 
-
-  onDownload(): void {
-    this.download.emit();
+  onNext(): void {
+    this.next.emit();
   }
+
+  onPrevious(): void {
+    this.previous.emit();
+  }
+
+
+  onDrillUp(): void {
+    this.drillUp.emit();
+  }
+
+  onDrillDown(): void {
+    this.drillDown.emit(this.id);
+  }
+  
+  
+  onSelectionChange(e: any) {
+    console.log(e);
+    if (e.target.checked) {
+      this.select.emit(this.id);
+    } 
+  }
+
+  onCheckboxChange(e: any): void {
+    console.log(e);
+    if (e.target.checked) {
+      this.check.emit(this.id);
+    } else {
+      this.uncheck.emit(this.id);
+    }
+  }
+
 
 
   getClasses(): string[] {
@@ -167,9 +208,6 @@ export class ButtonComponent {
 
   getTooltip(): string {
 
-    if (this.tooltip != undefined) {
-
-    }
 
     let prefix: string;
 
@@ -264,9 +302,9 @@ export class ButtonComponent {
             `${prefix}`;
         }
 
-      case "download":
+      case "next":
 
-        prefix = this.tooltip != undefined ? this.tooltip : `Download`;
+        prefix = this.tooltip != undefined ? this.tooltip : `Next`;
 
         if (this.disabled) {
           return `${prefix} ${disabledSuffix1}`;
@@ -276,6 +314,53 @@ export class ButtonComponent {
             `${prefix}`;
         }
 
+      case "previous":
+
+        prefix = this.tooltip != undefined ? this.tooltip : `Previous`;
+
+        if (this.disabled) {
+          return `${prefix} ${disabledSuffix1}`;
+        } else {
+          return this.guarded ?
+            this.online ? `${prefix}` : `${prefix} ${disabledSuffix2}` :
+            `${prefix}`;
+        }
+
+      case "select":
+
+        prefix = this.tooltip != undefined ? this.tooltip : `Select`;
+
+        if (this.disabled) {
+          return `${prefix} ${disabledSuffix1}`;
+        } else {
+          return this.guarded ?
+            this.online ? `${prefix}` : `${prefix} ${disabledSuffix2}` :
+            `${prefix}`;
+        }
+
+      case "check":
+
+        prefix = this.tooltip != undefined ? this.tooltip : `Check`;
+
+        if (this.disabled) {
+          return `${prefix} ${disabledSuffix1}`;
+        } else {
+          return this.guarded ?
+            this.online ? `${prefix}` : `${prefix} ${disabledSuffix2}` :
+            `${prefix}`;
+        }
+
+      case "uncheck":
+
+        prefix = this.tooltip != undefined ? this.tooltip : `Uncheck`;
+
+        if (this.disabled) {
+          return `${prefix} ${disabledSuffix1}`;
+        } else {
+          return this.guarded ?
+            this.online ? `${prefix}` : `${prefix} ${disabledSuffix2}` :
+            `${prefix}`;
+        }
 
       default:
         return "";

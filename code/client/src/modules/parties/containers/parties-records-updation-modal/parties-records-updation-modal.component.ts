@@ -10,7 +10,6 @@ import { PartiesRecordsUpdationComponent } from '../../components/parties-record
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject, Subscription, timer } from 'rxjs';
-import { Party } from '@modules/parties/models';
 
 
 const LOG_PREFIX: string = "[Parties Records Updation Modal]";
@@ -26,7 +25,7 @@ export class PartiesRecordsUpdationModalComponent implements OnInit {
     // Instantiate and avail the id variable to the parent component.
     // This will allow the parent component to inject the id of the 
     // record that has been served up for updation during the component's initialization.
-    @Input() id!: number;
+    @Input() id!: number; 
 
     // Inject a reference to the Parties records updation component. 
     // This will provide a way of propagating save requests to it
@@ -44,10 +43,6 @@ export class PartiesRecordsUpdationModalComponent implements OnInit {
     readonly status$ = this._statusSubject$.asObservable();
 
     // Instantiate a central gathering point for all the component's subscriptions.
-    // Keep tabs on the target part type
-    @Input() targetPartyType!: Party | undefined;
-
-    // Instantiate a central gathering point for all the component's subscriptions.
     // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
     private _subscriptions: Subscription[] = [];
 
@@ -56,7 +51,8 @@ export class PartiesRecordsUpdationModalComponent implements OnInit {
         private log: NGXLogger) { }
 
     ngOnInit() {
-        this.log.trace(`${LOG_PREFIX} Initializing Component`);      
+
+        this.log.trace(`${LOG_PREFIX} Initializing Component`);
     }
 
     @HostListener('window:beforeunload')

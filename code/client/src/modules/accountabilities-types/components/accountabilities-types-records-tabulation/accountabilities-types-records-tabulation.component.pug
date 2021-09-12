@@ -1,0 +1,69 @@
+form
+  .row
+    .col
+      .d-flex.justify-content-between.p-2
+        sb-search((searched)='onSearch($event)')
+        sb-loading-animation
+  // For Small-Sized Devices Only
+  .row.d-md-none
+    .col
+      sb-table
+        ng-container(header='')
+          tr
+            th.col-sm-1.text-center.align-middle(scope='col')
+              span #
+            th.col-sm-9.text-left.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
+              span Name
+              sb-sort-icon(*ngif='sortedColumn === "name"', [direction]='sortedDirection')
+            th.col-sm-2.text-center.align-middle(scope='col')
+              span.d-flex.flex-row-reverse
+                | Actions
+        ng-container(body='')
+          tr(*ngfor='let accountabilityType of accountabilitiesTypesRecordsTabulationService.accountabilitiesTypes$ | async')
+            td.text-center.align-middle
+              | {{accountabilityType.pos}}
+            td.text-left.align-middle
+              ngb-highlight([result]='accountabilityType.name', [term]='accountabilitiesTypesRecordsTabulationService.searchTerm')
+            td.text-center.align-middle
+              span.d-flex.flex-row-reverse
+                sb-button(action='open', entity='Administrative Hierarchy Type', id='{{accountabilityType.id}}', name='{{accountabilityType.name}}', (open)='onOpenAccountabilityRules($event)', tooltip='Open {{accountabilityType.name}} Administrative Hierarchy Levels Page')
+                sb-button(action='delete', entity='Administrative Hierarchy Type', id='{{accountabilityType.id}}', (delete)='onDeleteAccountabilityType($event)', tooltip='Delete {{accountabilityType.name}}')
+                sb-button(action='update', entity='Administrative Hierarchy Type', id='{{accountabilityType.id}}', (update)='onUpdateAccountabilityType($event)', tooltip='Update {{accountabilityType.name}}')
+        ng-container(footer='')
+          tr
+            td.align-middle(scope='col', colspan='6')
+              span.d-flex.flex-row.flex-row-reverse
+                sb-button(action='add', entity='Administrative Hierarchy Type', (add)='onAddAccountabilityType()')
+  // For Middle-Sized Devices Upwards
+  .row.d-none.d-md-block
+    .col
+      sb-table
+        ng-container(header='')
+          tr
+            th.col-md-1.text-center.align-middle(scope='col')
+              span #
+            th.col-md-10.text-left.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
+              span Name
+              sb-sort-icon(*ngif='sortedColumn === "name"', [direction]='sortedDirection')
+            th.col-sm-1.text-center.align-middle(scope='col')
+              span.d-flex.flex-row-reverse
+                | Actions
+        ng-container(body='')
+          tr(*ngfor='let accountabilityType of accountabilitiesTypesRecordsTabulationService.accountabilitiesTypes$ | async')
+            td.text-center.align-middle
+              | {{accountabilityType.pos}}
+            td.text-left.align-middle
+              ngb-highlight([result]='accountabilityType.name', [term]='accountabilitiesTypesRecordsTabulationService.searchTerm')
+            td.text-center.align-middle
+              span.d-flex.flex-row-reverse
+                sb-button(action='open', entity='Administrative Hierarchy Type', id='{{accountabilityType.id}}', name='{{accountabilityType.name}}', (open)='onOpenAccountabilityRules($event)', tooltip='Open {{accountabilityType.name}} Administrative Hierarchy Levels Page')
+                sb-button(action='delete', entity='Administrative Hierarchy Type', id='{{accountabilityType.id}}', (delete)='onDeleteAccountabilityType($event)', tooltip='Delete {{accountabilityType.name}}')
+                sb-button(action='update', entity='Administrative Hierarchy Type', id='{{accountabilityType.id}}', (update)='onUpdateAccountabilityType($event)', tooltip='Update {{accountabilityType.name}}')
+        ng-container(footer='')
+          tr
+            td.align-middle(scope='col', colspan='6')
+              span.d-flex.flex-row.flex-row-reverse
+                sb-button(action='add', entity='Administrative Hierarchy Type', (add)='onAddAccountabilityType()')
+  .row
+    .col
+      sb-pagination((pagechanged)='onPageChange($event)', (pagesizechanged)='onPageSizeChange($event)')

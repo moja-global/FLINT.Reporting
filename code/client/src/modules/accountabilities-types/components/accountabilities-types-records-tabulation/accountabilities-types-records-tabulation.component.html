@@ -1,0 +1,139 @@
+<form>
+
+    <div class="row">
+        <div class="col">
+            <div class="d-flex justify-content-between p-2">
+                <sb-search (searched)="onSearch($event)"></sb-search>
+                <sb-loading-animation></sb-loading-animation>
+            </div>
+        </div>
+    </div>
+
+    <!--For Small-Sized Devices Only-->
+    <div class="row d-md-none">
+        <div class="col">
+            <sb-table>
+                <ng-container header>
+                    <tr>
+                        <th scope="col" class="col-sm-1 text-center align-middle">
+                            <span>#</span>
+                        </th>
+                        <th scope="col" class="col-sm-9 text-left align-middle" sbSortable="name" (sort)="onSort($event)">
+                            <span>Name</span>
+                            <sb-sort-icon *ngIf='sortedColumn === "name"' [direction]="sortedDirection">
+                            </sb-sort-icon>
+                        </th>
+                        <th scope="col" class="col-sm-2 text-center align-middle">
+                            <span class="d-flex flex-row-reverse">
+                                Actions
+                            </span>
+                        </th>                        
+                    </tr>
+                </ng-container>
+
+                <ng-container body>
+                    <tr *ngFor="let accountabilityType of accountabilitiesTypesRecordsTabulationService.accountabilitiesTypes$ | async">
+
+                        <td class="text-center align-middle">
+                            {{accountabilityType.pos}}
+                        </td>
+
+                        <td class="text-left align-middle">
+                            <ngb-highlight [result]="accountabilityType.name" [term]="accountabilitiesTypesRecordsTabulationService.searchTerm"></ngb-highlight>
+                        </td>
+
+                        <td class="text-center align-middle">
+                            <span class="d-flex flex-row-reverse">
+                                <sb-button action="open" entity="Administrative Hierarchy Type" id="{{accountabilityType.id}}" name="{{accountabilityType.name}}"  (open)="onOpenAccountabilityRules($event)" tooltip="Open {{accountabilityType.name}} Administrative Hierarchy Levels Page"></sb-button>                                                       
+                                <sb-button action="delete" entity="Administrative Hierarchy Type" id="{{accountabilityType.id}}" (delete)="onDeleteAccountabilityType($event)" tooltip="Delete {{accountabilityType.name}}"></sb-button>
+                                <sb-button action="update" entity="Administrative Hierarchy Type" id="{{accountabilityType.id}}" (update)="onUpdateAccountabilityType($event)" tooltip="Update {{accountabilityType.name}}"></sb-button>
+                            </span> 
+                        </td>
+
+                    </tr>
+                </ng-container>
+
+                <ng-container footer>
+                    <tr>
+                        <td scope="col" colspan="6" class="align-middle">
+                            <span class="d-flex flex-row flex-row-reverse">
+                                  <sb-button action="add" entity="Administrative Hierarchy Type" (add)="onAddAccountabilityType()"></sb-button> 
+                            </span>
+
+                        </td>
+                    </tr>
+                </ng-container>  
+
+            </sb-table>
+        </div>
+    </div> 
+    
+    <!--For Middle-Sized Devices Upwards-->
+    <div class="row d-none d-md-block">
+        <div class="col">
+            <sb-table>
+                <ng-container header>
+                    <tr>
+                        <th scope="col" class="col-md-1 text-center align-middle">
+                            <span>#</span>
+                        </th>
+                        <th scope="col" class="col-md-10 text-left align-middle" sbSortable="name" (sort)="onSort($event)">
+                            <span>Name</span>
+                            <sb-sort-icon *ngIf='sortedColumn === "name"' [direction]="sortedDirection">
+                            </sb-sort-icon>
+                        </th>
+                        <th scope="col" class="col-sm-1 text-center align-middle">
+                            <span class="d-flex flex-row-reverse">
+                                Actions
+                            </span>
+                        </th>                        
+                    </tr>
+                </ng-container>
+
+                <ng-container body>
+
+                    <tr *ngFor="let accountabilityType of accountabilitiesTypesRecordsTabulationService.accountabilitiesTypes$ | async">
+
+                        <td class="text-center align-middle">
+                            {{accountabilityType.pos}}
+                        </td>
+
+                        <td class="text-left align-middle">
+                            <ngb-highlight [result]="accountabilityType.name" [term]="accountabilitiesTypesRecordsTabulationService.searchTerm"></ngb-highlight>
+                        </td>
+
+                        <td class="text-center align-middle">
+                            <span class="d-flex flex-row-reverse">  
+                                <sb-button action="open" entity="Administrative Hierarchy Type" id="{{accountabilityType.id}}" name="{{accountabilityType.name}}"  (open)="onOpenAccountabilityRules($event)" tooltip="Open {{accountabilityType.name}} Administrative Hierarchy Levels Page"></sb-button>                                                       
+                                <sb-button action="delete" entity="Administrative Hierarchy Type" id="{{accountabilityType.id}}" (delete)="onDeleteAccountabilityType($event)" tooltip="Delete {{accountabilityType.name}}"></sb-button>
+                                <sb-button action="update" entity="Administrative Hierarchy Type" id="{{accountabilityType.id}}" (update)="onUpdateAccountabilityType($event)" tooltip="Update {{accountabilityType.name}}"></sb-button>
+                            </span> 
+                        </td>
+                        
+                    </tr>
+
+                </ng-container>
+
+                <ng-container footer>
+                    <tr>
+                        <td scope="col" colspan="6" class="align-middle">
+                            <span class="d-flex flex-row flex-row-reverse">
+                                  <sb-button action="add" entity="Administrative Hierarchy Type" (add)="onAddAccountabilityType()"></sb-button> 
+                            </span>
+
+                        </td>
+                    </tr>
+                </ng-container>  
+
+            </sb-table>
+        </div>
+    </div>     
+
+    <div class="row">
+        <div class="col">
+            <sb-pagination (pageChanged)="onPageChange($event)" (pageSizeChanged)="onPageSizeChange($event)">
+            </sb-pagination>
+        </div>
+    </div>
+
+</form>

@@ -8,10 +8,10 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import { PartiesDataService } from '../../services/parties-data.service';
+import { Party } from '@modules/parties/models/party.model';
+import { PartiesDataService } from '@modules/parties/services/parties-data.service';
 import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
-import { Party } from '../../../parties/models/party.model';
 
 const LOG_PREFIX: string = "[Parties Records Deletion Component]";
 
@@ -28,7 +28,7 @@ export class PartiesRecordsDeletionComponent implements OnInit, AfterContentInit
   // record that has been served up for deletion during the component's initialization.
   @Input() id!: number;
 
-  // Instantiate an object to hold the details of the Party record being deleted.
+  // Instantiate an object to hold the details of the Party Record being deleted.
   // This will allow the UI to print readable details of that record that 
   // for the users confirmation
   party: Party | undefined;
@@ -38,29 +38,25 @@ export class PartiesRecordsDeletionComponent implements OnInit, AfterContentInit
   @Output() succeeded: EventEmitter<void> = new EventEmitter<void>();
 
   // Instantiate a 'failed' state notification Emitter.
-  // This will allow us to broadcast fnotifications of failed deletion events
+  // This will allow us to broadcast notifications of failed deletion events
   @Output() failed: EventEmitter<number> = new EventEmitter<number>();
 
-  // Keep tabs on the target part type
-  @Input() targetPartyType!: Party | undefined;
 
   // Instantiate a central gathering point for all the component's subscriptions.
-  // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
+  // This will make it easier to unsubscribe from all subscriptions when the component is destroyed.   
   private _subscriptions: Subscription[] = [];
 
-  constructor(
-    private partiesDataService: PartiesDataService,
-    private log: NGXLogger) { }
+  constructor(private partiesDataService: PartiesDataService, private log: NGXLogger) { }
 
   ngOnInit() {
 
-    this.log.trace(`${LOG_PREFIX} Initializing Component`);  
+    this.log.trace(`${LOG_PREFIX} Initializing Component`);
 
     // Retrieve the Party with the given id from the data store 
     this.log.trace(`${LOG_PREFIX} Retrieving the Party with the given id from the data store`);
-    this.log.debug(`${LOG_PREFIX} Party record Id = ${this.id}`);
+    this.log.debug(`${LOG_PREFIX} Party Record Id = ${this.id}`);
     this.party = this.partiesDataService.records.find(d => d.id == this.id);
-    this.log.debug(`${LOG_PREFIX} Party record = ${JSON.stringify(this.party)}`);
+    this.log.debug(`${LOG_PREFIX} Party Record = ${JSON.stringify(this.party)}`);
 
   }
 
@@ -80,21 +76,21 @@ export class PartiesRecordsDeletionComponent implements OnInit, AfterContentInit
 
 
   /**
-   * Deletes Party record.
+   * Deletes Party Records.
    * Emits an succeeded or failed event indicating whether or not the saving exercise was successful.
    * Error 500 = Indicates something unexpected happened at the server side
    */
   public delete(): void {
 
-    // Save the record
-    this.log.trace(`${LOG_PREFIX} Deleting the Party record`);
+    // Delete the record
+    this.log.trace(`${LOG_PREFIX} Deleting the Party Record`);
     this.partiesDataService
       .deleteParty(this.id)
       .subscribe(
         (response: number) => {
 
-          // The Party record was saved successfully
-          this.log.trace(`${LOG_PREFIX} Party record was deleted successfuly`);
+          // The Party Record was deleted successfully
+          this.log.trace(`${LOG_PREFIX} Party Record was deleted successfuly`);
 
           // Emit a 'succeeded' event
           this.log.trace(`${LOG_PREFIX} Emitting a 'succeeded' event`);
@@ -102,8 +98,8 @@ export class PartiesRecordsDeletionComponent implements OnInit, AfterContentInit
         },
         (error: any) => {
 
-          // The Party record was not deleted successfully
-          this.log.trace(`${LOG_PREFIX} Party record was not deleted successfuly`);
+          // The Party Record was not deleted successfully
+          this.log.trace(`${LOG_PREFIX} Party Record was not deleted successfuly`);
 
           // Emit a 'failed' event
           this.log.trace(`${LOG_PREFIX} Emitting a 'failed' event`);

@@ -1,11 +1,11 @@
 export class Party {
 
-	[key: string]: string | number | undefined | null;
-	pos: number | undefined | null;
-	partyTypeId: number | undefined | null;
-	id: number | undefined | null;
-	name: string | undefined | null;
-	version: number | undefined | null;
+	[key: string]: string | number | null;
+	pos!: number | null;
+	id!: number | null;
+	partyTypeId!: number | null;
+	name!: string | null;
+	version!: number | null;
 
     constructor(options?: Partial<Party>) {
         Object.assign(this, options);

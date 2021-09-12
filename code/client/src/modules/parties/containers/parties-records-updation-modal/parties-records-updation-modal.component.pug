@@ -1,28 +1,56 @@
-sb-modal
-  ng-container(title='')
-    | Update Party Record
-  ng-container(body')
-    sb-parties-records-updation(id='{{id}}', (succeeded)='onSucceeded()', (failed)='onFailed($event)')
-    ng-container(*ngif='(status$ | async) === "saving"')
-      sb-message-overlay(activity='updating', status='saving')
-    ng-container(*ngif='(status$ | async) === "succeeded"')
-      sb-message-overlay(activity='updating', status='succeeded')
-    ng-container(*ngif='(status$ | async) === "failed"')
-      sb-message-overlay(activity='updating', status='failed')
-    ng-container(*ngif='(status$ | async) === "retrying"')
-      sb-countdown-overlay(crosshead='Retrying in ', (completed)='onSave()')
-  ng-container(footer='')
-    ng-container(*ngif='(status$ | async) === "new"')
-      sb-button(action='save', entity='Party', (save)='onSave()')
-    ng-container(*ngif='(status$ | async) === "saving"')
-      sb-button(action='save', entity='Party', disabled='true')
-    ng-container(*ngif='(status$ | async) === "invalid"')
-      sb-button(action='save', entity='Party', (save)='onSave()')
-    ng-container(*ngif='(status$ | async) === "succeeded"')
-      sb-button(action='save', entity='Party', disabled='true')
-    ng-container(*ngif='(status$ | async) === "failed"')
-      sb-button(action='yes', entity='Party', (yes)='onRetry()')
-      sb-button(action='no', entity='Party', guarded='false', (no)='onQuit()')
-    ng-container(*ngif='(status$ | async) === "retrying"')
-      sb-button(action='yes', entity='Party', disabled='true')
-      sb-button(action='no', entity='Party', disabled='true')
+<sb-modal>
+    <ng-container title>
+        Update Administrative Unit Record
+    </ng-container>
+    <ng-container body>
+
+        <sb-parties-records-updation [id]="id" (succeeded)="onSucceeded()" (failed)="onFailed($event)">
+        </sb-parties-records-updation>
+
+        <ng-container *ngIf='(status$ | async) === "saving"'>
+            <sb-message-overlay activity="updating" status="saving"></sb-message-overlay>
+        </ng-container>
+
+        <ng-container *ngIf='(status$ | async) === "succeeded"'>
+            <sb-message-overlay activity="updating" status="succeeded"></sb-message-overlay>
+        </ng-container>
+
+        <ng-container *ngIf='(status$ | async) === "failed"'>
+            <sb-message-overlay activity="updating" status="failed"></sb-message-overlay>
+        </ng-container>
+
+        <ng-container *ngIf='(status$ | async) === "retrying"'>
+            <sb-countdown-overlay crosshead="Retrying in " (completed)="onSave()"></sb-countdown-overlay>
+        </ng-container>
+
+    </ng-container>
+    <ng-container footer>
+
+    <ng-container *ngIf='(status$ | async) === "new"'>
+        <sb-button action="save" entity="Administrative Unit" (save)="onSave()"></sb-button>
+    </ng-container>
+
+    <ng-container *ngIf='(status$ | async) === "saving"'>
+        <sb-button action="save" entity="Administrative Unit" disabled="true"></sb-button>
+    </ng-container>
+    
+    <ng-container *ngIf='(status$ | async) === "invalid"'>
+        <sb-button action="save" entity="Administrative Unit" (save)="onSave()"></sb-button>
+    </ng-container>        
+
+    <ng-container *ngIf='(status$ | async) === "succeeded"'>
+        <sb-button action="save" entity="Administrative Unit" disabled="true"></sb-button>
+    </ng-container>
+
+    <ng-container *ngIf='(status$ | async) === "failed"'>
+        <sb-button action="yes" entity="Administrative Unit" (yes)="onRetry()"></sb-button>
+        <sb-button action="no" entity="Administrative Unit" guarded="false" (no)="onQuit()"></sb-button>  
+    </ng-container>
+
+    <ng-container *ngIf='(status$ | async) === "retrying"'>
+        <sb-button action="yes" entity="Administrative Unit" disabled="true"></sb-button>
+        <sb-button action="no" entity="Administrative Unit" disabled="true"></sb-button> 
+    </ng-container>     
+
+    </ng-container>
+</sb-modal>

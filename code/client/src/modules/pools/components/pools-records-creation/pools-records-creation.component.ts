@@ -3,14 +3,15 @@ import {
   Component,
   EventEmitter,
   HostListener,
+  Input,
+  OnDestroy,
   OnInit,
   Output
 } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { PoolsDataService } from '../../services/pools-data.service';
+import { Pool } from '@modules/pools/models/pool.model';
+import { PoolsDataService } from '@modules/pools/services/pools-data.service';
 import { NGXLogger } from 'ngx-logger';
-import { Subscription } from 'rxjs';
-import { Pool } from '../../models';
 
 const LOG_PREFIX: string = "[Pools Records Creation Component]";
 
@@ -20,57 +21,66 @@ const LOG_PREFIX: string = "[Pools Records Creation Component]";
   templateUrl: './pools-records-creation.component.html',
   styleUrls: ['pools-records-creation.component.scss'],
 })
-export class PoolsRecordsCreationComponent implements OnInit {
+export class PoolsRecordsCreationComponent implements OnInit, OnDestroy {
+
+  // Instantiate an 'initialized' state notification Emitter.
+  // This will allow us to notify the parent component that the component was successfully initialized
+  @Output() initialized: EventEmitter<void> = new EventEmitter<void>();
 
   // Instantiate a 'succeeded' state notification Emitter.
   // This will allow us to broadcast notifications of successful creation events
   @Output() succeeded: EventEmitter<void> = new EventEmitter<void>();
 
   // Instantiate a 'failed' state notification Emitter.
-  // This will allow us to broadcast fnotifications of failed creation events
+  // This will allow us to broadcast notifications of failed creation events
   @Output() failed: EventEmitter<number> = new EventEmitter<number>();
 
   // Instantitate a new reactive Form Group for the Pools Form.
-  // This will allow to define and enforce the validation rules for all the form controls.
+  // This will allow us to define and enforce the validation rules for all the form controls.
   poolsForm = new FormGroup({
     name: new FormControl('', [
       Validators.required,
       Validators.minLength(2),
-      Validators.maxLength(50),
-      this.exists()
-    ]),
+      Validators.maxLength(250),
+      this.exists("name")
+    ]), 
     description: new FormControl('', [
       Validators.maxLength(250)
-    ])
+    ])    
   });
 
-  // Instantiate a central gathering point for all the component's subscriptions.
-  // This will make it easier to unsubscribe from all subscriptions when the component is destroyed.   
-  private _subscriptions: Subscription[] = [];
 
-  constructor(private poolsDataService: PoolsDataService, private log: NGXLogger) { }
+  constructor(
+    private poolsDataService: PoolsDataService,
+    private log: NGXLogger) {
+
+  }
+
 
   ngOnInit() {
     this.log.trace(`${LOG_PREFIX} Initializing Component`);
   }
 
+
   @HostListener('window:beforeunload')
   ngOnDestroy() {
-
     this.log.trace(`${LOG_PREFIX} Destroying Component`);
-
-    // Clear all subscriptions
-    this.log.trace(`${LOG_PREFIX} Clearing all subscriptions`);
-    this._subscriptions.forEach((s) => s.unsubscribe());
   }
 
+
   /**
-   * Internal validator that checks whether a Pool record already exists
+   * Internal validator that checks whether a Pool Record already exists
    * @returns 
    */
-  private exists(): ValidatorFn {
+  private exists(attribute: string): ValidatorFn {
 
-    const values: string[] = <Array<string>>this.poolsDataService.records.map(d => d.name);
+    this.log.trace(`${LOG_PREFIX} Checking whether ${attribute} already exists`);
+
+    const values: string[] =
+      attribute == "name" ? <Array<string>>this.poolsDataService.records.map(d => d.name) :
+            [];
+
+    this.log.debug(`${LOG_PREFIX} Existing ${attribute} values = ${values}`);
 
     return (control: AbstractControl): ValidationErrors | null => {
 
@@ -80,7 +90,12 @@ export class PoolsRecordsCreationComponent implements OnInit {
 
           const s: string = control.value;
 
+          this.log.debug(`${LOG_PREFIX} Checking whether ${s} matches any value in ${values}`);
+
           if (values.map(v => v.toLowerCase()).includes(s.toLowerCase())) {
+
+            this.log.trace(`${LOG_PREFIX} Matching ${attribute} found`);
+
             return { 'exists': true }
           }
         }
@@ -90,8 +105,10 @@ export class PoolsRecordsCreationComponent implements OnInit {
     }
   }
 
+
+
   /**
-   * Validates and saves a new Pool record.
+   * Validates and saves a new Pool Record.
    * Emits a succeeded or failed event in response to whether or not the creation exercise was successful.
    * Error 400 = Indicates an invalid Form Control Entry was supplied.
    * Error 500 = Indicates something unexpected happened at the server side
@@ -103,22 +120,22 @@ export class PoolsRecordsCreationComponent implements OnInit {
       // Read in the provided name
       this.log.trace(`${LOG_PREFIX} Reading in the provided name`);
       const name: string | null = this.poolsForm.get('name') == null ? null : this.poolsForm.get('name')?.value;
-      this.log.debug(`${LOG_PREFIX} Pool Name = ${name}`);
+      this.log.debug(`${LOG_PREFIX} Pool Name = ${name}`);   
 
       // Read in the provided description
       this.log.trace(`${LOG_PREFIX} Reading in the provided description`);
       const description: string | null = this.poolsForm.get('description') == null ? null : this.poolsForm.get('description')?.value;
-      this.log.debug(`${LOG_PREFIX} Pool Description = ${description}`);
+      this.log.debug(`${LOG_PREFIX} Pool Description = ${description}`);      
 
       // Save the record
-      this.log.trace(`${LOG_PREFIX} Saving the Pool record`);
+      this.log.trace(`${LOG_PREFIX} Saving the Pool Record`);
       this.poolsDataService
-        .createPool(new Pool({ name, description }))
+        .createPool(new Pool({ name: name, description: description }))
         .subscribe(
           (response: Pool) => {
 
-            // The Pool record was saved successfully
-            this.log.trace(`${LOG_PREFIX} Pool record was saved successfuly`);
+            // The Pool Record was saved successfully
+            this.log.trace(`${LOG_PREFIX} Pool Record was saved successfuly`);
 
             // Reset the form
             this.log.trace(`${LOG_PREFIX} Resetting the form`);
@@ -130,8 +147,8 @@ export class PoolsRecordsCreationComponent implements OnInit {
           },
           (error: any) => {
 
-            // The Pool record was not saved successfully
-            this.log.trace(`${LOG_PREFIX} Pool record was not saved successfuly`);
+            // The Pool Record was not saved successfully
+            this.log.trace(`${LOG_PREFIX} Pool Record was not saved successfuly`);
 
             // Emit a 'failed' event
             this.log.trace(`${LOG_PREFIX} Emitting a 'failed' event`);

@@ -10,7 +10,6 @@ import { PoolsRecordsDeletionComponent } from '../../components/pools-records-de
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject, Subscription, timer } from 'rxjs';
-import { ConnectivityStatusService } from '@common/services';
 
 const LOG_PREFIX: string = "[Pools Records Deletion Modal]";
 
@@ -27,7 +26,7 @@ export class PoolsRecordsDeletionModalComponent implements OnInit {
     // record that has been served up for deletion during the component's initialization.
     @Input() id!: number;
 
-    // Inject a reference to the Pools records deletion component. 
+    // Inject a reference to the Pools Records deletion component. 
     // This will provide a way of propagating delete requests to it
     @ViewChild(PoolsRecordsDeletionComponent) component!: PoolsRecordsDeletionComponent;
 
@@ -52,6 +51,7 @@ export class PoolsRecordsDeletionModalComponent implements OnInit {
     ngOnInit() {
 
         this.log.trace(`${LOG_PREFIX} Initializing Component`);
+
     }
 
     @HostListener('window:beforeunload')
@@ -61,7 +61,7 @@ export class PoolsRecordsDeletionModalComponent implements OnInit {
 
     /**
      * Sets the processing status to 'deleting', triggering a display change, and then 
-     * propagates the deletion request to the Pools records creation component
+     * propagates the deletion request to the Pools Records creation component
      */
     onDelete() {
         this._statusSubject$.next("deleting");

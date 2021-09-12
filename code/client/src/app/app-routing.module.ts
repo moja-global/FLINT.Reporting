@@ -6,7 +6,28 @@ const routes: Routes = [
         path: '',
         pathMatch: 'full',
         redirectTo: '/dashboard',
+    },
+    {
+        path: 'accountabilities_types',
+        loadChildren: () =>
+            import('modules/accountabilities-types/accountabilities-types-routing.module').then(
+                m => m.AccountabilitiesTypesRoutingModule
+            ),
+    },  
+    {
+        path: 'accountabilities_rules',
+        loadChildren: () =>
+            import('modules/accountabilities-rules/accountabilities-rules-routing.module').then(
+                m => m.AccountabilitiesRulesRoutingModule
+            ),
     }, 
+    {
+        path: 'accountabilities',
+        loadChildren: () =>
+            import('modules/accountabilities/accountabilities-routing.module').then(
+                m => m.AccountabilitiesRoutingModule
+            ),
+    },     
     {
         path: 'auth',
         loadChildren: () =>
@@ -15,7 +36,7 @@ const routes: Routes = [
     {
         path: 'cover_types',
         loadChildren: () =>
-            import('modules/cover-types/cover-types-routing.module').then(m => m.CoverTypesRoutingModule)
+            import('modules/covers-types/covers-types-routing.module').then(m => m.CoversTypesRoutingModule)
     },     
     {
         path: 'databases',
@@ -34,7 +55,7 @@ const routes: Routes = [
     {
         path: 'emission_types',
         loadChildren: () =>
-            import('modules/emission-types/emission-types-routing.module').then(m => m.EmissionTypesRoutingModule)
+            import('modules/emissions-types/emissions-types-routing.module').then(m => m.EmissionsTypesRoutingModule)
     },  
     {
         path: 'error',
@@ -44,7 +65,7 @@ const routes: Routes = [
     {
         path: 'flux_types',
         loadChildren: () =>
-            import('modules/flux-types/flux-types-routing.module').then(m => m.FluxTypesRoutingModule)
+            import('modules/fluxes-types/fluxes-types-routing.module').then(m => m.FluxesTypesRoutingModule)
     },            
     {
         path: 'home',
@@ -53,6 +74,25 @@ const routes: Routes = [
                 m => m.HomeRoutingModule
             ),
     },
+    {
+        path: 'land_uses_categories',
+        loadChildren: () =>
+            import('modules/land-uses-categories/land-uses-categories-routing.module').then(m => m.LandUsesCategoriesRoutingModule)
+    },     
+    {
+        path: 'parties_types',
+        loadChildren: () =>
+            import('modules/parties-types/parties-types-routing.module').then(
+                m => m.PartiesTypesRoutingModule
+            ),
+    },
+    {
+        path: 'parties',
+        loadChildren: () =>
+            import('modules/parties/parties-routing.module').then(
+                m => m.PartiesRoutingModule
+            ),
+    },     
     {
         path: 'pools',
         loadChildren: () =>

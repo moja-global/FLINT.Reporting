@@ -4,7 +4,7 @@
     </ng-container>
     <ng-container body>
 
-        <sb-pools-records-deletion id="{{id}}" (succeeded)="onSucceeded()" (failed)="onFailed($event)">
+        <sb-pools-records-deletion [id]="id" (succeeded)="onSucceeded()" (failed)="onFailed($event)">
         </sb-pools-records-deletion>
 
         <ng-container *ngIf='(status$ | async) === "deleting"'>

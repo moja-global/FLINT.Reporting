@@ -13,26 +13,25 @@ import * as poolsGuards from './guards';
 import { SBRouteData } from '@modules/navigation/models';
 
 /* Routes */
-export const ROUTES: Routes = [
+export const ROUTES: Routes = [ 
     {
         path: '',
         canActivate: [],
         component: poolsContainers.PoolsRecordsTabulationPageComponent,
         data: {
             title: 'Pools',
-            breadcrumbs: [
-                {
-                    text: 'Configurations',
-                    active: false
-                },
-                {
-                    text: 'Pools',
-                    active: false
-                }
-            ],
+            breadcrumbs: [],
         } as SBRouteData,
     },
+    {
+        path: '**',
+        pathMatch: 'full',
+        loadChildren: () =>
+            import('modules/error/error-routing.module').then(m => m.ErrorRoutingModule),
+    }           
 ];
+
+
 
 @NgModule({
     imports: [PoolsModule, RouterModule.forChild(ROUTES)],

@@ -1,0 +1,12 @@
+@import "styles/variables.scss";
+
+.btn {
+    -webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none !important;
+}
+
+
+td.clickable{
+	cursor: pointer;
+}

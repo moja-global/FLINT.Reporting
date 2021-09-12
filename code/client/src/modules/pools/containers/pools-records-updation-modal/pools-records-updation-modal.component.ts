@@ -10,7 +10,6 @@ import { PoolsRecordsUpdationComponent } from '../../components/pools-records-up
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject, Subscription, timer } from 'rxjs';
-import { ConnectivityStatusService } from '@common/services';
 
 
 const LOG_PREFIX: string = "[Pools Records Updation Modal]";
@@ -26,9 +25,9 @@ export class PoolsRecordsUpdationModalComponent implements OnInit {
     // Instantiate and avail the id variable to the parent component.
     // This will allow the parent component to inject the id of the 
     // record that has been served up for updation during the component's initialization.
-    @Input() id!: number;
+    @Input() id!: number; 
 
-    // Inject a reference to the Pools records updation component. 
+    // Inject a reference to the Pools Records updation component. 
     // This will provide a way of propagating save requests to it
     @ViewChild(PoolsRecordsUpdationComponent) component!: PoolsRecordsUpdationComponent;
 
@@ -68,7 +67,7 @@ export class PoolsRecordsUpdationModalComponent implements OnInit {
 
     /**
      * Sets the processing status to 'saving', triggering a display change, and then 
-     * propagates the saving request to the Pools records updation component
+     * propagates the saving request to the Pools Records updation component
      */
     onSave() {
         this._statusSubject$.next("saving");

@@ -19,9 +19,9 @@ form
                 | Actions
         ng-container(footer='')
           tr
-            td.align-middle(scope='col', colspan='4')
-              span.d-flex.flex-row-reverse
-                sb-button(action='add', entity='LandUseCategory', (add)='onAddLandUseCategory()')
+            td.align-middle(scope='col', colspan='3')
+              span.d-flex.flex-row.flex-row-reverse
+                sb-button(action='add', entity='Land Use Category', (add)='onAddLandUseCategory()')
         ng-container(body='')
           tr(*ngfor='let landUseCategory of landUseCategoriesTableService.landUseCategories$ | async')
             td.text-center.align-middle
@@ -30,8 +30,9 @@ form
               ngb-highlight([result]='landUseCategory.name', [term]='landUseCategoriesTableService.searchTerm')
             td.align-middle
               span.d-flex.flex-row-reverse
-                sb-button(action='delete', entity='LandUseCategory', id='{{landUseCategory.id}}', (delete)='onDeleteLandUseCategory($event)')
-                sb-button(action='update', entity='LandUseCategory', id='{{landUseCategory.id}}', (update)='onUpdateLandUseCategory($event)')
+                // <sb-button action="open" entity="Land Use Category Home" id="{{landUseCategory.id}}" name="{{landUseCategory.name}}" tooltip="Configure category and its subcategories" (open)="onOpenLandUseCategory($event)"></sb-button>
+                sb-button(action='delete', entity='Land Use Category', id='{{landUseCategory.id}}', (delete)='onDeleteLandUseCategory($event)')
+                sb-button(action='update', entity='Land Use Category', id='{{landUseCategory.id}}', (update)='onUpdateLandUseCategory($event)')
   .row
     .col
       sb-pagination((pagechanged)='onPageChange($event)', (pagesizechanged)='onPageSizeChange($event)')

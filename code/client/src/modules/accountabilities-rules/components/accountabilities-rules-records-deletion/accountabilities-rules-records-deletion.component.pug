@@ -1,0 +1,7 @@
+.alert.alert-light.text-center(role='alert')
+  h3.alert-heading.text-danger
+    fa-icon([icon]='["fas", "question-circle"]')
+  p
+    | Are you sure you want to delete the 
+    span.font-weight-bold {{accountabilityRule?.name}}
+    |  Administrative Hierarchy Level and all its descendants?

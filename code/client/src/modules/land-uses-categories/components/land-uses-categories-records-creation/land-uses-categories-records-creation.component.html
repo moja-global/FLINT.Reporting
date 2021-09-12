@@ -1,0 +1,50 @@
+<form [formGroup]="landUsesCategoriesForm">
+
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" placeholder="" formControlName="name">
+        <div *ngIf="landUsesCategoriesForm.get('name')?.invalid && (landUsesCategoriesForm.get('name')?.dirty || landUsesCategoriesForm.get('name')?.touched)"
+            class="alert alert-danger mt-3">
+            <div *ngIf="landUsesCategoriesForm.get('name')?.errors.required">
+                Name is required.
+            </div>
+            <div *ngIf="landUsesCategoriesForm.get('name')?.errors.minlength">
+                Name cannot be less than 2 characters long.
+            </div>
+            <div *ngIf="landUsesCategoriesForm.get('name')?.errors.maxlength">
+                Name cannot be more than 250 characters long.
+            </div>
+            <div *ngIf="landUsesCategoriesForm.get('name')?.errors.exists">
+                Name should be unique.
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="name">Parent</label>
+        <select class="form-control" formControlName="parentLandUseCategoryId" (change)="onSelectParentLandUseCategoryId($event)">
+            <option [ngValue]="null" disabled>Optional parent category</option>
+            <option *ngFor="let category of landUsesCategoriesDataService.landUsesCategories$ | async" [ngValue]="category.id">
+                {{ category.name }}
+            </option>
+        </select>
+    </div>
+    
+    <div class="form-group" *ngIf="parentLandUseCategoryId == null">
+        <label for="name">Cover Type</label>
+        <select class="form-control" formControlName="coverTypeId" (change)="onSelectCoverTypeId($event)">
+            <option [ngValue]="null" disabled>Select Cover Type</option>
+            <option *ngFor="let coverType of coversTypesDataService.coversTypes$ | async" [ngValue]="coverType.id">
+                {{ coverType.description }}
+            </option>
+
+        </select>
+        <div *ngIf="landUsesCategoriesForm.get('coverTypeId')?.invalid && (landUsesCategoriesForm.get('coverTypeId')?.dirty || landUsesCategoriesForm.get('coverTypeId')?.touched)"
+            class="alert alert-danger mt-3">
+            <div *ngIf="landUsesCategoriesForm.get('coverTypeId')?.errors.required">
+                Cover Type is required.
+            </div>
+        </div>
+    </div>    
+
+</form>

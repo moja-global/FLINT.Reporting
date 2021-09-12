@@ -8,7 +8,7 @@ import { take, toArray } from 'rxjs/operators';
 import { ReportingFramework } from '../models';
 import { ConnectivityStatusService } from '@common/services';
 
-describe('Reporting Frameworks Data Service', () => {
+describe('ReportingFrameworks Data Service', () => {
 
     let reportingFrameworksDataService: ReportingFrameworksDataService;
     let httpMock: HttpTestingController;
@@ -33,7 +33,7 @@ describe('Reporting Frameworks Data Service', () => {
                 (httpMock: HttpTestingController, reportingFrameworksDataService: ReportingFrameworksDataService) => {
 
           
-                    // Define a couple of mock Reporting Frameworks
+                    // Define a couple of mock ReportingFrameworks
                     const initialReportingFrameworks: ReportingFramework[] = <Array<ReportingFramework>>[
                         new ReportingFramework({ id: 1, name: "ReportingFramework 1", description: "ReportingFramework 1 Description", version: 1 }),
                         new ReportingFramework({ id: 2, name: "ReportingFramework 2", description: "ReportingFramework 2 Description", version: 1 }),
@@ -53,12 +53,12 @@ describe('Reporting Frameworks Data Service', () => {
                     reportingFrameworksDataService.createReportingFramework(new ReportingFramework({ name: "ReportingFramework 4", description: "ReportingFramework 4 Description" }))
                         .subscribe((response) => {
 
-                            // Expect that the response is equal to the new Reporting Framework - i.e with the id / version upated
+                            // Expect that the response is equal to the new ReportingFramework - i.e with the id / version upated
                             expect(response).toEqual(newReportingFramework);
                         });
 
 
-                    // Subscribe to the Reporting Frameworks observable
+                    // Subscribe to the ReportingFrameworks observable
                     reportingFrameworksDataService.reportingFrameworks$
                         .pipe(
                             take(3),
@@ -69,19 +69,19 @@ describe('Reporting Frameworks Data Service', () => {
                             // Expect that the first response is equal to an empty array
                             expect(response[0]).toEqual([]);
 
-                            // Expect that the second response is equal to the initial Reporting Frameworks
+                            // Expect that the second response is equal to the initial ReportingFrameworks
                             expect(response[1]).toEqual(initialReportingFrameworks);                            
 
-                            // Expect that the third response is equal to the final Reporting Frameworks
+                            // Expect that the third response is equal to the final ReportingFrameworks
                             expect(response[2]).toEqual(finalReportingFrameworks);
                         });
 
 
                     // Expect that a single retrieval request was made during the class initialization phase
-                    httpMock.expectOne(`${environment.baseUrl}/api/v1/reporting_frameworks/all`).flush(initialReportingFrameworks);
+                    httpMock.expectOne(`${environment.reportingFrameworksBaseUrl}/api/v1/reporting_frameworks/all`).flush(initialReportingFrameworks);
 
                     // Expect that a single request was made during the addition phase
-                    const mockReq2 = httpMock.expectOne(`${environment.baseUrl}/api/v1/reporting_frameworks`);
+                    const mockReq2 = httpMock.expectOne(`${environment.reportingFrameworksBaseUrl}/api/v1/reporting_frameworks`);
 
                     // Expect that the addition request was of type POST
                     expect(mockReq2.request.method).toEqual('POST');
@@ -103,83 +103,15 @@ describe('Reporting Frameworks Data Service', () => {
         );
     });
 
-    describe('getReportingFramework', () => {
-        it('should retrieve and add a single Reporting Framework record to the local cache and then broadcast the changes to all subscribers',
-            inject(
-                [HttpTestingController, ReportingFrameworksDataService],
-                (httpMock: HttpTestingController, reportingFrameworksDataService: ReportingFrameworksDataService) => {
-
-                    // Define a couple of mock Reporting Frameworks
-                    const allReportingFrameworks: ReportingFramework[] = <Array<ReportingFramework>>[
-                        new ReportingFramework({ id: 1, name: "ReportingFramework 1", description: "ReportingFramework 1 Description", version: 1 }),
-                        new ReportingFramework({ id: 2, name: "ReportingFramework 2", description: "ReportingFramework 2 Description", version: 1 }),
-                        new ReportingFramework({ id: 3, name: "ReportingFramework 3", description: "ReportingFramework 3 Description", version: 1 })
-                    ];
-
-                    const targetReportingFramework = new ReportingFramework({ id: 2, name: "ReportingFramework 2", description: "ReportingFramework 2 Description", version: 1 });
-
-                    // Call the getReportingFramework() method
-                    reportingFrameworksDataService.getReportingFramework(2)
-                        .subscribe((response) => {
-
-                            // Expect that the response is equal to the target Reporting Framework
-                            expect(response).toEqual(targetReportingFramework);
-                        });
-
-                    // Subscribe to the Reporting Frameworks observable
-                    reportingFrameworksDataService.reportingFrameworks$
-                        .pipe(
-                            take(3),
-                            toArray()
-                        )
-                        .subscribe(response => {
-
-                            // Expect that the first response is equal to an empty array
-                            expect(response[0]).toEqual([]);
-
-                            // Expect that the second response is equal to all the Reporting Frameworks
-                            expect(response[1]).toEqual(allReportingFrameworks);                            
-
-                            // Expect that the third response is equal to all the Reporting Frameworks
-                            expect(response[2]).toEqual(allReportingFrameworks);
-
-                        });
-
-                    // Expect that a single retrieval request was made during the class initialization phase
-                    httpMock.expectOne(`${environment.baseUrl}/api/v1/reporting_frameworks/all`).flush(allReportingFrameworks);
-
-                    // Expect that a single request was made during the retrieval phase
-                    const mockReq2 = httpMock.expectOne(`${environment.baseUrl}/api/v1/reporting_frameworks/ids/2`);
-
-                    // Expect that the retrieval request method was of type GET
-                    expect(mockReq2.request.method).toEqual('GET');
-
-                    // Expect that the retrieval request was not cancelled
-                    expect(mockReq2.cancelled).toBeFalsy();
-
-                    // Expect that the retrieval request response was of type json
-                    expect(mockReq2.request.responseType).toEqual('json');
-
-                    // Resolve the retrieval request
-                    mockReq2.flush(targetReportingFramework);
-
-                    // Ensure that there are no outstanding requests to be made
-                    httpMock.verify();
-                }
-            )
-        );
-    });
-
-
 
     describe('getAllReportingFrameworks', () => {
 
-        it('should retrieve and add all or a subset of all Reporting Frameworks records to the local cache and then broadcast the changes to all subscribers',
+        it('should retrieve and add all or a subset of all Reporting Frameworks Records to the local cache and then broadcast the changes to all subscribers',
             inject(
                 [HttpTestingController, ReportingFrameworksDataService],
                 (httpMock: HttpTestingController, reportingFrameworksDataService: ReportingFrameworksDataService) => {
 
-                    // Define a couple of mock Reporting Frameworks
+                    // Define a couple of mock ReportingFrameworks
                     const allReportingFrameworks: ReportingFramework[] = <Array<ReportingFramework>>[
                         new ReportingFramework({ id: 1, name: "ReportingFramework 1", description: "ReportingFramework 1 Description", version: 1 }),
                         new ReportingFramework({ id: 2, name: "ReportingFramework 2", description: "ReportingFramework 2 Description", version: 1 }),
@@ -193,7 +125,7 @@ describe('Reporting Frameworks Data Service', () => {
                             expect(response).toEqual(allReportingFrameworks);
                         });
 
-                    // Subscribe to the Reporting Frameworks observable
+                    // Subscribe to the ReportingFrameworks observable
                     reportingFrameworksDataService.reportingFrameworks$
                         .pipe(
                             take(3),
@@ -204,17 +136,17 @@ describe('Reporting Frameworks Data Service', () => {
                             // Expect that the first response is equal to an empty array
                             expect(response[0]).toEqual([]);
 
-                            // Expect that the second response is equal to all the Reporting Frameworks
+                            // Expect that the second response is equal to all the ReportingFrameworks
                             expect(response[1]).toEqual(allReportingFrameworks);                            
 
-                            // Expect that the third response is equal to all the Reporting Frameworks
+                            // Expect that the third response is equal to all the ReportingFrameworks
                             expect(response[2]).toEqual(allReportingFrameworks);
                         });
 
                     // Expect that two retrieval requests were made: 
                     // One during the class initialization phase; 
                     // One during the current retrieval phase
-                    const requests: TestRequest[] = httpMock.match(`${environment.baseUrl}/api/v1/reporting_frameworks/all`); 
+                    const requests: TestRequest[] = httpMock.match(`${environment.reportingFrameworksBaseUrl}/api/v1/reporting_frameworks/all`); 
                     expect(requests.length).toEqual(2); 
                     
                     // Get the first retrieval request
@@ -252,7 +184,7 @@ describe('Reporting Frameworks Data Service', () => {
                 [HttpTestingController, ReportingFrameworksDataService],
                 (httpMock: HttpTestingController, reportingFrameworksDataService: ReportingFrameworksDataService) => {
 
-                    // Define a couple of mock Reporting Frameworks
+                    // Define a couple of mock ReportingFrameworks
                     const initialReportingFrameworks: ReportingFramework[] = <Array<ReportingFramework>>[
                         new ReportingFramework({ id: 1, name: "ReportingFramework 1", description: "ReportingFramework 1 Description", version: 1 }),
                         new ReportingFramework({ id: 2, name: "ReportingFramework 2", description: "ReportingFramework 2 Description", version: 1 }),
@@ -273,11 +205,11 @@ describe('Reporting Frameworks Data Service', () => {
                     // Call the updateReportingFramework() method
                     reportingFrameworksDataService.updateReportingFramework(new ReportingFramework({ id: 4, name: "Updated ReportingFramework Four", description: "Updated ReportingFramework Four Description", version: 1 }))
                         .subscribe((response) => {
-                            // Expect that the response is equal to the updated Reporting Framework
+                            // Expect that the response is equal to the updated ReportingFramework
                             expect(response).toEqual(updatedReportingFramework);
                         });
 
-                    // Subscribe to the Reporting Frameworks observable
+                    // Subscribe to the ReportingFrameworks observable
                     reportingFrameworksDataService.reportingFrameworks$
                         .pipe(
                             take(3),
@@ -288,18 +220,18 @@ describe('Reporting Frameworks Data Service', () => {
                             // Expect that the first response is equal to an empty array
                             expect(response[0]).toEqual([]);
 
-                            // Expect that the second response is equal to the initial Reporting Frameworks
+                            // Expect that the second response is equal to the initial ReportingFrameworks
                             expect(response[1]).toEqual(initialReportingFrameworks);                            
 
-                            // Expect that the third response is equal to the final Reporting Frameworks
+                            // Expect that the third response is equal to the final ReportingFrameworks
                             expect(response[2]).toEqual(finalReportingFrameworks);
                         });
 
                     // Expect that a single retrieval request was made during the class initialization phase
-                    httpMock.expectOne(`${environment.baseUrl}/api/v1/reporting_frameworks/all`).flush(initialReportingFrameworks);                
+                    httpMock.expectOne(`${environment.reportingFrameworksBaseUrl}/api/v1/reporting_frameworks/all`).flush(initialReportingFrameworks);                
 
                     // Expect that a single request was made during the updation phase
-                    const mockReq2 = httpMock.expectOne(`${environment.baseUrl}/api/v1/reporting_frameworks`);
+                    const mockReq2 = httpMock.expectOne(`${environment.reportingFrameworksBaseUrl}/api/v1/reporting_frameworks`);
 
                     // Expect that the updation request method was of type PUT
                     expect(mockReq2.request.method).toEqual('PUT');
@@ -326,7 +258,7 @@ describe('Reporting Frameworks Data Service', () => {
                 [HttpTestingController, ReportingFrameworksDataService],
                 (httpMock: HttpTestingController, reportingFrameworksDataService: ReportingFrameworksDataService) => {
 
-                    // Define a couple of mock Reporting Frameworks
+                    // Define a couple of mock ReportingFrameworks
                     const initialReportingFrameworks: ReportingFramework[] = <Array<ReportingFramework>>[
                         new ReportingFramework({ id: 1, name: "ReportingFramework 1", description: "ReportingFramework 1 Description", version: 1 }),
                         new ReportingFramework({ id: 2, name: "ReportingFramework 2", description: "ReportingFramework 2 Description", version: 1 }),
@@ -342,14 +274,14 @@ describe('Reporting Frameworks Data Service', () => {
                         new ReportingFramework({ id: 3, name: "ReportingFramework 3", description: "ReportingFramework 3 Description", version: 1 })
                     ];
 
-                    // Call deleteReportingFramework() method to delete the target Reporting Framework from the list of Reporting Frameworks
+                    // Call deleteReportingFramework() method to delete the target ReportingFramework from the list of ReportingFrameworks
                     reportingFrameworksDataService.deleteReportingFramework(4)
                         .subscribe((response) => {
-                            // Expect that the response is equal to 1: the total number of deleted Reporting Frameworks
+                            // Expect that the response is equal to 1: the total number of deleted ReportingFrameworks
                             expect(response).toEqual(1);
                         });
 
-                    // Subscribe to the Reporting Frameworks observable
+                    // Subscribe to the ReportingFrameworks observable
                     reportingFrameworksDataService.reportingFrameworks$
                         .pipe(
                             take(3),
@@ -360,19 +292,19 @@ describe('Reporting Frameworks Data Service', () => {
                             // Expect that the first response is equal to an empty array
                             expect(response[0]).toEqual([]);
 
-                            // Expect that the second response is equal to the initial Reporting Frameworks
+                            // Expect that the second response is equal to the initial ReportingFrameworks
                             expect(response[1]).toEqual(initialReportingFrameworks);                            
 
-                            // Expect that the third response is equal to the final Reporting Frameworks
+                            // Expect that the third response is equal to the final ReportingFrameworks
                             expect(response[2]).toEqual(finalReportingFrameworks);
                         });
 
                     // Expect that a single retrieval request was made during the class initialization phase
-                    httpMock.expectOne(`${environment.baseUrl}/api/v1/reporting_frameworks/all`).flush(initialReportingFrameworks);  
+                    httpMock.expectOne(`${environment.reportingFrameworksBaseUrl}/api/v1/reporting_frameworks/all`).flush(initialReportingFrameworks);  
                     
                     
                     // Expect that a single request was made during the deletion phase
-                    const mockReq2 = httpMock.expectOne(`${environment.baseUrl}/api/v1/reporting_frameworks/ids/4`);
+                    const mockReq2 = httpMock.expectOne(`${environment.reportingFrameworksBaseUrl}/api/v1/reporting_frameworks/ids/4`);
 
                     // Expect that the deletion request method was of type DELETE
                     expect(mockReq2.request.method).toEqual('DELETE');
@@ -393,12 +325,12 @@ describe('Reporting Frameworks Data Service', () => {
 
     describe('records', () => {
 
-        it('should retrieve the most recent Reporting Frameworks records from the local cache',
+        it('should retrieve the most recent Reporting Frameworks Records from the local cache',
             inject(
                 [HttpTestingController, ReportingFrameworksDataService],
                 (httpMock: HttpTestingController, reportingFrameworksDataService: ReportingFrameworksDataService) => {
 
-                    // Define a couple of mock Reporting Frameworks
+                    // Define a couple of mock ReportingFrameworks
                     const allReportingFrameworks = [
                         new ReportingFramework({ id: 1, name: "ReportingFramework 1", description: "ReportingFramework 1 Description", version: 1 }),
                         new ReportingFramework({ id: 2, name: "ReportingFramework 2", description: "ReportingFramework 2 Description", version: 1 }),
@@ -406,12 +338,12 @@ describe('Reporting Frameworks Data Service', () => {
                     ];
 
                     // Expect that a single retrieval request was made
-                    httpMock.expectOne(`${environment.baseUrl}/api/v1/reporting_frameworks/all`).flush(allReportingFrameworks);
+                    httpMock.expectOne(`${environment.reportingFrameworksBaseUrl}/api/v1/reporting_frameworks/all`).flush(allReportingFrameworks);
 
                     // Ensure that there are no outstanding requests to be made
                     httpMock.verify();
                     
-                    // Expect that the response is equal to the array of all Reporting Frameworks
+                    // Expect that the response is equal to the array of all ReportingFrameworks
                     expect(reportingFrameworksDataService.records).toEqual(allReportingFrameworks);
 
 

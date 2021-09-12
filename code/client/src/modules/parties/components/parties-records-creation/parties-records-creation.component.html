@@ -1,4 +1,5 @@
-<form role="form" [formGroup]="partiesForm">
+<form [formGroup]="partiesForm">
+
     <div class="form-group">
         <label for="name">Name</label>
         <input type="text" class="form-control" id="name" placeholder="" formControlName="name">
@@ -11,11 +12,12 @@
                 Name cannot be less than 2 characters long.
             </div>
             <div *ngIf="partiesForm.get('name')?.errors.maxlength">
-                Name cannot be more than 50 characters long.
+                Name cannot be more than 250 characters long.
             </div>
             <div *ngIf="partiesForm.get('name')?.errors.exists">
                 Name should be unique.
             </div>
         </div>
     </div>
+
 </form>

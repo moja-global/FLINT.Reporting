@@ -1,0 +1,161 @@
+<form>
+
+    <div class="row">
+        <div class="col">
+            <div class="d-flex justify-content-between p-2">
+                <sb-search (searched)="onSearch($event)"></sb-search>
+                <sb-loading-animation></sb-loading-animation>
+            </div>
+        </div>
+    </div>
+
+    <!--For Small-Sized Devices Only-->
+    <div class="row d-md-none">
+        <div class="col">
+            <sb-table>
+                <ng-container header>
+                    <tr>
+                        <th scope="col" class="col-sm-1 text-center align-middle">
+                            <span>#</span>
+                        </th>
+                        <th scope="col" class="col-sm-8 text-left align-middle" sbSortable="name" (sort)="onSort($event)">
+                            <span>Name</span>
+                            <sb-sort-icon *ngIf='sortedColumn === "name"' [direction]="sortedDirection"></sb-sort-icon>
+                        </th>
+                        <th scope="col" class="col-sm-1 text-left align-middle" sbSortable="abbreviation" (sort)="onSort($event)">
+                            <span>Abbreviation</span>
+                            <sb-sort-icon *ngIf='sortedColumn === "abbreviation"' [direction]="sortedDirection"></sb-sort-icon>
+                        </th>                        
+                        <th scope="col" class="col-sm-2 text-center align-middle">
+                            <span class="d-flex flex-row-reverse">
+                                Actions
+                            </span>
+                        </th>                        
+                    </tr>
+                </ng-container>
+
+                <ng-container body>
+                    <tr *ngFor="let emissionType of emissionsTypesRecordsTabulationService.emissionsTypes$ | async">
+
+                        <td class="text-center align-middle">
+                            {{emissionType.pos}}
+                        </td>
+
+                        <td class="text-left align-middle">
+                            <ngb-highlight [result]="emissionType.name" [term]="emissionsTypesRecordsTabulationService.searchTerm"></ngb-highlight>
+                        </td>
+
+                        <td class="text-left align-middle">
+                            <ngb-highlight [result]="emissionType.abbreviation" [term]="emissionsTypesRecordsTabulationService.searchTerm"></ngb-highlight>
+                        </td>                        
+
+                        <td class="text-center align-middle">
+                            <span class="d-flex flex-row-reverse">                                                      
+                                <sb-button action="delete" entity="Emission Type" id="{{emissionType.id}}" (delete)="onDeleteEmissionType($event)" tooltip="Delete {{emissionType.name}}"></sb-button>
+                                <sb-button action="update" entity="Emission Type" id="{{emissionType.id}}" (update)="onUpdateEmissionType($event)" tooltip="Update {{emissionType.name}}"></sb-button>
+                            </span> 
+                        </td>
+
+                    </tr>
+                </ng-container>
+
+                <ng-container footer>
+                    <tr>
+                        <td scope="col" colspan="6" class="align-middle">
+                            <span class="d-flex flex-row flex-row-reverse">
+                                  <sb-button action="add" entity="Emission Type" (add)="onAddEmissionType()"></sb-button> 
+                            </span>
+
+                        </td>
+                    </tr>
+                </ng-container>  
+
+            </sb-table>
+        </div>
+    </div> 
+    
+    <!--For Middle-Sized Devices Upwards-->
+    <div class="row d-none d-md-block">
+        <div class="col">
+            <sb-table>
+                <ng-container header>
+                    <tr>
+                        <th scope="col" class="col-md-1 text-center align-middle">
+                            <span>#</span>
+                        </th>
+                        <th scope="col" class="col-md-3 text-left align-middle" sbSortable="name" (sort)="onSort($event)">
+                            <span>Name</span>
+                            <sb-sort-icon *ngIf='sortedColumn === "name"' [direction]="sortedDirection">
+                            </sb-sort-icon>
+                        </th>
+                        <th scope="col" class="col-md-1 text-left align-middle" sbSortable="abbreviation" (sort)="onSort($event)">
+                            <span>Abbreviation</span>
+                            <sb-sort-icon *ngIf='sortedColumn === "abbreviation"' [direction]="sortedDirection">
+                            </sb-sort-icon>
+                        </th>  
+                        <th scope="col" class="col-md-6 text-left align-middle" sbSortable="description" (sort)="onSort($event)">
+                            <span>Description</span>
+                            <sb-sort-icon *ngIf='sortedColumn === "description"' [direction]="sortedDirection"></sb-sort-icon>
+                        </th>                                                
+                        <th scope="col" class="col-md-1 text-center align-middle">
+                            <span class="d-flex flex-row-reverse">
+                                Actions
+                            </span>
+                        </th>                        
+                    </tr>
+                </ng-container>
+
+                <ng-container body>
+
+                    <tr *ngFor="let emissionType of emissionsTypesRecordsTabulationService.emissionsTypes$ | async">
+
+                        <td class="text-center align-middle">
+                            {{emissionType.pos}}
+                        </td>
+
+                        <td class="text-left align-middle">
+                            <ngb-highlight [result]="emissionType.name" [term]="emissionsTypesRecordsTabulationService.searchTerm"></ngb-highlight>
+                        </td>
+
+                        <td class="text-left align-middle">
+                            <ngb-highlight [result]="emissionType.abbreviation" [term]="emissionsTypesRecordsTabulationService.searchTerm"></ngb-highlight>
+                        </td> 
+                        
+                        <td class="text-left align-middle">
+                            <ngb-highlight [result]="emissionType.description" [term]="emissionsTypesRecordsTabulationService.searchTerm"></ngb-highlight>
+                        </td>                        
+
+                        <td class="text-center align-middle">
+                            <span class="d-flex flex-row-reverse">                                                        
+                                <sb-button action="delete" entity="Emission Type" id="{{emissionType.id}}" (delete)="onDeleteEmissionType($event)" tooltip="Delete {{emissionType.name}}"></sb-button>
+                                <sb-button action="update" entity="Emission Type" id="{{emissionType.id}}" (update)="onUpdateEmissionType($event)" tooltip="Update {{emissionType.name}}"></sb-button>
+                            </span> 
+                        </td>
+                        
+                    </tr>
+
+                </ng-container>
+
+                <ng-container footer>
+                    <tr>
+                        <td scope="col" colspan="6" class="align-middle">
+                            <span class="d-flex flex-row flex-row-reverse">
+                                  <sb-button action="add" entity="Emission Type" (add)="onAddEmissionType()"></sb-button> 
+                            </span>
+
+                        </td>
+                    </tr>
+                </ng-container>  
+
+            </sb-table>
+        </div>
+    </div>     
+
+    <div class="row">
+        <div class="col">
+            <sb-pagination (pageChanged)="onPageChange($event)" (pageSizeChanged)="onPageSizeChange($event)">
+            </sb-pagination>
+        </div>
+    </div>
+
+</form>

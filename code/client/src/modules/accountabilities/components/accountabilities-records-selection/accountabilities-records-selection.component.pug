@@ -1,0 +1,32 @@
+form
+  .d-flex.flex-column.mb-3
+    .p-2
+      sb-search((searched)='onSearch($event)')
+    .p-2
+      sb-loading-animation
+  .row
+    .col
+      sb-table
+        ng-container(header='')
+          tr
+            th.col-sm-11.text-left.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
+              span Administrative Hierarchy Level Member
+              sb-sort-icon(*ngif='sortedColumn === "name"', [direction]='sortedDirection')
+            th.col-sm-1.text-center.align-middle(scope='col')
+              span.d-flex.justify-content-center
+                | Select
+        ng-container(body='')
+          ng-container(*ngfor='let accountability of accountabilitiesTableService.accountabilityRuleAccountabilities$ | async')
+            tr(*ngif='accountability.id != skipId')
+              td.text-left.align-middle
+                // <ngb-highlight [result]="truncate(accountability.name, [50, '...'])" [term]="accountabilitiesTableService.searchTerm"></ngb-highlight>
+                ngb-highlight([result]='accountability.name', [term]='accountabilitiesTableService.searchTerm')
+              td.text-center.align-middle
+                span.d-flex.justify-content-center
+                  div(*ngif='selectionMode === "single"; else multi')
+                    sb-button(action='select', entity='Accountability', id='{{accountability.id}}', name='accountability', [selected]='isSelected(accountability.id)', [disabled]='isPreviouslySelectedOrChecked(accountability.id) && disableSelectedAccountabilityIdsTreatment', (select)='onSelect($event)')
+                  ng-template(#multi='')
+                    sb-button(action='check', entity='Accountability', id='{{accountability.id}}', name='accountability', [checked]='isChecked(accountability.id)', [disabled]='isPreviouslySelectedOrChecked(accountability.id) && disableSelectedAccountabilityIdsTreatment', (check)='onCheck($event)', (uncheck)='onUncheck($event)')
+  .row
+    .col
+      sb-pagination(type='modal', (pagechanged)='onPageChange($event)', (pagesizechanged)='onPageSizeChange($event)')

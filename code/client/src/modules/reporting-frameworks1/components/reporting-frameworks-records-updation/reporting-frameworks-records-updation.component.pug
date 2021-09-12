@@ -1,0 +1,19 @@
+form([formgroup]='reportingFrameworksForm')
+  .form-group
+    label(for='name') Name
+    input#name.form-control(type='text', placeholder='', formcontrolname='name')
+    .alert.alert-danger.mt-3(*ngif="reportingFrameworksForm.get('name')?.invalid && (reportingFrameworksForm.get('name')?.dirty || reportingFrameworksForm.get('name')?.touched)")
+      div(*ngif="reportingFrameworksForm.get('name')?.errors.required")
+        | Name is required.
+      div(*ngif="reportingFrameworksForm.get('name')?.errors.maxlength")
+        | Name cannot be more than 50 characters long.
+      div(*ngif="reportingFrameworksForm.get('name')?.errors.exists")
+        | Name should be unique.
+  .form-group
+    label(for='description')
+      | Description 
+      span.text-secondary  (Optional)
+    textarea#description.form-control(placeholder='', rows='3', formcontrolname='description')
+    .alert.alert-danger.mt-3(*ngif="reportingFrameworksForm.get('description')?.invalid && (reportingFrameworksForm.get('description')?.dirty || reportingFrameworksForm.get('description')?.touched)")
+      div(*ngif="reportingFrameworksForm.get('description')?.errors.maxlength")
+        | Description cannot be more than 250 characters long.

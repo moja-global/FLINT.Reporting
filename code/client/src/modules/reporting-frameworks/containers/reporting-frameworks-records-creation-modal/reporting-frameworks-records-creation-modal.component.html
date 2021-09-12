@@ -1,4 +1,4 @@
-<sb-modal>
+<sb-modal shadow="false">
 
     <ng-container title>
         Create Reporting Framework Record
@@ -6,8 +6,12 @@
 
     <ng-container body>
 
-        <sb-reporting-frameworks-records-creation (succeeded)="onSucceeded()" (failed)="onFailed($event)">
-        </sb-reporting-frameworks-records-creation>        
+        <sb-reporting-frameworks-records-creation (initialized)="onInitialized()" (succeeded)="onSucceeded()" (failed)="onFailed($event)">
+        </sb-reporting-frameworks-records-creation>  
+        
+        <ng-container *ngIf='(status$ | async) === "initializing"'>
+            <sb-message-overlay activity="creating" status="initializing"></sb-message-overlay>
+        </ng-container>        
 
         <ng-container *ngIf='(status$ | async) === "saving"'>
             <sb-message-overlay activity="creating" status="saving"></sb-message-overlay>
@@ -29,7 +33,7 @@
 
     <ng-container footer>
 
-        <ng-container *ngIf='(status$ | async) === "new"'>
+        <ng-container *ngIf='(status$ | async) === "ready"'>
             <sb-button action="save" entity="Reporting Framework" (save)="onSave()"></sb-button>
         </ng-container> 
 

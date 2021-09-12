@@ -1,4 +1,5 @@
 <form>
+
     <div class="row">
         <div class="col">
             <div class="d-flex justify-content-between p-2">
@@ -8,57 +9,123 @@
         </div>
     </div>
 
-    
-    <div class="row">
+    <!--For Small-Sized Devices Only-->
+    <div class="row d-md-none">
         <div class="col">
             <sb-table>
                 <ng-container header>
                     <tr>
-                        <th scope="col" class="text-center align-middle">
+                        <th scope="col" class="col-sm-1 text-center align-middle">
                             <span>#</span>
                         </th>
-                        <th scope="col" sbSortable="name" (sort)="onSort($event)" class="align-middle">
+                        <th scope="col" class="col-sm-9 text-left align-middle" sbSortable="name" (sort)="onSort($event)">
                             <span>Name</span>
-                            <sb-sort-icon *ngIf='sortedColumn === "name"' [direction]="sortedDirection"></sb-sort-icon>
+                            <sb-sort-icon *ngIf='sortedColumn === "name"' [direction]="sortedDirection">
+                            </sb-sort-icon>
                         </th>
-                        <th scope="col" class="align-middle">
-                            <span class="d-flex flex-row-reverse pr-1">
+                        <th scope="col" class="col-sm-2 text-center align-middle">
+                            <span class="d-flex flex-row-reverse">
                                 Actions
                             </span>
-                        </th>
+                        </th>                        
                     </tr>
                 </ng-container>
 
-                <ng-container footer>
-                    <tr>
-                        <td scope="col" colspan="4" class="align-middle">
-                            <span class="d-flex flex-row-reverse pr-1">
-                                <sb-button action="add" [entity]="targetPartyType?.name" (add)="onAddParty()"></sb-button>
-                            </span> 
-                        </td>
-                    </tr>
-                </ng-container>                
-
                 <ng-container body>
-                    <tr *ngFor="let party of partiesTableService.parties$ | async">
+                    <tr *ngFor="let party of partiesRecordsTabulationService.parties$ | async">
+
                         <td class="text-center align-middle">
                             {{party.pos}}
                         </td>
-                        <td class="align-middle">
-                            <ngb-highlight [result]="party.name" [term]="partiesTableService.searchTerm"></ngb-highlight>
+
+                        <td class="text-left align-middle">
+                            <ngb-highlight [result]="party.name" [term]="partiesRecordsTabulationService.searchTerm"></ngb-highlight>
                         </td>
-                        <td>
-                            <span class="d-flex flex-row-reverse pr-1">
-                                <sb-button action="open" [entity]="targetPartyType?.name" id="{{party.id}}" name="{{party.name}}" tooltip="{{party.name}} {{targetPartyType?.plural}} List" (open)="onOpenParty($event)"></sb-button>
-                                <sb-button action="delete" [entity]="targetPartyType?.name" id="{{party.id}}" (delete)="onDeleteParty($event)"></sb-button>
-                                <sb-button action="update" [entity]="targetPartyType?.name" id="{{party.id}}" (update)="onUpdateParty($event)"></sb-button>
-                            </span>
+
+                        <td class="text-center align-middle">
+                            <span class="d-flex flex-row-reverse">                                                     
+                                <sb-button action="delete" entity="Administrative Unit" id="{{party.id}}" (delete)="onDeleteParty($event)" tooltip="Delete {{party.name}}"></sb-button>
+                                <sb-button action="update" entity="Administrative Unit" id="{{party.id}}" (update)="onUpdateParty($event)" tooltip="Update {{party.name}}"></sb-button>
+                            </span> 
                         </td>
+
                     </tr>
                 </ng-container>
+
+                <ng-container footer *ngIf="this.partiesRecordsTabulationService.partyTypeId != null">
+                    <tr>
+                        <td scope="col" colspan="6" class="align-middle">
+                            <span class="d-flex flex-row flex-row-reverse">
+                                  <sb-button action="add" entity="Administrative Unit" (add)="onAddParty()"></sb-button> 
+                            </span>
+
+                        </td>
+                    </tr>
+                </ng-container>  
+
             </sb-table>
         </div>
-    </div>
+    </div> 
+    
+    <!--For Middle-Sized Devices Upwards-->
+    <div class="row d-none d-md-block">
+        <div class="col">
+            <sb-table>
+                <ng-container header>
+                    <tr>
+                        <th scope="col" class="col-md-1 text-center align-middle">
+                            <span>#</span>
+                        </th>
+                        <th scope="col" class="col-md-10 text-left align-middle" sbSortable="name" (sort)="onSort($event)">
+                            <span>Name</span>
+                            <sb-sort-icon *ngIf='sortedColumn === "name"' [direction]="sortedDirection">
+                            </sb-sort-icon>
+                        </th>
+                        <th scope="col" class="col-sm-1 text-center align-middle">
+                            <span class="d-flex flex-row-reverse">
+                                Actions
+                            </span>
+                        </th>                        
+                    </tr>
+                </ng-container>
+
+                <ng-container body>
+
+                    <tr *ngFor="let party of partiesRecordsTabulationService.parties$ | async">
+
+                        <td class="text-center align-middle">
+                            {{party.pos}}
+                        </td>
+
+                        <td class="text-left align-middle">
+                            <ngb-highlight [result]="party.name" [term]="partiesRecordsTabulationService.searchTerm"></ngb-highlight>
+                        </td>
+
+                        <td class="text-center align-middle">
+                            <span class="d-flex flex-row-reverse">                                                      
+                                <sb-button action="delete" entity="Administrative Unit" id="{{party.id}}" (delete)="onDeleteParty($event)" tooltip="Delete {{party.name}}"></sb-button>
+                                <sb-button action="update" entity="Administrative Unit" id="{{party.id}}" (update)="onUpdateParty($event)" tooltip="Update {{party.name}}"></sb-button>
+                            </span> 
+                        </td>
+                        
+                    </tr>
+
+                </ng-container>
+
+                <ng-container footer *ngIf="this.partiesRecordsTabulationService.partyTypeId != null">
+                    <tr>
+                        <td scope="col" colspan="6" class="align-middle">
+                            <span class="d-flex flex-row flex-row-reverse">
+                                  <sb-button action="add" entity="Administrative Unit" (add)="onAddParty()"></sb-button> 
+                            </span>
+
+                        </td>
+                    </tr>
+                </ng-container>  
+
+            </sb-table>
+        </div>
+    </div>     
 
     <div class="row">
         <div class="col">

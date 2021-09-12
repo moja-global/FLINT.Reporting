@@ -1,0 +1,13 @@
+sb-layout-main
+  ng-container(header='')
+    sb-header(title='Administrative Hierarchies Types', subtitle='The different types of Administrative Hierarchies that make up the governance system', [hidebreadcrumbs]='true')
+  ng-container(body='')
+    .card.text-center
+      .card-header
+        ul.nav.nav-tabs.card-header-tabs
+          li.nav-item
+            a.nav-link([routerlink]="['/parties_types']") Units
+          li.nav-item
+            a.nav-link.active([routerlink]="['/accountabilities_types']") Hierarchies
+      .card-body
+        ng-content

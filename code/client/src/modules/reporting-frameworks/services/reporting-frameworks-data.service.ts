@@ -18,9 +18,6 @@ const HEADERS = { 'Content-Type': 'application/json' };
 })
 export class ReportingFrameworksDataService {
 
-  // The base url of the server
-  private _baseUrl: string = environment.baseUrl;
-
   // The local data cache
   private _cache: { reportingFrameworks: ReportingFramework[] } = { reportingFrameworks: [] };
 
@@ -90,12 +87,12 @@ export class ReportingFrameworksDataService {
   public createReportingFramework(reportingFramework: ReportingFramework): Observable<ReportingFramework> {
 
     this.log.trace(`${LOG_PREFIX} Entering createReportingFramework()`);
-    this.log.debug(`${LOG_PREFIX} ReportingFramework = ${JSON.stringify(reportingFramework)}`);
+    this.log.debug(`${LOG_PREFIX} Reporting Framework = ${JSON.stringify(reportingFramework)}`);
 
     // Make a HTTP POST Request to create the record
-    this.log.debug(`${LOG_PREFIX} Making a HTTP POST Request to ${this._baseUrl}/${API_PREFIX} to create the record`);
+    this.log.debug(`${LOG_PREFIX} Making a HTTP POST Request to ${environment.reportingFrameworksBaseUrl}/${API_PREFIX} to create the record`);
 
-    return this.http.post<ReportingFramework>(`${this._baseUrl}/${API_PREFIX}`, JSON.stringify(reportingFramework), { headers: new HttpHeaders(HEADERS) })
+    return this.http.post<ReportingFramework>(`${environment.reportingFrameworksBaseUrl}/${API_PREFIX}`, JSON.stringify(reportingFramework), { headers: new HttpHeaders(HEADERS) })
       .pipe(
 
         tap((data: ReportingFramework) => {
@@ -108,16 +105,16 @@ export class ReportingFrameworksDataService {
           this.log.trace(`${LOG_PREFIX} Adding the newly created Reporting Framework record to the Local Cache`);
           this._cache.reportingFrameworks.push(data);
 
-          // Create an up to date copy of the Reporting Frameworks records
-          this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Reporting Frameworks records`);
+          // Create an up to date copy of the Reporting Frameworks Records
+          this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Reporting Frameworks Records`);
           const copy = Object.assign({}, this._cache).reportingFrameworks;
 
-          // Broadcast the up to date copy of the Reporting Frameworks records to the current listener
-          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks records to the current listener`);
+          // Broadcast the up to date copy of the Reporting Frameworks Records to the current listener
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks Records to the current listener`);
           this._reportingFrameworksSubject$.next(copy);
 
-          // Broadcast the up to date copy of the Reporting Frameworks records to the other listeners
-          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks records to the other listeners`);
+          // Broadcast the up to date copy of the Reporting Frameworks Records to the other listeners
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks Records to the other listeners`);
           this.bc.postMessage({ newValue: copy });
 
           // Send a message that states that the Reporting Framework record Creation was successful
@@ -150,86 +147,7 @@ export class ReportingFrameworksDataService {
 
 
   /**
-   * Retrieves and adds a single Reporting Framework record to the local cache and then broadcasts the changes to all subscribers
-   * 
-   * @param reportingFrameworkId The Unique Identifier of the Reporting Framework record
-   */
-  getReportingFramework(reportingFrameworkId: number): Observable<ReportingFramework> {
-
-    this.log.trace(`${LOG_PREFIX} Entering getReportingFramework()`);
-    this.log.debug(`${LOG_PREFIX} ReportingFramework Id = ${reportingFrameworkId}`);
-
-    // Make a HTTP GET Request to retrieve the record
-    this.log.debug(`${LOG_PREFIX} Making a HTTP GET Request to ${this._baseUrl}/${API_PREFIX}/ids/${reportingFrameworkId} to retrieve the record`);
-
-    return this.http.get<ReportingFramework>(`${this._baseUrl}/${API_PREFIX}/ids/${reportingFrameworkId}`, { headers: new HttpHeaders(HEADERS) })
-      .pipe(
-
-        tap((data: ReportingFramework) => {
-
-          // Reporting Framework record Retrieval was successful
-          this.log.trace(`${LOG_PREFIX} Reporting Framework record Retrieval was successful`);
-          this.log.debug(`${LOG_PREFIX} Retrieved Reporting Framework record = ${JSON.stringify(data)}`);
-
-          // Search for the Reporting Framework record in the Local Cache and return its index
-          this.log.trace(`${LOG_PREFIX} Searching for the Reporting Framework record in the Local Cache and returning its index`);
-          let index = this._cache.reportingFrameworks.findIndex(d => d.id === data.id);
-          this.log.debug(`${LOG_PREFIX} Reporting Framework record Index = ${index}`);
-
-          // If the record was found (index != -1), update it, else, add it to the Local Storage
-          if (index != -1) {
-
-            // The Reporting Framework record was found in the Local Cache
-            this.log.trace(`${LOG_PREFIX} The Reporting Framework record was found in the Local Cache`);
-
-            // Update the local Reporting Framework record
-            this.log.trace(`${LOG_PREFIX} Updating the local Reporting Framework record`);
-            this._cache.reportingFrameworks[index] = data;
-
-          } else {
-
-            // The Reporting Framework record was not found in the Local Cache
-            this.log.trace(`${LOG_PREFIX} The Reporting Framework record was not found in the Local Cache`);
-
-            // Add the Reporting Framework record to the Local Cache
-            this.log.trace(`${LOG_PREFIX} Adding the Reporting Framework record to the Local Cache`);
-            this._cache.reportingFrameworks.push(data);
-          }
-
-          // Create an up to date copy of the Reporting Frameworks records
-          this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Reporting Frameworks records`);
-          const copy = Object.assign({}, this._cache).reportingFrameworks;
-
-          // Broadcast the up to date copy of the Reporting Frameworks records to the current listener
-          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks records to the current listener`);
-          this._reportingFrameworksSubject$.next(copy);
-
-          // Broadcast the up to date copy of the Reporting Frameworks records to the other listeners
-          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks records to the other listeners`);
-          this.bc.postMessage({ newValue: copy });
-
-          // Send a message that states that the Reporting Framework record Retrieval was successful
-          this.log.trace(`${LOG_PREFIX} Sending a message that states that the Reporting Framework record Retrieval was successful`);
-          this.messageService.sendMessage({ "type": MessageType.Success, "message": "The Reporting Framework record Retrieval was successful" });
-
-        }),
-
-        catchError((error: any) => {
-
-          // Reporting Framework record Retrieval was unsuccessful
-          this.log.error(`${LOG_PREFIX} Reporting Framework record Retrieval was unsuccessful: ${error.statusText || "See Server Logs for more details"}`);
-
-          // Send a message that states that the Reporting Framework record Retrieval was unsuccessful
-          this.log.trace(`${LOG_PREFIX} Sending a message that states that the Reporting Framework record Retrieval was unsuccessful`);
-          this.messageService.sendMessage({ "type": MessageType.Error, "message": "The Reporting Framework record Retrieval was unsuccessful" });
-
-          return throwError(error);
-        }));
-  }
-
-
-  /**
-   * Retrieves and adds all or a subset of all Reporting Frameworks records to the local cache and then broadcasts the changes to all subscribers
+   * Retrieves and adds all or a subset of all Reporting Frameworks Records to the local cache and then broadcasts the changes to all subscribers
    * 
    * @param filters Optional query parameters used in filtering the retrieved records
    */
@@ -239,47 +157,47 @@ export class ReportingFrameworksDataService {
     this.log.debug(`${LOG_PREFIX} Filters = ${JSON.stringify(filters)}`);
 
     // Make a HTTP GET Request to retrieve the records
-    this.log.debug(`${LOG_PREFIX} Making a HTTP GET Request to ${this._baseUrl}/${API_PREFIX}/all to retrieve the records`);
+    this.log.debug(`${LOG_PREFIX} Making a HTTP GET Request to ${environment.reportingFrameworksBaseUrl}/${API_PREFIX}/all to retrieve the records`);
 
-    return this.http.get<ReportingFramework[]>(`${this._baseUrl}/${API_PREFIX}/all`, { headers: new HttpHeaders(HEADERS), params: filters == null ? {} : filters })
+    return this.http.get<ReportingFramework[]>(`${environment.reportingFrameworksBaseUrl}/${API_PREFIX}/all`, { headers: new HttpHeaders(HEADERS), params: filters == null ? {} : filters })
       .pipe(
 
         tap((data: ReportingFramework[]) => {
 
-          // Reporting Frameworks records Retrieval was successful
-          this.log.trace(`${LOG_PREFIX} Reporting Frameworks records Retrieval was successful`);
-          this.log.debug(`${LOG_PREFIX} Retrieved Reporting Frameworks records = ${JSON.stringify(data)}`);
+          // Reporting Frameworks Records Retrieval was successful
+          this.log.trace(`${LOG_PREFIX} Reporting Frameworks Records Retrieval was successful`);
+          this.log.debug(`${LOG_PREFIX} Retrieved Reporting Frameworks Records = ${JSON.stringify(data)}`);
 
-          // Update the Reporting Frameworks records in the Local Cache to the newly pulled Reporting Frameworks records
-          this.log.trace(`${LOG_PREFIX} Updating the Reporting Frameworks records in the Local Cache to the newly pulled Reporting Frameworks records`);
+          // Update the Reporting Frameworks Records in the Local Cache to the newly pulled Reporting Frameworks Records
+          this.log.trace(`${LOG_PREFIX} Updating the Reporting Frameworks Records in the Local Cache to the newly pulled Reporting Frameworks Records`);
           this._cache.reportingFrameworks = data;
 
-          // Create an up to date copy of the Reporting Frameworks records
-          this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Reporting Frameworks records`);
+          // Create an up to date copy of the Reporting Frameworks Records
+          this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Reporting Frameworks Records`);
           const copy = Object.assign({}, this._cache).reportingFrameworks;
 
-          // Broadcast the up to date copy of the Reporting Frameworks records to the current listener
-          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks records to the current listener`);
+          // Broadcast the up to date copy of the Reporting Frameworks Records to the current listener
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks Records to the current listener`);
           this._reportingFrameworksSubject$.next(copy);
 
-          // Broadcast the up to date copy of the Reporting Frameworks records to the other listeners
-          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks records to the other listeners`);
+          // Broadcast the up to date copy of the Reporting Frameworks Records to the other listeners
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks Records to the other listeners`);
           this.bc.postMessage({ newValue: copy });
 
-          // Send a message that states that the Reporting Frameworks records Retrieval was successful
-          this.log.trace(`${LOG_PREFIX} Sending a message that states that the Reporting Frameworks records Retrieval was successful`);
-          this.messageService.sendMessage({ "type": MessageType.Success, "message": "The Reporting Frameworks records Retrieval was successful" });
+          // Send a message that states that the Reporting Frameworks Records Retrieval was successful
+          this.log.trace(`${LOG_PREFIX} Sending a message that states that the Reporting Frameworks Records Retrieval was successful`);
+          this.messageService.sendMessage({ "type": MessageType.Success, "message": "The Reporting Frameworks Records Retrieval was successful" });
 
         }),
 
         catchError((error: any) => {
 
-          // Reporting Frameworks records Retrieval was unsuccessful
-          this.log.error(`${LOG_PREFIX} Reporting Frameworks records Retrieval was unsuccessful: ${error.statusText || "See Server Logs for more details"}`);
+          // Reporting Frameworks Records Retrieval was unsuccessful
+          this.log.error(`${LOG_PREFIX} Reporting Frameworks Records Retrieval was unsuccessful: ${error.statusText || "See Server Logs for more details"}`);
 
-          // Send a message that states that the Reporting Frameworks records Retrieval was unsuccessful
-          this.log.trace(`${LOG_PREFIX} Sending a message that states that the Reporting Frameworks records Retrieval was unsuccessful`);
-          this.messageService.sendMessage({ "type": MessageType.Error, "message": "The Reporting Frameworks records Retrieval was unsuccessful" });
+          // Send a message that states that the Reporting Frameworks Records Retrieval was unsuccessful
+          this.log.trace(`${LOG_PREFIX} Sending a message that states that the Reporting Frameworks Records Retrieval was unsuccessful`);
+          this.messageService.sendMessage({ "type": MessageType.Error, "message": "The Reporting Frameworks Records Retrieval was unsuccessful" });
 
           return throwError(error);
         }));
@@ -294,12 +212,12 @@ export class ReportingFrameworksDataService {
   updateReportingFramework(reportingFramework: ReportingFramework): Observable<ReportingFramework> {
 
     this.log.trace(`${LOG_PREFIX} Entering updateReportingFramework()`);
-    this.log.debug(`${LOG_PREFIX} ReportingFramework = ${JSON.stringify(reportingFramework)}`);
+    this.log.debug(`${LOG_PREFIX} Reporting Framework = ${JSON.stringify(reportingFramework)}`);
 
     // Make a HTTP POST Request to retrieve the records
-    this.log.debug(`${LOG_PREFIX} Making a HTTP POST Request to ${this._baseUrl}/${API_PREFIX} to update the record`);
+    this.log.debug(`${LOG_PREFIX} Making a HTTP POST Request to ${environment.reportingFrameworksBaseUrl}/${API_PREFIX} to update the record`);
 
-    return this.http.put<ReportingFramework>(`${this._baseUrl}/${API_PREFIX}`, JSON.stringify(reportingFramework), { headers: new HttpHeaders(HEADERS) })
+    return this.http.put<ReportingFramework>(`${environment.reportingFrameworksBaseUrl}/${API_PREFIX}`, JSON.stringify(reportingFramework), { headers: new HttpHeaders(HEADERS) })
       .pipe(
 
         tap((data: ReportingFramework) => {
@@ -320,16 +238,16 @@ export class ReportingFrameworksDataService {
             this.log.trace(`${LOG_PREFIX} Updating the locally stored Reporting Framework record`);
             this._cache.reportingFrameworks[index] = data;
 
-            // Create an up to date copy of the Reporting Frameworks records
-            this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Reporting Frameworks records`);
+            // Create an up to date copy of the Reporting Frameworks Records
+            this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Reporting Frameworks Records`);
             const copy = Object.assign({}, this._cache).reportingFrameworks;
 
-            // Broadcast the up to date copy of the Reporting Frameworks records to the current listener
-            this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks records to the current listener`);
+            // Broadcast the up to date copy of the Reporting Frameworks Records to the current listener
+            this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks Records to the current listener`);
             this._reportingFrameworksSubject$.next(copy);
 
-            // Broadcast the up to date copy of the Reporting Frameworks records to the other listeners
-            this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks records to the other listeners`);
+            // Broadcast the up to date copy of the Reporting Frameworks Records to the other listeners
+            this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks Records to the other listeners`);
             this.bc.postMessage({ newValue: copy });
 
             // Send a message that states that the Reporting Framework record Update was successful
@@ -343,7 +261,7 @@ export class ReportingFrameworksDataService {
 
             // Send a message that states that the Local Cache Update was unsuccessful
             this.log.trace(`${LOG_PREFIX} Sending a message that states that the Local Cache Update was unsuccessful`);
-            this.messageService.sendMessage({ "type": MessageType.Error, "message": "Reporting Frameworks records Local Cache Update was unsuccessful" });
+            this.messageService.sendMessage({ "type": MessageType.Error, "message": "Reporting Frameworks Records Local Cache Update was unsuccessful" });
           }
 
         }),
@@ -372,12 +290,12 @@ export class ReportingFrameworksDataService {
   deleteReportingFramework(reportingFrameworkId: number): Observable<number> {
 
     this.log.trace(`${LOG_PREFIX} Entering deleteReportingFramework()`);
-    this.log.debug(`${LOG_PREFIX} ReportingFramework Id = ${reportingFrameworkId}`);
+    this.log.debug(`${LOG_PREFIX} Reporting Framework Id = ${reportingFrameworkId}`);
 
-    // Make a HTTP DELETE Request to retrieve the records
-    this.log.debug(`${LOG_PREFIX} Making a HTTP DELETE Request to ${this._baseUrl}/${API_PREFIX}/ids/${reportingFrameworkId} to delete the record`);
+    // Make a HTTP DELETE Request to delete the records
+    this.log.debug(`${LOG_PREFIX} Making a HTTP DELETE Request to ${environment.reportingFrameworksBaseUrl}/${API_PREFIX}/ids/${reportingFrameworkId} to delete the record`);
 
-    return this.http.delete<number>(`${this._baseUrl}/${API_PREFIX}/ids/${reportingFrameworkId}`, { headers: new HttpHeaders(HEADERS) })
+    return this.http.delete<number>(`${environment.reportingFrameworksBaseUrl}/${API_PREFIX}/ids/${reportingFrameworkId}`, { headers: new HttpHeaders(HEADERS) })
       .pipe(
 
         tap((count: number) => {
@@ -400,16 +318,16 @@ export class ReportingFrameworksDataService {
               this.log.trace(`${LOG_PREFIX} Removing the deleted Reporting Framework record from the Local Cache`);
               this._cache.reportingFrameworks.splice(index, 1);
 
-              // Create an up to date copy of the Reporting Frameworks records
-              this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Reporting Frameworks records`);
+              // Create an up to date copy of the Reporting Frameworks Records
+              this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Reporting Frameworks Records`);
               const copy = Object.assign({}, this._cache).reportingFrameworks;
 
-              // Broadcast the up to date copy of the Reporting Frameworks records to the current listener
-              this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks records to the current listener`);
+              // Broadcast the up to date copy of the Reporting Frameworks Records to the current listener
+              this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks Records to the current listener`);
               this._reportingFrameworksSubject$.next(copy);
 
-              // Broadcast the up to date copy of the Reporting Frameworks records to the other listeners
-              this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks records to the other listeners`);
+              // Broadcast the up to date copy of the Reporting Frameworks Records to the other listeners
+              this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Reporting Frameworks Records to the other listeners`);
               this.bc.postMessage({ newValue: copy });
 
               // Send a message that states that the Reporting Framework record Deletion was successful
@@ -423,7 +341,7 @@ export class ReportingFrameworksDataService {
 
               // Send a message that states that the Local Cache Update was unsuccessful
               this.log.trace(`${LOG_PREFIX} Sending a message that states that the Local Cache Update was unsuccessful`);
-              this.messageService.sendMessage({ "type": MessageType.Error, "message": "Reporting Frameworks records Local Cache Update was unsuccessful" });
+              this.messageService.sendMessage({ "type": MessageType.Error, "message": "Reporting Frameworks Records Local Cache Update was unsuccessful" });
             }
           } else {
 

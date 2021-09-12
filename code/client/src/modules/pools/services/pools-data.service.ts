@@ -18,14 +18,11 @@ const HEADERS = { 'Content-Type': 'application/json' };
 })
 export class PoolsDataService {
 
-  // The base url of the server
-  private _baseUrl: string = environment.baseUrl;
-
   // The local data cache
   private _cache: { pools: Pool[] } = { pools: [] };
 
   // The observables that allow subscribers to keep tabs of the current status 
-  // of pools records in the data store
+  // of unit categories records in the data store
   private _poolsSubject$ = new BehaviorSubject<Pool[]>([]);
   readonly pools$ = this._poolsSubject$.asObservable();
 
@@ -83,14 +80,6 @@ export class PoolsDataService {
   }
 
   /**
-   * Publish information to current (listening) ui
-   * @param event 
-   */
-  private handleEvent = (event: MessageEvent) => {
-    this.zone.run(() => this._poolsSubject$.next(event.data.newValue));
-  }
-
-  /**
    * Creates and adds an instance of a new Pool record to the local cache and then broadcasts the changes to all subscribers
    * 
    * @param pool The details of the Pool record to be created - with the id and version details missing
@@ -101,9 +90,9 @@ export class PoolsDataService {
     this.log.debug(`${LOG_PREFIX} Pool = ${JSON.stringify(pool)}`);
 
     // Make a HTTP POST Request to create the record
-    this.log.debug(`${LOG_PREFIX} Making a HTTP POST Request to ${this._baseUrl}/${API_PREFIX} to create the record`);
+    this.log.debug(`${LOG_PREFIX} Making a HTTP POST Request to ${environment.poolsBaseUrl}/${API_PREFIX} to create the record`);
 
-    return this.http.post<Pool>(`${this._baseUrl}/${API_PREFIX}`, JSON.stringify(pool), { headers: new HttpHeaders(HEADERS) })
+    return this.http.post<Pool>(`${environment.poolsBaseUrl}/${API_PREFIX}`, JSON.stringify(pool), { headers: new HttpHeaders(HEADERS) })
       .pipe(
 
         tap((data: Pool) => {
@@ -116,16 +105,16 @@ export class PoolsDataService {
           this.log.trace(`${LOG_PREFIX} Adding the newly created Pool record to the Local Cache`);
           this._cache.pools.push(data);
 
-          // Create an up to date copy of the Pools records
-          this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Pools records`);
+          // Create an up to date copy of the Pools Records
+          this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Pools Records`);
           const copy = Object.assign({}, this._cache).pools;
 
-          // Broadcast the up to date copy of the Pools records to the current listener
-          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools records to the current listener`);
+          // Broadcast the up to date copy of the Pools Records to the current listener
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools Records to the current listener`);
           this._poolsSubject$.next(copy);
 
-          // Broadcast the up to date copy of the Pools records to the other listeners
-          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools records to the other listeners`);
+          // Broadcast the up to date copy of the Pools Records to the other listeners
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools Records to the other listeners`);
           this.bc.postMessage({ newValue: copy });
 
           // Send a message that states that the Pool record Creation was successful
@@ -149,86 +138,16 @@ export class PoolsDataService {
 
 
   /**
-   * Retrieves and adds a single Pool record to the local cache and then broadcasts the changes to all subscribers
-   * 
-   * @param poolId The Unique Identifier of the Pool record
+   * Publish information to current (listening) ui
+   * @param event 
    */
-  getPool(poolId: number): Observable<Pool> {
-
-    this.log.trace(`${LOG_PREFIX} Entering getPool()`);
-    this.log.debug(`${LOG_PREFIX} Pool Id = ${poolId}`);
-
-    // Make a HTTP GET Request to retrieve the record
-    this.log.debug(`${LOG_PREFIX} Making a HTTP GET Request to ${this._baseUrl}/${API_PREFIX}/ids/${poolId} to retrieve the record`);
-
-    return this.http.get<Pool>(`${this._baseUrl}/${API_PREFIX}/ids/${poolId}`, { headers: new HttpHeaders(HEADERS) })
-      .pipe(
-
-        tap((data: Pool) => {
-
-          // Pool record Retrieval was successful
-          this.log.trace(`${LOG_PREFIX} Pool record Retrieval was successful`);
-          this.log.debug(`${LOG_PREFIX} Retrieved Pool record = ${JSON.stringify(data)}`);
-
-          // Search for the Pool record in the Local Cache and return its index
-          this.log.trace(`${LOG_PREFIX} Searching for the Pool record in the Local Cache and returning its index`);
-          let index = this._cache.pools.findIndex(d => d.id === data.id);
-          this.log.debug(`${LOG_PREFIX} Pool record Index = ${index}`);
-
-          // If the record was found (index != -1), update it, else, add it to the Local Storage
-          if (index != -1) {
-
-            // The Pool record was found in the Local Cache
-            this.log.trace(`${LOG_PREFIX} The Pool record was found in the Local Cache`);
-
-            // Update the local Pool record
-            this.log.trace(`${LOG_PREFIX} Updating the local Pool record`);
-            this._cache.pools[index] = data;
-
-          } else {
-
-            // The Pool record was not found in the Local Cache
-            this.log.trace(`${LOG_PREFIX} The Pool record was not found in the Local Cache`);
-
-            // Add the Pool record to the Local Cache
-            this.log.trace(`${LOG_PREFIX} Adding the Pool record to the Local Cache`);
-            this._cache.pools.push(data);
-          }
-
-          // Create an up to date copy of the Pools records
-          this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Pools records`);
-          const copy = Object.assign({}, this._cache).pools;
-
-          // Broadcast the up to date copy of the Pools records to the current listener
-          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools records to the current listener`);
-          this._poolsSubject$.next(copy);
-
-          // Broadcast the up to date copy of the Pools records to the other listeners
-          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools records to the other listeners`);
-          this.bc.postMessage({ newValue: copy });
-
-          // Send a message that states that the Pool record Retrieval was successful
-          this.log.trace(`${LOG_PREFIX} Sending a message that states that the Pool record Retrieval was successful`);
-          this.messageService.sendMessage({ "type": MessageType.Success, "message": "The Pool record Retrieval was successful" });
-
-        }),
-
-        catchError((error: any) => {
-
-          // Pool record Retrieval was unsuccessful
-          this.log.error(`${LOG_PREFIX} Pool record Retrieval was unsuccessful: ${error.statusText || "See Server Logs for more details"}`);
-
-          // Send a message that states that the Pool record Retrieval was unsuccessful
-          this.log.trace(`${LOG_PREFIX} Sending a message that states that the Pool record Retrieval was unsuccessful`);
-          this.messageService.sendMessage({ "type": MessageType.Error, "message": "The Pool record Retrieval was unsuccessful" });
-
-          return throwError(error);
-        }));
+  private handleEvent = (event: MessageEvent) => {
+    this.zone.run(() => this._poolsSubject$.next(event.data.newValue));
   }
 
 
   /**
-   * Retrieves and adds all or a subset of all Pools records to the local cache and then broadcasts the changes to all subscribers
+   * Retrieves and adds all or a subset of all Pools Records to the local cache and then broadcasts the changes to all subscribers
    * 
    * @param filters Optional query parameters used in filtering the retrieved records
    */
@@ -238,47 +157,47 @@ export class PoolsDataService {
     this.log.debug(`${LOG_PREFIX} Filters = ${JSON.stringify(filters)}`);
 
     // Make a HTTP GET Request to retrieve the records
-    this.log.debug(`${LOG_PREFIX} Making a HTTP GET Request to ${this._baseUrl}/${API_PREFIX}/all to retrieve the records`);
+    this.log.debug(`${LOG_PREFIX} Making a HTTP GET Request to ${environment.poolsBaseUrl}/${API_PREFIX}/all to retrieve the records`);
 
-    return this.http.get<Pool[]>(`${this._baseUrl}/${API_PREFIX}/all`, { headers: new HttpHeaders(HEADERS), params: filters == null ? {} : filters })
+    return this.http.get<Pool[]>(`${environment.poolsBaseUrl}/${API_PREFIX}/all`, { headers: new HttpHeaders(HEADERS), params: filters == null ? {} : filters })
       .pipe(
 
         tap((data: Pool[]) => {
 
-          // Pools records Retrieval was successful
-          this.log.trace(`${LOG_PREFIX} Pools records Retrieval was successful`);
-          this.log.debug(`${LOG_PREFIX} Retrieved Pools records = ${JSON.stringify(data)}`);
+          // Pools Records Retrieval was successful
+          this.log.trace(`${LOG_PREFIX} Pools Records Retrieval was successful`);
+          this.log.debug(`${LOG_PREFIX} Retrieved Pools Records = ${JSON.stringify(data)}`);
 
-          // Update the Pools records in the Local Cache to the newly pulled Pools records
-          this.log.trace(`${LOG_PREFIX} Updating the Pools records in the Local Cache to the newly pulled Pools records`);
+          // Update the Pools Records in the Local Cache to the newly pulled Pools Records
+          this.log.trace(`${LOG_PREFIX} Updating the Pools Records in the Local Cache to the newly pulled Pools Records`);
           this._cache.pools = data;
 
-          // Create an up to date copy of the Pools records
-          this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Pools records`);
+          // Create an up to date copy of the Pools Records
+          this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Pools Records`);
           const copy = Object.assign({}, this._cache).pools;
 
-          // Broadcast the up to date copy of the Pools records to the current listener
-          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools records to the current listener`);
+          // Broadcast the up to date copy of the Pools Records to the current listener
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools Records to the current listener`);
           this._poolsSubject$.next(copy);
 
-          // Broadcast the up to date copy of the Pools records to the other listeners
-          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools records to the other listeners`);
+          // Broadcast the up to date copy of the Pools Records to the other listeners
+          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools Records to the other listeners`);
           this.bc.postMessage({ newValue: copy });
 
-          // Send a message that states that the Pools records Retrieval was successful
-          this.log.trace(`${LOG_PREFIX} Sending a message that states that the Pools records Retrieval was successful`);
-          this.messageService.sendMessage({ "type": MessageType.Success, "message": "The Pools records Retrieval was successful" });
+          // Send a message that states that the Pools Records Retrieval was successful
+          this.log.trace(`${LOG_PREFIX} Sending a message that states that the Pools Records Retrieval was successful`);
+          this.messageService.sendMessage({ "type": MessageType.Success, "message": "The Pools Records Retrieval was successful" });
 
         }),
 
         catchError((error: any) => {
 
-          // Pools records Retrieval was unsuccessful
-          this.log.error(`${LOG_PREFIX} Pools records Retrieval was unsuccessful: ${error.statusText || "See Server Logs for more details"}`);
+          // Pools Records Retrieval was unsuccessful
+          this.log.error(`${LOG_PREFIX} Pools Records Retrieval was unsuccessful: ${error.statusText || "See Server Logs for more details"}`);
 
-          // Send a message that states that the Pools records Retrieval was unsuccessful
-          this.log.trace(`${LOG_PREFIX} Sending a message that states that the Pools records Retrieval was unsuccessful`);
-          this.messageService.sendMessage({ "type": MessageType.Error, "message": "The Pools records Retrieval was unsuccessful" });
+          // Send a message that states that the Pools Records Retrieval was unsuccessful
+          this.log.trace(`${LOG_PREFIX} Sending a message that states that the Pools Records Retrieval was unsuccessful`);
+          this.messageService.sendMessage({ "type": MessageType.Error, "message": "The Pools Records Retrieval was unsuccessful" });
 
           return throwError(error);
         }));
@@ -296,9 +215,9 @@ export class PoolsDataService {
     this.log.debug(`${LOG_PREFIX} Pool = ${JSON.stringify(pool)}`);
 
     // Make a HTTP POST Request to retrieve the records
-    this.log.debug(`${LOG_PREFIX} Making a HTTP POST Request to ${this._baseUrl}/${API_PREFIX} to update the record`);
+    this.log.debug(`${LOG_PREFIX} Making a HTTP POST Request to ${environment.poolsBaseUrl}/${API_PREFIX} to update the record`);
 
-    return this.http.put<Pool>(`${this._baseUrl}/${API_PREFIX}`, JSON.stringify(pool), { headers: new HttpHeaders(HEADERS) })
+    return this.http.put<Pool>(`${environment.poolsBaseUrl}/${API_PREFIX}`, JSON.stringify(pool), { headers: new HttpHeaders(HEADERS) })
       .pipe(
 
         tap((data: Pool) => {
@@ -319,16 +238,16 @@ export class PoolsDataService {
             this.log.trace(`${LOG_PREFIX} Updating the locally stored Pool record`);
             this._cache.pools[index] = data;
 
-            // Create an up to date copy of the Pools records
-            this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Pools records`);
+            // Create an up to date copy of the Pools Records
+            this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Pools Records`);
             const copy = Object.assign({}, this._cache).pools;
 
-            // Broadcast the up to date copy of the Pools records to the current listener
-            this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools records to the current listener`);
+            // Broadcast the up to date copy of the Pools Records to the current listener
+            this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools Records to the current listener`);
             this._poolsSubject$.next(copy);
 
-            // Broadcast the up to date copy of the Pools records to the other listeners
-            this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools records to the other listeners`);
+            // Broadcast the up to date copy of the Pools Records to the other listeners
+            this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools Records to the other listeners`);
             this.bc.postMessage({ newValue: copy });
 
             // Send a message that states that the Pool record Update was successful
@@ -342,7 +261,7 @@ export class PoolsDataService {
 
             // Send a message that states that the Local Cache Update was unsuccessful
             this.log.trace(`${LOG_PREFIX} Sending a message that states that the Local Cache Update was unsuccessful`);
-            this.messageService.sendMessage({ "type": MessageType.Error, "message": "Pools records Local Cache Update was unsuccessful" });
+            this.messageService.sendMessage({ "type": MessageType.Error, "message": "Pools Records Local Cache Update was unsuccessful" });
           }
 
         }),
@@ -373,10 +292,10 @@ export class PoolsDataService {
     this.log.trace(`${LOG_PREFIX} Entering deletePool()`);
     this.log.debug(`${LOG_PREFIX} Pool Id = ${poolId}`);
 
-    // Make a HTTP DELETE Request to retrieve the records
-    this.log.debug(`${LOG_PREFIX} Making a HTTP DELETE Request to ${this._baseUrl}/${API_PREFIX}/ids/${poolId} to delete the record`);
+    // Make a HTTP DELETE Request to delete the records
+    this.log.debug(`${LOG_PREFIX} Making a HTTP DELETE Request to ${environment.poolsBaseUrl}/${API_PREFIX}/ids/${poolId} to delete the record`);
 
-    return this.http.delete<number>(`${this._baseUrl}/${API_PREFIX}/ids/${poolId}`, { headers: new HttpHeaders(HEADERS) })
+    return this.http.delete<number>(`${environment.poolsBaseUrl}/${API_PREFIX}/ids/${poolId}`, { headers: new HttpHeaders(HEADERS) })
       .pipe(
 
         tap((count: number) => {
@@ -399,16 +318,16 @@ export class PoolsDataService {
               this.log.trace(`${LOG_PREFIX} Removing the deleted Pool record from the Local Cache`);
               this._cache.pools.splice(index, 1);
 
-              // Create an up to date copy of the Pools records
-              this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Pools records`);
+              // Create an up to date copy of the Pools Records
+              this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Pools Records`);
               const copy = Object.assign({}, this._cache).pools;
 
-              // Broadcast the up to date copy of the Pools records to the current listener
-              this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools records to the current listener`);
+              // Broadcast the up to date copy of the Pools Records to the current listener
+              this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools Records to the current listener`);
               this._poolsSubject$.next(copy);
 
-              // Broadcast the up to date copy of the Pools records to the other listeners
-              this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools records to the other listeners`);
+              // Broadcast the up to date copy of the Pools Records to the other listeners
+              this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Pools Records to the other listeners`);
               this.bc.postMessage({ newValue: copy });
 
               // Send a message that states that the Pool record Deletion was successful
@@ -422,7 +341,7 @@ export class PoolsDataService {
 
               // Send a message that states that the Local Cache Update was unsuccessful
               this.log.trace(`${LOG_PREFIX} Sending a message that states that the Local Cache Update was unsuccessful`);
-              this.messageService.sendMessage({ "type": MessageType.Error, "message": "Pools records Local Cache Update was unsuccessful" });
+              this.messageService.sendMessage({ "type": MessageType.Error, "message": "Pools Records Local Cache Update was unsuccessful" });
             }
           } else {
 

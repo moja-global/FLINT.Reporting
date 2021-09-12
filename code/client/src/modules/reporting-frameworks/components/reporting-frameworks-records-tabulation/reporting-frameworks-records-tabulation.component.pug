@@ -4,38 +4,71 @@ form
       .d-flex.justify-content-between.p-2
         sb-search((searched)='onSearch($event)')
         sb-loading-animation
-  .row
+  // For Small-Sized Devices Only
+  .row.d-md-none
     .col
       sb-table
-        ng-container(header)
+        ng-container(header='')
           tr
-            th.text-center.align-middle(scope='col')
+            th.col-sm-1.text-center.align-middle(scope='col')
               span #
-            th.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
+            th.col-sm-9.text-left.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
               span Name
               sb-sort-icon(*ngif='sortedColumn === "name"', [direction]='sortedDirection')
-            th.align-middle(scope='col')
-              span Description
-            th.align-middle(scope='col')
+            th.col-sm-2.text-center.align-middle(scope='col')
               span.d-flex.flex-row-reverse
                 | Actions
-        ng-container(footer='')
-          tr
-            td.align-middle(scope='col', colspan='4')
-              span.d-flex.flex-row-reverse
-                sb-button(action='add', entity='ReportingFramework', (add)='onAddReportingFramework()')
-        ng-container(body')
-          tr(*ngfor='let reportingFramework of reportingFrameworksTableService.reportingFrameworks$ | async')
+        ng-container(body='')
+          tr(*ngfor='let reportingFramework of reportingFrameworksRecordsTabulationService.reportingFrameworks$ | async')
             td.text-center.align-middle
               | {{reportingFramework.pos}}
-            td.align-middle
-              ngb-highlight([result]='reportingFramework.name', [term]='reportingFrameworksTableService.searchTerm')
-            td.align-middle
-              ngb-highlight([result]='reportingFramework.description', [term]='reportingFrameworksTableService.searchTerm')
-            td.align-middle
+            td.text-left.align-middle
+              ngb-highlight([result]='reportingFramework.name', [term]='reportingFrameworksRecordsTabulationService.searchTerm')
+            td.text-center.align-middle
               span.d-flex.flex-row-reverse
-                sb-button(action='delete', entity='ReportingFramework', id='{{reportingFramework.id}}', (delete)='onDeleteReportingFramework($event)')
-                sb-button(action='update', entity='ReportingFramework', id='{{reportingFramework.id}}', (update)='onUpdateReportingFramework($event)')
+                sb-button(action='open', entity='Reporting Framework', id='{{reportingFramework.id}}', (open)='onOpenLandUseClasses($event)', tooltip="Open {{reportingFramework.name}}'s Configuration Window")
+                sb-button(action='delete', entity='Reporting Framework', id='{{reportingFramework.id}}', (delete)='onDeleteReportingFramework($event)', tooltip='Delete {{reportingFramework.name}}')
+                sb-button(action='update', entity='Reporting Framework', id='{{reportingFramework.id}}', (update)='onUpdateReportingFramework($event)', tooltip='Update {{reportingFramework.name}}')
+        ng-container(footer='')
+          tr
+            td.align-middle(scope='col', colspan='6')
+              span.d-flex.flex-row.flex-row-reverse
+                sb-button(action='add', entity='Reporting Framework', (add)='onAddReportingFramework()')
+  // For Middle-Sized Devices Upwards
+  .row.d-none.d-md-block
+    .col
+      sb-table
+        ng-container(header='')
+          tr
+            th.col-md-1.text-center.align-middle(scope='col')
+              span #
+            th.col-md-3.text-left.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
+              span Name
+              sb-sort-icon(*ngif='sortedColumn === "name"', [direction]='sortedDirection')
+            th.col-md-7.text-left.align-middle(scope='col', sbsortable='description', (sort)='onSort($event)')
+              span Description
+              sb-sort-icon(*ngif='sortedColumn === "description"', [direction]='sortedDirection')
+            th.col-md-1.text-center.align-middle(scope='col')
+              span.d-flex.flex-row-reverse
+                | Actions
+        ng-container(body='')
+          tr(*ngfor='let reportingFramework of reportingFrameworksRecordsTabulationService.reportingFrameworks$ | async')
+            td.text-center.align-middle
+              | {{reportingFramework.pos}}
+            td.text-left.align-middle
+              ngb-highlight([result]='reportingFramework.name', [term]='reportingFrameworksRecordsTabulationService.searchTerm')
+            td.text-left.align-middle
+              ngb-highlight([result]='reportingFramework.description', [term]='reportingFrameworksRecordsTabulationService.searchTerm')
+            td.text-center.align-middle
+              span.d-flex.flex-row-reverse
+                sb-button(action='open', entity='Reporting Framework', id='{{reportingFramework.id}}', (open)='onOpenLandUseClasses($event)', tooltip="Open {{reportingFramework.name}}'s Configuration Window")
+                sb-button(action='delete', entity='Reporting Framework', id='{{reportingFramework.id}}', (delete)='onDeleteReportingFramework($event)', tooltip='Delete {{reportingFramework.name}}')
+                sb-button(action='update', entity='Reporting Framework', id='{{reportingFramework.id}}', (update)='onUpdateReportingFramework($event)', tooltip='Update {{reportingFramework.name}}')
+        ng-container(footer='')
+          tr
+            td.align-middle(scope='col', colspan='6')
+              span.d-flex.flex-row.flex-row-reverse
+                sb-button(action='add', entity='Reporting Framework', (add)='onAddReportingFramework()')
   .row
     .col
       sb-pagination((pagechanged)='onPageChange($event)', (pagesizechanged)='onPageSizeChange($event)')

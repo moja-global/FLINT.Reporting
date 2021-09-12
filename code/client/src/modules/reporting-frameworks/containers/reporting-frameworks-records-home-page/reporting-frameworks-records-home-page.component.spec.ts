@@ -1,12 +1,18 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { NavigationService } from '@modules/navigation/services';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { of } from 'rxjs';
 import { ReportingFrameworksRecordsHomePageComponent } from './reporting-frameworks-records-home-page.component';
 
 
 @Component({
     template: `
-        <sb-reporting-frameworks-records [someInput]="someInput" (someFunction)="someFunction($event)"></sb-reporting-frameworks-records>
+        <sb-reporting-frameworks-records-home-page [someInput]="someInput" (someFunction)="someFunction($event)"></sb-reporting-frameworks-records-home-page>
     `,
 })
 class TestHostComponent {
@@ -27,8 +33,17 @@ describe('ReportingFrameworksRecordsHomePageComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [TestHostComponent, ReportingFrameworksRecordsHomePageComponent],
-            imports: [NoopAnimationsModule],
-            providers: [],
+            imports: [NoopAnimationsModule, HttpClientTestingModule, RouterTestingModule, LoggerModule.forRoot({ serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.OFF })],
+            providers: [
+                NavigationService,
+                {
+                    provide: ActivatedRoute, 
+                    useValue: {
+                        paramMap: of({ get: (key: string) => 1 }),
+                        queryParamMap: of({ get: (key: string) => 'value' })
+                    }
+                }
+            ],            
             schemas: [NO_ERRORS_SCHEMA],
         }).compileComponents();
 
@@ -45,6 +60,6 @@ describe('ReportingFrameworksRecordsHomePageComponent', () => {
     });
 
     it('should display the component', () => {
-        expect(hostComponentNE.querySelector('sb-reporting-frameworks-records')).toEqual(jasmine.anything());
+        expect(hostComponentNE.querySelector('sb-reporting-frameworks-records-home-page')).toEqual(jasmine.anything());
     });
 });

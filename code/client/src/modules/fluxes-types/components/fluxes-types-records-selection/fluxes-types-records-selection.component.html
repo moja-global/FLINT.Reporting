@@ -1,0 +1,83 @@
+<form>
+    <div class="d-flex flex-column mb-3">
+        <div class="p-2">
+            <sb-search (searched)="onSearch($event)"></sb-search>
+        </div>
+        <div class="p-2">
+            <sb-loading-animation></sb-loading-animation>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <sb-table>
+                <ng-container header>
+                    <tr>
+                        <th scope="col" class="col-sm-11 text-left align-middle" sbSortable="name"
+                            (sort)="onSort($event)">
+                            <span>Name</span>
+                            <sb-sort-icon *ngIf='sortedColumn === "name"' [direction]="sortedDirection"></sb-sort-icon>
+                        </th>
+
+                        <th scope="col" class="col-sm-1 text-center align-middle">
+                            <span class="d-flex justify-content-center">
+                                Select
+                            </span>
+                        </th>
+                    </tr>
+                </ng-container>
+
+                <ng-container body>
+
+                    <tr *ngFor="let fluxType of fluxesTypesTableService.fluxesTypes$ | async">
+
+                        <td class="text-left align-middle">
+                            <!--<ngb-highlight [result]="truncate(fluxType.name, [50, '...'])" [term]="fluxesTypesTableService.searchTerm"></ngb-highlight>-->
+                            <ngb-highlight [result]="fluxType.name" [term]="fluxesTypesTableService.searchTerm">
+                            </ngb-highlight>
+                        </td>
+
+                        <td class="text-center align-middle">
+                            <span class="d-flex justify-content-center">
+
+                                <div *ngIf='selectionMode === "single"; else multi'>
+                                    <sb-button 
+                                        action="select" 
+                                        entity="FluxType" 
+                                        id="{{fluxType.id}}"
+                                        name="fluxType" 
+                                        [selected]="isSelected(fluxType.id)" 
+                                        [disabled]="isSelected(fluxType.id) && disableSelectedFluxTypeIdsTreatment" 
+                                        (select)="onSelect($event)">
+                                    </sb-button>
+                                </div>
+
+                                <ng-template #multi>
+                                    <sb-button 
+                                        action="check" 
+                                        entity="FluxType" 
+                                        id="{{fluxType.id}}"
+                                        name="fluxType" 
+                                        [checked]="isChecked(fluxType.id)"
+                                        [disabled]="isChecked(fluxType.id) && disableSelectedFluxTypeIdsTreatment"
+                                        (check)="onCheck($event)" (uncheck)="onUncheck($event)"></sb-button>
+                                </ng-template>
+
+                            </span>
+                        </td>
+
+                    </tr>
+                </ng-container>
+            </sb-table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <sb-pagination type="modal" (pageChanged)="onPageChange($event)"
+                (pageSizeChanged)="onPageSizeChange($event)">
+            </sb-pagination>
+        </div>
+    </div>
+
+</form>

@@ -1,92 +1,11 @@
 <sb-layout-main>
 
     <ng-container header>
-        <sb-header title="Reporting Framework" subtitle="Configure Reporting Framework" [dynamicBreadcrumbs]="true"
-            [hideBreadcrumbs]="false">
-        </sb-header>
+        <sb-header title="Reporting Frameworks" subtitle="The supported reporting structures" [hideBreadcrumbs]="true"></sb-header>
     </ng-container>
 
-
     <ng-container body>
-        <sb-card>
-            <div class="card-header">
-                <!--{{targetReportingFramework.name}} Reporting Framework Configuration-->
-                Configurations
-            </div>
-            <div class="card-body">
-
-                <div class="row">
-
-                    <div class="col col-md-2">
-
-                        <div class="nav flex-column nav-pills mt-2" id="v-pills-tab" role="tablist"
-                            aria-orientation="vertical">
-                            <a [ngClass]="(navigationService.currentlySelectedInPageTab$() | async) == 1 ? 'nav-link active text-white btn-primary' : 'nav-link'"
-                                data-toggle="pill" href=" javascript:void(0)" role="tab"
-                                (click)="onSelectItem(1)">Reporting Tables</a>
-                            <a [ngClass]="(navigationService.currentlySelectedInPageTab$() | async) == 2 ? 'nav-link active text-white btn-primary' : 'nav-link'"
-                                data-toggle="pill" href=" javascript:void(0)" role="tab"
-                                (click)="onSelectItem(2)">Reporting Variables</a>
-                            <a [ngClass]="((navigationService.currentlySelectedInPageTab$() | async) == 3 || (navigationService.currentlySelectedInPageTab$() | async) ==  4) ? 'nav-link active text-white btn-primary' : 'nav-link'"
-                                data-toggle="pill" href=" javascript:void(0)" role="tab" (click)="onSelectItem(3)">Land
-                                Uses</a>
-                        </div>
-
-                    </div>
-
-                    <div class="col col-md-10 pl-3">
-                        <sb-reporting-tables-records-tabulation
-                            *ngIf="(navigationService.currentlySelectedInPageTab$() | async) == 1" class="pt-3"
-                            [pageSize]="6">
-                        </sb-reporting-tables-records-tabulation>
-
-                        <sb-reporting-variables-records-tabulation
-                            *ngIf="(navigationService.currentlySelectedInPageTab$() | async) == 2" [pageSize]="6">
-                        </sb-reporting-variables-records-tabulation>
-
-                        <sb-land-use-categories-records-tabulation
-                            *ngIf="(navigationService.currentlySelectedInPageTab$() | async) == 3" [pageSize]="6"
-                            (open)="onOpenLandUseCategory($event)">
-                        </sb-land-use-categories-records-tabulation>
-                    </div>
-
-
-
-
-
-                </div>
-
-
-                <!--
-
-                <ul ngbNav #nav="ngbNav" class="nav-tabs">
-                    <li ngbNavItem>
-                        <a ngbNavLink>Reporting Tables</a>
-                        <ng-template ngbNavContent>
-                            <sb-reporting-tables-records-tabulation class="pt-3" [pageSize]="6">
-                            </sb-reporting-tables-records-tabulation>
-                        </ng-template>
-                    </li>                    
-                    <li ngbNavItem>
-                        <a ngbNavLink>Reporting Variables</a>
-                        <ng-template ngbNavContent>
-                            <sb-reporting-variables-records-tabulation  [pageSize]="6">
-                            </sb-reporting-variables-records-tabulation>
-                        </ng-template>
-                    </li>
-                    <li ngbNavItem>
-                        <a ngbNavLink>Land Use Categories</a>
-                        <ng-template ngbNavContent>
-                            <sb-land-use-categories-records-tabulation  [pageSize]="6">
-                            </sb-land-use-categories-records-tabulation>
-                        </ng-template>
-                    </li>
-                </ul>
-                <div [ngbNavOutlet]="nav" class="pt-3"></div>
-
-            -->
-            </div>
-        </sb-card>
+        <ng-content></ng-content>
     </ng-container>
 
 </sb-layout-main>

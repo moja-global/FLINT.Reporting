@@ -1,0 +1,77 @@
+form
+  .row
+    .col
+      .d-flex.justify-content-between.p-2
+        sb-search((searched)='onSearch($event)')
+        sb-loading-animation
+  // For Small-Sized Devices Only
+  .row.d-md-none
+    .col
+      sb-table
+        ng-container(header='')
+          tr
+            th.col-sm-1.text-center.align-middle(scope='col')
+              span #
+            th.col-sm-1.text-left.align-middle(scope='col', sbsortable='code', (sort)='onSort($event)')
+              span Code
+              sb-sort-icon(*ngif='sortedColumn === "code"', [direction]='sortedDirection')
+            th.col-sm-8.text-left.align-middle(scope='col', sbsortable='description', (sort)='onSort($event)')
+              span Description
+              sb-sort-icon(*ngif='sortedColumn === "description"', [direction]='sortedDirection')
+            th.col-sm-2.text-center.align-middle(scope='col')
+              span.d-flex.flex-row-reverse
+                | Actions
+        ng-container(body='')
+          tr(*ngfor='let coverType of coversTypesRecordsTabulationService.coversTypes$ | async')
+            td.text-center.align-middle
+              | {{coverType.pos}}
+            td.text-left.align-middle
+              ngb-highlight([result]='coverType.code', [term]='coversTypesRecordsTabulationService.searchTerm')
+            td.text-left.align-middle
+              ngb-highlight([result]='coverType.description', [term]='coversTypesRecordsTabulationService.searchTerm')
+            td.text-center.align-middle
+              span.d-flex.flex-row-reverse
+                sb-button(action='delete', entity='Cover Type', id='{{coverType.id}}', (delete)='onDeleteCoverType($event)', tooltip='Delete {{coverType.code}}')
+                sb-button(action='update', entity='Cover Type', id='{{coverType.id}}', (update)='onUpdateCoverType($event)', tooltip='Update {{coverType.code}}')
+        ng-container(footer='')
+          tr
+            td.align-middle(scope='col', colspan='6')
+              span.d-flex.flex-row.flex-row-reverse
+                sb-button(action='add', entity='Cover Type', (add)='onAddCoverType()')
+  // For Middle-Sized Devices Upwards
+  .row.d-none.d-md-block
+    .col
+      sb-table
+        ng-container(header='')
+          tr
+            th.col-md-1.text-center.align-middle(scope='col')
+              span #
+            th.col-md-1.text-left.align-middle(scope='col', sbsortable='code', (sort)='onSort($event)')
+              span Code
+              sb-sort-icon(*ngif='sortedColumn === "code"', [direction]='sortedDirection')
+            th.col-md-9.text-left.align-middle(scope='col', sbsortable='description', (sort)='onSort($event)')
+              span Description
+              sb-sort-icon(*ngif='sortedColumn === "description"', [direction]='sortedDirection')
+            th.col-sm-1.text-center.align-middle(scope='col')
+              span.d-flex.flex-row-reverse
+                | Actions
+        ng-container(body='')
+          tr(*ngfor='let coverType of coversTypesRecordsTabulationService.coversTypes$ | async')
+            td.text-center.align-middle
+              | {{coverType.pos}}
+            td.text-left.align-middle
+              ngb-highlight([result]='coverType.code', [term]='coversTypesRecordsTabulationService.searchTerm')
+            td.text-left.align-middle
+              ngb-highlight([result]='coverType.description', [term]='coversTypesRecordsTabulationService.searchTerm')
+            td.text-center.align-middle
+              span.d-flex.flex-row-reverse
+                sb-button(action='delete', entity='Cover Type', id='{{coverType.id}}', (delete)='onDeleteCoverType($event)', tooltip='Delete {{coverType.code}}')
+                sb-button(action='update', entity='Cover Type', id='{{coverType.id}}', (update)='onUpdateCoverType($event)', tooltip='Update {{coverType.code}}')
+        ng-container(footer='')
+          tr
+            td.align-middle(scope='col', colspan='6')
+              span.d-flex.flex-row.flex-row-reverse
+                sb-button(action='add', entity='Cover Type', (add)='onAddCoverType()')
+  .row
+    .col
+      sb-pagination((pagechanged)='onPageChange($event)', (pagesizechanged)='onPageSizeChange($event)')

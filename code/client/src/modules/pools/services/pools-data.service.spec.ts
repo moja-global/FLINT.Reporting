@@ -78,10 +78,10 @@ describe('Pools Data Service', () => {
 
 
                     // Expect that a single retrieval request was made during the class initialization phase
-                    httpMock.expectOne(`${environment.baseUrl}/api/v1/pools/all`).flush(initialPools);
+                    httpMock.expectOne(`${environment.poolsBaseUrl}/api/v1/pools/all`).flush(initialPools);
 
                     // Expect that a single request was made during the addition phase
-                    const mockReq2 = httpMock.expectOne(`${environment.baseUrl}/api/v1/pools`);
+                    const mockReq2 = httpMock.expectOne(`${environment.poolsBaseUrl}/api/v1/pools`);
 
                     // Expect that the addition request was of type POST
                     expect(mockReq2.request.method).toEqual('POST');
@@ -103,78 +103,10 @@ describe('Pools Data Service', () => {
         );
     });
 
-    describe('getPool', () => {
-        it('should retrieve and add a single Pool record to the local cache and then broadcast the changes to all subscribers',
-            inject(
-                [HttpTestingController, PoolsDataService],
-                (httpMock: HttpTestingController, poolsDataService: PoolsDataService) => {
-
-                    // Define a couple of mock Pools
-                    const allPools: Pool[] = <Array<Pool>>[
-                        new Pool({ id: 1, name: "Pool 1", description: "Pool 1 Description", version: 1 }),
-                        new Pool({ id: 2, name: "Pool 2", description: "Pool 2 Description", version: 1 }),
-                        new Pool({ id: 3, name: "Pool 3", description: "Pool 3 Description", version: 1 })
-                    ];
-
-                    const targetPool = new Pool({ id: 2, name: "Pool 2", description: "Pool 2 Description", version: 1 });
-
-                    // Call the getPool() method
-                    poolsDataService.getPool(2)
-                        .subscribe((response) => {
-
-                            // Expect that the response is equal to the target Pool
-                            expect(response).toEqual(targetPool);
-                        });
-
-                    // Subscribe to the Pools observable
-                    poolsDataService.pools$
-                        .pipe(
-                            take(3),
-                            toArray()
-                        )
-                        .subscribe(response => {
-
-                            // Expect that the first response is equal to an empty array
-                            expect(response[0]).toEqual([]);
-
-                            // Expect that the second response is equal to all the Pools
-                            expect(response[1]).toEqual(allPools);                            
-
-                            // Expect that the third response is equal to all the Pools
-                            expect(response[2]).toEqual(allPools);
-
-                        });
-
-                    // Expect that a single retrieval request was made during the class initialization phase
-                    httpMock.expectOne(`${environment.baseUrl}/api/v1/pools/all`).flush(allPools);
-
-                    // Expect that a single request was made during the retrieval phase
-                    const mockReq2 = httpMock.expectOne(`${environment.baseUrl}/api/v1/pools/ids/2`);
-
-                    // Expect that the retrieval request method was of type GET
-                    expect(mockReq2.request.method).toEqual('GET');
-
-                    // Expect that the retrieval request was not cancelled
-                    expect(mockReq2.cancelled).toBeFalsy();
-
-                    // Expect that the retrieval request response was of type json
-                    expect(mockReq2.request.responseType).toEqual('json');
-
-                    // Resolve the retrieval request
-                    mockReq2.flush(targetPool);
-
-                    // Ensure that there are no outstanding requests to be made
-                    httpMock.verify();
-                }
-            )
-        );
-    });
-
-
 
     describe('getAllPools', () => {
 
-        it('should retrieve and add all or a subset of all Pools records to the local cache and then broadcast the changes to all subscribers',
+        it('should retrieve and add all or a subset of all Pools Records to the local cache and then broadcast the changes to all subscribers',
             inject(
                 [HttpTestingController, PoolsDataService],
                 (httpMock: HttpTestingController, poolsDataService: PoolsDataService) => {
@@ -214,7 +146,7 @@ describe('Pools Data Service', () => {
                     // Expect that two retrieval requests were made: 
                     // One during the class initialization phase; 
                     // One during the current retrieval phase
-                    const requests: TestRequest[] = httpMock.match(`${environment.baseUrl}/api/v1/pools/all`); 
+                    const requests: TestRequest[] = httpMock.match(`${environment.poolsBaseUrl}/api/v1/pools/all`); 
                     expect(requests.length).toEqual(2); 
                     
                     // Get the first retrieval request
@@ -296,10 +228,10 @@ describe('Pools Data Service', () => {
                         });
 
                     // Expect that a single retrieval request was made during the class initialization phase
-                    httpMock.expectOne(`${environment.baseUrl}/api/v1/pools/all`).flush(initialPools);                
+                    httpMock.expectOne(`${environment.poolsBaseUrl}/api/v1/pools/all`).flush(initialPools);                
 
                     // Expect that a single request was made during the updation phase
-                    const mockReq2 = httpMock.expectOne(`${environment.baseUrl}/api/v1/pools`);
+                    const mockReq2 = httpMock.expectOne(`${environment.poolsBaseUrl}/api/v1/pools`);
 
                     // Expect that the updation request method was of type PUT
                     expect(mockReq2.request.method).toEqual('PUT');
@@ -368,11 +300,11 @@ describe('Pools Data Service', () => {
                         });
 
                     // Expect that a single retrieval request was made during the class initialization phase
-                    httpMock.expectOne(`${environment.baseUrl}/api/v1/pools/all`).flush(initialPools);  
+                    httpMock.expectOne(`${environment.poolsBaseUrl}/api/v1/pools/all`).flush(initialPools);  
                     
                     
                     // Expect that a single request was made during the deletion phase
-                    const mockReq2 = httpMock.expectOne(`${environment.baseUrl}/api/v1/pools/ids/4`);
+                    const mockReq2 = httpMock.expectOne(`${environment.poolsBaseUrl}/api/v1/pools/ids/4`);
 
                     // Expect that the deletion request method was of type DELETE
                     expect(mockReq2.request.method).toEqual('DELETE');
@@ -393,7 +325,7 @@ describe('Pools Data Service', () => {
 
     describe('records', () => {
 
-        it('should retrieve the most recent Pools records from the local cache',
+        it('should retrieve the most recent Pools Records from the local cache',
             inject(
                 [HttpTestingController, PoolsDataService],
                 (httpMock: HttpTestingController, poolsDataService: PoolsDataService) => {
@@ -406,7 +338,7 @@ describe('Pools Data Service', () => {
                     ];
 
                     // Expect that a single retrieval request was made
-                    httpMock.expectOne(`${environment.baseUrl}/api/v1/pools/all`).flush(allPools);
+                    httpMock.expectOne(`${environment.poolsBaseUrl}/api/v1/pools/all`).flush(allPools);
 
                     // Ensure that there are no outstanding requests to be made
                     httpMock.verify();

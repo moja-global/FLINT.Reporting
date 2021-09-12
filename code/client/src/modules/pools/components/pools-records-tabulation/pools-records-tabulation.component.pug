@@ -4,38 +4,69 @@ form
       .d-flex.justify-content-between.p-2
         sb-search((searched)='onSearch($event)')
         sb-loading-animation
-  .row
+  // For Small-Sized Devices Only
+  .row.d-md-none
     .col
       sb-table
-        ng-container(header)
+        ng-container(header='')
           tr
-            th.text-center.align-middle(scope='col')
+            th.col-sm-1.text-center.align-middle(scope='col')
               span #
-            th.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
+            th.col-sm-9.text-left.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
               span Name
               sb-sort-icon(*ngif='sortedColumn === "name"', [direction]='sortedDirection')
-            th.align-middle(scope='col')
-              span Description
-            th.align-middle(scope='col')
+            th.col-sm-2.text-center.align-middle(scope='col')
               span.d-flex.flex-row-reverse
                 | Actions
-        ng-container(footer='')
-          tr
-            td.align-middle(scope='col', colspan='4')
-              span.d-flex.flex-row-reverse
-                sb-button(action='add', entity='Pool', (add)='onAddPool()')
-        ng-container(body')
-          tr(*ngfor='let pool of poolsTableService.pools$ | async')
+        ng-container(body='')
+          tr(*ngfor='let pool of poolsRecordsTabulationService.pools$ | async')
             td.text-center.align-middle
               | {{pool.pos}}
-            td.align-middle
-              ngb-highlight([result]='pool.name', [term]='poolsTableService.searchTerm')
-            td.align-middle
-              ngb-highlight([result]='pool.description', [term]='poolsTableService.searchTerm')
-            td.align-middle
+            td.text-left.align-middle
+              ngb-highlight([result]='pool.name', [term]='poolsRecordsTabulationService.searchTerm')
+            td.text-center.align-middle
               span.d-flex.flex-row-reverse
-                sb-button(action='delete', entity='Pool', id='{{pool.id}}', (delete)='onDeletePool($event)')
-                sb-button(action='update', entity='Pool', id='{{pool.id}}', (update)='onUpdatePool($event)')
+                sb-button(action='delete', entity='Pool', id='{{pool.id}}', (delete)='onDeletePool($event)', tooltip='Delete {{pool.name}}')
+                sb-button(action='update', entity='Pool', id='{{pool.id}}', (update)='onUpdatePool($event)', tooltip='Update {{pool.name}}')
+        ng-container(footer='')
+          tr
+            td.align-middle(scope='col', colspan='6')
+              span.d-flex.flex-row.flex-row-reverse
+                sb-button(action='add', entity='Pool', (add)='onAddPool()')
+  // For Middle-Sized Devices Upwards
+  .row.d-none.d-md-block
+    .col
+      sb-table
+        ng-container(header='')
+          tr
+            th.col-md-1.text-center.align-middle(scope='col')
+              span #
+            th.col-md-3.text-left.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
+              span Name
+              sb-sort-icon(*ngif='sortedColumn === "name"', [direction]='sortedDirection')
+            th.col-md-7.text-left.align-middle(scope='col', sbsortable='description', (sort)='onSort($event)')
+              span Description
+              sb-sort-icon(*ngif='sortedColumn === "description"', [direction]='sortedDirection')
+            th.col-md-1.text-center.align-middle(scope='col')
+              span.d-flex.flex-row-reverse
+                | Actions
+        ng-container(body='')
+          tr(*ngfor='let pool of poolsRecordsTabulationService.pools$ | async')
+            td.text-center.align-middle
+              | {{pool.pos}}
+            td.text-left.align-middle
+              ngb-highlight([result]='pool.name', [term]='poolsRecordsTabulationService.searchTerm')
+            td.text-left.align-middle
+              ngb-highlight([result]='pool.description', [term]='poolsRecordsTabulationService.searchTerm')
+            td.text-center.align-middle
+              span.d-flex.flex-row-reverse
+                sb-button(action='delete', entity='Pool', id='{{pool.id}}', (delete)='onDeletePool($event)', tooltip='Delete {{pool.name}}')
+                sb-button(action='update', entity='Pool', id='{{pool.id}}', (update)='onUpdatePool($event)', tooltip='Update {{pool.name}}')
+        ng-container(footer='')
+          tr
+            td.align-middle(scope='col', colspan='6')
+              span.d-flex.flex-row.flex-row-reverse
+                sb-button(action='add', entity='Pool', (add)='onAddPool()')
   .row
     .col
       sb-pagination((pagechanged)='onPageChange($event)', (pagesizechanged)='onPageSizeChange($event)')

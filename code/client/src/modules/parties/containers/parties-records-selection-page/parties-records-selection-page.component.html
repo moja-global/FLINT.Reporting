@@ -1,0 +1,8 @@
+<sb-card>
+    <div class="card-header">
+        Select Administrative Unit Record
+    </div>
+    <div class="card-body">
+        <sb-parties-records-selection [pageSize]="pageSize" [selectionMode]="selectionMode" [basis]="basis" [partyTypeId]="partyTypeId" [previouslySelectedPartiesIds]="previouslySelectedPartiesIds" [skipPreviouslySelectedPartiesIds]="skipPreviouslySelectedPartiesIds" (select)="onSelect($event)" (check)="onCheck($event)" (uncheck)="onUncheck($event)"></sb-parties-records-selection>
+    </div>
+</sb-card>

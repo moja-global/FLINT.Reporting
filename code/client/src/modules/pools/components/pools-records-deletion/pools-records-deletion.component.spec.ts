@@ -1,15 +1,16 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { PaginationComponent, LoadingAnimationComponent } from '@common/components';
+import { MessageService, ConnectivityStatusService } from '@common/services';
+import { PoolsDataService } from '@modules/pools/services';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { PoolsRecordsSelectionComponent } from '../pools-records-selection/pools-records-selection.component';
 
-import { PoolsRecordsDeletionComponent } from './pools-records-deletion.component';
 
 @Component({
     template: `
-        <sb-pools-records-deletion [someInput]="someInput" (someFunction)="someFunction($event)"></sb-pools-records-deletion>
+        <sb-pools-records-selection [someInput]="someInput" (someFunction)="someFunction($event)"></sb-pools-records-selection>
     `,
 })
 class TestHostComponent {
@@ -17,22 +18,22 @@ class TestHostComponent {
     // someFunction(event: Event) {}
 }
 
-describe('PoolsRecordsDeletionComponent', () => {
-    
+describe('PoolsRecordsSelectionComponent', () => {
+
     let fixture: ComponentFixture<TestHostComponent>;
     let hostComponent: TestHostComponent;
     let hostComponentDE: DebugElement;
     let hostComponentNE: Element;
 
-    let component: PoolsRecordsDeletionComponent;
+    let component: PoolsRecordsSelectionComponent;
     let componentDE: DebugElement;
     let componentNE: Element;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [TestHostComponent, PoolsRecordsDeletionComponent],
-            imports: [NoopAnimationsModule, HttpClientTestingModule, LoggerModule.forRoot({ serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.OFF })],
-            providers: [NgbActiveModal],            
+            declarations: [TestHostComponent, PoolsRecordsSelectionComponent, PaginationComponent, LoadingAnimationComponent],
+            imports: [HttpClientTestingModule, LoggerModule.forRoot({ serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.OFF })],
+            providers: [PoolsDataService, MessageService, ConnectivityStatusService],
             schemas: [NO_ERRORS_SCHEMA],
         }).compileComponents();
 
@@ -49,6 +50,6 @@ describe('PoolsRecordsDeletionComponent', () => {
     });
 
     it('should display the component', () => {
-        expect(hostComponentNE.querySelector('sb-pools-records-deletion')).toEqual(jasmine.anything());
+        expect(hostComponentNE.querySelector('sb-pools-records-selection')).toEqual(jasmine.anything());
     });
 });

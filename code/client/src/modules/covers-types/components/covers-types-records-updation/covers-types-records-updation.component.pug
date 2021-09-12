@@ -1,0 +1,21 @@
+form([formgroup]='coversTypesForm')
+  .form-group
+    label(for='code') Code
+    input#code.form-control(type='text', placeholder='', formcontrolname='code')
+    .alert.alert-danger.mt-3(*ngif="coversTypesForm.get('code')?.invalid && (coversTypesForm.get('code')?.dirty || coversTypesForm.get('code')?.touched)")
+      div(*ngif="coversTypesForm.get('code')?.errors.required")
+        | Code is required.
+      div(*ngif="coversTypesForm.get('code')?.errors.maxlength")
+        | Code cannot be more than 250 characters long.
+      div(*ngif="coversTypesForm.get('code')?.errors.exists")
+        | Code should be unique.
+  .form-group
+    label(for='description') Description
+    input#description.form-control(type='text', placeholder='', formcontrolname='description')
+    .alert.alert-danger.mt-3(*ngif="coversTypesForm.get('description')?.invalid && (coversTypesForm.get('description')?.dirty || coversTypesForm.get('description')?.touched)")
+      div(*ngif="coversTypesForm.get('description')?.errors.required")
+        | Description is required.
+      div(*ngif="coversTypesForm.get('description')?.errors.maxlength")
+        | Description cannot be more than 250 characters long.
+      div(*ngif="coversTypesForm.get('description')?.errors.exists")
+        | Description should be unique.

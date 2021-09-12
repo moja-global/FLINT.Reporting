@@ -5,6 +5,7 @@ import {
     Component,
     HostListener,
     Input,
+    OnDestroy,
     OnInit,
     ViewChild,
 } from '@angular/core';
@@ -13,15 +14,12 @@ import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
 import { SortEvent } from '@common/directives/sortable.directive';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { PartiesRecordsTabulationService } from '@modules/parties/services/parties-records-tabulation.service';
-import { ConnectivityStatusService } from '@common/services';
-import { PartiesRecordsCreationModalComponent } from '@modules/parties/containers/parties-records-creation-modal/parties-records-creation-modal.component';
-import { PartiesRecordsDeletionModalComponent } from '@modules/parties/containers/parties-records-deletion-modal/parties-records-deletion-modal.component';
-import { PartiesRecordsUpdationModalComponent } from '@modules/parties/containers/parties-records-updation-modal/parties-records-updation-modal.component';
+import { PartiesRecordsTabulationService } from '../../services';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Party } from '@modules/parties/models';
+import { PartiesRecordsCreationModalComponent, PartiesRecordsUpdationModalComponent, PartiesRecordsDeletionModalComponent } from '@modules/parties/containers';
+import { PartiesDataService } from '@modules/parties/services/parties-data.service';
 
-const LOG_PREFIX: string = "[Parties Records Tabulation]";
+const LOG_PREFIX: string = "[Parties Records Tabulation Component]";
 
 @Component({
     selector: 'sb-parties-records-tabulation',
@@ -29,7 +27,7 @@ const LOG_PREFIX: string = "[Parties Records Tabulation]";
     templateUrl: './parties-records-tabulation.component.html',
     styleUrls: ['parties-records-tabulation.component.scss'],
 })
-export class PartiesRecordsTabulationComponent implements OnInit, AfterViewInit {
+export class PartiesRecordsTabulationComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Inject a reference to the loading animation component. 
     // This will provide a way of informing it of the status of 
@@ -54,24 +52,25 @@ export class PartiesRecordsTabulationComponent implements OnInit, AfterViewInit 
     // Keep tabs on the direction that the records are currently sorted by: ascending or descending.
     sortedDirection!: string;
 
-    // Keep tabs on the target part type
-    @Input() targetPartyType: Party = new Party();
+    //Keep tabs on the parent party's id
+    parentPartyTypeId: number | null | undefined;
 
     // Instantiate a central gathering point for all the component's subscriptions.
     // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
     private _subscriptions: Subscription[] = [];
 
-    state: any = {};
- 
+
 
     constructor(
-        public partiesTableService: PartiesRecordsTabulationService,
+        public partiesRecordsTabulationService: PartiesRecordsTabulationService,
+        private partiesDataService: PartiesDataService,
         private cd: ChangeDetectorRef,
         private modalService: NgbModal,
-        public connectivityStatusService: ConnectivityStatusService,
-        private router: Router,
         private activatedRoute: ActivatedRoute,
+        private router: Router,
         private log: NGXLogger) {
+
+
     }
 
     ngOnInit() {
@@ -79,50 +78,41 @@ export class PartiesRecordsTabulationComponent implements OnInit, AfterViewInit 
         this.log.trace(`${LOG_PREFIX} Initializing Component`);
 
         this._subscriptions.push(
-            this.activatedRoute.queryParamMap.subscribe(params => {
-
-                // Get and update the name from the query parameters
-                const name: string | null = params.get('name');
-                this.targetPartyType.name = name;
-
-            })
-        );         
-
-        this._subscriptions.push(
             this.activatedRoute.paramMap.subscribe(params => {
 
                 // Get and update the id from the path parameter
-                const id: string | null = params.get('partyTypeId');
-                this.targetPartyType.id = (id == null? null : parseInt(id));
+                const temp: string | null = params.get('partyTypeId');
+                this.parentPartyTypeId = (temp == null ? null : parseInt(temp));
+                this.onPartyChange(this.parentPartyTypeId);
 
-                // Update the party type id in the tabulation service tool
-                this.onPartyTypeChange(params.get('partyTypeId'));
+
             })
         );
-       
     }
+
 
 
     ngAfterViewInit() {
 
         // Set the initial page and page size values on the pagination component.
         this.log.trace(`${LOG_PREFIX} Set the initial Page and Page Size values on the pagination component`);
-        this.pagination.initialize(this.partiesTableService.page, this.pageSize);
+        this.pagination.initialize(this.partiesRecordsTabulationService.page, this.pageSize);
 
         // Subscribe to the total value changes and propagate them to the pagination component.
         // These values typically change in response to the user filtering the records.
         this.log.trace(`${LOG_PREFIX} Subscribing to total value changes`);
         this._subscriptions.push(
-            this.partiesTableService.total$.subscribe(
+            this.partiesRecordsTabulationService.total$.subscribe(
                 (total) => {
                     this.pagination.total = total;
+                    this.cd.detectChanges();
                 }));
 
         // Subscribe to loading events and propagate them to the loading component.
         // Loading events occur when the user searches, sorts or moves from one record page to another.
         this.log.trace(`${LOG_PREFIX} Subscribing to loading status changes`);
         this._subscriptions.push(
-            this.partiesTableService.loading$.subscribe(
+            this.partiesRecordsTabulationService.loading$.subscribe(
                 (loading) => {
                     this.animation.loading = loading;
                     this.cd.detectChanges();
@@ -146,7 +136,7 @@ export class PartiesRecordsTabulationComponent implements OnInit, AfterViewInit 
      */
     onSearch(event: any) {
         this.log.trace(`${LOG_PREFIX} Searching for ${event}`);
-        this.partiesTableService.searchTerm = event;
+        this.partiesRecordsTabulationService.searchTerm = event;
         this.cd.detectChanges();
     }
 
@@ -158,8 +148,8 @@ export class PartiesRecordsTabulationComponent implements OnInit, AfterViewInit 
         this.log.trace(`${LOG_PREFIX} Sorting ${column} in ${direction} order`);
         this.sortedColumn = column;
         this.sortedDirection = direction;
-        this.partiesTableService.sortColumn = column;
-        this.partiesTableService.sortDirection = direction;
+        this.partiesRecordsTabulationService.sortColumn = column;
+        this.partiesRecordsTabulationService.sortDirection = direction;
         this.cd.detectChanges();
     }
 
@@ -169,7 +159,7 @@ export class PartiesRecordsTabulationComponent implements OnInit, AfterViewInit 
      */
     onPageChange(event: any) {
         this.log.trace(`${LOG_PREFIX} Changing Page to ${event}`);
-        this.partiesTableService.page = event;
+        this.partiesRecordsTabulationService.page = event;
         this.cd.detectChanges();
     }
 
@@ -179,61 +169,63 @@ export class PartiesRecordsTabulationComponent implements OnInit, AfterViewInit 
      */
     onPageSizeChange(event: any) {
         this.log.trace(`${LOG_PREFIX} Changing Page Size to ${event}`);
-        this.partiesTableService.pageSize = event;
+        this.partiesRecordsTabulationService.pageSize = event;
         this.cd.detectChanges();
     }
 
     /**
-     * Propagates parent party id change events to the table service
-     * @param event The newly desired parent party id
+     * Propagates party id change events to the table service
+     * @param event The newly desired party id
      */
-     onPartyTypeChange(event: any) {
-        this.log.trace(`${LOG_PREFIX} Changing Parent Party Id to ${event}`);
-        this.partiesTableService.partyTypeId = event;
+    onPartyChange(event: any) {
+        this.log.trace(`${LOG_PREFIX} Changing Party Id to ${event}`);
+        this.partiesRecordsTabulationService.partyTypeId = event;
         this.cd.detectChanges();
-    }    
+    }
 
     /**
      * Propagates Parties records Addition Requests to the responsible component
      */
     onAddParty() {
-        this.log.trace(`${LOG_PREFIX} Adding a new Party record`);
+        this.log.trace(`${LOG_PREFIX} Adding a new Party Record`);
+        this.log.debug(`${LOG_PREFIX} Party = ${JSON.stringify(this.parentPartyTypeId)}`);
         const modalRef = this.modalService.open(PartiesRecordsCreationModalComponent, { centered: true, backdrop: 'static' });
-        modalRef.componentInstance.targetPartyType = this.targetPartyType;
+        modalRef.componentInstance.partyTypeId = this.parentPartyTypeId;
     }
 
     /**
      * Propagates Parties records Updation Requests to the responsible component
      */
     onUpdateParty(id: number) {
-        this.log.trace(`${LOG_PREFIX} Updating Party record`);
-        this.log.debug(`${LOG_PREFIX} Party record Id = ${id}`);
+        this.log.trace(`${LOG_PREFIX} Updating Party Record`);
+        this.log.debug(`${LOG_PREFIX} Party Record Id = ${id}`);
+        this.log.debug(`${LOG_PREFIX} Party = ${JSON.stringify(this.parentPartyTypeId)}`);
         const modalRef = this.modalService.open(PartiesRecordsUpdationModalComponent, { centered: true, backdrop: 'static' });
         modalRef.componentInstance.id = id;
-        modalRef.componentInstance.targetPartyType = this.targetPartyType;
+
     }
 
     /**
      * Propagates Parties records Deletion Requests to the responsible component
      */
     onDeleteParty(id: number) {
-        this.log.trace(`${LOG_PREFIX} Deleting Party record`);
-        this.log.debug(`${LOG_PREFIX} Party record Id = ${id}`);
+        this.log.trace(`${LOG_PREFIX} Deleting Party Record`);
+        this.log.debug(`${LOG_PREFIX} Party Record Id = ${id}`);
+        this.log.debug(`${LOG_PREFIX} Party = ${JSON.stringify(this.parentPartyTypeId)}`);
         const modalRef = this.modalService.open(PartiesRecordsDeletionModalComponent, { centered: true, backdrop: 'static' });
         modalRef.componentInstance.id = id;
-        modalRef.componentInstance.targetPartyType = this.targetPartyType;
     }
 
 
     /**
-     * Opens Parties records Home Window
+     * Parties Issues Page
      */
-     onOpenParty(state: any) {
-        this.log.trace(`${LOG_PREFIX} Opening Party record Home Window`);
-        this.log.debug(`${LOG_PREFIX} State = ${JSON.stringify(state)}`);
+    onOpenPartyIssues(party: any) {
+        this.log.trace(`${LOG_PREFIX} Opening Parties Issues Page`);
+        this.log.debug(`${LOG_PREFIX} Party = ${JSON.stringify(party)}`);
 
-        this.router.navigate(['/parties', state.id], {queryParams: {name: state.name}});
+        this.router.navigate(['/parties_issues', party.id]);
 
-    }
+    }  
 
 }

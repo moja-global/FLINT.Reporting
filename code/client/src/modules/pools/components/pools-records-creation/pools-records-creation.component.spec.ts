@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { PoolsDataService } from '@modules/pools/services';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
@@ -32,7 +33,7 @@ describe('PoolsRecordsCreationComponent', () => {
         TestBed.configureTestingModule({
             declarations: [TestHostComponent, PoolsRecordsCreationComponent],
             imports: [NoopAnimationsModule, HttpClientTestingModule, LoggerModule.forRoot({ serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.OFF })],
-            providers: [NgbActiveModal],            
+            providers: [NgbActiveModal,PoolsDataService],           
             schemas: [NO_ERRORS_SCHEMA],
         }).compileComponents();
 

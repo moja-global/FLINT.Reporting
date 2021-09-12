@@ -1,0 +1,9 @@
+sb-layout-main
+  ng-container(header)
+    sb-header(title='Reporting Frameworks', subtitle='Units of measurements groupings')
+  ng-container(body')
+    sb-card
+      .card-header
+        | Reporting Frameworks List
+      .card-body
+        sb-reporting-frameworks-records-tabulation([pagesize]='6')

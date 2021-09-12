@@ -4,14 +4,14 @@ import {
   EventEmitter,
   HostListener,
   Input,
+  OnDestroy,
   OnInit,
   Output
 } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { PartiesDataService } from '../../services/parties-data.service';
+import { Party } from '@modules/parties/models/party.model';
+import { PartiesDataService } from '@modules/parties/services/parties-data.service';
 import { NGXLogger } from 'ngx-logger';
-import { Subscription } from 'rxjs';
-import { Party } from '../../models';
 
 const LOG_PREFIX: string = "[Parties Records Creation Component]";
 
@@ -21,60 +21,70 @@ const LOG_PREFIX: string = "[Parties Records Creation Component]";
   templateUrl: './parties-records-creation.component.html',
   styleUrls: ['parties-records-creation.component.scss'],
 })
-export class PartiesRecordsCreationComponent implements OnInit {
+export class PartiesRecordsCreationComponent implements OnInit, OnDestroy {
+
+  // Instantiate an 'initialized' state notification Emitter.
+  // This will allow us to notify the parent component that the component was successfully initialized
+  @Output() initialized: EventEmitter<void> = new EventEmitter<void>();
 
   // Instantiate a 'succeeded' state notification Emitter.
   // This will allow us to broadcast notifications of successful creation events
   @Output() succeeded: EventEmitter<void> = new EventEmitter<void>();
 
   // Instantiate a 'failed' state notification Emitter.
-  // This will allow us to broadcast fnotifications of failed creation events
+  // This will allow us to broadcast notifications of failed creation events
   @Output() failed: EventEmitter<number> = new EventEmitter<number>();
 
+  // Instantiate and avail the target parent id variable to the parent component.
+  // This will allow the parent component to inject the details of the target parent id  
+  @Input() partyTypeId: number | null = null; 
+
   // Instantitate a new reactive Form Group for the Parties Form.
-  // This will allow to define and enforce the validation rules for all the form controls.
+  // This will allow us to define and enforce the validation rules for all the form controls.
   partiesForm = new FormGroup({
     name: new FormControl('', [
       Validators.required,
       Validators.minLength(2),
-      Validators.maxLength(50),
-      this.exists()
+      Validators.maxLength(250),
+      this.exists("name")
     ])
   });
 
-  // Keep tabs on the target part type
-  @Input() targetPartyType!: Party | undefined;
-
-  // Instantiate a central gathering point for all the component's subscriptions.
-  // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
-  private _subscriptions: Subscription[] = [];
 
   constructor(
     private partiesDataService: PartiesDataService,
-    private log: NGXLogger) { }
+    private log: NGXLogger) {
+
+
+  }
+
 
   ngOnInit() {
     this.log.trace(`${LOG_PREFIX} Initializing Component`);
-
   }
+
 
   @HostListener('window:beforeunload')
   ngOnDestroy() {
-
     this.log.trace(`${LOG_PREFIX} Destroying Component`);
-
-    // Clear all subscriptions
-    this.log.trace(`${LOG_PREFIX} Clearing all subscriptions`);
-    this._subscriptions.forEach((s) => s.unsubscribe());
   }
 
+
   /**
-   * Internal validator that checks whether a Party record already exists
+   * Internal validator that checks whether a Party Record already exists
    * @returns 
    */
-  private exists(): ValidatorFn {
+  private exists(attribute: string): ValidatorFn {
 
-    const values: string[] = <Array<string>>this.partiesDataService.records.map(d => d.name);
+    this.log.trace(`${LOG_PREFIX} Checking whether ${attribute} already exists`);
+
+    const values: string[] =
+      attribute == "name" ? <Array<string>>this.partiesDataService.records.map(d => d.name) :
+        attribute == "plural" ? <Array<string>>this.partiesDataService.records.map(d => d.plural) :
+          attribute == "symbol" ? <Array<string>>this.partiesDataService.records.map(d => d.symbol) :
+            [];
+
+    this.log.debug(`${LOG_PREFIX} Existing ${attribute} values = ${values}`);
 
     return (control: AbstractControl): ValidationErrors | null => {
 
@@ -84,7 +94,12 @@ export class PartiesRecordsCreationComponent implements OnInit {
 
           const s: string = control.value;
 
+          this.log.debug(`${LOG_PREFIX} Checking whether ${s} matches any value in ${values}`);
+
           if (values.map(v => v.toLowerCase()).includes(s.toLowerCase())) {
+
+            this.log.trace(`${LOG_PREFIX} Matching ${attribute} found`);
+
             return { 'exists': true }
           }
         }
@@ -94,8 +109,10 @@ export class PartiesRecordsCreationComponent implements OnInit {
     }
   }
 
+
+
   /**
-   * Validates and saves a new Party record.
+   * Validates and saves a new Party Record.
    * Emits a succeeded or failed event in response to whether or not the creation exercise was successful.
    * Error 400 = Indicates an invalid Form Control Entry was supplied.
    * Error 500 = Indicates something unexpected happened at the server side
@@ -110,14 +127,14 @@ export class PartiesRecordsCreationComponent implements OnInit {
       this.log.debug(`${LOG_PREFIX} Party Name = ${name}`);
 
       // Save the record
-      this.log.trace(`${LOG_PREFIX} Saving the Party record`);
+      this.log.trace(`${LOG_PREFIX} Saving the Party Record`);
       this.partiesDataService
-        .createParty(new Party({ name: name, partyTypeId: this.targetPartyType?.id }))
+        .createParty(new Party({ partyTypeId: this.partyTypeId, name: name }))
         .subscribe(
           (response: Party) => {
 
-            // The Party record was saved successfully
-            this.log.trace(`${LOG_PREFIX} Party record was saved successfuly`);
+            // The Party Record was saved successfully
+            this.log.trace(`${LOG_PREFIX} Party Record was saved successfuly`);
 
             // Reset the form
             this.log.trace(`${LOG_PREFIX} Resetting the form`);
@@ -129,8 +146,8 @@ export class PartiesRecordsCreationComponent implements OnInit {
           },
           (error: any) => {
 
-            // The Party record was not saved successfully
-            this.log.trace(`${LOG_PREFIX} Party record was not saved successfuly`);
+            // The Party Record was not saved successfully
+            this.log.trace(`${LOG_PREFIX} Party Record was not saved successfuly`);
 
             // Emit a 'failed' event
             this.log.trace(`${LOG_PREFIX} Emitting a 'failed' event`);

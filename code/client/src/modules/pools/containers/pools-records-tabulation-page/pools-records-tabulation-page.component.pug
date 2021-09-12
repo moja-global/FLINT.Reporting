@@ -1,9 +1,4 @@
-sb-layout-main
-  ng-container(header)
-    sb-header(title='Pools', subtitle='Reservoirs that exchange carbon through output and intake')
-  ng-container(body')
-    sb-card
-      .card-header
-        | Pools List
-      .card-body
-        sb-pools-records-tabulation([pagesize]='6')
+sb-pools-records-home-page
+  sb-card
+    .card-body
+      sb-pools-records-tabulation([pagesize]='6')

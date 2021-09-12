@@ -1,0 +1,69 @@
+form
+  .row
+    .col
+      .d-flex.justify-content-between.p-2
+        sb-search((searched)='onSearch($event)')
+        sb-loading-animation
+  // For Small-Sized Devices Only
+  .row.d-md-none
+    .col
+      sb-table
+        ng-container(header='')
+          tr
+            th.col-sm-1.text-center.align-middle(scope='col')
+              span #
+            th.col-sm-9.text-left.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
+              span Name
+              sb-sort-icon(*ngif='sortedColumn === "name"', [direction]='sortedDirection')
+            th.col-sm-2.text-center.align-middle(scope='col')
+              span.d-flex.flex-row-reverse
+                | Actions
+        ng-container(body='')
+          tr(*ngfor='let partyType of partiesTypesRecordsTabulationService.partiesTypes$ | async')
+            td.text-center.align-middle
+              | {{partyType.pos}}
+            td.text-left.align-middle
+              ngb-highlight([result]='partyType.name', [term]='partiesTypesRecordsTabulationService.searchTerm')
+            td.text-center.align-middle
+              span.d-flex.flex-row-reverse
+                sb-button(action='open', entity='Party Type', id='{{partyType.id}}', name='{{partyType.name}}', (open)='onOpenParties($event)', tooltip='Open {{partyType.name}} Administrative Units Page')
+                sb-button(action='delete', entity='Party Type', id='{{partyType.id}}', (delete)='onDeletePartyType($event)', tooltip='Delete {{partyType.name}}')
+                sb-button(action='update', entity='Party Type', id='{{partyType.id}}', (update)='onUpdatePartyType($event)', tooltip='Update {{partyType.name}}')
+        ng-container(footer='')
+          tr
+            td.align-middle(scope='col', colspan='6')
+              span.d-flex.flex-row.flex-row-reverse
+                sb-button(action='add', entity='Party Type', (add)='onAddPartyType()')
+  // For Middle-Sized Devices Upwards
+  .row.d-none.d-md-block
+    .col
+      sb-table
+        ng-container(header='')
+          tr
+            th.col-md-1.text-center.align-middle(scope='col')
+              span #
+            th.col-md-10.text-left.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
+              span Name
+              sb-sort-icon(*ngif='sortedColumn === "name"', [direction]='sortedDirection')
+            th.col-sm-1.text-center.align-middle(scope='col')
+              span.d-flex.flex-row-reverse
+                | Actions
+        ng-container(body='')
+          tr(*ngfor='let partyType of partiesTypesRecordsTabulationService.partiesTypes$ | async')
+            td.text-center.align-middle
+              | {{partyType.pos}}
+            td.text-left.align-middle
+              ngb-highlight([result]='partyType.name', [term]='partiesTypesRecordsTabulationService.searchTerm')
+            td.text-center.align-middle
+              span.d-flex.flex-row-reverse
+                sb-button(action='open', entity='Party Type', id='{{partyType.id}}', name='{{partyType.name}}', (open)='onOpenParties($event)', tooltip='Open {{partyType.name}} Administrative Units Page')
+                sb-button(action='delete', entity='Party Type', id='{{partyType.id}}', (delete)='onDeletePartyType($event)', tooltip='Delete {{partyType.name}}')
+                sb-button(action='update', entity='Party Type', id='{{partyType.id}}', (update)='onUpdatePartyType($event)', tooltip='Update {{partyType.name}}')
+        ng-container(footer='')
+          tr
+            td.align-middle(scope='col', colspan='6')
+              span.d-flex.flex-row.flex-row-reverse
+                sb-button(action='add', entity='Party Type', (add)='onAddPartyType()')
+  .row
+    .col
+      sb-pagination((pagechanged)='onPageChange($event)', (pagesizechanged)='onPageSizeChange($event)')

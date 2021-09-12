@@ -10,7 +10,6 @@ import { PartiesRecordsDeletionComponent } from '../../components/parties-record
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject, Subscription, timer } from 'rxjs';
-import { Party } from '@modules/parties/models';
 
 const LOG_PREFIX: string = "[Parties Records Deletion Modal]";
 
@@ -41,9 +40,6 @@ export class PartiesRecordsDeletionModalComponent implements OnInit {
     private _statusSubject$ = new BehaviorSubject<string>("new");
     readonly status$ = this._statusSubject$.asObservable();
 
-    // Keep tabs on the target part type
-    @Input() targetPartyType!: Party | undefined;
-
     // Instantiate a central gathering point for all the component's subscriptions.
     // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
     private _subscriptions: Subscription[] = [];
@@ -53,16 +49,14 @@ export class PartiesRecordsDeletionModalComponent implements OnInit {
         private log: NGXLogger) { }
 
     ngOnInit() {
-        this.log.trace(`${LOG_PREFIX} Initializing Component`);     
+
+        this.log.trace(`${LOG_PREFIX} Initializing Component`);
+
     }
 
     @HostListener('window:beforeunload')
     ngOnDestroy() {
         this.log.trace(`${LOG_PREFIX} Destroying Component`);
-
-        // Clear all subscriptions
-        this.log.trace(`${LOG_PREFIX} Clearing all subscriptions`);
-        this._subscriptions.forEach(s => s.unsubscribe());          
     }
 
     /**

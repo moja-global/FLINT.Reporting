@@ -2,11 +2,11 @@ import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
-import { Party } from '../models/party.model';
-import { environment } from 'environments/environment';
 import { MessageType } from '@common/models/message.type.model';
 import { ConnectivityStatusService, MessageService } from '@common/services';
 import { catchError, first, takeUntil, tap } from 'rxjs/operators';
+import { Party } from '../models/party.model';
+import { environment } from 'environments/environment';
 
 const LOG_PREFIX: string = "[Parties Data Service]";
 const API_PREFIX: string = "api/v1/parties";
@@ -18,16 +18,13 @@ const HEADERS = { 'Content-Type': 'application/json' };
 })
 export class PartiesDataService {
 
-  // The base url of the server
-  private _baseUrl: string = environment.baseUrl;
-
   // The local data cache
   private _cache: { parties: Party[] } = { parties: [] };
 
   // The observables that allow subscribers to keep tabs of the current status 
-  // of parties records in the data store
-  private _partiesSubject$: BehaviorSubject<Array<Party>> = new BehaviorSubject<Array<Party>>([]);
-  readonly parties$: Observable<Array<Party>> = this._partiesSubject$.asObservable();
+  // of unit categories records in the data store
+  private _partiesSubject$ = new BehaviorSubject<Party[]>([]);
+  readonly parties$ = this._partiesSubject$.asObservable();
 
   // The observable that we will use to opt out of initialization subscriptions 
   // once we are done with them
@@ -82,20 +79,10 @@ export class PartiesDataService {
     this.bc.onmessage = this.zone.run(() => this.handleEvent);
   }
 
-
   /**
-   * Publish information to current (listening) ui
-   * @param event 
-   */
-   private handleEvent = (event: MessageEvent) => {
-    this.zone.run(() => this._partiesSubject$.next(event.data.newValue));
-  }
-    
-
-  /**
-   * Creates and adds an instance of a new Party record to the local cache and then broadcasts the changes to all subscribers
+   * Creates and adds an instance of a new Party Record to the local cache and then broadcasts the changes to all subscribers
    * 
-   * @param party The details of the Party record to be created - with the id and version details missing
+   * @param party The details of the Party Record to be created - with the id and version details missing
    */
   public createParty(party: Party): Observable<Party> {
 
@@ -103,19 +90,19 @@ export class PartiesDataService {
     this.log.debug(`${LOG_PREFIX} Party = ${JSON.stringify(party)}`);
 
     // Make a HTTP POST Request to create the record
-    this.log.debug(`${LOG_PREFIX} Making a HTTP POST Request to ${this._baseUrl}/${API_PREFIX} to create the record`);
+    this.log.debug(`${LOG_PREFIX} Making a HTTP POST Request to ${environment.partiesBaseUrl}/${API_PREFIX} to create the record`);
 
-    return this.http.post<Party>(`${this._baseUrl}/${API_PREFIX}`, JSON.stringify(party), { headers: new HttpHeaders(HEADERS) })
+    return this.http.post<Party>(`${environment.partiesBaseUrl}/${API_PREFIX}`, JSON.stringify(party), { headers: new HttpHeaders(HEADERS) })
       .pipe(
 
         tap((data: Party) => {
 
-          // Party record Creation was successful
+          // Party Record Creation was successful
           this.log.trace(`${LOG_PREFIX} Record Creation was successful`);
-          this.log.debug(`${LOG_PREFIX} Created Party record = ${JSON.stringify(data)}`);
+          this.log.debug(`${LOG_PREFIX} Created Party Record = ${JSON.stringify(data)}`);
 
-          // Add the newly created Party record to the Local Cache
-          this.log.trace(`${LOG_PREFIX} Adding the newly created Party record to the Local Cache`);
+          // Add the newly created Party Record to the Local Cache
+          this.log.trace(`${LOG_PREFIX} Adding the newly created Party Record to the Local Cache`);
           this._cache.parties.push(data);
 
           // Create an up to date copy of the Parties records
@@ -130,20 +117,20 @@ export class PartiesDataService {
           this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Parties records to the other listeners`);
           this.bc.postMessage({ newValue: copy });
 
-          // Send a message that states that the Party record Creation was successful
-          this.log.trace(`${LOG_PREFIX} Sending a message that states that the Party record Creation was successful`);
-          this.messageService.sendMessage({ "type": MessageType.Success, "message": "The Party record Creation was successful" });
+          // Send a message that states that the Party Record Creation was successful
+          this.log.trace(`${LOG_PREFIX} Sending a message that states that the Party Record Creation was successful`);
+          this.messageService.sendMessage({ "type": MessageType.Success, "message": "The Party Record Creation was successful" });
 
         }),
 
         catchError((error: any) => {
 
-          // Party record Creation was unsuccessful
-          this.log.error(`${LOG_PREFIX} Party record Creation was unsuccessful: ${error.statusText || "See Server Logs for more details"}`);
+          // Party Record Creation was unsuccessful
+          this.log.error(`${LOG_PREFIX} Party Record Creation was unsuccessful: ${error.statusText || "See Server Logs for more details"}`);
 
-          // Send a message that states that the Party record Creation was unsuccessful
-          this.log.trace(`${LOG_PREFIX} Sending a message that states that the Party record Creation was unsuccessful`);
-          this.messageService.sendMessage({ "type": MessageType.Error, "message": "The Party record Creation was unsuccessful" });
+          // Send a message that states that the Party Record Creation was unsuccessful
+          this.log.trace(`${LOG_PREFIX} Sending a message that states that the Party Record Creation was unsuccessful`);
+          this.messageService.sendMessage({ "type": MessageType.Error, "message": "The Party Record Creation was unsuccessful" });
 
           return throwError(error);
         }));
@@ -151,81 +138,11 @@ export class PartiesDataService {
 
 
   /**
-   * Retrieves and adds a single Party record to the local cache and then broadcasts the changes to all subscribers
-   * 
-   * @param partyId The Unique Identifier of the Party record
+   * Publish information to current (listening) ui
+   * @param event 
    */
-  getParty(partyId: number): Observable<Party> {
-
-    this.log.trace(`${LOG_PREFIX} Entering getParty()`);
-    this.log.debug(`${LOG_PREFIX} Party Id = ${partyId}`);
-
-    // Make a HTTP GET Request to retrieve the record
-    this.log.debug(`${LOG_PREFIX} Making a HTTP GET Request to ${this._baseUrl}/${API_PREFIX}/ids/${partyId} to retrieve the record`);
-
-    return this.http.get<Party>(`${this._baseUrl}/${API_PREFIX}/ids/${partyId}`, { headers: new HttpHeaders(HEADERS) })
-      .pipe(
-
-        tap((data: Party) => {
-
-          // Party record Retrieval was successful
-          this.log.trace(`${LOG_PREFIX} Party record Retrieval was successful`);
-          this.log.debug(`${LOG_PREFIX} Retrieved Party record = ${JSON.stringify(data)}`);
-
-          // Search for the Party record in the Local Cache and return its index
-          this.log.trace(`${LOG_PREFIX} Searching for the Party record in the Local Cache and returning its index`);
-          let index = this._cache.parties.findIndex(d => d.id === data.id);
-          this.log.debug(`${LOG_PREFIX} Party record Index = ${index}`);
-
-          // If the record was found (index != -1), update it, else, add it to the Local Storage
-          if (index != -1) {
-
-            // The Party record was found in the Local Cache
-            this.log.trace(`${LOG_PREFIX} The Party record was found in the Local Cache`);
-
-            // Update the local Party record
-            this.log.trace(`${LOG_PREFIX} Updating the local Party record`);
-            this._cache.parties[index] = data;
-
-          } else {
-
-            // The Party record was not found in the Local Cache
-            this.log.trace(`${LOG_PREFIX} The Party record was not found in the Local Cache`);
-
-            // Add the Party record to the Local Cache
-            this.log.trace(`${LOG_PREFIX} Adding the Party record to the Local Cache`);
-            this._cache.parties.push(data);
-          }
-
-          // Create an up to date copy of the Parties records
-          this.log.trace(`${LOG_PREFIX} Creating an up to date copy of the Parties records`);
-          const copy = Object.assign({}, this._cache).parties;
-
-          // Broadcast the up to date copy of the Parties records to the current listener
-          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Parties records to the current listener`);
-          this._partiesSubject$.next(copy);
-
-          // Broadcast the up to date copy of the Parties records to the other listeners
-          this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Parties records to the other listeners`);
-          this.bc.postMessage({ newValue: copy });
-
-          // Send a message that states that the Party record Retrieval was successful
-          this.log.trace(`${LOG_PREFIX} Sending a message that states that the Party record Retrieval was successful`);
-          this.messageService.sendMessage({ "type": MessageType.Success, "message": "The Party record Retrieval was successful" });
-
-        }),
-
-        catchError((error: any) => {
-
-          // Party record Retrieval was unsuccessful
-          this.log.error(`${LOG_PREFIX} Party record Retrieval was unsuccessful: ${error.statusText || "See Server Logs for more details"}`);
-
-          // Send a message that states that the Party record Retrieval was unsuccessful
-          this.log.trace(`${LOG_PREFIX} Sending a message that states that the Party record Retrieval was unsuccessful`);
-          this.messageService.sendMessage({ "type": MessageType.Error, "message": "The Party record Retrieval was unsuccessful" });
-
-          return throwError(error);
-        }));
+  private handleEvent = (event: MessageEvent) => {
+    this.zone.run(() => this._partiesSubject$.next(event.data.newValue));
   }
 
 
@@ -240,9 +157,9 @@ export class PartiesDataService {
     this.log.debug(`${LOG_PREFIX} Filters = ${JSON.stringify(filters)}`);
 
     // Make a HTTP GET Request to retrieve the records
-    this.log.debug(`${LOG_PREFIX} Making a HTTP GET Request to ${this._baseUrl}/${API_PREFIX}/all to retrieve the records`);
+    this.log.debug(`${LOG_PREFIX} Making a HTTP GET Request to ${environment.partiesBaseUrl}/${API_PREFIX}/all to retrieve the records`);
 
-    return this.http.get<Party[]>(`${this._baseUrl}/${API_PREFIX}/all`, { headers: new HttpHeaders(HEADERS), params: filters == null ? {} : filters })
+    return this.http.get<Party[]>(`${environment.partiesBaseUrl}/${API_PREFIX}/all`, { headers: new HttpHeaders(HEADERS), params: filters == null ? {} : filters })
       .pipe(
 
         tap((data: Party[]) => {
@@ -288,9 +205,9 @@ export class PartiesDataService {
 
 
   /**
-   * Updates a single Party record and its corresponding counterpart in the local cache and then broadcasts the changes to all subscribers
+   * Updates a single Party Record and its corresponding counterpart in the local cache and then broadcasts the changes to all subscribers
    * 
-   * @param party The details of the Party record to be updated
+   * @param party The details of the Party Record to be updated
    */
   updateParty(party: Party): Observable<Party> {
 
@@ -298,27 +215,27 @@ export class PartiesDataService {
     this.log.debug(`${LOG_PREFIX} Party = ${JSON.stringify(party)}`);
 
     // Make a HTTP POST Request to retrieve the records
-    this.log.debug(`${LOG_PREFIX} Making a HTTP POST Request to ${this._baseUrl}/${API_PREFIX} to update the record`);
+    this.log.debug(`${LOG_PREFIX} Making a HTTP POST Request to ${environment.partiesBaseUrl}/${API_PREFIX} to update the record`);
 
-    return this.http.put<Party>(`${this._baseUrl}/${API_PREFIX}`, JSON.stringify(party), { headers: new HttpHeaders(HEADERS) })
+    return this.http.put<Party>(`${environment.partiesBaseUrl}/${API_PREFIX}`, JSON.stringify(party), { headers: new HttpHeaders(HEADERS) })
       .pipe(
 
         tap((data: Party) => {
 
-          // Party record Update was successful
-          this.log.trace(`${LOG_PREFIX} Party record Update was successful`);
-          this.log.debug(`${LOG_PREFIX} Updated Party record = ${JSON.stringify(data)}`);
+          // Party Record Update was successful
+          this.log.trace(`${LOG_PREFIX} Party Record Update was successful`);
+          this.log.debug(`${LOG_PREFIX} Updated Party Record = ${JSON.stringify(data)}`);
 
-          // Search for the locally stored Party record
-          this.log.trace(`${LOG_PREFIX} Searching for the locally stored Party record`);
+          // Search for the locally stored Party Record
+          this.log.trace(`${LOG_PREFIX} Searching for the locally stored Party Record`);
           let index = this._cache.parties.findIndex(d => d.id === data.id);
-          this.log.debug(`${LOG_PREFIX} Updated Party record Index = ${index}`);
+          this.log.debug(`${LOG_PREFIX} Updated Party Record Index = ${index}`);
 
           // If the record was found (index != -1), update it in the Local Cache
           if (index != -1) {
 
-            // Update the local Party record
-            this.log.trace(`${LOG_PREFIX} Updating the locally stored Party record`);
+            // Update the local Party Record
+            this.log.trace(`${LOG_PREFIX} Updating the locally stored Party Record`);
             this._cache.parties[index] = data;
 
             // Create an up to date copy of the Parties records
@@ -333,14 +250,14 @@ export class PartiesDataService {
             this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Parties records to the other listeners`);
             this.bc.postMessage({ newValue: copy });
 
-            // Send a message that states that the Party record Update was successful
-            this.log.trace(`${LOG_PREFIX} Sending a message that states that the Party record Update was successful`);
-            this.messageService.sendMessage({ "type": MessageType.Success, "message": "The Party record Update was successful" });
+            // Send a message that states that the Party Record Update was successful
+            this.log.trace(`${LOG_PREFIX} Sending a message that states that the Party Record Update was successful`);
+            this.messageService.sendMessage({ "type": MessageType.Success, "message": "The Party Record Update was successful" });
 
           } else {
 
             // Local Cache Update was unsuccessful
-            this.log.error(`${LOG_PREFIX} Local Cache Update was unsuccessful: Party record is missing in the Local Cache`);
+            this.log.error(`${LOG_PREFIX} Local Cache Update was unsuccessful: Party Record is missing in the Local Cache`);
 
             // Send a message that states that the Local Cache Update was unsuccessful
             this.log.trace(`${LOG_PREFIX} Sending a message that states that the Local Cache Update was unsuccessful`);
@@ -351,12 +268,12 @@ export class PartiesDataService {
 
         catchError((error: any) => {
 
-          // Party record Update was unsuccessful
-          this.log.error(`${LOG_PREFIX} Party record Update was unsuccessful: ${error.statusText || "See Server Logs for more details"}`);
+          // Party Record Update was unsuccessful
+          this.log.error(`${LOG_PREFIX} Party Record Update was unsuccessful: ${error.statusText || "See Server Logs for more details"}`);
 
-          // Send a message that states that the Party record Update was unsuccessful
-          this.log.trace(`${LOG_PREFIX} Sending a message that states that the Party record Update was unsuccessful`);
-          this.messageService.sendMessage({ "type": MessageType.Error, "message": "The Party record Update was unsuccessful" });
+          // Send a message that states that the Party Record Update was unsuccessful
+          this.log.trace(`${LOG_PREFIX} Sending a message that states that the Party Record Update was unsuccessful`);
+          this.messageService.sendMessage({ "type": MessageType.Error, "message": "The Party Record Update was unsuccessful" });
 
           return throwError(error);
 
@@ -365,20 +282,20 @@ export class PartiesDataService {
 
 
   /**
-   * Deletes a single Party record and its corresponding counterpart in the local cache and then broadcasts the changes to all subscribers
+   * Deletes a single Party Record and its corresponding counterpart in the local cache and then broadcasts the changes to all subscribers
    *
-   * @param partyId The Unique Identifier of the record
+   * @param partyTypeId The Unique Identifier of the record
    * @returns The total count of deleted records - which should be 1 in this case if the delete operation was successful
    */
-  deleteParty(partyId: number): Observable<number> {
+  deleteParty(partyTypeId: number): Observable<number> {
 
     this.log.trace(`${LOG_PREFIX} Entering deleteParty()`);
-    this.log.debug(`${LOG_PREFIX} Party Id = ${partyId}`);
+    this.log.debug(`${LOG_PREFIX} Party Id = ${partyTypeId}`);
 
-    // Make a HTTP DELETE Request to retrieve the records
-    this.log.debug(`${LOG_PREFIX} Making a HTTP DELETE Request to ${this._baseUrl}/${API_PREFIX}/ids/${partyId} to delete the record`);
+    // Make a HTTP DELETE Request to delete the records
+    this.log.debug(`${LOG_PREFIX} Making a HTTP DELETE Request to ${environment.partiesBaseUrl}/${API_PREFIX}/ids/${partyTypeId} to delete the record`);
 
-    return this.http.delete<number>(`${this._baseUrl}/${API_PREFIX}/ids/${partyId}`, { headers: new HttpHeaders(HEADERS) })
+    return this.http.delete<number>(`${environment.partiesBaseUrl}/${API_PREFIX}/ids/${partyTypeId}`, { headers: new HttpHeaders(HEADERS) })
       .pipe(
 
         tap((count: number) => {
@@ -386,19 +303,19 @@ export class PartiesDataService {
           // Mark the deletion successful if and only if exactly 1 record was deleted
           if (count == 1) {
 
-            // Party record Deletion was successful
-            this.log.trace(`${LOG_PREFIX} Party record Deletion was successful`);
+            // Party Record Deletion was successful
+            this.log.trace(`${LOG_PREFIX} Party Record Deletion was successful`);
 
-            // Search for the deleted Party record in the Local Cache
-            this.log.trace(`${LOG_PREFIX} Searching for the deleted Party record in the Local Cache`);
-            let index = this._cache.parties.findIndex(d => d.id == partyId);
-            this.log.debug(`${LOG_PREFIX} Deleted Party record Index = ${index}`);
+            // Search for the deleted Party Record in the Local Cache
+            this.log.trace(`${LOG_PREFIX} Searching for the deleted Party Record in the Local Cache`);
+            let index = this._cache.parties.findIndex(d => d.id == partyTypeId);
+            this.log.debug(`${LOG_PREFIX} Deleted Party Record Index = ${index}`);
 
             // If the record was found (index != -1), remove it from the Local Cache
             if (index != -1) {
 
-              // Remove the deleted Party record from the Local Cache
-              this.log.trace(`${LOG_PREFIX} Removing the deleted Party record from the Local Cache`);
+              // Remove the deleted Party Record from the Local Cache
+              this.log.trace(`${LOG_PREFIX} Removing the deleted Party Record from the Local Cache`);
               this._cache.parties.splice(index, 1);
 
               // Create an up to date copy of the Parties records
@@ -413,14 +330,14 @@ export class PartiesDataService {
               this.log.trace(`${LOG_PREFIX} Broadcasting the up to date copy of the Parties records to the other listeners`);
               this.bc.postMessage({ newValue: copy });
 
-              // Send a message that states that the Party record Deletion was successful
-              this.log.trace(`${LOG_PREFIX} Sending a message that states that the Party record Deletion was successful`);
-              this.messageService.sendMessage({ "type": MessageType.Success, "message": "The Party record Deletion was successful" });
+              // Send a message that states that the Party Record Deletion was successful
+              this.log.trace(`${LOG_PREFIX} Sending a message that states that the Party Record Deletion was successful`);
+              this.messageService.sendMessage({ "type": MessageType.Success, "message": "The Party Record Deletion was successful" });
 
             } else {
 
               // Local Cache Update was unsuccessful
-              this.log.error(`${LOG_PREFIX} Local Cache Update was unsuccessful: Party record is missing in the Local Cache`);
+              this.log.error(`${LOG_PREFIX} Local Cache Update was unsuccessful: Party Record is missing in the Local Cache`);
 
               // Send a message that states that the Local Cache Update was unsuccessful
               this.log.trace(`${LOG_PREFIX} Sending a message that states that the Local Cache Update was unsuccessful`);
@@ -428,12 +345,12 @@ export class PartiesDataService {
             }
           } else {
 
-            // Party record Deletion was unsuccessful
-            this.log.error(`${LOG_PREFIX} Party record Deletion was unsuccessful: Expecting 1 record to be deleted instead of ${count}`);
+            // Party Record Deletion was unsuccessful
+            this.log.error(`${LOG_PREFIX} Party Record Deletion was unsuccessful: Expecting 1 record to be deleted instead of ${count}`);
 
-            // Send a message that states that the Party record Deletion was unsuccessful
-            this.log.trace(`${LOG_PREFIX} Sending a message that states that the Party record Deletion was unsuccessful`);
-            this.messageService.sendMessage({ "type": MessageType.Error, "message": "The Party record Deletion was unsuccessful" });
+            // Send a message that states that the Party Record Deletion was unsuccessful
+            this.log.trace(`${LOG_PREFIX} Sending a message that states that the Party Record Deletion was unsuccessful`);
+            this.messageService.sendMessage({ "type": MessageType.Error, "message": "The Party Record Deletion was unsuccessful" });
 
           }
 
@@ -442,12 +359,12 @@ export class PartiesDataService {
 
         catchError((error: any) => {
 
-          // Party record Deletion was unsuccessful
-          this.log.error(`${LOG_PREFIX} Party record Deletion was unsuccessful: ${error.statusText || "See Server Logs for more details"}`);
+          // Party Record Deletion was unsuccessful
+          this.log.error(`${LOG_PREFIX} Party Record Deletion was unsuccessful: ${error.statusText || "See Server Logs for more details"}`);
 
-          // Send a message that states that the Party record Deletion was unsuccessful
-          this.log.trace(`${LOG_PREFIX} Sending a message that states that the Party record Deletion was unsuccessful`);
-          this.messageService.sendMessage({ "type": MessageType.Error, "message": "The Party record Deletion was unsuccessful" });
+          // Send a message that states that the Party Record Deletion was unsuccessful
+          this.log.trace(`${LOG_PREFIX} Sending a message that states that the Party Record Deletion was unsuccessful`);
+          this.messageService.sendMessage({ "type": MessageType.Error, "message": "The Party Record Deletion was unsuccessful" });
 
           return throwError(error);
         }));

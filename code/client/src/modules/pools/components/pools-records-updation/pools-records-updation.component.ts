@@ -9,10 +9,9 @@ import {
   Output
 } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { PoolsDataService } from '../../services/pools-data.service';
+import { Pool } from '@modules/pools/models/pool.model';
+import { PoolsDataService } from '@modules/pools/services/pools-data.service';
 import { NGXLogger } from 'ngx-logger';
-import { Subscription } from 'rxjs';
-import { Pool } from '../../../pools/models';
 
 const LOG_PREFIX: string = "[Pools Records Updation Component]";
 
@@ -32,35 +31,35 @@ export class PoolsRecordsUpdationComponent implements OnInit, AfterContentInit {
   // Instantiate an object to hold the details of the Pool record being updated.
   // This will allow the UI to get a hold on and prepolulate the current details of the 
   // record being updated
-  pool: Pool | undefined;
+  pool: Pool | undefined = new Pool();
 
   // Instantiate a 'succeeded' state notification Emitter.
   // This will allow us to broadcast notifications of successful updation events
   @Output() succeeded: EventEmitter<void> = new EventEmitter<void>();
 
   // Instantiate a 'failed' state notification Emitter.
-  // This will allow us to broadcast fnotifications of failed updation events
+  // This will allow us to broadcast notifications of failed updation events
   @Output() failed: EventEmitter<number> = new EventEmitter<number>();
 
   // Instantitate a new reactive Form Group for the Pools Form.
-  // This will allow to define and enforce the validation rules for all the form controls.
-  poolsForm: FormGroup = new FormGroup({
+  // This will allow us to define and enforce the validation rules for all the form controls.
+  poolsForm = new FormGroup({
     name: new FormControl('', [
       Validators.required,
       Validators.minLength(2),
-      Validators.maxLength(50),
-      this.exists()
+      Validators.maxLength(250),
+      this.exists("name")
     ]),
     description: new FormControl('', [
       Validators.maxLength(250)
-    ])
+    ])    
   });
 
-  // Instantiate a central gathering point for all the component's subscriptions.
-  // This will make it easier to unsubscribe from all subscriptions when the component is destroyed.   
-  private _subscriptions: Subscription[] = [];
+  constructor(
+    private poolsDataService: PoolsDataService,
+    private log: NGXLogger) {
 
-  constructor(private poolsDataService: PoolsDataService, private log: NGXLogger) { }
+  }
 
   ngOnInit() {
 
@@ -69,7 +68,10 @@ export class PoolsRecordsUpdationComponent implements OnInit, AfterContentInit {
     // Retrieve the Pool record with the given id from the data store 
     this.log.trace(`${LOG_PREFIX} Retrieving the Pool record with the given id from the data store`);
     this.log.debug(`${LOG_PREFIX} Pool record Id = ${this.id}`);
-    this.pool = this.poolsDataService.records.find(d => d.id == this.id);
+
+    const temp: Pool | undefined = (this.id == null || this.id == undefined) ? undefined : this.poolsDataService.records.find(d => d.id == this.id);
+    this.pool = (temp == undefined) ? new Pool() : temp;
+
   }
 
   ngAfterContentInit() {
@@ -83,8 +85,8 @@ export class PoolsRecordsUpdationComponent implements OnInit, AfterContentInit {
       // Initialize the Pool records form fields
       this.log.trace(`${LOG_PREFIX} Initializing the Pool records form fields`);
       this.poolsForm.setValue({
-        name: this.pool.name,
-        description: this.pool.description
+        name: (this.pool.name) ? this.pool.name : "",
+        description: (this.pool.description) ? this.pool.description : ""
       });
 
     } else {
@@ -94,21 +96,14 @@ export class PoolsRecordsUpdationComponent implements OnInit, AfterContentInit {
 
   @HostListener('window:beforeunload')
   ngOnDestroy() {
-
     this.log.trace(`${LOG_PREFIX} Destroying Component`);
-
-    // Clear all subscriptions
-    this.log.trace(`${LOG_PREFIX} Clearing all subscriptions`);
-    this._subscriptions.forEach((s) => s.unsubscribe());
   }
 
   /**
    * Internal validator that checks whether another Pool record with the same attribute already exists
    * @returns 
    */
-  private exists(): ValidatorFn {
-
-    const values: string[] = <Array<string>>this.poolsDataService.records.map(d => d.name);
+  private exists(attribute: string): ValidatorFn {
 
     return (control: AbstractControl): ValidationErrors | null => {
 
@@ -118,11 +113,13 @@ export class PoolsRecordsUpdationComponent implements OnInit, AfterContentInit {
 
           const s: string = control.value;
 
-          const pool: Pool | undefined = this.poolsDataService.records.find(d => d.name?.toLowerCase() == s.toLowerCase());
+          let pool: Pool | undefined | null =
+            attribute == "name" ? this.poolsDataService.records.find(v => v.name?.toLowerCase() == s.toLowerCase()) : null;
 
           if (pool != undefined && pool.id != this.id) {
             return { 'exists': true }
           }
+
         }
       }
 
@@ -140,25 +137,20 @@ export class PoolsRecordsUpdationComponent implements OnInit, AfterContentInit {
 
     if (this.poolsForm.valid) {
 
-      // Form is invalid
-      this.log.trace(`${LOG_PREFIX} Form is invalid`);
-
-      // Read in the provided name 
-      this.log.trace(`${LOG_PREFIX} Reading in the provided name `);
+      // Read in the provided name
+      this.log.trace(`${LOG_PREFIX} Reading in the provided name`);
       const name: string | null = this.poolsForm.get('name') == null ? null : this.poolsForm.get('name')?.value;
-      this.log.debug(`${LOG_PREFIX} Pool Name  = ${name}`);
-
-
+      this.log.debug(`${LOG_PREFIX} Pool Name = ${name}`);   
 
       // Read in the provided description
       this.log.trace(`${LOG_PREFIX} Reading in the provided description`);
       const description: string | null = this.poolsForm.get('description') == null ? null : this.poolsForm.get('description')?.value;
-      this.log.debug(`${LOG_PREFIX} Pool Description = ${description}`);
+      this.log.debug(`${LOG_PREFIX} Pool Name = ${description}`);      
 
       // Save the record
       this.log.trace(`${LOG_PREFIX} Saving the Pool record`);
       this.poolsDataService
-        .updatePool(new Pool(Object.assign(this.pool, { name, description })))
+        .updatePool(Object.assign(this.pool, { name: name, description: description }))
         .subscribe(
           (response: Pool) => {
 

@@ -1,0 +1,75 @@
+form
+  .row
+    .col
+      .d-flex.justify-content-between.p-2
+        sb-search((searched)='onSearch($event)')
+        sb-loading-animation
+  // For Small-Sized Devices Only
+  .row.d-md-none
+    .col
+      sb-table
+        ng-container(header='')
+          tr
+            th.col-sm-1.text-center.align-middle(scope='col')
+              span #
+            th.col-sm-8.text-left.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
+              span Name
+              sb-sort-icon(*ngif='sortedColumn === "name"', [direction]='sortedDirection')
+            th.col-sm-1.text-center.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
+              span Level
+            th.col-sm-2.text-center.align-middle(scope='col')
+              span.d-flex.flex-row-reverse
+                | Actions
+        ng-container(body='')
+          tr(*ngfor='let accountabilityRule of accountabilitiesRulesRecordsTabulationService.accountabilitiesRules$ | async')
+            td.text-center.align-middle
+              | {{accountabilityRule.pos}}
+            td.text-left.align-middle
+              ngb-highlight([result]='accountabilityRule.subsidiaryPartyTypeName', [term]='accountabilitiesRulesRecordsTabulationService.searchTerm')
+            td.text-center.align-middle
+              | {{accountabilityRule.level}}
+            td.text-center.align-middle
+              span.d-flex.flex-row-reverse
+                sb-button(action='open', entity='Administrative Hierarchy Level', id='{{accountabilityRule.id}}', name='{{accountabilityRule.subsidiaryPartyTypeName}}', (open)='onOpenAccountabilities($event)', tooltip='Open {{accountabilityRule.subsidiaryPartyTypeName}} Administrative Hierarchy Level Members Page')
+                sb-button(action='delete', entity='Administrative Hierarchy Level', id='{{accountabilityRule.id}}', (delete)='onDeleteAccountabilityRule($event)', tooltip='Delete {{accountabilityRule.subsidiaryPartyTypeName}}')
+        ng-container(footer='', *ngif='this.accountabilitiesRulesRecordsTabulationService.accountabilityTypeId != null')
+          tr
+            td.align-middle(scope='col', colspan='6')
+              span.d-flex.flex-row.flex-row-reverse
+                sb-button(action='add', entity='Administrative Hierarchy Level', (add)='onAddAccountabilityRule()', tooltip='Add Administrative Hierarchy Level')
+  // For Middle-Sized Devices Upwards
+  .row.d-none.d-md-block
+    .col
+      sb-table
+        ng-container(header='')
+          tr
+            th.col-md-1.text-center.align-middle(scope='col')
+              span #
+            th.col-md-9.text-left.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
+              span Name
+              sb-sort-icon(*ngif='sortedColumn === "name"', [direction]='sortedDirection')
+            th.col-md-1.text-center.align-middle(scope='col', sbsortable='name', (sort)='onSort($event)')
+              span Level
+            th.col-sm-1.text-center.align-middle(scope='col')
+              span.d-flex.flex-row-reverse
+                | Actions
+        ng-container(body='')
+          tr(*ngfor='let accountabilityRule of accountabilitiesRulesRecordsTabulationService.accountabilitiesRules$ | async')
+            td.text-center.align-middle
+              | {{accountabilityRule.pos}}
+            td.text-left.align-middle
+              ngb-highlight([result]='accountabilityRule.subsidiaryPartyTypeName', [term]='accountabilitiesRulesRecordsTabulationService.searchTerm')
+            td.text-center.align-middle
+              | {{accountabilityRule.level}}
+            td.text-center.align-middle
+              span.d-flex.flex-row-reverse
+                sb-button(action='open', entity='Administrative Hierarchy Level', id='{{accountabilityRule.id}}', name='{{accountabilityRule.subsidiaryPartyTypeName}}', (open)='onOpenAccountabilities($event)', tooltip='Open {{accountabilityRule.subsidiaryPartyTypeName}} Administrative Hierarchy Level Members Page')
+                sb-button(action='delete', entity='Administrative Hierarchy Level', id='{{accountabilityRule.id}}', (delete)='onDeleteAccountabilityRule($event)', tooltip='Delete {{accountabilityRule.subsidiaryPartyTypeName}}')
+        ng-container(footer='', *ngif='this.accountabilitiesRulesRecordsTabulationService.accountabilityTypeId != null')
+          tr
+            td.align-middle(scope='col', colspan='6')
+              span.d-flex.flex-row.flex-row-reverse
+                sb-button(action='add', entity='Administrative Hierarchy Level', (add)='onAddAccountabilityRule()', tooltip='Add Administrative Hierarchy Level')
+  .row
+    .col
+      sb-pagination((pagechanged)='onPageChange($event)', (pagesizechanged)='onPageSizeChange($event)')

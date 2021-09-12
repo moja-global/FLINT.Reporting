@@ -11,11 +11,24 @@ export const sideNavSections: SideNavSection[] = [
     },     
     {
         text: 'CONFIGURATIONS',
-        items: ['coverTypes', 'emissionTypes', 'fluxTypes', 'pools', 'reportingFrameworks','units'],
+        items: [
+            'coverTypes', 
+            'emissionTypes', 
+            'fluxTypes', 
+            'pools', 
+            'reportingFrameworks',
+            'units',
+            'administrativeUnits'
+        ],
     }     
 ];
 
 export const sideNavItems: SideNavItems = {
+    administrativeUnits: {
+        icon: 'cog',
+        text: 'Administration',
+        link: '/parties_types',
+    },    
     core: {
         icon: 'tachometer-alt',
         text: 'Dashboard',

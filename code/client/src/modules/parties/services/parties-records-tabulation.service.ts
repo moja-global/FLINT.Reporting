@@ -1,40 +1,42 @@
-import { Injectable, OnDestroy, OnInit } from '@angular/core';
-import { PartiesDataService } from './parties-data.service';
+import { Injectable, OnDestroy } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { State } from '@common/models';
 import { SortDirection } from '@common/directives/sortable.directive';
 import { Party } from '../models/party.model';
+import { PartiesDataService } from './parties-data.service';
 
 const LOG_PREFIX: string = "[Parties Records Tabulation Service]";
 
-interface PartyState extends State {
-    partyTypeId: number | undefined | null;
+export interface PartyState extends State {
+    partyTypeId: number | null;
 }
 
 @Injectable({ providedIn: 'root' })
 export class PartiesRecordsTabulationService implements OnDestroy {
 
-    // The observables that will be updated / broadcasted whenever 
-    // a background task is started and completed  
-    private _loadingSubject$ = new BehaviorSubject<boolean>(true);
-    private _loading$ = this._loadingSubject$.asObservable();
+    // The user defined search or sort criteria.
+    private _state: PartyState = { partyTypeId: null, page: 1, pageSize: 4, searchTerm: '', sortColumn: '', sortDirection: '' };
 
     // The first set of observables that will be updated / broadcasted whenever 
-    // Parties records are transformed as per the user defined search 
-    // or sort criteria    
+    // a background task is started or completed  
+    private _loadingSubject$ = new BehaviorSubject<boolean>(false);
+    private _loading$ = this._loadingSubject$.asObservable();
+
+    // The second set of observables that will be updated / broadcasted whenever 
+    // the user enters a search term or specifies a sort criteria    
     private _partiesSubject$ = new BehaviorSubject<Party[]>([]);
     private _parties$ = this._partiesSubject$.asObservable();
 
-    // The second set of observables that will be updated / broadcasted whenever 
-    // Parties records are transformed as per the user defined search 
-    // or sort criteria
+    // The third set of observables that will be updated / broadcasted whenever 
+    // the user enters a search term or specifies a sort criteria 
+    // and Parties Records as a result
     private _totalSubject$ = new BehaviorSubject<number>(0);
     private _total$ = this._totalSubject$.asObservable();
 
-    // The user defined search or sort criteria.
-    // Determines which & how many Parties records should be displayed
-    private _state: PartyState = { partyTypeId: null, page: 1, pageSize: 4, searchTerm: '', sortColumn: '', sortDirection: '' };
+    // Exclusions: The ids of the parties to be excluded in the returned results
+    private _excludedParties: number[] = [];
+  
 
     // A common gathering point for all the component's subscriptions.
     // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
@@ -48,17 +50,19 @@ export class PartiesRecordsTabulationService implements OnDestroy {
             this.partiesDataService.parties$
                 .subscribe(
                     (parties: Party[]) => {
-                        this._transform(parties);
+                        this.transform(parties);
                     }));
 
     }
 
-  ngOnDestroy() {
+    ngOnDestroy() {
+        this.log.trace(`${LOG_PREFIX} Destroying Service`);
         this._subscriptions.forEach((s) => s.unsubscribe());
     }
 
+
     /**
-     * Returns an observable containing Parties records that have been filtered as per the user defined criteria
+     * Returns an observable containing Parties Records that have been filtered as per the Current User Defined Criteria
      */
     get parties$() {
         this.log.trace(`${LOG_PREFIX} Getting parties$ observable`);
@@ -68,7 +72,7 @@ export class PartiesRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Returns an observable containing the total number of Parties records that have been filtered as per the user defined criteria
+     * Returns an observable containing the total number of Parties Records that have been filtered as per the Current User Defined Criteria
      */
     get total$() {
         this.log.trace(`${LOG_PREFIX} Getting total$ observable`);
@@ -78,7 +82,7 @@ export class PartiesRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Returns an observable containing a boolean flag that indicates whether or not a data operation exercise (sorting, searching etc.) is currently underway
+     * Returns an observable indicating whether or not a data operation exercise (sorting, searching etc.) is currently underway
      */
     get loading$() {
         this.log.trace(`${LOG_PREFIX} Getting loading$ observable`);
@@ -98,11 +102,15 @@ export class PartiesRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Updates the currently active page detail and then triggers data transformation
+     * Updates the currently set active page detail and triggers the data transformation exercise
      */
     set page(page: number) {
-        this.log.trace(`${LOG_PREFIX} Setting page detail to ${JSON.stringify(page)}`);
-        this._set({ page });
+
+        if(this._state.page != page) {
+            this.log.trace(`${LOG_PREFIX} Setting page detail to ${JSON.stringify(page)}`);
+        this.set({ page });
+        }
+ 
     }
 
 
@@ -117,16 +125,20 @@ export class PartiesRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Updates the desired page size detail and then triggers data transformation
+     * Updates the currently set page size detail and triggers the data transformation exercise
      */
     set pageSize(pageSize: number) {
-        this.log.debug(`${LOG_PREFIX} Setting page size to ${JSON.stringify(pageSize)}`);
-        this._set({ pageSize });
+
+        if(this._state.pageSize != pageSize) {
+            this.log.debug(`${LOG_PREFIX} Setting page size to ${JSON.stringify(pageSize)}`);
+            this.set({ pageSize });
+        }        
+
     }
 
 
     /**
-     * Gets the currently entered search term
+     * Returns the currently set search term
      */
     get searchTerm() {
         this.log.debug(`${LOG_PREFIX} Getting search term detail`);
@@ -136,78 +148,109 @@ export class PartiesRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Updates the search term detail and then triggers data transformation
+     * Updates the currently set search term and triggers the data transformation exercise
      */
     set searchTerm(searchTerm: string) {
-        this.log.debug(`${LOG_PREFIX} Setting search term to ${JSON.stringify(searchTerm)}`);
-        this._set({ searchTerm });
+        
+        if(this._state.searchTerm != searchTerm) {
+            this.log.debug(`${LOG_PREFIX} Setting search term to ${JSON.stringify(searchTerm)}`);
+            this.set({ searchTerm });
+        }
+        
     }
 
 
     /**
-     * Updates the sort column detail and then triggers data transformation
+     * Updates the currently set sort column detail and triggers the data transformation exercise
      */
     set sortColumn(sortColumn: string) {
-        this.log.debug(`${LOG_PREFIX} Setting sort column to ${JSON.stringify(sortColumn)}`);
-        this._set({ sortColumn });
+
+        if(this._state.sortColumn != sortColumn) {
+            this.log.debug(`${LOG_PREFIX} Setting sort column to ${JSON.stringify(sortColumn)}`);
+            this.set({ sortColumn });
+        }               
+
+
     }
 
 
     /**
-     * Updates the sort direction detail and then triggers data transformation
+     * Updates the currently set sort direction detail
      */
     set sortDirection(sortDirection: SortDirection) {
         this.log.debug(`${LOG_PREFIX} Setting sort direction to ${JSON.stringify(sortDirection)}`);
-        this._set({ sortDirection });
+        this.set({ sortDirection });
     }
 
     /**
-     * Returns the currently set parent party id
+     * Returns the currently set parent id
      */
-     get partyTypeId() {
-        this.log.trace(`${LOG_PREFIX} Getting parent party id detail`);
-        this.log.debug(`${LOG_PREFIX} Current parent party id detail = ${JSON.stringify(this._state.partyTypeId)}`);
+    get partyTypeId() {
+        this.log.trace(`${LOG_PREFIX} Getting parent id detail`);
+        this.log.debug(`${LOG_PREFIX} Current parent id detail = ${JSON.stringify(this._state.partyTypeId)}`);
         return this._state.partyTypeId;
     }
 
     /**
-     * Updates the desired parent party id detail and then triggers data transformation
+     * Updates the currently set parent id detail and triggers the data transformation exercise
      */
-    set partyTypeId(partyTypeId: number | undefined | null) {
-        this.log.debug(`${LOG_PREFIX} Setting parent party id to ${JSON.stringify(partyTypeId)}`);
-        this._set({ partyTypeId });
-    }    
+    set partyTypeId(partyTypeId: number | null) {
+
+        if(this._state.partyTypeId!= partyTypeId) {
+            this.log.debug(`${LOG_PREFIX} Setting parent id to ${JSON.stringify(partyTypeId)}`);
+            this.set({ partyTypeId });
+        }  
+
+
+    }  
 
     /**
-     * Utility method for all the class setters.
-     * Does the actual updating of details / transforming of data
-     * @param patch the partially updated details
+     * Updates the currently set exclusion ids
      */
-    private _set(patch: Partial<PartyState>) {
+     set excludedParties(partyIds: number[]) {
 
-        // Update the state
-        Object.assign(this._state, patch);
+        this._excludedParties = partyIds; 
 
+        // Transform the Parties Records 
+        this.transform(this.partiesDataService.records);
 
-        // Transform the Parties records
-        this._transform(this.partiesDataService.records);
-
-    }
-
+    }   
+    
+    
     /**
-     * Filters party records by parent party id
+     * Filters out excluded Parties records
      * @param parties 
      * @param partyTypeId 
      * @returns 
      */
-     filterByPartyType(parties: Party[], partyTypeId: number | null | undefined): Party[] {
-        this.log.trace(`${LOG_PREFIX} Filtering parties records`);
-        if (partyTypeId == null || partyTypeId == undefined) {
+     filterOutExcludedParties(parties: Party[]): Party[] {
+
+        this.log.trace(`${LOG_PREFIX} Filtering Out Excluded Parties`);
+
+        if(this._excludedParties.length == 0) {
             return parties;
+        }
+
+        return parties.filter((p: Party) => this._excludedParties.findIndex(i => i == p.id) == -1);
+
+    }      
+
+    /**
+     * Filters Parties records by the party id
+     * @param parties 
+     * @param partyTypeId 
+     * @returns 
+     */
+     filterByPartyTypeId(parties: Party[], partyTypeId: number | null): Party[] {
+        this.log.trace(`${LOG_PREFIX} Filtering Parties Records By Parent Id`);
+        this.log.trace(`${LOG_PREFIX} Parent Id = ${partyTypeId}`);
+        if (partyTypeId) {
+            return parties.filter((u: Party) => u.partyTypeId == partyTypeId);
         } else {
-            return parties.filter((u) => u.partyTypeId == partyTypeId);
+            return parties.filter((u: Party) => u.partyTypeId == null);
         }
     }    
+
 
     /**
      * Compares two values to find out if the first value preceeds the second.
@@ -224,15 +267,15 @@ export class PartiesRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Sorts Parties Records
+     * Sorts Parties Records 
      * 
-     * @param parties The Parties records to sort
+     * @param parties The Parties Records to sort
      * @param column The table column to sort the records by 
      * @param direction The desired sort direction - ascending or descending
-     * @returns The sorted Parties records
+     * @returns The sorted Parties Records 
      */
     sort(parties: Party[], column: string, direction: string): Party[] {
-        this.log.trace(`${LOG_PREFIX} Sorting Parties records`);
+        this.log.trace(`${LOG_PREFIX} Sorting Parties Records `);
         if (direction === '' || column == null) {
             return parties;
         } else {
@@ -245,14 +288,14 @@ export class PartiesRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Checks if search string is present in Party record
+     * Checks if search string is present in the Party Record
      * 
-     * @param party The Party record
+     * @param party The Party Record
      * @param term The Search String
      * @returns A boolean result indicating whether or not a match was found
      */
     matches(party: Party, term: string): boolean {
-        this.log.trace(`${LOG_PREFIX} Checking if search string is present in Party record`);
+        this.log.trace(`${LOG_PREFIX} Checking if the search string is present in the Party Record`);
         if (party != null && party != undefined) {
 
             // Try locating the search string in the Party's name
@@ -268,67 +311,98 @@ export class PartiesRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Paginates Parties Records
+     * Updates the index of the Parties Records 
      * 
-     * @param parties The Parties records to paginate
-     * @returns The paginated Parties records
+     * @param parties The Parties Records to sort
+     * @returns The newly indexed Parties Records 
      */
-    paginate(parties: Party[], page: number, pageSize: number): Party[] {
-        this.log.trace(`${LOG_PREFIX} Paginating Parties records`);
-        return parties.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
-    }
-
-    /**
-     * Updates the index of the Parties Records
-     * 
-     * @param parties The Parties records to sort
-     * @returns The newly indexed Parties records
-     */
-    index(parties: Party[]): Party[] {
-        this.log.trace(`${LOG_PREFIX} Indexing Parties records`);
+     index(parties: Party[]): Party[] {
+        this.log.trace(`${LOG_PREFIX} Indexing Parties Records `);
         let pos: number = 0;
         return parties.map(d => {
             d.pos = ++pos;
             return d;
         });
+    }    
+
+
+    /**
+     * Paginates Parties Records 
+     * 
+     * @param parties The Parties Records to paginate
+     * @returns The paginated Parties Records 
+     */
+    paginate(parties: Party[], page: number, pageSize: number): Party[] {
+        this.log.trace(`${LOG_PREFIX} Paginating Parties Records `);
+        return parties.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
+    }
+
+
+
+
+    /**
+     * Utility method for all the class setters.
+     * Updates the sort / filter criteria and triggers the data transformation exercise
+     * @param patch the partially updated details
+     */
+    set(patch: Partial<PartyState>) {
+
+        // Update the state
+        Object.assign(this._state, patch);
+
+
+        // Transform the Parties Records 
+        this.transform(this.partiesDataService.records);
+
     }
 
 
     /**
-     * Sorts, filters and paginates Parties records
+     * Sorts, filters and paginates Parties Records 
      * 
-     * @param records the original Parties records
+     * @param records the original Parties Records 
      */
-    private _transform(records: Party[]) {
+    transform(records: Party[]) {
 
         // Flag
         this._loadingSubject$.next(true);
 
         if (records.length != 0) {
 
-            this.log.trace(`${LOG_PREFIX} Sorting, filtering and paginating Parties records`);
+            this.log.trace(`${LOG_PREFIX} Sorting, filtering and paginating Parties Records `);
+            this.log.debug(`${LOG_PREFIX} Parties Records before transformation = ${JSON.stringify(records)}`);
 
             const { partyTypeId, sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
 
-            // Filter by Parent Party
-            let transformed: Party[] = this.filterByPartyType(records, partyTypeId);
+            // Filter by Party Type Id
+            let transformed: Party[] = this.filterByPartyTypeId(records, partyTypeId);
+            this.log.debug(`${LOG_PREFIX} Parties Records after 'Filter by Party Type Id' Transformation = ${JSON.stringify(transformed)}`);
 
-            // Sort
-            transformed = this.sort(transformed, sortColumn, sortDirection);
+            // Filter out exluded Parties
+            transformed = this.filterOutExcludedParties(transformed);
+            this.log.debug(`${LOG_PREFIX} Parties Records after 'Filter out excluded parties' Transformation = ${JSON.stringify(transformed)}`);            
 
             // Filter by Search Term
             transformed = transformed.filter(party => this.matches(party, searchTerm));
             const total: number = transformed.length;
+            this.log.debug(`${LOG_PREFIX} Parties Records after 'Filter by Search Term' Transformation = ${JSON.stringify(transformed)}`);            
+            
+            // Sort
+            transformed = this.sort(transformed, sortColumn, sortDirection);
+            this.log.debug(`${LOG_PREFIX} Parties Records after 'Sort' Transformation = ${JSON.stringify(transformed)}`);
 
             // Index
             transformed = this.index(transformed);
+            this.log.debug(`${LOG_PREFIX} Parties Records after 'Index' Transformation = ${JSON.stringify(transformed)}`);
 
             // Paginate
             transformed = this.paginate(transformed, page, pageSize);
+            this.log.debug(`${LOG_PREFIX} Parties Records after 'Paginate' Transformation = ${JSON.stringify(transformed)}`);
 
             // Broadcast
-            this._partiesSubject$.next(transformed);
+            this._partiesSubject$.next(Object.assign([],transformed));
             this._totalSubject$.next(total);
+
 
         } else {
 

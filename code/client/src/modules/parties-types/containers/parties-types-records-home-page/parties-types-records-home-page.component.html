@@ -1,0 +1,29 @@
+<sb-layout-main>
+
+    <ng-container header>
+        <sb-header title="Administrative Units Types" subtitle="The different types of Administrative Units that are available in the system of governance" [hideBreadcrumbs]="true"></sb-header>
+    </ng-container>
+
+
+    <ng-container body>
+        <div class="card text-center">
+            <div class="card-header">
+              <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                  <a class="nav-link active" [routerLink]="['/parties_types']">Units</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" [routerLink]="['/accountabilities_types']">Hierarchies</a>
+                </li>
+              </ul>
+            </div>
+            <div class="card-body">
+                <ng-content></ng-content>
+            </div>
+          </div>
+        
+    </ng-container>
+
+</sb-layout-main>
+
+

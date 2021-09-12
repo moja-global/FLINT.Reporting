@@ -4,7 +4,7 @@
     </ng-container>
     <ng-container body>
 
-        <sb-pools-records-updation id="{{id}}" (succeeded)="onSucceeded()" (failed)="onFailed($event)">
+        <sb-pools-records-updation [id]="id" (succeeded)="onSucceeded()" (failed)="onFailed($event)">
         </sb-pools-records-updation>
 
         <ng-container *ngIf='(status$ | async) === "saving"'>

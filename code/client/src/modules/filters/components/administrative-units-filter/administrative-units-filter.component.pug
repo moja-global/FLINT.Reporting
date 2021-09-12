@@ -1,0 +1,19 @@
+form([formgroup]='filtersForm')
+  .form-group
+    label(for='name') Name
+    input#name.form-control(type='text', placeholder='', formcontrolname='name')
+    .alert.alert-danger.mt-3(*ngif="filtersForm.get('name')?.invalid && (filtersForm.get('name')?.dirty || filtersForm.get('name')?.touched)")
+      div(*ngif="filtersForm.get('name')?.errors.required")
+        | Name is required.
+      div(*ngif="filtersForm.get('name')?.errors.maxlength")
+        | Name cannot be more than 250 characters long.
+      div(*ngif="filtersForm.get('name')?.errors.exists")
+        | Name should be unique.
+  .form-group
+    label(for='description')
+      | Description 
+      span.text-secondary  (Optional)
+    textarea#description.form-control(placeholder='', rows='3', formcontrolname='description')
+    .alert.alert-danger.mt-3(*ngif="filtersForm.get('description')?.invalid && (filtersForm.get('description')?.dirty || filtersForm.get('description')?.touched)")
+      div(*ngif="filtersForm.get('description')?.errors.maxlength")
+        | Description cannot be more than 250 characters long.

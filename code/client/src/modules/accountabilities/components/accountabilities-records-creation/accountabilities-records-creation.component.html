@@ -1,0 +1,3 @@
+<div class="alert alert-danger" role="alert" *ngIf='error'>{{error}}</div>
+<sb-parties-records-selection *ngIf='page == "parents"' basis="parents" [partyTypeId]="parentPartyType?.id" [previouslySelectedPartiesIds]="[]" selectionMode="single" (select)="onSelect($event)" (check)="onCheck($event)" (uncheck)="onUncheck($event)"></sb-parties-records-selection>
+<sb-parties-records-selection *ngIf='page == "subsidiaries"' basis="subsidiaries" [partyTypeId]="subsidiaryPartyType?.id" [previouslySelectedPartiesIds]="previouslySelectedPartiesIds" skipPreviouslySelectedPartiesIds="true" selectionMode="multi" (select)="onSelect($event)" (check)="onCheck($event)" (uncheck)="onUncheck($event)"></sb-parties-records-selection>

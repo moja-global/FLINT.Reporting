@@ -8,10 +8,10 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import { PoolsDataService } from '../../services/pools-data.service';
+import { Pool } from '@modules/pools/models/pool.model';
+import { PoolsDataService } from '@modules/pools/services/pools-data.service';
 import { NGXLogger } from 'ngx-logger';
 import { Subscription } from 'rxjs';
-import { Pool } from '../../../pools/models/pool.model';
 
 const LOG_PREFIX: string = "[Pools Records Deletion Component]";
 
@@ -38,8 +38,9 @@ export class PoolsRecordsDeletionComponent implements OnInit, AfterContentInit {
   @Output() succeeded: EventEmitter<void> = new EventEmitter<void>();
 
   // Instantiate a 'failed' state notification Emitter.
-  // This will allow us to broadcast fnotifications of failed deletion events
+  // This will allow us to broadcast notifications of failed deletion events
   @Output() failed: EventEmitter<number> = new EventEmitter<number>();
+
 
   // Instantiate a central gathering point for all the component's subscriptions.
   // This will make it easier to unsubscribe from all subscriptions when the component is destroyed.   
@@ -75,20 +76,20 @@ export class PoolsRecordsDeletionComponent implements OnInit, AfterContentInit {
 
 
   /**
-   * Deletes Pool record.
+   * Deletes Pool records.
    * Emits an succeeded or failed event indicating whether or not the saving exercise was successful.
    * Error 500 = Indicates something unexpected happened at the server side
    */
   public delete(): void {
 
-    // Save the record
+    // Delete the record
     this.log.trace(`${LOG_PREFIX} Deleting the Pool record`);
     this.poolsDataService
       .deletePool(this.id)
       .subscribe(
         (response: number) => {
 
-          // The Pool record was saved successfully
+          // The Pool record was deleted successfully
           this.log.trace(`${LOG_PREFIX} Pool record was deleted successfuly`);
 
           // Emit a 'succeeded' event

@@ -1,36 +1,39 @@
-import { Injectable, OnDestroy, OnInit } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
+import { PoolsDataService } from './pools-data.service';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { State } from '@common/models';
 import { SortDirection } from '@common/directives/sortable.directive';
 import { Pool } from '../models/pool.model';
-import { PoolsDataService } from './pools-data.service';
 
 const LOG_PREFIX: string = "[Pools Records Tabulation Service]";
+
+export interface PoolState extends State {
+
+}
 
 @Injectable({ providedIn: 'root' })
 export class PoolsRecordsTabulationService implements OnDestroy {
 
-    // The observables that will be updated / broadcasted whenever 
-    // a background task is started and completed  
-    private _loadingSubject$ = new BehaviorSubject<boolean>(true);
-    private _loading$ = this._loadingSubject$.asObservable();
+    // The user defined search or sort criteria.
+    private _state: PoolState = { page: 1, pageSize: 4, searchTerm: '', sortColumn: '', sortDirection: '' };
 
     // The first set of observables that will be updated / broadcasted whenever 
-    // Pools records are transformed as per the user defined search 
-    // or sort criteria    
+    // a background task is started or completed  
+    private _loadingSubject$ = new BehaviorSubject<boolean>(false);
+    private _loading$ = this._loadingSubject$.asObservable();
+
+    // The second set of observables that will be updated / broadcasted whenever 
+    // the user enters a search term or specifies a sort criteria    
     private _poolsSubject$ = new BehaviorSubject<Pool[]>([]);
     private _pools$ = this._poolsSubject$.asObservable();
 
-    // The second set of observables that will be updated / broadcasted whenever 
-    // Pools records are transformed as per the user defined search 
-    // or sort criteria
+    // The third set of observables that will be updated / broadcasted whenever 
+    // the user enters a search term or specifies a sort criteria 
+    // and Pools Records as a result
     private _totalSubject$ = new BehaviorSubject<number>(0);
     private _total$ = this._totalSubject$.asObservable();
-
-    // The user defined search or sort criteria.
-    // Determines which & how many Pools records should be displayed
-    private _state: State = { page: 1, pageSize: 4, searchTerm: '', sortColumn: '', sortDirection: '' };
+  
 
     // A common gathering point for all the component's subscriptions.
     // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
@@ -44,17 +47,19 @@ export class PoolsRecordsTabulationService implements OnDestroy {
             this.poolsDataService.pools$
                 .subscribe(
                     (pools: Pool[]) => {
-                        this._transform(pools);
+                        this.transform(pools);
                     }));
 
     }
 
-  ngOnDestroy() {
+    ngOnDestroy() {
+        this.log.trace(`${LOG_PREFIX} Destroying Service`);
         this._subscriptions.forEach((s) => s.unsubscribe());
     }
 
+
     /**
-     * Returns an observable containing Pools records that have been filtered as per the user defined criteria
+     * Returns an observable containing Pools Records that have been filtered as per the Current User Defined Criteria
      */
     get pools$() {
         this.log.trace(`${LOG_PREFIX} Getting pools$ observable`);
@@ -64,7 +69,7 @@ export class PoolsRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Returns an observable containing the total number of Pools records that have been filtered as per the user defined criteria
+     * Returns an observable containing the total number of Pools Records that have been filtered as per the Current User Defined Criteria
      */
     get total$() {
         this.log.trace(`${LOG_PREFIX} Getting total$ observable`);
@@ -74,7 +79,7 @@ export class PoolsRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Returns an observable containing a boolean flag that indicates whether or not a data operation exercise (sorting, searching etc.) is currently underway
+     * Returns an observable indicating whether or not a data operation exercise (sorting, searching etc.) is currently underway
      */
     get loading$() {
         this.log.trace(`${LOG_PREFIX} Getting loading$ observable`);
@@ -94,11 +99,11 @@ export class PoolsRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Updates the currently active page detail and then triggers data transformation
+     * Updates the currently set active page detail and triggers the data transformation exercise
      */
     set page(page: number) {
         this.log.trace(`${LOG_PREFIX} Setting page detail to ${JSON.stringify(page)}`);
-        this._set({ page });
+        this.set({ page });
     }
 
 
@@ -113,16 +118,16 @@ export class PoolsRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Updates the desired page size detail and then triggers data transformation
+     * Updates the currently set page size detail and triggers the data transformation exercise
      */
     set pageSize(pageSize: number) {
         this.log.debug(`${LOG_PREFIX} Setting page size to ${JSON.stringify(pageSize)}`);
-        this._set({ pageSize });
+        this.set({ pageSize });
     }
 
 
     /**
-     * Gets the currently entered search term
+     * Returns the currently set search term
      */
     get searchTerm() {
         this.log.debug(`${LOG_PREFIX} Getting search term detail`);
@@ -132,47 +137,30 @@ export class PoolsRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Updates the search term detail and then triggers data transformation
+     * Updates the currently set search term and triggers the data transformation exercise
      */
     set searchTerm(searchTerm: string) {
         this.log.debug(`${LOG_PREFIX} Setting search term to ${JSON.stringify(searchTerm)}`);
-        this._set({ searchTerm });
+        this.set({ searchTerm });
     }
 
 
     /**
-     * Updates the sort column detail and then triggers data transformation
+     * Updates the currently set sort column detail and triggers the data transformation exercise
      */
     set sortColumn(sortColumn: string) {
         this.log.debug(`${LOG_PREFIX} Setting sort column to ${JSON.stringify(sortColumn)}`);
-        this._set({ sortColumn });
+        this.set({ sortColumn });
     }
 
 
     /**
-     * Updates the sort direction detail and then triggers data transformation
+     * Updates the currently set sort direction detail
      */
     set sortDirection(sortDirection: SortDirection) {
         this.log.debug(`${LOG_PREFIX} Setting sort direction to ${JSON.stringify(sortDirection)}`);
-        this._set({ sortDirection });
-    }
-
-
-    /**
-     * Utility method for all the class setters.
-     * Does the actual updating of details / transforming of data
-     * @param patch the partially updated details
-     */
-    private _set(patch: Partial<State>) {
-
-        // Update the state
-        Object.assign(this._state, patch);
-
-
-        // Transform the Pools records
-        this._transform(this.poolsDataService.records);
-
-    }
+        this.set({ sortDirection });
+    }   
 
 
     /**
@@ -192,13 +180,13 @@ export class PoolsRecordsTabulationService implements OnDestroy {
     /**
      * Sorts Pools Records
      * 
-     * @param pools The Pools records to sort
+     * @param pools The Pools Records to sort
      * @param column The table column to sort the records by 
      * @param direction The desired sort direction - ascending or descending
-     * @returns The sorted Pools records
+     * @returns The sorted Pools Records
      */
     sort(pools: Pool[], column: string, direction: string): Pool[] {
-        this.log.trace(`${LOG_PREFIX} Sorting Pools records`);
+        this.log.trace(`${LOG_PREFIX} Sorting Pools Records`);
         if (direction === '' || column == null) {
             return pools;
         } else {
@@ -218,7 +206,7 @@ export class PoolsRecordsTabulationService implements OnDestroy {
      * @returns A boolean result indicating whether or not a match was found
      */
     matches(pool: Pool, term: string): boolean {
-        this.log.trace(`${LOG_PREFIX} Checking if search string is present in the Pool record`);
+        this.log.trace(`${LOG_PREFIX} Checking if the search string is present in the Pool record`);
         if (pool != null && pool != undefined) {
 
             // Try locating the search string in the Pool's name
@@ -227,13 +215,13 @@ export class PoolsRecordsTabulationService implements OnDestroy {
                     return true;
                 }
             }
-
-            // Try locating the search string in the Pool's description if not yet found
+            
+            // Try locating the search string in the Pool's description
             if (pool.description != null && pool.description != undefined) {
                 if (pool.description.toLowerCase().includes(term.toLowerCase())) {
                     return true;
                 }
-            }
+            }            
         }
 
         return false;
@@ -241,64 +229,88 @@ export class PoolsRecordsTabulationService implements OnDestroy {
 
 
     /**
-     * Paginates Pools Records
-     * 
-     * @param pools The Pools records to paginate
-     * @returns The paginated Pools records
-     */
-    paginate(pools: Pool[], page: number, pageSize: number): Pool[] {
-        this.log.trace(`${LOG_PREFIX} Paginating Pools records`);
-        return pools.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
-    }
-
-    /**
      * Updates the index of the Pools Records
      * 
-     * @param pools The Pools records to sort
-     * @returns The newly indexed Pools records
+     * @param pools The Pools Records to sort
+     * @returns The newly indexed Pools Records
      */
-    index(pools: Pool[]): Pool[] {
-        this.log.trace(`${LOG_PREFIX} Indexing Pools records`);
+     index(pools: Pool[]): Pool[] {
+        this.log.trace(`${LOG_PREFIX} Indexing Pools Records`);
         let pos: number = 0;
         return pools.map(d => {
             d.pos = ++pos;
             return d;
         });
+    }    
+
+
+    /**
+     * Paginates Pools Records
+     * 
+     * @param pools The Pools Records to paginate
+     * @returns The paginated Pools Records
+     */
+    paginate(pools: Pool[], page: number, pageSize: number): Pool[] {
+        this.log.trace(`${LOG_PREFIX} Paginating Pools Records`);
+        return pools.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
+    }
+
+
+
+
+    /**
+     * Utility method for all the class setters.
+     * Updates the sort / filter criteria and triggers the data transformation exercise
+     * @param patch the partially updated details
+     */
+    set(patch: Partial<PoolState>) {
+
+        // Update the state
+        Object.assign(this._state, patch);
+
+
+        // Transform the Pools Records
+        this.transform(this.poolsDataService.records);
+
     }
 
 
     /**
-     * Sorts, filters and paginates Pools records
+     * Sorts, filters and paginates Pools Records
      * 
-     * @param records the original Pools records
+     * @param records the original Pools Records
      */
-    private _transform(records: Pool[]) {
+    transform(records: Pool[]) {
 
         // Flag
         this._loadingSubject$.next(true);
 
-
         if (records.length != 0) {
 
-            this.log.trace(`${LOG_PREFIX} Sorting, filtering and paginating Pools records`);
+            this.log.trace(`${LOG_PREFIX} Sorting, filtering and paginating Pools Records`);
+            this.log.debug(`${LOG_PREFIX} Pools Records before transformation = ${JSON.stringify(records)}`);
 
             const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
 
             // Sort
             let transformed: Pool[] = this.sort(records, sortColumn, sortDirection);
+            this.log.debug(`${LOG_PREFIX} Pools Records after 'Sort' Transformation = ${JSON.stringify(transformed)}`);
 
-            // Filter
+            // Filter by Search Term
             transformed = transformed.filter(pool => this.matches(pool, searchTerm));
             const total: number = transformed.length;
+            this.log.debug(`${LOG_PREFIX} Pools Records after 'Filter by Search Term' Transformation = ${JSON.stringify(transformed)}`);
 
             // Index
             transformed = this.index(transformed);
+            this.log.debug(`${LOG_PREFIX} Pools Records after 'Index' Transformation = ${JSON.stringify(transformed)}`);
 
             // Paginate
             transformed = this.paginate(transformed, page, pageSize);
+            this.log.debug(`${LOG_PREFIX} Pools Records after 'Paginate' Transformation = ${JSON.stringify(transformed)}`);
 
             // Broadcast
-            this._poolsSubject$.next(transformed);
+            this._poolsSubject$.next(Object.assign([],transformed));
             this._totalSubject$.next(total);
 
 

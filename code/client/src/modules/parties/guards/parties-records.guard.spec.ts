@@ -3,7 +3,7 @@ import { PartiesRecordsGuard } from './parties-records.guard';
 
 const LOG_PREFIX: string = "[Parties Records Guards]";
 
-describe('Parties Records Guards', () => {
+describe(' Parties Records Guards', () => {
 
     let partiesRecordsGuard: PartiesRecordsGuard;
 

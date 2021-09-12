@@ -1,0 +1,11 @@
+sb-layout-main
+  ng-container(header='')
+    sb-header(title='Land Use Classes', subtitle='The arrangements, activities and inputs that people undertake in a certain land cover type to produce, change or maintain it', [dynamicbreadcrumbs]='true', [hidebreadcrumbs]='false')
+  ng-container(body='')
+    .card.text-center
+      .card-header
+        ul.nav.nav-tabs.card-header-tabs
+          li.nav-item
+            a.nav-link.active([routerlink]="['/land_use_categories/' + targetReportingFramework?.id]") Land Use Classes
+      .card-body
+        ng-content

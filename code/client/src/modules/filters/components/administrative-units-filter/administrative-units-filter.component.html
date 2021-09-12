@@ -1,0 +1,107 @@
+<div class="alert alert-danger" role="alert" *ngIf='error'>{{error}}</div>
+
+<form>
+    <div class="d-flex flex-column mb-3">
+        <div class="p-2">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <label class="input-group-text d-flex justify-content-center" for="parents">
+                        <fa-icon class="mr-1" [icon]='["fas", "filter"]'></fa-icon>
+                    </label>
+                </div>
+                <select class="custom-select" name="accountabilityTypeId" id="accountabilityTypeId" (change)="onAccountabilityTypeIdChange($event)" [(ngModel)]="accountabilityTypeId">
+                <option value="-1" disabled>Select Administrative Hierarchy Type</option>
+                <option *ngFor="let accountabilityType of accountabilitiesTypesDataService.accountabilitiesTypes$ | async"
+                    value="{{accountabilityType.id}}">
+                    {{accountabilityType.name}}</option>
+            </select>
+            </div>
+        </div>
+        <div class="p-2">
+            <sb-search (searched)="onSearch($event)"></sb-search> 
+        </div>        
+        <div class="p-2">
+            <sb-loading-animation></sb-loading-animation>
+        </div>
+    </div>
+
+
+    <div class="row"> 
+        <div class="col">
+            <sb-table>
+                <ng-container header>
+                    <tr>
+                        <th scope="col" class="col-sm-9 text-left align-middle" sbSortable="name"
+                            (sort)="onSort($event)">
+                            <span>{{(filterService.filter$ |
+                                async)?.accountabilityRule?.subsidiaryPartyTypeName}}</span>
+                            <sb-sort-icon *ngIf='sortedColumn === "name"' [direction]="sortedDirection">
+                            </sb-sort-icon>
+                        </th>
+
+                        <th scope="col" class="col-sm-1 text-center align-middle">
+                            Select
+                        </th>                        
+
+                        <th scope="col" class="col-sm-2 text-center align-middle">
+                            Drill
+                        </th>
+                    </tr>
+                </ng-container>
+
+                <ng-container body>
+                    <tr
+                        *ngFor="let accountability of administrativeUnitsFilterTabulationService.accountabilities$ | async">
+                        <td class="text-left align-middle clickable">
+                            <ngb-highlight [result]="accountability.subsidiaryPartyName"
+                                [term]="administrativeUnitsFilterTabulationService.searchTerm"></ngb-highlight>
+                        </td>
+                        <td class="text-center align-middle p-1">
+                                <div *ngIf='selectionMode === "single"; else multi'>
+                                    <sb-button action="select" entity="Accountability" id="{{accountability.id}}" name="accountability"
+                                        [selected]="isSelected(accountability.id)" (select)="onSelect(accountability.id)">
+                                    </sb-button>
+                                </div>
+
+                                <ng-template #multi>
+                                    <sb-button action="check" entity="Accountability" id="{{accountability.id}}" name="accountability"
+                                        [checked]="isChecked(accountability.id)" 
+                                        (check)="onCheck(accountability.id)"
+                                        (uncheck)="onUncheck(accountability.id)"></sb-button>
+                                </ng-template>
+                        </td>                        
+                        <td class="text-center align-middle p-1">
+                                <sb-button style="width: 100px;" action="drillDown" entity="Accountability"
+                                    id="{{accountability.subsidiaryPartyId}}" 
+                                    (drillDown)="onDrillDown($event)"
+                                    tooltip="Drill Down"
+                                    [disabled]="(filterService.filter$ | async)?.level == ((filterService.filter$ | async)?.accountabilitiesRules.length) - 1">
+                                </sb-button>
+                        </td>
+                    </tr>
+                </ng-container>
+
+                <ng-container *ngIf="(filterService.filter$ | async)?.level > 0" footer>
+                    <tr>
+                        <td colspan="2" class="text-left align-middle">
+
+                        </td>
+                        <td class="text-center align-middle p-1">
+                            <sb-button action="drillUp" entity="Accountability" (drillUp)="onDrillUp()"
+                                tooltip="Drill Up"></sb-button>
+                        </td>
+                    </tr>
+                </ng-container>
+
+            </sb-table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <sb-pagination type="modal" (pageChanged)="onPageChange($event)" (pageSizeChanged)="onPageSizeChange($event)">
+            </sb-pagination>
+        </div>
+    </div>
+
+</form>

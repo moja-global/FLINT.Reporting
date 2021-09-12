@@ -1,0 +1,67 @@
+<sb-modal>
+
+    <ng-container title>
+        Create Administrative Hierarchy Level Members Records
+    </ng-container>
+
+    <ng-container body>
+
+        <sb-accountabilities-records-creation [accountabilityRuleId]="accountabilityRuleId" [previouslySelectedPartiesIds]="previouslySelectedPartiesIds" (loadedNext)="onLoadedNext()" (loadedPrevious)="onLoadedPrevious()" (succeeded)="onSucceeded()" (failed)="onFailed($event)">
+        </sb-accountabilities-records-creation>        
+
+        <ng-container *ngIf='(status$ | async) === "saving"'>
+            <sb-message-overlay activity="creating" status="saving"></sb-message-overlay>
+        </ng-container>
+
+        <ng-container *ngIf='(status$ | async) === "succeeded"'>
+            <sb-message-overlay activity="creating" status="done"></sb-message-overlay>
+        </ng-container>
+
+        <ng-container *ngIf='(status$ | async) === "failed"'>
+            <sb-message-overlay activity="creating" status="failed"></sb-message-overlay>
+        </ng-container>
+
+        <ng-container *ngIf='(status$ | async) === "retrying"'>
+            <sb-countdown-overlay crosshead="Retrying in " (completed)="onSave()"></sb-countdown-overlay>
+        </ng-container>        
+
+    </ng-container>
+
+    <ng-container footer>
+
+        <ng-container *ngIf='(status$ | async) === "nextable"'>
+            <sb-button action="next" (next)="onNext()"></sb-button>
+        </ng-container> 
+
+        <ng-container *ngIf='(status$ | async) === "saveable"'>
+            <sb-button action="previous" (previous)="onPrevious()"></sb-button>            
+            <sb-button action="save" entity="Accountability" (save)="onSave()"></sb-button>
+        </ng-container>        
+
+        <ng-container *ngIf='(status$ | async) === "saving"'>
+            <sb-button action="save" entity="Accountability" disabled="true"></sb-button>
+        </ng-container>
+        
+        <ng-container *ngIf='(status$ | async) === "invalid"'>
+            <sb-button action="previous" (previous)="onPrevious()"></sb-button> 
+            <sb-button action="save" entity="Accountability" (save)="onSave()"></sb-button>
+        </ng-container>        
+
+        <ng-container *ngIf='(status$ | async) === "succeeded"'>
+            <sb-button action="yes" entity="Accountability" guarded="false" (yes)="onContinue()"></sb-button>
+            <sb-button action="no" entity="Accountability" guarded="false" (no)="onQuit()"></sb-button>
+        </ng-container>
+
+        <ng-container *ngIf='(status$ | async) === "failed"'>
+            <sb-button action="yes" entity="Accountability" (yes)="onRetry()"></sb-button>
+            <sb-button action="no" entity="Accountability" guarded="false" (no)="onQuit()"></sb-button>            
+        </ng-container>
+
+        <ng-container *ngIf='(status$ | async) === "retrying"'>
+            <sb-button action="yes" entity="Accountability" disabled="true"></sb-button>
+            <sb-button action="no" entity="Accountability" disabled="true"></sb-button>        
+        </ng-container>      
+
+    </ng-container>
+    
+</sb-modal>

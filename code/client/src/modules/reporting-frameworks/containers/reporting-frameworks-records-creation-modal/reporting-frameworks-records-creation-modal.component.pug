@@ -1,8 +1,10 @@
-sb-modal
+sb-modal(shadow='false')
   ng-container(title='')
     | Create Reporting Framework Record
-  ng-container(body')
-    sb-reporting-frameworks-records-creation((succeeded)='onSucceeded()', (failed)='onFailed($event)')
+  ng-container(body='')
+    sb-reporting-frameworks-records-creation((initialized)='onInitialized()', (succeeded)='onSucceeded()', (failed)='onFailed($event)')
+    ng-container(*ngif='(status$ | async) === "initializing"')
+      sb-message-overlay(activity='creating', status='initializing')
     ng-container(*ngif='(status$ | async) === "saving"')
       sb-message-overlay(activity='creating', status='saving')
     ng-container(*ngif='(status$ | async) === "succeeded"')
@@ -12,7 +14,7 @@ sb-modal
     ng-container(*ngif='(status$ | async) === "retrying"')
       sb-countdown-overlay(crosshead='Retrying in ', (completed)='onSave()')
   ng-container(footer='')
-    ng-container(*ngif='(status$ | async) === "new"')
+    ng-container(*ngif='(status$ | async) === "ready"')
       sb-button(action='save', entity='Reporting Framework', (save)='onSave()')
     ng-container(*ngif='(status$ | async) === "saving"')
       sb-button(action='save', entity='Reporting Framework', disabled='true')

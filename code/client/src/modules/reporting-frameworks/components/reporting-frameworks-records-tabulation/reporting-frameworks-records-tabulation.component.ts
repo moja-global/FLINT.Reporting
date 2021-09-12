@@ -5,6 +5,7 @@ import {
     Component,
     HostListener,
     Input,
+    OnDestroy,
     OnInit,
     ViewChild,
 } from '@angular/core';
@@ -14,13 +15,12 @@ import { Subscription } from 'rxjs';
 import { SortEvent } from '@common/directives/sortable.directive';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ReportingFrameworksRecordsTabulationService } from '../../services';
-import { ConnectivityStatusService } from '@common/services';
 import { ReportingFrameworksRecordsCreationModalComponent } from '@modules/reporting-frameworks/containers/reporting-frameworks-records-creation-modal/reporting-frameworks-records-creation-modal.component';
 import { ReportingFrameworksRecordsDeletionModalComponent } from '@modules/reporting-frameworks/containers/reporting-frameworks-records-deletion-modal/reporting-frameworks-records-deletion-modal.component';
 import { ReportingFrameworksRecordsUpdationModalComponent } from '@modules/reporting-frameworks/containers/reporting-frameworks-records-updation-modal/reporting-frameworks-records-updation-modal.component';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
-const LOG_PREFIX: string = "[Reporting Frameworks Records Tabulation]";
+const LOG_PREFIX: string = "[Reporting Frameworks Records Tabulation Component]";
 
 @Component({
     selector: 'sb-reporting-frameworks-records-tabulation',
@@ -28,7 +28,7 @@ const LOG_PREFIX: string = "[Reporting Frameworks Records Tabulation]";
     templateUrl: './reporting-frameworks-records-tabulation.component.html',
     styleUrls: ['reporting-frameworks-records-tabulation.component.scss'],
 })
-export class ReportingFrameworksRecordsTabulationComponent implements OnInit, AfterViewInit {
+export class ReportingFrameworksRecordsTabulationComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Inject a reference to the loading animation component. 
     // This will provide a way of informing it of the status of 
@@ -57,19 +57,20 @@ export class ReportingFrameworksRecordsTabulationComponent implements OnInit, Af
     // Makes it easier to unsubscribe from all subscriptions when the component is destroyed.   
     private _subscriptions: Subscription[] = [];
 
-
     constructor(
-        public reportingFrameworksTableService: ReportingFrameworksRecordsTabulationService,
-        private changeDetectorRef: ChangeDetectorRef,
-        private modalService: NgbModal,
         private router: Router,
-        private activatedRoute: ActivatedRoute,
+        private cd: ChangeDetectorRef,
+        public reportingFrameworksRecordsTabulationService: ReportingFrameworksRecordsTabulationService,        
+        private modalService: NgbModal,
         private log: NGXLogger) {
+
+
     }
 
     ngOnInit() {
 
         this.log.trace(`${LOG_PREFIX} Initializing Component`);
+
     }
 
 
@@ -77,13 +78,13 @@ export class ReportingFrameworksRecordsTabulationComponent implements OnInit, Af
 
         // Set the initial page and page size values on the pagination component.
         this.log.trace(`${LOG_PREFIX} Set the initial Page and Page Size values on the pagination component`);
-        this.pagination.initialize(this.reportingFrameworksTableService.page, this.pageSize);
+        this.pagination.initialize(this.reportingFrameworksRecordsTabulationService.page, this.pageSize);
 
         // Subscribe to the total value changes and propagate them to the pagination component.
         // These values typically change in response to the user filtering the records.
         this.log.trace(`${LOG_PREFIX} Subscribing to total value changes`);
         this._subscriptions.push(
-            this.reportingFrameworksTableService.total$.subscribe(
+            this.reportingFrameworksRecordsTabulationService.total$.subscribe(
                 (total) => {
                     this.pagination.total = total;
                 }));
@@ -92,10 +93,10 @@ export class ReportingFrameworksRecordsTabulationComponent implements OnInit, Af
         // Loading events occur when the user searches, sorts or moves from one record page to another.
         this.log.trace(`${LOG_PREFIX} Subscribing to loading status changes`);
         this._subscriptions.push(
-            this.reportingFrameworksTableService.loading$.subscribe(
+            this.reportingFrameworksRecordsTabulationService.loading$.subscribe(
                 (loading) => {
                     this.animation.loading = loading;
-                    this.changeDetectorRef.detectChanges();
+                    this.cd.detectChanges();
                 }));
 
     }
@@ -116,8 +117,8 @@ export class ReportingFrameworksRecordsTabulationComponent implements OnInit, Af
      */
     onSearch(event: any) {
         this.log.trace(`${LOG_PREFIX} Searching for ${event}`);
-        this.reportingFrameworksTableService.searchTerm = event;
-        this.changeDetectorRef.detectChanges();
+        this.reportingFrameworksRecordsTabulationService.searchTerm = event;
+        this.cd.detectChanges();
     }
 
     /**
@@ -128,9 +129,9 @@ export class ReportingFrameworksRecordsTabulationComponent implements OnInit, Af
         this.log.trace(`${LOG_PREFIX} Sorting ${column} in ${direction} order`);
         this.sortedColumn = column;
         this.sortedDirection = direction;
-        this.reportingFrameworksTableService.sortColumn = column;
-        this.reportingFrameworksTableService.sortDirection = direction;
-        this.changeDetectorRef.detectChanges();
+        this.reportingFrameworksRecordsTabulationService.sortColumn = column;
+        this.reportingFrameworksRecordsTabulationService.sortDirection = direction;
+        this.cd.detectChanges();
     }
 
     /**
@@ -139,8 +140,8 @@ export class ReportingFrameworksRecordsTabulationComponent implements OnInit, Af
      */
     onPageChange(event: any) {
         this.log.trace(`${LOG_PREFIX} Changing Page to ${event}`);
-        this.reportingFrameworksTableService.page = event;
-        this.changeDetectorRef.detectChanges();
+        this.reportingFrameworksRecordsTabulationService.page = event;
+        this.cd.detectChanges();
     }
 
     /**
@@ -149,12 +150,13 @@ export class ReportingFrameworksRecordsTabulationComponent implements OnInit, Af
      */
     onPageSizeChange(event: any) {
         this.log.trace(`${LOG_PREFIX} Changing Page Size to ${event}`);
-        this.reportingFrameworksTableService.pageSize = event;
-        this.changeDetectorRef.detectChanges();
+        this.reportingFrameworksRecordsTabulationService.pageSize = event;
+        this.cd.detectChanges();
     }
 
+
     /**
-     * Propagates Reporting Frameworks records Addition Requests to the responsible component
+     * Propagates Reporting Frameworks Records Addition Requests to the responsible component
      */
     onAddReportingFramework() {
         this.log.trace(`${LOG_PREFIX} Adding a new Reporting Framework record`);
@@ -162,17 +164,18 @@ export class ReportingFrameworksRecordsTabulationComponent implements OnInit, Af
     }
 
     /**
-     * Propagates Reporting Frameworks records Updation Requests to the responsible component
+     * Propagates Reporting Frameworks Records Updation Requests to the responsible component
      */
     onUpdateReportingFramework(id: number) {
         this.log.trace(`${LOG_PREFIX} Updating Reporting Framework record`);
         this.log.debug(`${LOG_PREFIX} Reporting Framework record Id = ${id}`);
         const modalRef = this.modalService.open(ReportingFrameworksRecordsUpdationModalComponent, { centered: true, backdrop: 'static' });
         modalRef.componentInstance.id = id;
+
     }
 
     /**
-     * Propagates Reporting Frameworks records Deletion Requests to the responsible component
+     * Propagates Reporting Frameworks Records Deletion Requests to the responsible component
      */
     onDeleteReportingFramework(id: number) {
         this.log.trace(`${LOG_PREFIX} Deleting Reporting Framework record`);
@@ -182,24 +185,15 @@ export class ReportingFrameworksRecordsTabulationComponent implements OnInit, Af
     }
 
 
-
     /**
-     * Opens Reporting Framework Home Window
+     * Open Land Use Classes Home Window
      */
-    onOpenReportingFramework(state: any) {
+     onOpenLandUseClasses(reportingFramework: any) {
+        this.log.trace(`${LOG_PREFIX} Opening Land Use Classes Home Window`);
+        this.log.debug(`${LOG_PREFIX} Reporting Framework = ${JSON.stringify(reportingFramework)}`);
 
-        this.log.trace(`${LOG_PREFIX} Opening Reporting Framework Home Window`);
-        this.log.debug(`${LOG_PREFIX} State = ${JSON.stringify(state)}`);
+        this.router.navigate(['/land_uses_categories', reportingFramework.id]);
 
-        this.router.navigate(
-            ['/reporting_frameworks/home'],
-            {
-                queryParams: {
-                    reportingFrameworkId: state.id,
-                    reportingFrameworkName: state.name
-                }
-            });
-
-    }
+    }     
 
 }

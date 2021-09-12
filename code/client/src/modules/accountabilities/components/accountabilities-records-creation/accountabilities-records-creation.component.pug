@@ -1,0 +1,3 @@
+.alert.alert-danger(role='alert', *ngif='error') {{error}}
+sb-parties-records-selection(*ngif='page == "parents"', basis='parents', [partytypeid]='parentPartyType?.id', [previouslyselectedpartiesids]='[]', selectionmode='single', (select)='onSelect($event)', (check)='onCheck($event)', (uncheck)='onUncheck($event)')
+sb-parties-records-selection(*ngif='page == "subsidiaries"', basis='subsidiaries', [partytypeid]='subsidiaryPartyType?.id', [previouslyselectedpartiesids]='previouslySelectedPartiesIds', skippreviouslyselectedpartiesids='true', selectionmode='multi', (select)='onSelect($event)', (check)='onCheck($event)', (uncheck)='onUncheck($event)')

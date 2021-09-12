@@ -13,7 +13,7 @@ import { NGXLogger } from 'ngx-logger';
 import { ReportingFramework } from '@modules/reporting-frameworks/models';
 import { LandUseCategory } from '@modules/land-use-categories/models/land-use-category.model';
 import { LandUseCategoriesDataService } from '@modules/land-use-categories/services';
-import { CoverTypesDataService } from '@modules/cover-types/services/cover-types-data.service';
+import { CoversTypesDataService } from '@modules/covers-types/services/covers-types-data.service';
 
 const LOG_PREFIX: string = "[Land Use Categories Records Updation Component]";
 
@@ -63,7 +63,7 @@ export class LandUseCategoriesRecordsUpdationComponent implements OnInit, AfterC
   });
 
   constructor(
-    public coverTypesDataService: CoverTypesDataService,
+    public coverTypesDataService: CoversTypesDataService,
     private landUseCategoriesDataService: LandUseCategoriesDataService,
     private log: NGXLogger) {
 

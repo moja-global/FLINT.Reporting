@@ -1,0 +1,51 @@
+<form [formGroup]="emissionsTypesForm">
+
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" placeholder="" formControlName="name">
+        <div *ngIf="emissionsTypesForm.get('name')?.invalid && (emissionsTypesForm.get('name')?.dirty || emissionsTypesForm.get('name')?.touched)"
+            class="alert alert-danger mt-3">
+            <div *ngIf="emissionsTypesForm.get('name')?.errors.required">
+                Name is required.
+            </div>
+            <div *ngIf="emissionsTypesForm.get('name')?.errors.minlength">
+                Name should be at least 2 characters long.
+            </div>            
+            <div *ngIf="emissionsTypesForm.get('name')?.errors.maxlength">
+                Name cannot be more than 250 characters long.
+            </div>
+            <div *ngIf="emissionsTypesForm.get('name')?.errors.exists">
+                Name should be unique.
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="abbreviation">Abbreviation</label>
+        <input type="text" class="form-control" id="abbreviation" placeholder="" formControlName="abbreviation">
+        <div *ngIf="emissionsTypesForm.get('abbreviation')?.invalid && (emissionsTypesForm.get('abbreviation')?.dirty || emissionsTypesForm.get('abbreviation')?.touched)"
+            class="alert alert-danger mt-3">
+            <div *ngIf="emissionsTypesForm.get('abbreviation')?.errors.required">
+                Abbreviation is required.
+            </div>
+            <div *ngIf="emissionsTypesForm.get('abbreviation')?.errors.maxlength">
+                Abbreviation cannot be more than 250 characters long.
+            </div>
+            <div *ngIf="emissionsTypesForm.get('abbreviation')?.errors.exists">
+                Abbreviation should be unique.
+            </div>
+        </div>
+    </div>    
+
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea class="form-control" id="description" formControlName="description" rows="5"></textarea>
+        <div *ngIf="emissionsTypesForm.get('description')?.invalid && (emissionsTypesForm.get('description')?.dirty || emissionsTypesForm.get('description')?.touched)"
+            class="alert alert-danger mt-3">
+            <div *ngIf="emissionsTypesForm.get('description')?.errors.maxlength">
+                Description cannot be more than 250 characters long.
+            </div>
+        </div>
+    </div>    
+
+</form>

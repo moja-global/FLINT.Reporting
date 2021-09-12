@@ -73,15 +73,56 @@
     [disabled]="disabled$ | async" 
     (click)="onOpen()">
     <fa-icon [icon]='["fas", "external-link-alt"]'></fa-icon>
-</button>
+</button>    
 
-<button *ngIf="action === 'download'" 
+<button *ngIf="action === 'previous'" 
     type="button" 
     [ngClass]="classes$ | async" 
     data-toggle="tooltip"
     data-placement="top" 
     [title]="tooltip$ | async" 
     [disabled]="disabled$ | async" 
-    (click)="onDownload()">
-    <fa-icon [icon]='["fas", "download"]'></fa-icon>
+    (click)="onPrevious()">
+    Back
+</button>   
+
+<button *ngIf="action === 'next'" 
+    type="button" 
+    [ngClass]="classes$ | async" 
+    data-toggle="tooltip"
+    data-placement="top" 
+    [title]="tooltip$ | async" 
+    [disabled]="disabled$ | async" 
+    (click)="onNext()">
+    Next
 </button>
+
+<button *ngIf="action === 'drillUp'" 
+    type="button" 
+    [ngClass]="classes$ | async" 
+    data-toggle="tooltip"
+    data-placement="top" 
+    [title]="tooltip$ | async" 
+    [disabled]="disabled$ | async" 
+    (click)="onDrillUp()">
+    <fa-icon [icon]='["fas", "caret-up"]'></fa-icon>
+</button>
+
+<button *ngIf="action === 'drillDown'" 
+    type="button" 
+    [ngClass]="classes$ | async" 
+    data-toggle="tooltip"
+    data-placement="top" 
+    [title]="tooltip$ | async" 
+    [disabled]="disabled$ | async" 
+    (click)="onDrillDown()">
+    <fa-icon [icon]='["fas", "caret-down"]'></fa-icon>
+</button>
+
+<div *ngIf="action === 'select'" class="form-check">
+    <input class="form-check-input position-static" type="radio" [name]="name" [value]="id" [checked]="selected" [disabled]="disabled" (change)="onSelectionChange($event)">
+</div>
+
+<div *ngIf="action === 'check' || action === 'uncheck'" class="form-check">
+    <input class="form-check-input position-static" type="checkbox" [value]="id" [checked]="checked" [disabled]="disabled" (change)="onCheckboxChange($event)">
+</div>  

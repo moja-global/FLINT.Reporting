@@ -1,19 +1,7 @@
-<sb-layout-main>
-    
-    <ng-container header>
-        <sb-header title="Pools" subtitle="Reservoirs that exchange carbon through output and intake"></sb-header>
-    </ng-container>
-      
-    
-    <ng-container body>
-        <sb-card>
-            <div class="card-header">
-                Pools List
-            </div>
-            <div class="card-body">
-                <sb-pools-records-tabulation [pageSize]="10"></sb-pools-records-tabulation>
-            </div>
-        </sb-card>
-    </ng-container>
-
-</sb-layout-main>
+<sb-pools-records-home-page>
+    <sb-card>
+        <div class="card-body">
+            <sb-pools-records-tabulation [pageSize]="6"></sb-pools-records-tabulation>
+        </div>
+    </sb-card>
+</sb-pools-records-home-page>

@@ -1,0 +1,29 @@
+form([formgroup]='emissionsTypesForm')
+  .form-group
+    label(for='name') Name
+    input#name.form-control(type='text', placeholder='', formcontrolname='name')
+    .alert.alert-danger.mt-3(*ngif="emissionsTypesForm.get('name')?.invalid && (emissionsTypesForm.get('name')?.dirty || emissionsTypesForm.get('name')?.touched)")
+      div(*ngif="emissionsTypesForm.get('name')?.errors.required")
+        | Name is required.
+      div(*ngif="emissionsTypesForm.get('name')?.errors.minlength")
+        | Name should be at least 2 characters long.
+      div(*ngif="emissionsTypesForm.get('name')?.errors.maxlength")
+        | Name cannot be more than 250 characters long.
+      div(*ngif="emissionsTypesForm.get('name')?.errors.exists")
+        | Name should be unique.
+  .form-group
+    label(for='abbreviation') Abbreviation
+    input#abbreviation.form-control(type='text', placeholder='', formcontrolname='abbreviation')
+    .alert.alert-danger.mt-3(*ngif="emissionsTypesForm.get('abbreviation')?.invalid && (emissionsTypesForm.get('abbreviation')?.dirty || emissionsTypesForm.get('abbreviation')?.touched)")
+      div(*ngif="emissionsTypesForm.get('abbreviation')?.errors.required")
+        | Abbreviation is required.
+      div(*ngif="emissionsTypesForm.get('abbreviation')?.errors.maxlength")
+        | Abbreviation cannot be more than 250 characters long.
+      div(*ngif="emissionsTypesForm.get('abbreviation')?.errors.exists")
+        | Abbreviation should be unique.
+  .form-group
+    label(for='description') Description
+    textarea#description.form-control(formcontrolname='description', rows='5')
+    .alert.alert-danger.mt-3(*ngif="emissionsTypesForm.get('description')?.invalid && (emissionsTypesForm.get('description')?.dirty || emissionsTypesForm.get('description')?.touched)")
+      div(*ngif="emissionsTypesForm.get('description')?.errors.maxlength")
+        | Description cannot be more than 250 characters long.
