@@ -54,3 +54,9 @@ Setup Guide and Step 3, 4 and 5 in the Reporting Tool Build Guide.
 
 .. _Reporting Tool Environment Setup Guide: ../EnvironmentGuide/index.html
 .. _Reporting Tool Build Guide: ../BuildGuide/index.html
+
+
+.. toctree::
+   :hidden:
+
+   installing-reporting-tool
