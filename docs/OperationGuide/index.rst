@@ -28,7 +28,7 @@ Outline
 There are four key steps to successfully operating the Reporting Tool:
 
 == ==============================================================
-\  Prerequirement
+\  Steps
 == ==============================================================
 1  Check that all Reporting Tool Services is Up and Running
 2  Upload a Flux Output Database Backup to the Reporting Tool
@@ -37,6 +37,10 @@ There are four key steps to successfully operating the Reporting Tool:
 4  Monitoring the Database Processing Event
 == ==============================================================
 
-We will explore each of these steps in detail in the sections that
+We will explore each of these steps in detail in the specific parts of
+the documentation.
 
-follow
+.. toctree::
+   :hidden:
+
+   operating-the-reporting-tool

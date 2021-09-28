@@ -16,3 +16,4 @@ This Documentation is meant for Developers wishing to contribute to moja global 
    EnvironmentGuide/index
    BuildGuide/index
    InstallationGuide/index
+   OperationGuide/index
