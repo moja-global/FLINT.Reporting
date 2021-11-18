@@ -1,7 +1,29 @@
 # Reporting Tool 
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 
-Text 
+The role of the Reporting Tool is to provide Business Intelligence for analysing and transforming FLINT output databases into useful information and outputs. The current implementation of the Reporting Tool processes the Flux database into simplified 2006 GL Reporting Tables.
+
+## Installation Docs
+
+Please checkout the [moja global developer docs](https://docs.moja.global/projects/flint-reporting/en/latest/index.html) for complete instructions on how to setup the repository. 
+
+## Prerequisites
+
+We need to meet two main preconditions in order to successfully contribute Reporting Tool’s development:
+
+- We need to have sufficient Java development skills
+- We need to have sufficient Angular development skills
+
+## Outline
+
+There are six things that we need to understand to contribute to the Reporting Tool’s development:
+
+- The major design elements that make up the Moja Reporting Tool
+- The functional decomposition of the above elements
+- The execution elements of the functionally decomposed elements
+- The tool’s source code organization
+- The long term vision and direction for continuous improvement
+- The logical next areas for improvement
 
 ## How to Get Involved?  
 
