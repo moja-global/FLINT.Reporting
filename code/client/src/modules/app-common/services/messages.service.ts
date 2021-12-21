@@ -7,7 +7,7 @@ const LOG_PREFIX: string = "[Message Service]";
 @Injectable({ providedIn: 'root' })
 export class MessageService {
 
-    private _messageSubject$ = new Subject<Message>();
+    private _messageSubject$ = new Subject<Message | null>();
     readonly messages$ = this._messageSubject$.asObservable();
 
     sendMessage(message: Message) {
@@ -15,7 +15,7 @@ export class MessageService {
     }
 
     clearMessages() {
-        this._messageSubject$.next();
+        this._messageSubject$.next(null);
     }
 
 }
