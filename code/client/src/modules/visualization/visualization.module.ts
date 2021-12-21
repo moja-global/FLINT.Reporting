@@ -8,7 +8,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AppCommonModule } from '@common/app-common.module';
 import { NavigationModule } from '@modules/navigation/navigation.module';
 import { CountUpModule } from 'ngx-countup';
-import { AngularResizedEventModule } from 'angular-resize-event';
+import { AngularResizeEventModule } from 'angular-resize-event';
 
 /* Components */
 import * as visualizationComponents from './components';
@@ -31,7 +31,7 @@ import * as visualizationServices from './services';
         AppCommonModule,
         NavigationModule,
         CountUpModule,
-        AngularResizedEventModule
+        AngularResizeEventModule
     ],
     providers: [...visualizationServices.services, ...visualizationGuards.guards],
     declarations: [...visualizationContainers.containers, ...visualizationComponents.components],

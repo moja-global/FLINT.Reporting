@@ -71,7 +71,7 @@ export class ReportingVariablesDataService {
 
           // Unsubscribe from connectivity status notifications
           this.log.trace(`${LOG_PREFIX} Unsubscribing from connectivity status notifications`);
-          this._done$.next();
+          this._done$.next(true);
           this._done$.complete();
 
         }
