@@ -9,7 +9,7 @@ import { AppCommonModule } from '@common/app-common.module';
 import { NavigationModule } from '@modules/navigation/navigation.module';
 import { DashboardModule } from '@modules/dashboard/dashboard.module';
 import { CountUpModule } from 'ngx-countup';
-import { AngularResizedEventModule } from 'angular-resize-event';
+import { AngularResizeEventModule } from 'angular-resize-event';
 import { VisualizationModule } from '@modules/visualization/visualization.module';
 
 
@@ -39,7 +39,7 @@ import * as situationsServices from './services';
         NavigationModule,
         DashboardModule,
         CountUpModule,
-        AngularResizedEventModule,
+        AngularResizeEventModule,
         VisualizationModule
     ],
     providers: [

@@ -7,7 +7,6 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 /* Modules */
 import { AppCommonModule } from '@common/app-common.module';
 import { NavigationModule } from '@modules/navigation/navigation.module';
-import { ChartsModule } from '@modules/charts/charts.module';
 
 /* Components */
 import * as dashboardComponents from './components';
