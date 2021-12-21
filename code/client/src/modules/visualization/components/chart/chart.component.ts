@@ -273,7 +273,7 @@ export class ChartComponent implements OnInit, AfterViewInit {
 
                         // The processed variables is equal to the total number of variable
                         // Stop monitoring the processing activity
-                        this.notifier.next();
+                        this.notifier.next(true);
                         this.notifier.complete();
 
                         // Call the callback function

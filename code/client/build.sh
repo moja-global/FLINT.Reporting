@@ -47,7 +47,7 @@ echo
 echo "Building component for production environment"
 echo
 #ng build --prod
-ng build --prod --base-href /client/
+ng build --configuration production --base-href /client/
 
 
 
