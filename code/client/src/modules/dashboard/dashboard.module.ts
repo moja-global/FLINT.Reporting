@@ -27,8 +27,7 @@ import * as dashboardServices from './services';
         ReactiveFormsModule,
         FormsModule,
         AppCommonModule,
-        NavigationModule,
-        ChartsModule,
+        NavigationModule
     ],
     providers: [...dashboardServices.services, ...dashboardGuards.guards],
     declarations: [...dashboardContainers.containers, ...dashboardComponents.components],
