@@ -1,13 +1,8 @@
 #!bin/bash
-green=`tput setaf 2` 
-red=`tput setaf 1`
-yellow=`tput setaf 3`
-blue=`tput setaf 4`
-mangenta=`tput setaf 5`
-cyan=`tput setaf 6`
-white=`tput setaf 7`
-black=`tput setaf 0`
-reset=`tput sgr0`
+green=$(tput setaf 2) 
+blue=$(tput setaf 4)
+cyan=$(tput setaf 6)
+reset=$(tput sgr0)
 tput bel
 echo " ${green}  _____ _ _       _     ____                       _   _                 "        
 echo " ${green} |  ___| (_)_ __ | |_  |  _ \ ___ _ __   ___  _ __| |_(_)_ __   __ _     "
@@ -27,15 +22,6 @@ echo "                                                                          
 echo " Setting up the system’s environment for FLINT Reporting Tool                     "
 echo "                                                                                  "
 echo "                                                                                  "
-echo " ${blue}Setting up a non-root user account on the server  ${reset}                "
-echo "                                                                                  "
-echo "Enter the User Account to add:                                                    "
-read useraccount
-sudo adduser $useraccount
-usermod -aG sudo $useraccount
-su - $useraccount
-echo "                                                                                  "
-echo "                                                                                  "
 echo "                                                                                  "
 echo " ${blue}Collecting useful information for configurations and security certificates  ${reset}                "
 
@@ -52,9 +38,11 @@ sed -i "s/reporter.miles.co.ke/$serverdomain/" $ROOT_DIR/configurations/configur
 
 echo "Enter the domain name for traefik: "
 read traefikdom
+sed -i "s/traefik.miles.co.ke/$traefikdom/" $ROOT_DIR/configurations/configurations.json
 
 echo "Enter the domain name for rabbitMQ: "
 read rabbitmqdom
+sed -i "s/rabbitmq.miles.co.ke/$rabbitmqdom/" $ROOT_DIR/configurations/configurations.json
 
 echo "Enter the server's default IP: "
 read serverip
@@ -162,5 +150,3 @@ echo "${cyan} / __|/ _ \ __| | | |  _ \   / __/ _ \|  _   _ \|  _ \| |/ _ \ __/ 
 echo "${cyan} \__ \  __/ |_| |_| | |_) | | (_| (_) | | | | | | |_) | |  __/ ||  __/_|        ${reset} "
 echo "${cyan} |___/\___|\__|\__,_| .__/   \___\___/|_| |_| |_| .__/|_|\___|\__\___(_)        ${reset} "
 echo "${cyan}                    |_|                         |_|                             ${reset} "
-
-

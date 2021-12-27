@@ -215,15 +215,11 @@ sudo cp $SERVER_CERT_FILE /docker-registry/nginx/tls.crt
 echo
 echo "Adding the default user to the nginx subdirectory:"
 default_user="$USER"
-echo "Enter the name of the user to create"
-echo "Or just press Enter to use $default_user by default"
-read username
-username=${username:=$default_user}
 
 
 echo
 echo "Creating $username's user account inside the nginx subdirectory"
-sudo htpasswd -c registry.password ${username}
+sudo htpasswd -b registry.password ${default_user} registry
 
 
 echo

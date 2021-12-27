@@ -11,13 +11,8 @@ DOCKER_REGISTRY_SERVER=${HOSTNAME}
 # Using current user as Docker Registry user
 DOCKER_REGISTRY_USERNAME=${USER}
 
-echo
-echo "Enter your Docker Password"
-stty -echo
-read DOCKER_REGISTRY_PASSWORD
-stty echo
-echo
-
+# Creating current user's Docker Password
+DOCKER_REGISTRY_PASSWORD=docker
 
 echo
 echo "Creating Docker Registry Secret"
