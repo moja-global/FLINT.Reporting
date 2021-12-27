@@ -243,7 +243,7 @@ sudo systemctl start docker-registry
 
 echo
 echo "Confirming Docker Registry run status"
-sudo systemctl status docker-registry
+sudo systemctl status docker-registry --no-pager
 
 
 echo

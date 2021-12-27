@@ -66,7 +66,7 @@ sudo systemctl enable docker
 
 
 # Check that Docker is running
-sudo systemctl status docker
+sudo systemctl status docker --no-pager
 
 
 echo
