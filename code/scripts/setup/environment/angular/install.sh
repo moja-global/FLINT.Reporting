@@ -7,7 +7,7 @@ echo "--------------------------------------------------------------------------
 
 echo
 echo "Installing the latest version of Angular"
-sudo npm install -y -g @angular/cli@latest
+yes '' | sudo npm install -y -g @angular/cli@latest
 
 echo
 echo "---------------------------------------------------------------------------------"

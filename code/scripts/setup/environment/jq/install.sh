@@ -6,11 +6,11 @@ echo "--------------------------------------------------------------------------
 
 echo
 echo "Update the target system with the required repositories"
-sudo add-apt-repository ppa:eugenesan/ppa
+yes '' | sudo add-apt-repository ppa:eugenesan/ppa
 
 echo
 echo "Updating the local package index"
-sudo apt update
+yes '' | sudo apt update
 
 echo
 echo "Installing jq"
