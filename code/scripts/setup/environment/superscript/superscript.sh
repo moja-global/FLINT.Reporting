@@ -1,4 +1,6 @@
 #!bin/bash
+
+
 green=$(tput setaf 2) 
 blue=$(tput setaf 4)
 cyan=$(tput setaf 6)
