@@ -48,13 +48,22 @@ Environment / System
 ```
     bash superscript.sh
 ```
-6. ## Entering the information regarding the server 
+6. Entering the information regarding the server 
 
-    i    Enter the server domain: ``` reporter.miles.co.ke       
+    i.   Enter the server domain: 
+
+    ``` 
+        reporter.miles.co.ke       
     ```      
-    ii.  Enter the domain name for traefik: ``` traefik.miles.co.ke
+    ii.  Enter the domain name for traefik: 
+
+    ``` 
+        traefik.miles.co.ke
     ```
-    iii. Enter the domain name for rabbitMQ. ``` rabbitMQ.miles.co.ke
+    iii. Enter the domain name for rabbitMQ. 
+    
+    ``` 
+        rabbitMQ.miles.co.ke
     ```
     iv.  Enter the server's default IP.
 
