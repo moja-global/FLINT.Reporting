@@ -1,3 +1,4 @@
+  GNU nano 4.8                                                                                    values.yaml                                                                                              
 # Default values for the Client's Helm Chart.
 # This is a YAML-formatted file.
 
@@ -8,9 +9,9 @@ client:
   # Ingress
   ingress:
     name: client
-    class: traefik 
+    class: traefik
     rules:
-      host: systems.ags.co.ke
+      host: reporter.miles.co.ke
       http:
         path: /client
         backend:
@@ -20,7 +21,7 @@ client:
 
   # Service
   service:
-    name: client 
+    name: client
     port:
       default: 80
       target: 80
@@ -33,13 +34,12 @@ client:
   application:
     name: client
     version: 0.0.1
-    image: 
-      id: systems.ags.co.ke:5043/client
-      tag: 0.0.1
+    image:
+      id: reporter.miles.co.ke:5043/client
+      tag: latest
       pull:
         policy: Always
-        secret: regcred      
+        secret: regcred
     replicas: 1
-
 
 
