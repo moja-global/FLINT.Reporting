@@ -34,7 +34,7 @@ Environment / System
 3. Clone the repository on the server.
 
 ```
-    git@github.com:moja-global/FLINT.Reporting.git system
+    git clone git@github.com:moja-global/FLINT.Reporting.git system
 ```
 
 4. Go into the directory containing the superscript.
@@ -65,9 +65,16 @@ Environment / System
 ```
 9. Enter the server's default IP.
 
+```
+    IP Address of the server. (For eg: 172.31.25.183) 
+```
 10. Enter the server's local IP.
 
+```
+    IP Address of the server. (For eg: 172.31.25.183) 
+```
 11. Enter the IP allocation range.
 
-
-
+```
+   IP Allocation range (For eg: 10.32.0.0/12)
+```
