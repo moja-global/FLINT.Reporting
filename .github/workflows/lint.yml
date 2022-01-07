@@ -1,23 +1,16 @@
----
-name: CI
+name: "Lint CI"
 
-# yamllint disable-line rule:truthy
 on:
   push:
     branches: [master]
   pull_request:
     branches: [master]
 
-  workflow_dispatch:
-
 jobs:
   shellcheck:
     name: Shellcheck
     runs-on: ubuntu-latest
-
     steps:
-      - name: Check out code
       - uses: actions/checkout@v2
-
       - name: Run ShellCheck
         uses: ludeeus/action-shellcheck@master
