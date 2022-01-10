@@ -4,6 +4,7 @@
 green=$(tput setaf 2) 
 blue=$(tput setaf 4)
 cyan=$(tput setaf 6)
+red=$(tput setaf 1)
 reset=$(tput sgr0)
 tput bel
 echo " ${green}  _____ _ _       _     ____                       _   _                 "        
@@ -34,10 +35,12 @@ SETUP_DIR="$(dirname "$ENVIRONMENT_DIR")"
 SCRIPTS_DIR="$(dirname "$SETUP_DIR")"
 ROOT_DIR="$(dirname "$SCRIPTS_DIR")"
 
+# Information about the server
 echo "Enter the server domain:               "
 read serverdomain
 sed -i "s/reporter.miles.co.ke/$serverdomain/" $ROOT_DIR/configurations/configurations.json
 
+# update the domains and IP sections of the config file
 echo "Enter the domain name for traefik: "
 read traefikdom
 sed -i "s/traefik.miles.co.ke/$traefikdom/" $ROOT_DIR/configurations/configurations.json
@@ -46,105 +49,198 @@ echo "Enter the domain name for rabbitMQ: "
 read rabbitmqdom
 sed -i "s/rabbitmq.miles.co.ke/$rabbitmqdom/" $ROOT_DIR/configurations/configurations.json
 
+# Update the server ip in the configuartion file.
 echo "Enter the server's default IP: "
 read serverip
 sed -i "s/34.122.239.158/$serverip/" $ROOT_DIR/configurations/configurations.json
 sed -i "s/34.122.239.158/$serverip/" $ENVIRONMENT_DIR/kubernetes/cluster/addons/traefik/values.yaml
 
+# locate the external IP section in the configuration file
 echo "Enter the server's local IP"
 read localip
 sed -i "s/10.128.0.2/$localip/" $ROOT_DIR/configurations/configurations.json
 sed -i "s/10.128.0.2/$localip/" $ENVIRONMENT_DIR/kubernetes/cluster/addons/traefik/values.yaml
 
-
+# locate the IP Allocation Range section in the script file
 echo "Enter the IP allocation range (for example: 10.32.0.0/12): "
 read IPALLOC_RANGE
 sed -i "s/172.30.0.0/16/$IPALLOC_RANGE/" $ENVIRONMENT_DIR/kubernetes/cluster/addons/weavenet/install.sh
 
 
+echo " ${blue}Installing Nano editor on the server ${reset} "
+if [ -z "$(which nano)" ] 
+then
+    echo
+    echo " ${red} Nano not found, installing it ${reset} "
+    bash $ENVIRONMENT_DIR/nano/install.sh
+else 
+    echo " ${green} Nano is installed! "
+    echo
+fi
 
 
-echo " ${blue}Installing Nano editor on the server ${reset}                 "
+echo " ${blue}Installing jq parser on the server ${reset} "
+if [ -z "$(which jq)" ]
+then
+    echo
+    echo " ${red} Jq Parser not found, installing it   ${reset} "
+    bash $ENVIRONMENT_DIR/jq/install.sh
+else 
+    echo " ${green} Jq Parser is installed! "
+    echo
+fi
 
-bash $ENVIRONMENT_DIR/nano/install.sh
 
-echo " ${blue}Installing jq parser on the server ${reset}                   "
-bash $ENVIRONMENT_DIR/jq/install.sh
+echo " ${blue}Setting up SSL files on the server ${reset} "
+if [ -z "$(which openssl)" ]
+then
+    echo
+    echo " ${red} OpenSSL not found, installing it      ${reset} "
+    bash $ENVIRONMENT_DIR/openssl/generate.sh
+else 
+    echo "${green} OpenSSL is installed!"
+    echo
+fi
 
-echo " ${blue}Setting up SSL files on the server ${reset}                   "
 
-bash $ENVIRONMENT_DIR/openssl/generate.sh
+echo " ${blue}Installing JDK on the server ${reset} "
+if [ -z "$(which java)" ]
+then
+    echo
+    echo " ${red} JDK not found, installing it       ${reset} "
+    bash $ENVIRONMENT_DIR/jdk/install.sh
+else 
+    echo " ${green} JDK is installed!"
+    echo
+fi
 
-echo " ${blue}Installing JDK on the server ${reset}                         "
 
-bash $ENVIRONMENT_DIR/jdk/install.sh
+echo " ${blue}Installing Apache Maven on the server ${reset} "
+if [ -z "$(which mvn)" ]
+then
+    echo
+    echo " ${red} Maven not found, installing it    ${reset} "
+    bash $ENVIRONMENT_DIR/maven/install.sh
+else 
+    echo " ${green} Apache Maven is installed!"
+    echo
+fi
 
-echo " ${blue}Installing Apache Maven on the server ${reset}                "
 
-bash $ENVIRONMENT_DIR/maven/install.sh
+echo " ${blue}Installing NodeJS on the server ${reset} "
+if [ -z "$(which nodejs)" ]
+then
+    echo
+    echo " ${red} Nodejs not found, installing it    ${reset} "
+    bash $ENVIRONMENT_DIR/nodejs/install.sh
+else 
+    echo " ${green} Nodejs is installed!"
+    echo
+fi
 
-echo " ${blue}Installing NodeJS on the server ${reset}                      "
 
-bash $ENVIRONMENT_DIR/nodejs/install.sh
+echo " ${blue}Installing NPM on the server ${reset} "
+if [ -z "$(which npm)" ]
+then
+    echo
+    echo "${red} NPM not found, installing it     ${reset} "
+    bash $ENVIRONMENT_DIR/npm/install.sh
+else 
+    echo " ${green} NPM is installed!"
+    echo
+fi
 
-echo " ${blue}Installing NPM on the server ${reset}                         "
 
-bash $ENVIRONMENT_DIR/npm/install.sh
+echo " ${blue}Installing Angular on the server ${reset} "
+if [ -z "$(which ng)" ]
+then
+    echo
+    echo "${red} Angular not found, installing it     ${reset} "
+    bash $ENVIRONMENT_DIR/angular/install.sh
+else 
+    echo " ${green} Angular is installed!"
+    echo
+fi
 
-echo " ${blue}Installing Angular on the server ${reset}                     "
 
-bash $ENVIRONMENT_DIR/angular/install.sh
+echo " ${blue}Installing Docker Engine CE on the server ${reset} "
+if [ -z "$(which docker)" ]
+then
+    echo
+    echo "${red} Docker not found, installing it   ${reset}     "
+    bash $ENVIRONMENT_DIR/docker/install.sh
+else 
+    echo " ${green} Docker is installed!"
+    echo 
+fi
 
-echo " ${blue}Installing Docker Engine CE on the server ${reset}                     "
+echo " ${blue}Installing Docker Compose on the server ${reset} "
+if [ -z "$(which docker-compose)" ]
+then
+    echo
+    echo "${red} Docker Compose not found, installing it    ${reset} "
+    bash $ENVIRONMENT_DIR/docker/compose/install.sh
+else 
+    echo " ${green} Docker Compose is installed!"
+    echo
+fi
 
-bash $ENVIRONMENT_DIR/docker/install.sh
+echo " ${blue}Installing Docker Registry on the server ${reset} "
+if [ -z "$(which docker-registry)" ]
+then
+    echo
+    echo "${red} Docker Registry not found, installing it    ${reset} "
+    bash $ENVIRONMENT_DIR/docker/registry/install.sh
+else 
+    echo " ${green} Docker Registry is installed!"
+    echo
+fi
 
-echo " ${blue}Installing Docker Compose on the server ${reset}                     "
+echo " ${blue}Installing Kubernetes on the server ${reset} "
+if [ -z "$(which kubectl)" ]
+then
+    echo
+    echo "${red} Kubernetes not found, installing it    ${reset}  "
+    bash $ENVIRONMENT_DIR/kubernetes/install.sh
+else 
+    echo " ${green} Kubernetes is installed!"
+    echo
+fi
 
-bash $ENVIRONMENT_DIR/docker/compose/install.sh
 
-echo " ${blue}Installing Docker Registry on the server ${reset}                     "
-
-bash $ENVIRONMENT_DIR/docker/registry/install.sh
-
-echo " ${blue}Installing Kubernetes on the server ${reset}                     "
-
-bash $ENVIRONMENT_DIR/kubernetes/install.sh
-
-echo " ${blue}Initializing Kubernetes Cluster on the server ${reset}                     "
-
+echo " ${blue}Initializing Kubernetes Cluster on the server ${reset} "
 bash $ENVIRONMENT_DIR/kubernetes/cluster/initialize.sh
 
-echo " ${blue}Adding Docker Registry Secret to the Kubernetes Cluster ${reset}                     "
 
+echo " ${blue}Adding Docker Registry Secret to the Kubernetes Cluster ${reset} "
 bash $ENVIRONMENT_DIR/kubernetes/cluster/secrets/add_docker_registry_secret.sh
 
-echo " ${blue}Adding Weavenet to the Kubernetes Cluster ${reset}                     "
 
+echo " ${blue}Adding Weavenet to the Kubernetes Cluster ${reset} "
 bash $ENVIRONMENT_DIR/kubernetes/cluster/addons/weavenet/install.sh
 
-echo " ${blue}Adding Helm to the Kubernetes Cluster ${reset}                     "
 
+echo " ${blue}Adding Helm to the Kubernetes Cluster ${reset} "
 bash $ENVIRONMENT_DIR/kubernetes/cluster/addons/helm/install.sh
 
-echo " ${blue}Adding Traefik to the Kubernetes Cluster ${reset}                     "
 
+echo " ${blue}Adding Traefik to the Kubernetes Cluster ${reset} "
 bash $ENVIRONMENT_DIR/kubernetes/cluster/addons/traefik/install.sh
 
-echo " ${blue}Adding Local Storage Volumes to the Kubernetes Cluster ${reset}                     "
 
+echo " ${blue}Adding Local Storage Volumes to the Kubernetes Cluster ${reset} "
 sudo mkdir -p /mnt/disks
-
 bash $ENVIRONMENT_DIR/kubernetes/cluster/storage/install.sh
 
-echo " ${blue}Adding PostgreSQL to the Kubernetes Cluster ${reset}                     "
 
+echo " ${blue}Adding PostgreSQL to the Kubernetes Cluster ${reset} "
 bash $ENVIRONMENT_DIR/kubernetes/cluster/addons/postgresql/install.sh
 bash $ENVIRONMENT_DIR/kubernetes/cluster/addons/postgresql/client/install.sh
 
-echo " ${blue}Adding RabbitMQ to the Kubernetes Cluster ${reset}                     "
 
+echo " ${blue}Adding RabbitMQ to the Kubernetes Cluster ${reset} "
 bash $ENVIRONMENT_DIR/kubernetes/cluster/addons/rabbitmq/install.sh
+
 
 echo "${cyan}           _                                           _      _       _         ${reset} "
 echo "${cyan}  ___  ___| |_ _   _ _ __     ___ ___  _ __ ___  _ __ | | ___| |_ ___| |        ${reset} "
