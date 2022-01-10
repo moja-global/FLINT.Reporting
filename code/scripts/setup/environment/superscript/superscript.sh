@@ -71,10 +71,10 @@ echo " ${blue}Installing Nano editor on the server ${reset} "
 if [ -z "$(which nano)" ] 
 then
     echo
-    echo " ${red} nano not found, installing it ${reset} "
+    echo " ${red} Nano not found, installing it ${reset} "
     bash $ENVIRONMENT_DIR/nano/install.sh
 else 
-    echo " ${green} Package is installed! "
+    echo " ${green} Nano is installed! "
     echo
 fi
 
@@ -83,10 +83,10 @@ echo " ${blue}Installing jq parser on the server ${reset} "
 if [ -z "$(which jq)" ]
 then
     echo
-    echo " ${red} jq parser not found, installing it   ${reset} "
+    echo " ${red} Jq Parser not found, installing it   ${reset} "
     bash $ENVIRONMENT_DIR/jq/install.sh
 else 
-    echo " ${green} Package is installed! "
+    echo " ${green} Jq Parser is installed! "
     echo
 fi
 
@@ -95,10 +95,10 @@ echo " ${blue}Setting up SSL files on the server ${reset} "
 if [ -z "$(which openssl)" ]
 then
     echo
-    echo " ${red} openssl not found, installing it      ${reset} "
+    echo " ${red} OpenSSL not found, installing it      ${reset} "
     bash $ENVIRONMENT_DIR/openssl/generate.sh
 else 
-    echo "${green} Package is installed!"
+    echo "${green} OpenSSL is installed!"
     echo
 fi
 
@@ -110,7 +110,7 @@ then
     echo " ${red} JDK not found, installing it       ${reset} "
     bash $ENVIRONMENT_DIR/jdk/install.sh
 else 
-    echo " ${green} Package is installed!"
+    echo " ${green} JDK is installed!"
     echo
 fi
 
@@ -119,10 +119,10 @@ echo " ${blue}Installing Apache Maven on the server ${reset} "
 if [ -z "$(which mvn)" ]
 then
     echo
-    echo " ${red} maven not found, installing it    ${reset} "
+    echo " ${red} Maven not found, installing it    ${reset} "
     bash $ENVIRONMENT_DIR/maven/install.sh
 else 
-    echo " ${green} Package is installed!"
+    echo " ${green} Apache Maven is installed!"
     echo
 fi
 
@@ -131,10 +131,10 @@ echo " ${blue}Installing NodeJS on the server ${reset} "
 if [ -z "$(which nodejs)" ]
 then
     echo
-    echo " ${red} nodejs not found, installing it    ${reset} "
+    echo " ${red} Nodejs not found, installing it    ${reset} "
     bash $ENVIRONMENT_DIR/nodejs/install.sh
 else 
-    echo " ${green} Package is installed!"
+    echo " ${green} Nodejs is installed!"
     echo
 fi
 
@@ -143,10 +143,10 @@ echo " ${blue}Installing NPM on the server ${reset} "
 if [ -z "$(which npm)" ]
 then
     echo
-    echo "${red} npm not found, installing it     ${reset} "
+    echo "${red} NPM not found, installing it     ${reset} "
     bash $ENVIRONMENT_DIR/npm/install.sh
 else 
-    echo " ${green} Package is installed!"
+    echo " ${green} NPM is installed!"
     echo
 fi
 
@@ -158,7 +158,7 @@ then
     echo "${red} Angular not found, installing it     ${reset} "
     bash $ENVIRONMENT_DIR/angular/install.sh
 else 
-    echo " ${green} Package is installed!"
+    echo " ${green} Angular is installed!"
     echo
 fi
 
@@ -170,7 +170,7 @@ then
     echo "${red} Docker not found, installing it   ${reset}     "
     bash $ENVIRONMENT_DIR/docker/install.sh
 else 
-    echo " ${green} Package is installed!"
+    echo " ${green} Docker is installed!"
     echo 
 fi
 
@@ -181,7 +181,7 @@ then
     echo "${red} Docker Compose not found, installing it    ${reset} "
     bash $ENVIRONMENT_DIR/docker/compose/install.sh
 else 
-    echo " ${green} Package is installed!"
+    echo " ${green} Docker Compose is installed!"
     echo
 fi
 
@@ -192,7 +192,7 @@ then
     echo "${red} Docker Registry not found, installing it    ${reset} "
     bash $ENVIRONMENT_DIR/docker/registry/install.sh
 else 
-    echo " ${green} Package is installed!"
+    echo " ${green} Docker Registry is installed!"
     echo
 fi
 
@@ -203,7 +203,7 @@ then
     echo "${red} Kubernetes not found, installing it    ${reset}  "
     bash $ENVIRONMENT_DIR/kubernetes/install.sh
 else 
-    echo " ${green} Package is installed!"
+    echo " ${green} Kubernetes is installed!"
     echo
 fi
 
