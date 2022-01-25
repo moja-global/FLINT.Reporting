@@ -11,7 +11,7 @@ Environment / System
 2. Clone the repository 
 
 ```
-    https://github.com/<YOUR_GITHUB_USERNAME>/FLINT.Reporting.git
+    git clone https://github.com/<YOUR_GITHUB_USERNAME>/FLINT.Reporting.git
 ```
 
 3. Go into the directory containing the superscript.
