@@ -1,37 +1,19 @@
 name: Reporting tool frontend
 
 on:
-  push:
-    branches:
-      - master
   pull_request:
-    branches:
-      - master
-  workflow_dispatch:
-
-defaults:
-  run:
-    shell: bash
-    working-directory: code/client
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [master]
+    
 
 jobs:
-  build:
-    name: Build the frontend
+  # Build FLINT Reporting Tool UI
+  build-flint-reporting-client:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/client/
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup NodeJS
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14.x'
-
-      - name: Install dependencies
-        run: |
-          npm install -g @angular/cli
-          npm install
-
-      - name: Build UI
-        run: |
-          bash build.sh
+      - uses: actions/checkout@v2
+      - name: Build FLINT Reporting Client
+        run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
