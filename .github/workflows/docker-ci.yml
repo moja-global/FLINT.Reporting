@@ -1,4 +1,4 @@
-name: Reporting tool frontend
+name: Build Docker Images
 
 on:
   pull_request:
@@ -16,4 +16,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build FLINT Reporting Client
-        run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+        run: docker build . --file Dockerfile --tag flint_reporting.client
