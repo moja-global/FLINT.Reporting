@@ -17,3 +17,13 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build FLINT Reporting Client
         run: docker build . --file Dockerfile --tag flint_reporting.client
+  
+  build-accountabilities:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/accountabilities/
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build Accountabilities service
+        run: docker build . --file Dockerfile --tag flint_reporting.accountabilities
