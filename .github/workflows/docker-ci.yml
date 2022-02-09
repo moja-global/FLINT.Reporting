@@ -6,35 +6,36 @@ on:
     branches: [master]
     
 
-jobs:
-  # Build FLINT Reporting Tool UI
-  build-flint-reporting-client:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./code/client/
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build FLINT Reporting Client
-        run: docker build . --file Dockerfile --tag flint_reporting.client
-
-  build-accountabilities-microservice:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
+jobs: 
+  build-accountabilities-microservice: 
+    defaults: 
+      run: 
         working-directory: ./code/services/accountabilities/
-  
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-java@v2
-      with:
-        distribution: 'temurin' # See 'Supported distributions' for available options
-        java-version: '17'
-        run: bash build.sh
-
-    - name: Build accountabilities microservice 
-      uses: actions/checkout@v2
-      run: docker build . --file Dockerfile --tag flint_reporting.accountabilities
+    runs-on: ubuntu-latest
+    steps: 
+      - 
+        uses: actions/checkout@v2
+      - 
+        uses: actions/setup-java@v2
+        with: 
+          distribution: temurin
+          java-version: "17"
+          run: "bash build.sh"
+      - 
+        name: "Build accountabilities microservice"
+        run: "docker build . --file Dockerfile --tag flint_reporting.accountabilities"
+        uses: actions/checkout@v2
+  build-flint-reporting-client: 
+    defaults: 
+      run: 
+        working-directory: ./code/client/
+    runs-on: ubuntu-latest
+    steps: 
+      - 
+        uses: actions/checkout@v2
+      - 
+        name: "Build FLINT Reporting Client"
+        run: "docker build . --file Dockerfile --tag flint_reporting.client"
 
 
     
