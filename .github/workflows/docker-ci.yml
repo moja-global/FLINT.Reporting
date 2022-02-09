@@ -24,7 +24,6 @@ jobs:
       run:
         working-directory: ./code/services/accountabilities/
     steps:
-      - uses: actions/checkout@v2
       - name: Set up JDK
       - uses: actions/setup-java@v2
         with:
@@ -34,7 +33,7 @@ jobs:
         run: bash build.sh
 
     
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Build accountabilities microservice 
       
         run: docker build . --file Dockerfile --tag flint_reporting.accountabilities
