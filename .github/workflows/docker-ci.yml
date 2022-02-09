@@ -23,18 +23,18 @@ jobs:
     defaults:
       run:
         working-directory: ./code/services/accountabilities/
+  
     steps:
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'temurin' 
-          java-version: '17'
-      - name: Build code
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v2
+      with:
+        distribution: 'temurin' # See 'Supported distributions' for available options
+        java-version: '17'
         run: bash build.sh
 
-      - name: Build accountabilities microservice 
-        uses: actions/checkout@v2
-        run: docker build . --file Dockerfile --tag flint_reporting.accountabilities
+    - name: Build accountabilities microservice 
+      uses: actions/checkout@v2
+      run: docker build . --file Dockerfile --tag flint_reporting.accountabilities
 
 
     
