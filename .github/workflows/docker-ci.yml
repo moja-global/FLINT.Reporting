@@ -32,10 +32,7 @@ jobs:
           java-version: '17'
         run: bash build.sh 
 
-      - name: Build accountabilities microservice 
-      - uses: actions/checkout@v1
-        run: docker build . --file Dockerfile --tag flint_reporting.accountabilities
-
+     
 
     
      
