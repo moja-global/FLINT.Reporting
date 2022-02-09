@@ -31,6 +31,9 @@ jobs:
         with:
           distribution: 'temurin' 
           java-version: '17'
+
+      - name: Build code 
+        uses: actions/checkout@v2
         run: bash build.sh
 
       - name: Build accountabilities microservice 
