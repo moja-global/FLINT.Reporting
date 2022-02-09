@@ -24,15 +24,18 @@ jobs:
       run:
         working-directory: ./code/services/accountabilities/
     steps:
-      - name: Build code
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v2
         with:
           distribution: 'temurin' 
           java-version: '17'
-        run: bash build.sh 
+      - name: Build code
+        run: mvn clean install
 
-     
+      - name: Build accountabilities microservice 
+      - uses: actions/checkout@v1
+        run: docker build . --file Dockerfile --tag flint_reporting.accountabilities
+
 
     
      
