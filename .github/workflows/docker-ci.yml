@@ -30,7 +30,7 @@ jobs:
           distribution: 'temurin' 
           java-version: '17'
       - name: Build code
-        run: mvn clean install
+        run: bash build.sh
 
       - name: Build accountabilities microservice 
       - uses: actions/checkout@v1
