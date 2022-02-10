@@ -39,4 +39,3 @@ jobs:
 
       - name: Build accountabilities microservice 
         run: docker build . --file Dockerfile --tag flint_reporting.accountabilities
-
