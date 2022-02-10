@@ -7,8 +7,8 @@ on:
     
 
 jobs:
-  # Build FLINT Reporting Tool UI
   build-flint-reporting-client:
+    name: Build FLINT Reporting Client
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -20,6 +20,7 @@ jobs:
 
 
   build-accountabilities-microservice:
+    name: Build FLINT Reporting Accountability Microservice
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -39,3 +40,25 @@ jobs:
 
       - name: Build accountabilities microservice 
         run: docker build . --file Dockerfile --tag flint_reporting.accountabilities
+
+  build-vegetation-types-microservice:
+    name: Build FLINT Reporting Vegetation Types Microservice
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/vegetation-types/
+  
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build accountabilities microservice 
+        run: docker build . --file Dockerfile --tag flint_reporting.vegetation-types
