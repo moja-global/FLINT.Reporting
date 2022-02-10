@@ -1,4 +1,4 @@
-name: Publish FLINT Reporting Tool Client
+name: Publish FLINT Reporting Docker Images
 
 on:
   schedule:
@@ -13,6 +13,7 @@ env:
 
 jobs:
   publish-reporting-tool-frontend:
+    name: Publish Reporting Tool Frontend
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -45,6 +46,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           
   publish-reporting-tool-accountabilities-microservice:
+    name: Publish FLINT Reporting Accountabilities Microservice
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -84,6 +86,51 @@ jobs:
         with:
           context: ./code/services/accountabilities/
           file: "./code/services/accountabilities/Dockerfile"
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  publish-reporting-tool-vegetation-types-microservice:
+    name: Publish FLINT Reporting Vegetation Types Microservice
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ env.REGISTRY }}/moja-global/flint_reporting.accountabilities
+          
+      - name: Build with Maven
+        run: |
+          cd ./code/services/vegetation-types/
+          bash build.sh
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: ./code/services/vegetation-types/
+          file: "./code/services/vegetation-types/Dockerfile"
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
