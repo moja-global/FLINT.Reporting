@@ -60,7 +60,7 @@ jobs:
       - name: Build with maven 
         run: bash build.sh 
 
-      - name: Build accountabilities microservice 
+      - name: Build Vegetation Types microservice 
         run: docker build . --file Dockerfile --tag flint_reporting.vegetation-types
 
     
@@ -83,7 +83,7 @@ jobs:
       - name: Build with maven 
         run: bash build.sh 
 
-      - name: Build accountabilities microservice 
+      - name: Build egetation History Vegetation Types microservice 
         run: docker build . --file Dockerfile --tag flint_reporting.vegetation-history-vegetation-types
 
   build-units-microservice:
@@ -105,7 +105,7 @@ jobs:
       - name: Build with maven 
         run: bash build.sh 
 
-      - name: Build accountabilities microservice 
+      - name: Build Units microservice 
         run: docker build . --file Dockerfile --tag flint_reporting.units
 
   build-unit-categories-microservice:
@@ -127,7 +127,7 @@ jobs:
       - name: Build with maven 
         run: bash build.sh 
 
-      - name: Build accountabilities microservice 
+      - name: Build Unit Categories microservice
         run: docker build . --file Dockerfile --tag flint_reporting.unit-categories
 
   build-tasks-microservice:
@@ -149,7 +149,7 @@ jobs:
       - name: Build with maven 
         run: bash build.sh 
 
-      - name: Build accountabilities microservice 
+      - name: Build Tasks microservice
         run: docker build . --file Dockerfile --tag flint_reporting.tasks
 
   build-task-manager-microservice:
@@ -171,5 +171,49 @@ jobs:
       - name: Build with maven 
         run: bash build.sh 
 
-      - name: Build accountabilities microservice 
+      - name: Build Task Manager microservice
         run: docker build . --file Dockerfile --tag flint_reporting.task-manager
+
+  build-reporting-variables-microservice:
+    name: Build FLINT Reporting Variables microservice
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/reporting-variables/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build Reporting Variables microservice
+        run: docker build . --file Dockerfile --tag flint_reporting.reporting-variables
+
+  build-reporting-tables-microservice:
+    name: Build FLINT Reporting Tables
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/reporting-tables/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build Reporting Tables microservice
+        run: docker build . --file Dockerfile --tag flint_reporting.reporting-tables
