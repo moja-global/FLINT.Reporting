@@ -217,3 +217,135 @@ jobs:
 
       - name: Build Reporting Tables microservice
         run: docker build . --file Dockerfile --tag flint_reporting.reporting-tables
+
+  build-reporting-frameworks-microservice:
+    name: Build FLINT Reporting Frameworks
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/reporting-frameworks/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build Reporting Frameworks microservice
+        run: docker build . --file Dockerfile --tag flint_reporting.reporting-frameworks
+
+  build-quantity-observations-microservice:
+    name: Build FLINT Reporting Quantity Observations
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/quantity-observations/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build Reporting Quantity Observations microservice
+        run: docker build . --file Dockerfile --tag flint_reporting.quantity-observations
+
+  build-pools-microservice:
+    name: Build FLINT Reporting Pools
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/pools/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build pools microservice
+        run: docker build . --file Dockerfile --tag flint_reporting.pools
+
+  build-party-types-microservice:
+    name: Build FLINT Reporting Party Types
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/party-types/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build pools microservice
+        run: docker build . --file Dockerfile --tag flint_reporting.pools
+
+  build-parties-microservice:
+    name: Build FLINT Reporting Parties
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/parties/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build pools microservice
+        run: docker build . --file Dockerfile --tag flint_reporting.parties
+
+  build-locations-microservice:
+    name: Build FLINT Reporting Locations
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/locations/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build pools microservice
+        run: docker build . --file Dockerfile --tag flint_reporting.locations
