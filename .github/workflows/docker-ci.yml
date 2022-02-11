@@ -394,3 +394,25 @@ jobs:
       - name: Build Land uses Flux types microservice
         run: docker build . --file Dockerfile --tag flint_reporting.land-uses-flux-types
 
+  build-land-use-categories-microservice:
+    name: Build FLINT Reporting Land use Categories
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/land-use-categories/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build Land uses Categories microservice
+        run: docker build . --file Dockerfile --tag flint_reporting.land-use-categories
+
