@@ -303,7 +303,7 @@ jobs:
       - name: Build with maven 
         run: bash build.sh 
 
-      - name: Build pools microservice
+      - name: Build party-types microservice
         run: docker build . --file Dockerfile --tag flint_reporting.pools
 
   build-parties-microservice:
@@ -325,7 +325,7 @@ jobs:
       - name: Build with maven 
         run: bash build.sh 
 
-      - name: Build pools microservice
+      - name: Build parties microservice
         run: docker build . --file Dockerfile --tag flint_reporting.parties
 
   build-locations-microservice:
@@ -347,5 +347,50 @@ jobs:
       - name: Build with maven 
         run: bash build.sh 
 
-      - name: Build pools microservice
+      - name: Build locations microservice
         run: docker build . --file Dockerfile --tag flint_reporting.locations
+
+  build-land-uses-flux-types-to-reporting-tables-microservice:
+    name: Build FLINT Reporting Land uses Flux types to Reporting Tables
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/land-uses-flux-types-to-reporting-tables/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build Land uses Flux types to Reporting Tables microservice
+        run: docker build . --file Dockerfile --tag flint_reporting.land-uses-flux-types-to-reporting-tables
+
+  build-land-uses-flux-types-microservice:
+    name: Build FLINT Reporting Land uses Flux types
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/land-uses-flux-types/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build Land uses Flux types microservice
+        run: docker build . --file Dockerfile --tag flint_reporting.land-uses-flux-types
+
