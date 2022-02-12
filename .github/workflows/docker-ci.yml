@@ -65,7 +65,7 @@ jobs:
 
     
   build-vegetation-history-vegetation-types-microservice:
-    name: Build FLINT Reporting Vegetation History Vegetation Types
+    name: Build FLINT Reporting Vegetation History Vegetation Types Microservice
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -87,7 +87,7 @@ jobs:
         run: docker build . --file Dockerfile --tag flint_reporting.vegetation-history-vegetation-types
 
   build-units-microservice:
-    name: Build FLINT Reporting Units
+    name: Build FLINT Reporting Units Microservice
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -109,7 +109,7 @@ jobs:
         run: docker build . --file Dockerfile --tag flint_reporting.units
 
   build-unit-categories-microservice:
-    name: Build FLINT Reporting Unit Categories
+    name: Build FLINT Reporting Unit Categories Microservice
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -131,7 +131,7 @@ jobs:
         run: docker build . --file Dockerfile --tag flint_reporting.unit-categories
 
   build-tasks-microservice:
-    name: Build FLINT Reporting Tasks
+    name: Build FLINT Reporting Tasks Microservice
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -153,7 +153,7 @@ jobs:
         run: docker build . --file Dockerfile --tag flint_reporting.tasks
 
   build-task-manager-microservice:
-    name: Build FLINT Reporting Task Manager
+    name: Build FLINT Reporting Task Manager Microservice
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -175,7 +175,7 @@ jobs:
         run: docker build . --file Dockerfile --tag flint_reporting.task-manager
 
   build-reporting-variables-microservice:
-    name: Build FLINT Reporting Variables microservice
+    name: Build FLINT Reporting Variables Microservice
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -197,7 +197,7 @@ jobs:
         run: docker build . --file Dockerfile --tag flint_reporting.reporting-variables
 
   build-reporting-tables-microservice:
-    name: Build FLINT Reporting Tables
+    name: Build FLINT Reporting Tables Microservice
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -219,7 +219,7 @@ jobs:
         run: docker build . --file Dockerfile --tag flint_reporting.reporting-tables
 
   build-reporting-frameworks-microservice:
-    name: Build FLINT Reporting Frameworks
+    name: Build FLINT Reporting Frameworks Microservice
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -241,7 +241,7 @@ jobs:
         run: docker build . --file Dockerfile --tag flint_reporting.reporting-frameworks
 
   build-quantity-observations-microservice:
-    name: Build FLINT Reporting Quantity Observations
+    name: Build FLINT Reporting Quantity Observations Microservice
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -263,7 +263,7 @@ jobs:
         run: docker build . --file Dockerfile --tag flint_reporting.quantity-observations
 
   build-pools-microservice:
-    name: Build FLINT Reporting Pools
+    name: Build FLINT Reporting Pools Microservice
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -285,7 +285,7 @@ jobs:
         run: docker build . --file Dockerfile --tag flint_reporting.pools
 
   build-party-types-microservice:
-    name: Build FLINT Reporting Party Types
+    name: Build FLINT Reporting Party Types Microservice
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -307,7 +307,7 @@ jobs:
         run: docker build . --file Dockerfile --tag flint_reporting.pools
 
   build-parties-microservice:
-    name: Build FLINT Reporting Parties
+    name: Build FLINT Reporting Parties Microservice
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -329,7 +329,7 @@ jobs:
         run: docker build . --file Dockerfile --tag flint_reporting.parties
 
   build-locations-microservice:
-    name: Build FLINT Reporting Locations
+    name: Build FLINT Reporting Locations Microservice
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -351,7 +351,7 @@ jobs:
         run: docker build . --file Dockerfile --tag flint_reporting.locations
 
   build-land-uses-flux-types-to-reporting-tables-microservice:
-    name: Build FLINT Reporting Land uses Flux types to Reporting Tables
+    name: Build FLINT Reporting Land uses Flux types to Reporting Tables Microservice
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -373,7 +373,7 @@ jobs:
         run: docker build . --file Dockerfile --tag flint_reporting.land-uses-flux-types-to-reporting-tables
 
   build-land-uses-flux-types-microservice:
-    name: Build FLINT Reporting Land uses Flux types
+    name: Build FLINT Reporting Land uses Flux types Microservice
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -395,7 +395,7 @@ jobs:
         run: docker build . --file Dockerfile --tag flint_reporting.land-uses-flux-types
 
   build-land-use-categories-microservice:
-    name: Build FLINT Reporting Land use Categories
+    name: Build FLINT Reporting Land use Categories Microservice
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -416,3 +416,288 @@ jobs:
       - name: Build Land uses Categories microservice
         run: docker build . --file Dockerfile --tag flint_reporting.land-use-categories
 
+  build-fluxes-to-reporting-variables-microservice:
+    name: Build FLINT Reporting Fluxes to Reporting Variables Microservice
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/fluxes-to-reporting-variables/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build Fluxes to Reporting Variables microservice
+        run: docker build . --file Dockerfile --tag flint_reporting.fluxes-to-reporting-variables
+
+  build-flux-types-microservice:
+    name: Build FLINT Reporting Flux Types Microservice 
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/flux-types/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build Flux Types microservice
+        run: docker build . --file Dockerfile --tag flint_reporting.flux-types
+
+  build-flux-reporting-results-microservice:
+    name: Build FLINT Reporting Flux Reporting Results Microservice
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/flux-reporting-results/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build Flux Reporting Results microservice
+        run: docker build . --file Dockerfile --tag flint_reporting.flux-reporting-results
+
+  build-emission-types-microservice:
+    name: Build FLINT Reporting Emisssion Types Microservice
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/emission-types/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build Emission Types microservice
+        run: docker build . --file Dockerfile --tag flint_reporting.emission-types
+
+  build-dates-microservice:
+    name: Build FLINT Reporting Dates Microservice
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/dates/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build Dates microservice
+        run: docker build . --file Dockerfile --tag flint_reporting.dates
+
+  build-databases-microservice:
+    name: Build FLINT Reporting Databases Microservice
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/databases/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build Databases microservice
+        run: docker build . --file Dockerfile --tag flint_reporting.databases
+
+  build-data-processor-microservice:
+    name: Build FLINT Reporting Data Processor Microservice
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/data-processor/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build Data Processor microservice
+        run: docker build . --file Dockerfile --tag flint_reporting.data-processor
+
+  build-data-aggregator-microservice:
+    name: Build FLINT Reporting Data Aggregator Microservice
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/data-aggregator/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build Data Aggregator microservice
+        run: docker build . --file Dockerfile --tag flint_reporting.data-aggregator
+
+  build-crf-tables-microservice:
+    name: Build FLINT Reporting Crf Tables Microservice
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/crf-tables/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build Crf Tables microservice
+        run: docker build . --file Dockerfile --tag flint_reporting.crf-tables
+
+  build-cover-types-microservice:
+    name: Build FLINT Reporting Cover Types Microservice
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/cover-types/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build Cover Types microservice
+        run: docker build . --file Dockerfile --tag flint_reporting.cover-types
+
+  build-conversion-and-remaining-periods-microservice:
+    name: Build FLINT Reporting Conversion and Remaining Periods Microservice
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/conversion-and-remaining-periods/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build Conversion and Remaining Periods microservice
+        run: docker build . --file Dockerfile --tag flint_reporting.conversion-and-remaining-periods
+
+  build-accountabilities-types-microservice:
+    name: Build FLINT Reporting Accountability Types Microservice
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/accountabilities-types/
+  
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build accountabilities types microservice 
+        run: docker build . --file Dockerfile --tag flint_reporting.accountabilities-types
+
+  build-accountabilities-rules-microservice:
+    name: Build FLINT Reporting Accountability Rules Microservice
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code/services/accountabilities-rules/
+  
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup JDK 
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin' 
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build with maven 
+        run: bash build.sh 
+
+      - name: Build accountabilities rules microservice 
+        run: docker build . --file Dockerfile --tag flint_reporting.accountabilities-rules
