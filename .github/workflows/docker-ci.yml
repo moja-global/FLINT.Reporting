@@ -658,12 +658,12 @@ jobs:
       - name: Build Conversion and Remaining Periods microservice
         run: docker build . --file Dockerfile --tag flint_reporting.conversion-and-remaining-periods
 
-  build-accountabilities-types-microservice:
+  build-accountability-types-microservice:
     name: Build FLINT Reporting Accountability Types Microservice
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./code/services/accountabilities-types/
+        working-directory: ./code/services/accountability-types/
   
     steps:
       - uses: actions/checkout@v2
@@ -677,15 +677,15 @@ jobs:
       - name: Build with maven 
         run: bash build.sh 
 
-      - name: Build accountabilities types microservice 
-        run: docker build . --file Dockerfile --tag flint_reporting.accountabilities-types
+      - name: Build accountability types microservice 
+        run: docker build . --file Dockerfile --tag flint_reporting.accountability-types
 
-  build-accountabilities-rules-microservice:
+  build-accountability-rules-microservice:
     name: Build FLINT Reporting Accountability Rules Microservice
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./code/services/accountabilities-rules/
+        working-directory: ./code/services/accountability-rules/
   
     steps:
       - uses: actions/checkout@v2
@@ -699,5 +699,5 @@ jobs:
       - name: Build with maven 
         run: bash build.sh 
 
-      - name: Build accountabilities rules microservice 
-        run: docker build . --file Dockerfile --tag flint_reporting.accountabilities-rules
+      - name: Build accountability rules microservice 
+        run: docker build . --file Dockerfile --tag flint_reporting.accountability-rules

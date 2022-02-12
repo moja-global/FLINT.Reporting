@@ -1350,8 +1350,8 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-  publish-accountabilities-types-microservice:
-    name: Publish FLINT Reporting Accountabilities Types
+  publish-accountability-types-microservice:
+    name: Publish FLINT Reporting Accountability Types
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -1379,24 +1379,24 @@ jobs:
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: ${{ env.REGISTRY }}/moja-global/flint_reporting.accountabilities-types
+          images: ${{ env.REGISTRY }}/moja-global/flint_reporting.accountability-types
 
       - name: Build with Maven
         run: |
-          cd ./code/services/accountabilities-types/
+          cd ./code/services/accountability-types/
           bash build.sh
 
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
-          context: ./code/services/accountabilities-types/
-          file: "./code/services/accountabilities-types/Dockerfile"
+          context: ./code/services/accountability-types/
+          file: "./code/services/accountability-types/Dockerfile"
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-  publish-accountabilities-rules-microservice:
-    name: Publish FLINT Reporting Accountabilities Rules
+  publish-accountability-rules-microservice:
+    name: Publish FLINT Reporting Accountability Rules
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -1424,18 +1424,18 @@ jobs:
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: ${{ env.REGISTRY }}/moja-global/flint_reporting.accountabilities-rules
+          images: ${{ env.REGISTRY }}/moja-global/flint_reporting.accountability-rules
 
       - name: Build with Maven
         run: |
-          cd ./code/services/accountabilities-rules/
+          cd ./code/services/accountability-rules/
           bash build.sh
 
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
-          context: ./code/servicesaccountabilities-rules/
-          file: "./code/services/accountabilities-rules/Dockerfile"
+          context: ./code/services/accountability-rules/
+          file: "./code/services/accountability-rules/Dockerfile"
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
