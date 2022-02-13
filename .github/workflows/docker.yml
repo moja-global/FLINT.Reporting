@@ -13,6 +13,9 @@ on:
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
 
+env:
+  REGISTRY: ghcr.io
+
 jobs:
   publish-reporting-tool-frontend:
     name: Publish Reporting Tool (client)
