@@ -1,8 +1,13 @@
-name: Publish FLINT Reporting Docker Images
+name: FLINT Reporting Docker Images CI/CD
 
 on:
   schedule:
-    - cron: '42 22 * * *'
+    - cron: "0 0 * * MON"
+
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [master]
+
   push:
     branches: [ master ]
     # Publish semver tags as releases.
@@ -47,12 +52,12 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/moja-global/flint_reporting.client
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/client/
           file: "./code/client/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=local,src=/tmp/.buildx-cache
@@ -105,12 +110,12 @@ jobs:
           cd ./code/services/accountabilities/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/accountabilities/
           file: "./code/services/accountabilities/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -150,12 +155,12 @@ jobs:
           cd ./code/services/vegetation-types/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/vegetation-types/
           file: "./code/services/vegetation-types/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -195,12 +200,12 @@ jobs:
           cd ./code/services/vegetation-history-vegetation-types/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/vegetation-history-vegetation-types/
           file: "./code/services/vegetation-history-vegetation-types/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -240,12 +245,12 @@ jobs:
           cd ./code/services/units/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/units/
           file: "./code/services/units/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -285,12 +290,12 @@ jobs:
           cd ./code/services/unit-categories/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/unit-categories/
           file: "./code/services/unit-categories/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -330,12 +335,12 @@ jobs:
           cd ./code/services/tasks/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/tasks/
           file: "./code/services/tasks/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -375,12 +380,12 @@ jobs:
           cd ./code/services/task-manager/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/task-manager/
           file: "./code/services/task-manager/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -420,12 +425,12 @@ jobs:
           cd ./code/services/reporting-tables/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/reporting-tables/
           file: "./code/services/reporting-tables/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -465,12 +470,12 @@ jobs:
           cd ./code/services/reporting-variables/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/reporting-variables/
           file: "./code/services/reporting-variables/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -510,12 +515,12 @@ jobs:
           cd ./code/services/reporting-frameworks/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/reporting-frameworks/
           file: "./code/services/reporting-frameworks/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -555,12 +560,12 @@ jobs:
           cd ./code/services/quantity-observations/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/quantity-observations/
           file: "./code/services/quantity-observations/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -600,12 +605,12 @@ jobs:
           cd ./code/services/pools/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/pools/
           file: "./code/services/pools/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -645,12 +650,12 @@ jobs:
           cd ./code/services/party-types/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/party-types/
           file: "./code/services/party-types/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -690,12 +695,12 @@ jobs:
           cd ./code/services/parties/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/parties/
           file: "./code/services/parties/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -735,12 +740,12 @@ jobs:
           cd ./code/services/locations/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/locations/
           file: "./code/services/locations/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -780,12 +785,12 @@ jobs:
           cd ./code/services/land-uses-flux-types-to-reporting-tables/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/land-uses-flux-types-to-reporting-tables/
           file: "./code/services/land-uses-flux-types-to-reporting-tables/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -825,12 +830,12 @@ jobs:
           cd ./code/services/land-uses-flux-types/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/land-uses-flux-types/
           file: "./code/services/land-uses-flux-types/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -870,12 +875,12 @@ jobs:
           cd ./code/services/land-use-categories/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/land-use-categories/
           file: "./code/services/land-use-categories/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -915,12 +920,12 @@ jobs:
           cd ./code/services/fluxes-to-reporting-variables/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/fluxes-to-reporting-variables/
           file: "./code/services/fluxes-to-reporting-variables/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -960,12 +965,12 @@ jobs:
           cd ./code/services/flux-types/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/flux-types/
           file: "./code/services/flux-types/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -1005,12 +1010,12 @@ jobs:
           cd ./code/services/flux-reporting-results/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/flux-reporting-results/
           file: "./code/services/flux-reporting-results/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -1050,12 +1055,12 @@ jobs:
           cd ./code/services/emission-types/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/emission-types/
           file: "./code/services/emission-types/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -1095,12 +1100,12 @@ jobs:
           cd ./code/services/dates/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/dates/
           file: "./code/services/dates/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -1140,12 +1145,12 @@ jobs:
           cd ./code/services/databases/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/databases/
           file: "./code/services/databases/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -1185,12 +1190,12 @@ jobs:
           cd ./code/services/data-processor/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/data-processor/
           file: "./code/services/data-processor/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -1230,12 +1235,12 @@ jobs:
           cd ./code/services/data-aggregator/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/data-aggregator/
           file: "./code/services/data-aggregator/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -1275,12 +1280,12 @@ jobs:
           cd ./code/services/crf-tables/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/crf-tables/
           file: "./code/services/crf-tables/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -1320,12 +1325,12 @@ jobs:
           cd ./code/services/cover-types/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/cover-types/
           file: "./code/services/cover-types/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -1365,12 +1370,12 @@ jobs:
           cd ./code/services/conversion-and-remaining-periods/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/conversion-and-remaining-periods/
           file: "./code/services/conversion-and-remaining-periods/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -1410,12 +1415,12 @@ jobs:
           cd ./code/services/accountability-types/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/accountability-types/
           file: "./code/services/accountability-types/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -1455,11 +1460,11 @@ jobs:
           cd ./code/services/accountability-rules/
           bash build.sh
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./code/services/accountability-rules/
           file: "./code/services/accountability-rules/Dockerfile"
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
