@@ -32,8 +32,8 @@ microservice:
     name: crf-tables
     version: 0.0.1
     image: 
-      id: reporter.miles.co.ke:5043/crf-tables
-      tag: 0.0.1
+      id: ghcr.io/moja-global/flint_reporting.crf-tables
+      tag: master
       pull:
         policy: Always
         secret: regcred

@@ -34,8 +34,8 @@ client:
     name: client
     version: 0.0.1
     image: 
-      id: systems.ags.co.ke:5043/client
-      tag: 0.0.1
+      id: ghcr.io/moja-global/flint_reporting.client
+      tag: master
       pull:
         policy: Always
         secret: regcred      
