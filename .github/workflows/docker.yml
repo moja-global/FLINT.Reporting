@@ -62,7 +62,7 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 
--       uses: azure/container-scan@v0
+      - uses: azure/container-scan@v0
         with:
           image-name: ${{ env.REGISTRY }}/moja-global/flint_reporting.client:master
 
