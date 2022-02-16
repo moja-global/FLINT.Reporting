@@ -32,8 +32,8 @@ microservice:
     name: databases
     version: 0.0.1
     image: 
-      id: reporter.miles.co.ke:5043/databases
-      tag: 0.0.1
+      id: ghcr.io/moja-global/flint_reporting.databases
+      tag: master
       pull:
         policy: Always
         secret: regcred

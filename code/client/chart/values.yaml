@@ -34,7 +34,7 @@ client:
   application:
     name: client
     version: 0.0.1
-    image:
+    image: 
       id: ghcr.io/moja-global/flint_reporting.client
       tag: master
       pull:

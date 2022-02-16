@@ -32,8 +32,8 @@ microservice:
     name: flux-reporting-results
     version: 0.0.1
     image: 
-      id: reporter.miles.co.ke:5043/flux-reporting-results
-      tag: 0.0.1
+      id: ghcr.io/moja-global/flint_reporting.flux-reporting-results
+      tag: master
       pull:
         policy: Always
         secret: regcred

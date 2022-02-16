@@ -32,8 +32,8 @@ microservice:
     name: reporting-variables
     version: 0.0.1
     image: 
-      id: reporter.miles.co.ke:5043/reporting-variables
-      tag: 0.0.1
+      id: ghcr.io/moja-global/flint_reporting.reporting-variables
+      tag: master
       pull:
         policy: Always
         secret: regcred
