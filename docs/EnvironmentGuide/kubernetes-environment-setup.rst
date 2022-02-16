@@ -10,13 +10,13 @@ Follow the instructions below to install Kubernetes:
 
    .. code:: sh
 
-      cd ~/scripts/environment/kubernetes
+      FLINT.Reporting/code/scripts/setup/environment/kubernetes
 
 2. Invoke the Kubernetes installation script:
 
    .. code:: sh
 
-      ./install_kubernetes.sh
+      bash install.sh
 
 Create Kubernetes Cluster
 -------------------------
@@ -27,13 +27,13 @@ Follow the instructions below to create a Kubernetes cluster:
 
    .. code:: sh
 
-      cd ~/scripts/environment/kubernetes/cluster
+      FLINT.Reporting/code/scripts/setup/environment/kubernetes/cluster
 
 2. Invoke the kubernetes-cluster initialization script:
 
    .. code:: sh
 
-      ./initialize_kubernetes_cluster.sh
+      bash initialize.sh
 
 Add Docker Registry Secret to the Cluster
 -----------------------------------------
@@ -46,13 +46,13 @@ cluster:
 
    .. code:: sh
 
-      cd ~/scripts/environment/kubernetes/secrets
+    FLINT.Reporting/code/scripts/setup/environment/kubernetes/cluster/secrets
 
 2. Invoke the add private docker registry secret script:
 
    .. code:: sh
 
-      ./add_private_docker_registry_secret.sh
+      bash add_private_docker_registry_secret.sh
 
 Add Weavenet to the Cluster
 ---------------------------
@@ -63,13 +63,13 @@ Follow the instructions below to add Weavenet to the cluster:
 
    .. code:: sh
 
-      cd ~/scripts/environment/weavenet
+      FLINT.Reporting/code/scripts/setup/environment/kubernetes/cluster/addons/weavenet
 
 2. Invoke the meta installation script:
 
    .. code:: sh
 
-      ./install_weavenet.sh
+      bash install.sh
 
 Install Helm
 ------------
@@ -80,13 +80,13 @@ Follow the instructions below to install Helm:
 
    .. code:: sh
 
-      cd ~/scripts/environment/helm
+   FLINT.Reporting/code/scripts/setup/environment/kubernetes/cluster/addons/helm
 
 2. Invoke the helm installation script:
 
    .. code:: sh
 
-      ./install_helm.sh
+      bash install.sh
 
 Add Traefik to the Cluster
 --------------------------
@@ -97,13 +97,13 @@ Follow the instructions below to add Traefik to the cluster:
 
    .. code:: sh
 
-      cd ~/scripts/environment/traefik
+       FLINT.Reporting/code/scripts/setup/environment/kubernetes/cluster/addons/traefik
 
 2. Invoke the traefik installation script:
 
    .. code:: sh
 
-      ./install_traefik.sh
+      bash install.sh
 
 Add Storage Volumes to the Cluster
 ----------------------------------
@@ -116,7 +116,7 @@ cluster:
 
    .. code:: sh
 
-      cd ~/scripts/environment/kubernetes/storage
+       FLINT.Reporting/code/scripts/setup/environment/kubernetes/cluster/addons/storage
 
 2. Reload the environmental variables:
 
@@ -128,7 +128,7 @@ cluster:
 
    .. code:: sh
 
-      ./install_storage_volumes.sh
+      bash install.sh
 
 Add PostgreSQL to the Cluster
 -----------------------------
@@ -139,30 +139,13 @@ Follow the instructions below to add PostgreSQL to the cluster:
 
    .. code:: sh
 
-      cd ~/scripts/environment/postgres
+       FLINT.Reporting/code/scripts/setup/environment/kubernetes/cluster/addons/postgresql
 
 2. Invoke the Postgres installation script:
 
    .. code:: sh
 
-      ./install_postgres.sh
-
-Add Cassandra to the Cluster
-----------------------------
-
-Follow the instructions below to add Cassandra to the cluster:
-
-1. Navigate to the Cassandra setup scripts directory on the server:
-
-   .. code:: sh
-
-      cd ~/scripts/environment/cassandra
-
-2. Invoke the Cassandra installation script:
-
-   .. code:: sh
-
-      ./install_cassandra.sh
+      bash install.sh
 
 Add RabbitMQ to the Cluster
 ---------------------------
@@ -173,10 +156,10 @@ Follow the instructions below to add RabbitMQ to the cluster:
 
    .. code:: sh
 
-        cd ~/scripts/environment/rabbitmq
+        FLINT.Reporting/code/scripts/setup/environment/kubernetes/cluster/addons/rabbitmq
 
 2. Invoke the rabbitmq installation script:
 
    .. code:: sh
 
-      ./install_rabbitmq.sh
+      bash install.sh

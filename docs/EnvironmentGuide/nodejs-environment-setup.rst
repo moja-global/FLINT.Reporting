@@ -10,13 +10,13 @@ Follow the instructions below to install the NodeJS:
 
    .. code:: sh
 
-      cd ~/scripts/environment/nodejs
+      FLINT.Reporting/code/scripts/setup/environment/nodejs
 
 2. Invoke the NodeJS installation script:
 
    .. code:: sh
 
-      ./install_nodejs.sh
+    bash install.sh
 
 Install NPM
 -----------
@@ -27,13 +27,13 @@ Follow the instructions below to install NPM:
 
    .. code:: sh
 
-      cd ~/scripts/environment/npm
+     FLINT.Reporting/code/scripts/setup/environment/npm
 
 2. Invoke the npm installation script:
 
    .. code:: sh
 
-      ./install_npm.sh
+      bash install.sh
 
 Install Angular
 ---------------
@@ -44,10 +44,10 @@ Follow the instructions below to install Angular:
 
    .. code:: sh
 
-      cd ~/scripts/environment/angular
+      FLINT.Reporting/code/scripts/setup/environment/angular
 
 2. Invoke the Angular installation script:
 
    .. code:: sh
 
-      ./install_angular.sh
+     bash install.sh
