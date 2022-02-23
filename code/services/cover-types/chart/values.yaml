@@ -32,8 +32,8 @@ microservice:
     name: cover-types
     version: 0.0.1
     image: 
-      id: reporter.miles.co.ke:5043/cover-types
-      tag: 0.0.1
+      id: ghcr.io/moja-global/flint_reporting.cover-types
+      tag: master
       pull:
         policy: Always
         secret: regcred

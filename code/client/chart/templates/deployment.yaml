@@ -19,7 +19,10 @@ spec:
         -
           name: {{ .Values.client.application.name }}
           image: "{{ .Values.client.application.image.id }}:{{ .Values.client.application.image.tag }}"
-          imagePullPolicy: {{ default "" .Values.client.application.image.pull.policy | quote }}               
+          imagePullPolicy: {{ default "" .Values.client.application.image.pull.policy | quote }}
+          ports:
+            -
+              containerPort: 80
       imagePullSecrets:
         -
           name: {{.Values.client.application.image.pull.secret}}

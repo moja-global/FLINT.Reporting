@@ -92,15 +92,9 @@ fi
 
 
 echo " ${blue}Setting up SSL files on the server ${reset} "
-if [ -z "$(which openssl)" ]
-then
-    echo
-    echo " ${red} OpenSSL not found, installing it      ${reset} "
     bash $ENVIRONMENT_DIR/openssl/generate.sh
-else 
     echo "${green} OpenSSL is installed!"
-    echo
-fi
+
 
 
 echo " ${blue}Installing JDK on the server ${reset} "

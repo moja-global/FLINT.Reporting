@@ -8,6 +8,8 @@ RUN java -Djarmode=layertools -jar application.jar extract
 FROM eclipse-temurin:17.0.1_12-jre-alpine
 COPY --from=builder dependencies/ ./
 COPY --from=builder snapshot-dependencies/ ./
+RUN true
 COPY --from=builder spring-boot-loader/ ./
+RUN true
 COPY --from=builder application/ ./
 ENTRYPOINT ["java", "-Xms256m", "-Xmx2048m", "org.springframework.boot.loader.JarLauncher"]
