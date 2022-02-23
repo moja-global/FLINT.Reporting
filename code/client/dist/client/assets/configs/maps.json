@@ -1,0 +1,78 @@
+[
+    {
+        "gid": 1,
+        "configs": [
+            {
+                "id": "Purchases",
+                "title": "Percent Proportion Of Households Relying On Purchase As The Main Source Of Household Food",
+                "subtitle": "",
+                "uri": "/households/maps/food_sources/purchases",
+                "units": "%"
+            },
+            {
+                "id": "Own Production",                
+                "title": "Percent Proportion Of Households Relying On Own Production As The Main Source Of Household Food",
+                "subtitle": "",
+                "uri": "/households/maps/food_sources/own_production",
+                "units": "%"
+            }            
+        ]
+    },
+    {
+        "gid": 2,
+        "configs": [
+            {
+                "id": "Loss or Damage",                
+                "title": "Percent Proportion Of Households Who Suffered Food Products Production Loss Or Damage",
+                "subtitle": "",
+                "uri": "/households/maps/food_production_loss_or_damage",
+                "units": "%"
+            }          
+        ]
+    },
+    {
+        "gid": 3,
+        "configs": [
+            {
+                "id": "Livestock Diseases",                
+                "title": "Percent Proportion Of Households Reporting Livestock Diseases",
+                "subtitle": "",
+                "uri": "/households/maps/livestock/diseases/status",
+                "units": "%"
+            },
+            {
+                "id": "Extension Services",                
+                "title": "Percent Proportion Of Households Having Access To Livestock Veterinary Extension Services",
+                "subtitle": "",
+                "uri": "/households/maps/livestock/animal_health_services/accessibility/status",
+                "units": "%"
+            }            
+        ]
+    },
+    {
+        "gid": 4,
+        "configs": [
+            {
+                "id": "Maize Price",                
+                "title": "Average Price In Mk For A Kilogram Of Maize",
+                "subtitle": "",
+                "uri": "/markets/maps/food_products/plant_based/maize/unit_cost",
+                "units": "Mk"
+            },
+            {
+                "id": "Groundnuts Price",                
+                "title": "Average Price In Mk For A Kilogram Of Groundnuts",
+                "subtitle": "",
+                "uri": "/markets/maps/food_products/plant_based/groundnuts/unit_cost",
+                "units": "Mk"
+            },
+            {
+                "id": "Irish Potatoes Price",                
+                "title": "Average Price In Mk For A Kilogram Of Irish Potatoes",
+                "subtitle": "",
+                "uri": "/markets/maps/food_products/plant_based/irish_potatoes/unit_cost",
+                "units": "Mk"
+            }                        
+        ]
+    }           
+]
