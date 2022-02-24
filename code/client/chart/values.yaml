@@ -1,4 +1,3 @@
-  GNU nano 4.8                                                                                    values.yaml                                                                                              
 # Default values for the Client's Helm Chart.
 # This is a YAML-formatted file.
 
@@ -17,7 +16,8 @@ client:
         backend:
           service:
             name: client
-            port: http
+            port:
+              number: 80
 
   # Service
   service:
@@ -34,11 +34,10 @@ client:
   application:
     name: client
     version: 0.0.1
-    image: 
+    image:
       id: ghcr.io/moja-global/flint_reporting.client
       tag: master
       pull:
         policy: Always
         secret: regcred
     replicas: 1
-
