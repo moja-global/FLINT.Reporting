@@ -5,7 +5,7 @@ metadata:
 spec:
   ports:
     -
-      name: http
+      protocol: TCP
       port: {{ .Values.client.service.port.default }}
       targetPort: {{ .Values.client.service.port.target }}
   selector:
