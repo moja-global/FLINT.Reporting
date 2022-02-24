@@ -22,7 +22,7 @@ sudo bash $BASEDIR/get_helm.sh
 
 echo
 echo "Adding the public stable helm repo for installing the stable charts"
-sudo bash helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+sudo helm repo add stable https://charts.helm.sh/stable
 
 echo
 echo "---------------------------------------------------------------------------------"
