@@ -16,7 +16,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     steps:
     - uses: actions/checkout@v2
     - name: install k8s
@@ -25,6 +24,9 @@ jobs:
         cat /etc/rancher/k3s/k3s.yaml
         mkdir -p ~/.kube
         cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+
+
+
     - name: Kubernetes services tests
       run: |
         cd ./code/scripts/setup/system/services/
