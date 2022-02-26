@@ -25,8 +25,8 @@ jobs:
         cat /etc/rancher/k3s/k3s.yaml
         mkdir -p ~/.kube
         cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
-    - name: example tests
+    - name: Kubernetes services tests
       run: |
-        cd ./code/services/accountabilities/
+        cd ./code/scripts/setup/system/services/
         bash install.sh
         kubectl get po
