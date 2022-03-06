@@ -45,8 +45,9 @@ echo "Building component for production environment"
 echo
 
 #ng build --prod
-ng build --configuration production --base-href /client/echo
+ng build --configuration production --base-href /client/
 
+echo
 echo "========================================================================"
 echo "Leaving Artifact Build Script"
 echo "========================================================================"
