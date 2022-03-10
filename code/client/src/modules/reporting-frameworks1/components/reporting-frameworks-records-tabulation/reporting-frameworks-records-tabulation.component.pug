@@ -24,7 +24,7 @@ form
             td.align-middle(scope='col', colspan='4')
               span.d-flex.flex-row-reverse
                 sb-button(action='add', entity='ReportingFramework', (add)='onAddReportingFramework()')
-        ng-container(body')
+        ng-container(body)
           tr(*ngfor='let reportingFramework of reportingFrameworksTableService.reportingFrameworks$ | async')
             td.text-center.align-middle
               | {{reportingFramework.pos}}

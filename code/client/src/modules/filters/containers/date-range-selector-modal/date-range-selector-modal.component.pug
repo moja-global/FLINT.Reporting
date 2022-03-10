@@ -1,7 +1,7 @@
 sb-modal
   ng-container(title='')
     | Create Filter Record
-  ng-container(body')
+  ng-container(body)
     sb-filters-records-creation((succeeded)='onSucceeded()', (failed)='onFailed($event)')
     ng-container(*ngif='(status$ | async) === "saving"')
       sb-message-overlay(filter='creating', status='saving')

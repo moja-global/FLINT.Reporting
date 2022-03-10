@@ -149,9 +149,9 @@ form
   .row
     .col
       sb-pagination(type='modal', (pagechanged)='onPageChange($event)', (pagesizechanged)='onPageSizeChange($event)')
-n-middle(scope='col', colspan='6')
-              span.d-flex.flex-row.flex-row-reverse
-                sb-button(action='add', entity='LandUseCategory', (add)='onAddLandUseCategory()')
+        n-middle(scope='col', colspan='6')
+          span.d-flex.flex-row.flex-row-reverse
+            sb-button(action='add', entity='LandUseCategory', (add)='onAddLandUseCategory()')
   // For Middle-Sized Devices Upwards
   .row.d-none.d-md-block
     .col

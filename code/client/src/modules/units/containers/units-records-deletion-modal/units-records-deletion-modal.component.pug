@@ -1,7 +1,7 @@
 sb-modal
   ng-container(title='')
     | Delete Unit Record
-  ng-container(body')
+  ng-container(body)
     sb-units-records-deletion(id='{{id}}', (succeeded)='onSucceeded()', (failed)='onFailed($event)')
     ng-container(*ngif='(status$ | async) === "deleting"')
       sb-message-overlay(activity='deleting', status='deleting')

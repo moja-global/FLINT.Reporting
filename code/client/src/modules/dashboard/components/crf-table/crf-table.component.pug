@@ -24,7 +24,7 @@ form
             td.align-middle(scope='col', colspan='4')
               span.d-flex.flex-row-reverse
                 sb-button(action='add', entity='QuantityObservation', (add)='onAddQuantityObservation()')
-        ng-container(body')
+        ng-container(body)
           tr(*ngfor='let quantityObservation of quantityObservationsTableService.quantityObservations$ | async')
             td.text-center.align-middle
               | {{quantityObservation.pos}}

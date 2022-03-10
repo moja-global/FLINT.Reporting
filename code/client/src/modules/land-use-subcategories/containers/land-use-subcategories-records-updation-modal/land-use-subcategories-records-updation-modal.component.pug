@@ -1,7 +1,7 @@
 sb-modal
   ng-container(title='')
     | Update Land Use Subcategory Record
-  ng-container(body')
+  ng-container(body)
     sb-land-use-subcategories-records-updation(id='{{id}}', (succeeded)='onSucceeded()', (failed)='onFailed($event)')
     ng-container(*ngif='(status$ | async) === "saving"')
       sb-message-overlay(activity='updating', status='saving')

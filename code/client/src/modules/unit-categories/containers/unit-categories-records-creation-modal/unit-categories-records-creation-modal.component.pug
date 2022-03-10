@@ -1,7 +1,7 @@
 sb-modal
   ng-container(title='')
     | Create Unit Category Record
-  ng-container(body')
+  ng-container(body)
     sb-unit-categories-records-creation((succeeded)='onSucceeded()', (failed)='onFailed($event)')
     ng-container(*ngif='(status$ | async) === "saving"')
       sb-message-overlay(activity='creating', status='saving')

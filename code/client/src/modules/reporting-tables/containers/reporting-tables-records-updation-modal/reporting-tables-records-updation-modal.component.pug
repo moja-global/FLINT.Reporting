@@ -1,7 +1,7 @@
 sb-modal
   ng-container(title='')
     | Update Reporting Table Record
-  ng-container(body')
+  ng-container(body)
     sb-reporting-tables-records-updation(id='{{id}}', (succeeded)='onSucceeded()', (failed)='onFailed($event)')
     ng-container(*ngif='(status$ | async) === "saving"')
       sb-message-overlay(activity='updating', status='saving')
