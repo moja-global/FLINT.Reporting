@@ -24,7 +24,7 @@ Steps to setting up the FLINT Reporting Tool
      
       bash superscript.sh
 
-Steps to setting up the Environment for the Reporting Tool over the server
+Steps to setting up the Environment for the Reporting Tool over the server.
 
 5.  Enter the server domain:
    .. code:: sh
