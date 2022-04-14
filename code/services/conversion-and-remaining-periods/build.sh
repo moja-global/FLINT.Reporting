@@ -67,7 +67,7 @@ fi
 
 echo 
 cd $BASEDIR
-ARTIFACT="$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
+ARTIFACT="conversion-and-remaining-periods"
 if [[ $ARTIFACT == null ]]
 then
      echo 
