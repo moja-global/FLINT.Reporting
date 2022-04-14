@@ -34,7 +34,7 @@ cd $BASEDIR
 # ------------------------------------------------------------------------
 
 echo 
-ARTIFACT="$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
+ARTIFACT="flux-reporting-results"
 if [[ $ARTIFACT == null ]]
 then
      echo 

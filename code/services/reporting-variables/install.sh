@@ -34,7 +34,7 @@ cd $BASEDIR
 # ------------------------------------------------------------------------
 
 echo 
-ARTIFACT="$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
+ARTIFACT="reporting-variables"
 if [[ $ARTIFACT == null ]]
 then
      echo 
