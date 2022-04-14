@@ -34,7 +34,7 @@ cd $BASEDIR
 # ------------------------------------------------------------------------
 
 echo 
-ARTIFACT="$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
+ARTIFACT="units"
 if [[ $ARTIFACT == null ]]
 then
      echo 

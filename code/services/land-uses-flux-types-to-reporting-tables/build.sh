@@ -67,7 +67,7 @@ fi
 
 echo 
 cd $BASEDIR
-ARTIFACT="$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
+ARTIFACT="land-uses-flux-types-to-reporting-tables"
 if [[ $ARTIFACT == null ]]
 then
      echo 
