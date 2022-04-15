@@ -26,12 +26,12 @@ a public CA, proceed as follows:
 1. Navigate to the openssl scripts directory on the server:
    ::
 
-      cd ~/scripts/environment/openssl
+     FLINT.Reporting/code/scripts/setup/environment/openssl
 
 2. Invoke the generate keys and certificates script:
    ::
 
-      ./generate_keys_and_certificates.sh
+     bash generate.sh
 
 3. Follow the wizards instructions.
 

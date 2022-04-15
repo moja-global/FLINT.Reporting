@@ -7,10 +7,10 @@ Follow the instructions below to install Meta:
 
    .. code:: sh
 
-      cd ~/scripts/environment/meta
+      FLINT.Reporting/code/scripts/setup/environment/meta
 
 2. Invoke the meta installation script:
 
    .. code:: sh
 
-      ./install_meta.sh
+      bash install.sh
