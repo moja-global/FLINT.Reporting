@@ -10,13 +10,13 @@ Follow the instructions below to install the JDK:
 
    .. code:: sh
 
-      cd ~/scripts/environment/jdk
+      FLINT.Reporting/code/scripts/setup/environment/jdk
 
 2. Invoke the JDK installation script:
 
    .. code:: sh
 
-      ./install_jdk.sh
+      bash install.sh
 
 Install Apache Maven
 --------------------
@@ -27,10 +27,9 @@ Follow the instructions below to install Maven:
 
    .. code:: sh
 
-      cd ~/scripts/environment/maven
-
+      FLINT.Reporting/code/scripts/setup/environment/jdk
 2. Invoke the maven installation script:
 
    .. code:: sh
 
-      ./install_maven.sh
+      bash install.sh
